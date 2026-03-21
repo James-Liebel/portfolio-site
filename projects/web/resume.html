@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>James Liebel | Interactive Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#081320;--bg2:#12263d;--panel:rgba(8,18,30,.76);--bd:rgba(174,222,255,.28);--txt:#eaf4ff;--muted:#9db8d3;--acc:#3dd2ff;--acc2:#75f3b5}
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Space Grotesk","Segoe UI",sans-serif;color:var(--txt);background:radial-gradient(circle at 15% 10%,rgba(61,210,255,.2),transparent 36%),radial-gradient(circle at 87% 9%,rgba(117,243,181,.13),transparent 33%),linear-gradient(135deg,var(--bg),var(--bg2) 70%,#0b1a2d)}
+    .bg{position:fixed;inset:0;pointer-events:none;opacity:.48;z-index:0}
+    .blob{transform-origin:center;animation:float 18s ease-in-out infinite} .blob.b2{animation-duration:24s;animation-direction:reverse}
+    @keyframes float{0%{transform:translate(0,0) scale(1)}50%{transform:translate(18px,-20px) scale(1.06)}100%{transform:translate(0,0) scale(1)}}
+    .cursor{position:fixed;width:300px;height:300px;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;background:radial-gradient(circle,rgba(61,210,255,.15),rgba(61,210,255,0) 70%);z-index:1}
+    .nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);background:rgba(8,18,30,.72);border-bottom:1px solid rgba(174,222,255,.2)}
+    .navin{max-width:1100px;margin:auto;padding:10px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{font-family:"IBM Plex Mono",monospace;color:var(--acc2);font-size:.8rem}
+    .links{display:flex;gap:8px;flex-wrap:wrap}.links a{text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:999px;border:1px solid transparent;font-size:.83rem}
+    .links a.active,.links a:hover{color:var(--txt);border-color:rgba(174,222,255,.34);background:rgba(90,170,242,.14)}
+    .btn{font:700 .83rem "Space Grotesk",sans-serif;border:0;border-radius:999px;padding:8px 12px;cursor:pointer;color:#041421;background:linear-gradient(120deg,#1aa8d3,#44dfab)}
+    .btn.s{color:var(--txt);background:rgba(255,255,255,.06);border:1px solid rgba(190,226,255,.24)}
+    .wrap{max-width:1100px;margin:auto;padding:24px 14px 60px;position:relative;z-index:2}
+    .panel{background:var(--panel);border:1px solid var(--bd);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.38);overflow:hidden;position:relative}
+    .panel:before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,0) 30%);pointer-events:none}
+    .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;padding:20px;margin-bottom:16px}
+    .k{font:500 .76rem "IBM Plex Mono",monospace;color:var(--acc2);letter-spacing:.08em;text-transform:uppercase}
+    h1{margin:10px 0 0;font-size:clamp(2rem,5vw,3rem);line-height:1.04;letter-spacing:-.03em}
+    .g{background:linear-gradient(120deg,#ddf4ff,#82e6ff 50%,#7df6b6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .sum{color:var(--muted);line-height:1.6;max-width:62ch}
+    .cta{display:flex;gap:8px;flex-wrap:wrap}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .chip{font-size:.78rem;border-radius:999px;padding:6px 9px;border:1px solid rgba(180,221,255,.32);background:rgba(118,179,255,.14);color:var(--txt);text-decoration:none}
+    .viz{min-height:280px;border-radius:14px;border:1px solid rgba(162,213,255,.28);background:linear-gradient(180deg,rgba(11,31,52,.8),rgba(5,17,30,.9));position:relative;overflow:hidden}
+    .viz .l{position:absolute;left:10px;top:10px;font:500 .72rem "IBM Plex Mono",monospace;color:var(--acc2);padding:4px 9px;border-radius:999px;border:1px solid rgba(164,214,255,.26);background:rgba(11,24,39,.72)}
+    #net{width:100%;height:100%;display:block}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .stat{padding:12px;border-radius:14px;border:1px solid rgba(168,218,255,.28);background:rgba(11,25,42,.8)}
+    .v{font-size:1.45rem;color:var(--acc2);font-weight:700}.sl{margin-top:6px;font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .sec{padding:16px} .sec h2{margin:0 0 12px;font-size:1.07rem} .sec h2 span{font-family:"IBM Plex Mono",monospace;color:var(--acc);margin-right:7px}
+    .cluster{margin-bottom:11px}.cluster strong{display:block;font-size:.92rem;margin-bottom:6px}.tags{display:flex;flex-wrap:wrap;gap:7px}
+    .tag{font-size:.78rem;padding:5px 8px;border-radius:999px;background:rgba(77,150,224,.14);border:1px solid rgba(170,218,255,.24)}
+    .tag:hover{transform:translateY(-1px) scale(1.03);background:rgba(117,243,181,.18);border-color:rgba(145,255,202,.34)}
+    .tl{position:relative;padding-left:24px}.tl:before{content:"";position:absolute;left:8px;top:2px;bottom:2px;width:2px;background:linear-gradient(to bottom,rgba(61,210,255,.8),rgba(117,243,181,.4))}
+    .item{position:relative;margin-bottom:13px}.item:before{content:"";position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 4px rgba(61,210,255,.2)}
+    .it{font-weight:700;font-size:.94rem}.im{font-size:.78rem;color:var(--muted)}.ib{margin-top:6px;color:#dcecff;font-size:.88rem;line-height:1.48}
+    .full{padding:16px;margin-bottom:16px}.projects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .pc{padding:12px;border-radius:14px;border:1px solid rgba(166,214,255,.25);background:rgba(9,22,36,.85)}
+    .pc h3{margin:0 0 4px;font-size:.94rem}.pc p{margin:0;color:var(--muted);font-size:.82rem;line-height:1.44}
+    .badge{margin-top:10px;display:inline-block;font:700 .7rem "IBM Plex Mono",monospace;color:#00101c;background:linear-gradient(120deg,var(--acc2),var(--acc));padding:4px 8px;border-radius:999px}
+    .spark{width:100%;height:36px;margin-top:9px}.line{stroke-dasharray:130;stroke-dashoffset:130;animation:draw 2.8s ease forwards}
+    @keyframes draw{to{stroke-dashoffset:0}}
+    .full ul{margin:0;padding-left:18px}.full li{margin-bottom:6px;font-size:.9rem;line-height:1.45;color:#dbebfe}
+    .f{text-align:center;color:var(--muted);font-size:.8rem;padding:8px}
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}.reveal.show{opacity:1;transform:none}
+    @media (max-width:980px){.hero,.grid{grid-template-columns:1fr}.projects{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){.projects{grid-template-columns:1fr}.viz{min-height:220px}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.blob,.line,.reveal{animation:none!important;transition:none!important}}
+    @media print{
+      body{background:#fff;color:#111;font-family:"Segoe UI",Arial,sans-serif}
+      .noprint,.bg,.cursor{display:none!important}
+      .wrap{max-width:100%;padding:0}
+      .panel,.stat,.pc{background:#fff!important;border:1px solid #ddd!important;box-shadow:none!important;color:#111!important}
+      .sum,.im,.ib,.pc p,.sl{color:#333!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor noprint" id="cursor"></div>
+  <svg class="bg noprint" viewBox="0 0 1200 900" aria-hidden="true">
+    <defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3dd2ff" stop-opacity="0.5"/><stop offset="100%" stop-color="#75f3b5" stop-opacity="0.1"/></linearGradient></defs>
+    <path d="M0,230 C180,120 290,410 480,300 C610,230 700,80 920,180 C1050,240 1110,360 1200,320" fill="none" stroke="url(#lg)" stroke-width="2"/>
+    <path d="M-40,720 C140,640 320,810 500,730 C680,650 870,530 1210,670" fill="none" stroke="url(#lg)" stroke-width="2"/>
+    <circle class="blob" cx="190" cy="170" r="88" fill="#3dd2ff" fill-opacity=".11"/>
+    <circle class="blob b2" cx="1020" cy="210" r="110" fill="#75f3b5" fill-opacity=".1"/>
+    <circle class="blob" cx="930" cy="760" r="130" fill="#ffbf69" fill-opacity=".08"/>
+  </svg>
+
+  <nav class="nav noprint">
+    <div class="navin">
+      <div class="brand">JAMES-LIEBEL.RESUME</div>
+      <div class="links">
+        <a class="active" href="#home">Home</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#education">Education</a>
+      </div>
+      <button class="btn" id="print">Save PDF</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="home" class="panel hero reveal">
+      <div>
+        <div class="k">Data Science and Statistics</div>
+        <h1><span class="g">James Liebel</span><br>Interactive Resume</h1>
+        <p class="sum">Incoming University of Chicago student (Class of 2030) building machine learning projects, AI-assisted prototypes, and interactive data products. Focused on Python, SQL, FastAPI, React, visualization, and recruiter-readable analytical communication.</p>
+        <div class="cta noprint">
+          <button class="btn" id="copy">Copy Resume Text</button>
+          <a class="btn s" href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn s" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+        <div class="chips">
+          <a class="chip" href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a><span class="chip">(513) 965-1578</span><span class="chip">Cincinnati, OH</span>
+        </div>
+      </div>
+      <div class="viz noprint"><div class="l">Live Skill Graph</div><svg id="net" viewBox="0 0 520 300" preserveAspectRatio="none"></svg></div>
+    </section>
+
+    <section class="stats reveal">
+      <article class="stat panel"><div class="v" data-c="20">0</div><div class="sl">Projects Built</div></article>
+      <article class="stat panel"><div class="v" data-c="85">0</div><div class="sl">Validation Accuracy (%+)</div></article>
+      <article class="stat panel"><div class="v" data-c="10000">0</div><div class="sl">Records Analyzed (+)</div></article>
+    </section>
+
+    <div class="grid">
+      <section id="skills" class="panel sec reveal">
+        <h2><span>01</span>Technical Skills</h2>
+        <div class="cluster"><strong>Machine Learning and AI</strong><div class="tags"><span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">TensorFlow</span><span class="tag">NLP</span><span class="tag">Feature Engineering</span><span class="tag">Model Evaluation</span><span class="tag">Prompting</span><span class="tag">AI Prototyping</span></div></div>
+        <div class="cluster"><strong>Programming and Data</strong><div class="tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Jupyter</span><span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Git</span></div></div>
+        <div class="cluster"><strong>Visualization and Delivery</strong><div class="tags"><span class="tag">ETL Pipelines</span><span class="tag">Power BI</span><span class="tag">Matplotlib</span><span class="tag">Seaborn</span><span class="tag">D3.js</span><span class="tag">GeoJSON</span><span class="tag">Next.js</span><span class="tag">Tailwind CSS</span><span class="tag">GitHub Pages</span></div></div>
+      </section>
+
+      <section id="experience" class="panel sec reveal">
+        <h2><span>02</span>Experience</h2>
+        <div class="tl">
+          <article class="item"><div class="it">JimAI / AI Workspace Prototype</div><div class="im">Independent Build</div><div class="ib">Built an AI-assisted workspace prototype for research, code generation, and workflow experimentation using FastAPI, React/Vite, local AI workflows, and automation-oriented interfaces.</div></article>
+          <article class="item"><div class="it">CustomStrat Advisory Website</div><div class="im">Live Client Deployment</div><div class="ib">Built and deployed customstrat.com using Next.js 14, TypeScript, Tailwind CSS, GitHub Pages, and a custom domain, using AI-assisted iteration to speed prototyping while keeping the site maintainable.</div></article>
+          <article class="item"><div class="it">Python Programming Instructor</div><div class="im">2023 - Present</div><div class="ib">Teach algorithmic problem-solving and code quality fundamentals with emphasis on clear reasoning and efficient implementations.</div></article>
+        </div>
+      </section>
+    </div>
+
+    <section id="projects" class="panel full reveal">
+      <h2><span>03</span>Featured Projects</h2>
+      <div class="projects">
+        <article class="pc"><h3>JimAI AI Workspace Prototype</h3><p>AI-assisted prototype for research, code generation, and workflow testing with usable interface design.</p><span class="badge">AI</span><svg class="spark" viewBox="0 0 160 40"><path class="line" d="M2 32 L24 26 L46 24 L68 17 L90 15 L112 10 L136 8 L158 5" fill="none" stroke="#65d6ff" stroke-width="2"/></svg></article>
+        <article class="pc"><h3>Fraud Detection (XGBoost)</h3><p>Imbalanced-class pipeline built around recall, sampling, and precision-recall evaluation.</p><span class="badge">ML</span><svg class="spark" viewBox="0 0 160 40"><path class="line" d="M2 34 L24 26 L44 20 L66 24 L88 12 L110 14 L132 8 L158 4" fill="none" stroke="#79f4b9" stroke-width="2"/></svg></article>
+        <article class="pc"><h3>CustomStrat Advisory Website</h3><p>Live client website built and deployed with Next.js, TypeScript, Tailwind, and a custom domain.</p><span class="badge">Web</span><svg class="spark" viewBox="0 0 160 40"><path class="line" d="M2 36 L24 29 L48 26 L74 19 L98 17 L122 14 L142 11 L158 8" fill="none" stroke="#ffbf69" stroke-width="2"/></svg></article>
+      </div>
+    </section>
+
+    <section id="education" class="panel full reveal">
+      <h2><span>04</span>Education and Certifications</h2>
+      <ul>
+        <li><strong>The University of Chicago</strong> - Candidate for B.S. in Data Science and B.S. in Statistics, expected May 2030.</li>
+        <li><strong>Certifications:</strong> IBM Data Science Professional Certificate; Microsoft PL-300 (Power BI Data Analyst).</li>
+        <li><strong>Leadership:</strong> Co-President, Machine Learning Club; DECA competitor, 2022 to 2024.</li>
+      </ul>
+    </section>
+
+    <footer class="f"><span id="yr"></span> James Liebel | Built as an interactive motion resume.</footer>
+  </main>
+
+  <script>
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cursor = document.getElementById("cursor");
+    if (!reduced) window.addEventListener("pointermove", e => { cursor.style.left = e.clientX + "px"; cursor.style.top = e.clientY + "px"; }); else cursor.style.display = "none";
+    document.getElementById("print").addEventListener("click", () => window.print());
+    document.getElementById("copy").addEventListener("click", async () => {
+      const text = Array.from(document.querySelectorAll(".it,.ib,.sum,.tag,.pc h3,.pc p,#education li")).map(n => n.textContent.trim()).filter(Boolean).join("\n");
+      try { await navigator.clipboard.writeText(text); alert("Resume text copied."); } catch (_e) { alert("Clipboard access blocked in this browser."); }
+    });
+    document.getElementById("yr").textContent = new Date().getFullYear();
+
+    const reveal = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add("show"); reveal.unobserve(x.target); } }), { threshold: .15 });
+    document.querySelectorAll(".reveal").forEach(n => reveal.observe(n));
+
+    const counters = new IntersectionObserver(es => es.forEach(x => {
+      if (!x.isIntersecting) return;
+      const el = x.target, t = Number(el.dataset.c), start = performance.now(), dur = 1200;
+      const tick = now => { const p = Math.min(1, (now - start) / dur), c = Math.floor(t * p); el.textContent = t >= 1000 ? c.toLocaleString() : String(c); if (p < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick); counters.unobserve(el);
+    }), { threshold: .45 });
+    document.querySelectorAll("[data-c]").forEach(n => counters.observe(n));
+
+    const links = [...document.querySelectorAll(".links a")];
+    const secs = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    const spy = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + x.target.id)); }), { threshold: .55 });
+    secs.forEach(s => spy.observe(s));
+
+    if (!reduced) {
+      document.querySelectorAll(".panel").forEach(card => {
+        card.addEventListener("mousemove", e => {
+          const r = card.getBoundingClientRect(), px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+          card.style.transform = "perspective(1200px) rotateX(" + ((.5 - py) * 2.4).toFixed(2) + "deg) rotateY(" + ((px - .5) * 3.2).toFixed(2) + "deg)";
+        });
+        card.addEventListener("mouseleave", () => card.style.transform = "");
+      });
+    }
+
+    const svg = document.getElementById("net"), w = 520, h = 300, n = 26, nodes = [], cs = [], ls = [];
+    if (!reduced) {
+      for (let i = 0; i < n; i++) {
+        nodes.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .46, vy: (Math.random() - .5) * .46 });
+        const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("r", String(2 + Math.random() * 2.4)); c.setAttribute("fill", i % 3 === 0 ? "#75f3b5" : "#65d6ff"); c.setAttribute("fill-opacity", "0.9");
+        svg.appendChild(c); cs.push(c);
+      }
+      for (let i = 0; i < 85; i++) {
+        const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        l.setAttribute("stroke", "#6fd9ff"); l.setAttribute("stroke-opacity", "0"); l.setAttribute("stroke-width", "1");
+        svg.insertBefore(l, svg.firstChild); ls.push(l);
+      }
+      const loop = () => {
+        let k = 0;
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i]; a.x += a.vx; a.y += a.vy; if (a.x < 0 || a.x > w) a.vx *= -1; if (a.y < 0 || a.y > h) a.vy *= -1;
+          cs[i].setAttribute("cx", a.x.toFixed(2)); cs[i].setAttribute("cy", a.y.toFixed(2));
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+            if (d2 < 4900 && k < ls.length) {
+              const op = .44 - Math.sqrt(d2) / 180, l = ls[k];
+              l.setAttribute("x1", a.x.toFixed(2)); l.setAttribute("y1", a.y.toFixed(2)); l.setAttribute("x2", b.x.toFixed(2)); l.setAttribute("y2", b.y.toFixed(2)); l.setAttribute("stroke-opacity", Math.max(.07, op).toFixed(2));
+              k++;
+            }
+          }
+        }
+        for (; k < ls.length; k++) ls[k].setAttribute("stroke-opacity", "0");
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+    }
+  </script>
+</body>
+</html>

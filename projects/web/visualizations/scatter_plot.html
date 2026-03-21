@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cycling Doping Analysis</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #34495e;
+      --accent-doping: #e74c3c;
+      --accent-clean: #2ecc71;
+      --secondary: #95a5a6;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #fdfdfd;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    #title {
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0 0 10px 0;
+      text-align: center;
+    }
+
+    #subtitle {
+      font-size: 16px;
+      color: var(--secondary);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .dot {
+      stroke: #fff;
+      stroke-width: 1.5;
+      transition: r 0.3s, fill 0.3s;
+      cursor: pointer;
+    }
+
+    .dot:hover {
+      r: 10 !important;
+    }
+
+    #tooltip {
+      position: absolute;
+      padding: 15px;
+      background: rgba(44, 62, 80, 0.98);
+      color: white;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      font-size: 13px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      line-height: 1.5;
+    }
+
+    .legend-item {
+      font-size: 12px;
+      color: var(--primary);
+    }
+
+    .tick text {
+      font-size: 11px;
+      fill: #7f8c8d;
+    }
+
+    .axis-path {
+      stroke: #ecf0f1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="title">Doping in Professional Cycling</h1>
+    <p id="subtitle">35 Fastest times up Alpe d'Huez</p>
+    <div id="tooltip"></div>
+    <div id="chart"></div>
+  </div>
+
+  <script>
+    const width = 850;
+    const height = 550;
+    const margin = { top: 20, right: 100, bottom: 60, left: 80 };
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
+      .then(data => {
+        const parseTime = d3.timeParse("%M:%S");
+        data.forEach(d => {
+          d.TimeDate = parseTime(d.Time);
+        });
+
+        const xScale = d3.scaleLinear()
+          .domain([d3.min(data, d => d.Year - 1), d3.max(data, d => d.Year + 1)])
+          .range([0, width - margin.left - margin.right]);
+
+        const yScale = d3.scaleTime()
+          .domain(d3.extent(data, d => d.TimeDate))
+          .range([0, height - margin.top - margin.bottom]);
+
+        // X Axis
+        const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
+        svg.append("g")
+          .attr("id", "x-axis")
+          .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
+          .call(xAxis);
+
+        // Y Axis
+        const yAxis = d3.axisLeft(yScale).tickFormat(d3.timeFormat("%M:%S"));
+        svg.append("g")
+          .attr("id", "y-axis")
+          .call(yAxis);
+
+        // Tooltip
+        const tooltip = d3.select("#tooltip");
+
+        // Dots
+        svg.selectAll(".dot")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("class", "dot")
+          .attr("cx", d => xScale(d.Year))
+          .attr("cy", d => yScale(d.TimeDate))
+          .attr("r", 0) // Start for animation
+          .attr("fill", d => d.Doping ? "rgba(231, 76, 60, 0.8)" : "rgba(46, 204, 113, 0.8)")
+          .on("mouseover", (event, d) => {
+            tooltip.transition().duration(200).style("opacity", 1);
+            tooltip.html(`
+                            <strong>${d.Name}: ${d.Nationality}</strong><br/>
+                            Year: ${d.Year}, Time: ${d.Time}<br/>
+                            ${d.Doping ? '<br/>' + d.Doping : 'No doping allegations'}
+                        `)
+              .style("left", (event.pageX + 20) + "px")
+              .style("top", (event.pageY - 40) + "px");
+          })
+          .on("mouseout", () => {
+            tooltip.transition().duration(500).style("opacity", 0);
+          })
+          .transition()
+          .duration(800)
+          .delay((d, i) => i * 30)
+          .attr("r", 7);
+
+        // Legend
+        const legend = svg.append("g")
+          .attr("id", "legend")
+          .attr("transform", `translate(${width - margin.left - margin.right + 20}, ${height / 2})`);
+
+        const categories = [
+          { label: "No allegations", color: "#2ecc71" },
+          { label: "Doping allegations", color: "#e74c3c" }
+        ];
+
+        categories.forEach((cat, i) => {
+          const row = legend.append("g").attr("transform", `translate(0, ${i * 25})`);
+          row.append("rect")
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", cat.color)
+            .attr("rx", 4);
+          row.append("text")
+            .attr("x", 20)
+            .attr("y", 12)
+            .attr("class", "legend-item")
+            .text(cat.label);
+        });
+      });
+  </script>
+</body>
+
+</html>

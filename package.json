@@ -1,0 +1,14 @@
+{
+  "name": "james-liebel-portfolio",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "node scripts/copy-vendor.mjs",
+    "vendor:sync": "node scripts/copy-vendor.mjs"
+  },
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
+    "gsap": "^3.12.2",
+    "powerbi-client": "^2.22.0"
+  }
+}

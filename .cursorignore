@@ -1,0 +1,30 @@
+# Keep Cursor Composer focused on the site code, not heavy binary assets.
+*
+!.cursorignore
+!.gitignore
+!.nojekyll
+!README.md
+!.vscode/
+!.vscode/**
+!index.html
+!package.json
+!package-lock.json
+!server.js
+!start_site.cmd
+!start_site.ps1
+!scripts/
+!scripts/**
+!projects/
+!projects/web/
+!projects/web/**
+
+# Re-ignore generated and binary assets even inside allowed folders.
+projects/web/vendor/
+projects/web/visualizations/node_modules/
+projects/web/visualizations/*.geojson
+projects/web/visualizations/*.json
+projects/web/**/*.jpg
+projects/web/**/*.jpeg
+projects/web/**/*.png
+projects/web/**/*.mp4
+projects/web/**/*.pbix

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Temperature Heatmap</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --text: #34495e;
+      --cold: #4575b4;
+      --mid: #ffffbf;
+      --hot: #d73027;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f0f2f5;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    #title {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--primary);
+      text-align: center;
+      margin: 0;
+    }
+
+    #description {
+      font-size: 16px;
+      color: #7f8c8d;
+      text-align: center;
+      margin: 10px 0 30px 0;
+    }
+
+    .cell {
+      transition: stroke 0.2s, stroke-width 0.2s;
+      cursor: pointer;
+    }
+
+    .cell:hover {
+      stroke: #000;
+      stroke-width: 1px;
+    }
+
+    #tooltip {
+      position: absolute;
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      font-size: 13px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      z-index: 100;
+      line-height: 1.4;
+    }
+
+    .tick text {
+      font-size: 11px;
+      fill: #7f8c8d;
+    }
+
+    #legend text {
+      font-size: 10px;
+      fill: #95a5a6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="title">Monthly Global Land-Surface Temperature</h1>
+    <p id="description">1753 - 2015: Base Temperature 8.66℃</p>
+    <div id="tooltip"></div>
+    <div id="chart"></div>
+  </div>
+
+  <script>
+    const width = 1100;
+    const height = 500;
+    const margin = { top: 20, right: 30, bottom: 100, left: 100 };
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json")
+      .then(data => {
+        const baseTemp = data.baseTemperature;
+        const dataset = data.monthlyVariance;
+
+        const years = dataset.map(d => d.year);
+        const months = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"];
+
+        const xScale = d3.scaleBand()
+          .domain(years)
+          .range([0, width - margin.left - margin.right]);
+
+        const yScale = d3.scaleBand()
+          .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+          .range([0, height - margin.top - margin.bottom]);
+
+        const colorScale = d3.scaleSequential()
+          .domain(d3.extent(dataset, d => baseTemp + d.variance))
+          .interpolator(d3.interpolateRdYlBu); // We'll reverse this logic for heat
+
+        // Correcting the reversed color logic of RdYlBu (it's hot to cold by default)
+        const temperatureExtent = d3.extent(dataset, d => baseTemp + d.variance);
+        const colorMap = d3.scaleLinear()
+          .domain([temperatureExtent[0], (temperatureExtent[0] + temperatureExtent[1]) / 2, temperatureExtent[1]])
+          .range(["#4575b4", "#ffffbf", "#d73027"]);
+
+        // X Axis
+        const xAxis = d3.axisBottom(xScale)
+          .tickValues(xScale.domain().filter(year => year % 10 === 0));
+
+        svg.append("g")
+          .attr("id", "x-axis")
+          .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
+          .call(xAxis);
+
+        // Y Axis
+        const yAxis = d3.axisLeft(yScale)
+          .tickFormat(month => months[month]);
+
+        svg.append("g")
+          .attr("id", "y-axis")
+          .call(yAxis);
+
+        // Tooltip
+        const tooltip = d3.select("#tooltip");
+
+        // Cells
+        svg.selectAll(".cell")
+          .data(dataset)
+          .enter()
+          .append("rect")
+          .attr("class", "cell")
+          .attr("x", d => xScale(d.year))
+          .attr("y", d => yScale(d.month - 1))
+          .attr("width", xScale.bandwidth())
+          .attr("height", yScale.bandwidth())
+          .attr("fill", d => colorMap(baseTemp + d.variance))
+          .on("mouseover", (event, d) => {
+            tooltip.transition().duration(100).style("opacity", 1);
+            tooltip.html(`
+                            <strong>${d.year} - ${months[d.month - 1]}</strong><br/>
+                            Temperature: ${(baseTemp + d.variance).toFixed(2)}℃<br/>
+                            Variance: ${d.variance > 0 ? '+' : ''}${d.variance.toFixed(2)}℃
+                        `)
+              .style("left", (event.pageX + 15) + "px")
+              .style("top", (event.pageY - 40) + "px");
+          })
+          .on("mouseout", () => {
+            tooltip.transition().duration(300).style("opacity", 0);
+          });
+
+        // Legend
+        const legendWidth = 400;
+        const legendHeight = 20;
+        const legendX = (width - margin.left - margin.right - legendWidth) / 2;
+        const legendY = height - margin.top - margin.bottom + 60;
+
+        const legend = svg.append("g")
+          .attr("id", "legend")
+          .attr("transform", `translate(${legendX}, ${legendY})`);
+
+        const legendScale = d3.scaleLinear()
+          .domain(temperatureExtent)
+          .range([0, legendWidth]);
+
+        const legendAxis = d3.axisBottom(legendScale).ticks(5).tickFormat(d => d + "°C");
+
+        const legendThresholds = d3.range(temperatureExtent[0], temperatureExtent[1], (temperatureExtent[1] - temperatureExtent[0]) / 40);
+
+        legend.selectAll("rect")
+          .data(legendThresholds)
+          .enter()
+          .append("rect")
+          .attr("x", d => legendScale(d))
+          .attr("y", 0)
+          .attr("width", legendWidth / 40)
+          .attr("height", legendHeight)
+          .attr("fill", d => colorMap(d));
+
+        legend.append("g")
+          .attr("transform", `translate(0, ${legendHeight})`)
+          .call(legendAxis);
+      });
+  </script>
+</body>
+
+</html>

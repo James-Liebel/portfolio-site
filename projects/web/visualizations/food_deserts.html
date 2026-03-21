@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cincinnati Food Deserts & Swamps</title>
+    <meta name="description" content="Visualizing USDA defined food deserts and food swamps in Cincinnati.">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0c0e14;
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --accent-color: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --desert-color: #ef4444;
+            /* Red */
+            --vehicle-risk-color: #f97316;
+            /* Orange */
+            --swamp-color: #a855f7;
+            /* Purple for Swamp overlay logic */
+            --good-color: #10b981;
+            /* Green */
+            --low-income-good-access: #eab308;
+            /* Yellow */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+            display: flex;
+        }
+
+        #map-container {
+            flex-grow: 1;
+            height: 100vh;
+            position: relative;
+        }
+
+        #sidebar {
+            width: 360px;
+            height: 100vh;
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .legend {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .color-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .pattern-box {
+            background-color: transparent;
+            background-image: repeating-linear-gradient(45deg, rgba(168, 85, 247, 0.5) 0, rgba(168, 85, 247, 0.5) 2px, transparent 0, transparent 6px);
+            border: 1px solid var(--swamp-color);
+        }
+
+        #tooltip {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(8px);
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            opacity: 0;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            max-width: 320px;
+            top: 20px;
+            left: 20px;
+        }
+
+        .neighborhood {
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 0.5px;
+            transition: all 0.2s;
+            cursor: crosshair;
+        }
+
+        .neighborhood:hover {
+            stroke: #fff;
+            stroke-width: 2px;
+            filter: brightness(1.1);
+        }
+
+        .neighborhood-overlay {
+            pointer-events: none;
+            fill: none;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 5px;
+            text-transform: uppercase;
+        }
+
+        .badge-swamp {
+            background: rgba(168, 85, 247, 0.2);
+            color: #d8b4fe;
+            border: 1px solid #a855f7;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+            }
+
+            #sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                box-sizing: border-box;
+            }
+
+            #map-container {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="sidebar">
+        <h1>Food Environment</h1>
+        <div style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.5rem; line-height: 1.5;">
+            Analyzing Food Deserts, Vehicle Access, and Food Swamps.
+        </div>
+
+        <a href="choropleth_map.html" class="btn"
+            style="margin-top: 0; margin-bottom: 1.5rem; width: 100%; box-sizing: border-box; text-align: center;">←
+            Back to Food Landscapes</a>
+
+        <div class="legend">
+            <div style="font-weight: 600; margin-bottom: 1rem; color: var(--accent-color);">Access Layers</div>
+
+            <div class="legend-item">
+                <div class="color-box" style="background: var(--desert-color);"></div>
+                <div>
+                    <div style="color: #fff; font-weight: 500;">USDA Food Desert</div>
+                    <div style="color: #94a3b8; font-size: 0.75rem;">High Poverty & >1 Mile to Grocery</div>
+                </div>
+            </div>
+
+            <div class="legend-item">
+                <div class="color-box" style="background: var(--vehicle-risk-color);"></div>
+                <div>
+                    <div style="color: #fff; font-weight: 500;">Vehicle Access Risk</div>
+                    <div style="color: #94a3b8; font-size: 0.75rem;">High Poverty & >0.5 Mile</div>
+                </div>
+            </div>
+
+            <div class="legend-item">
+                <div class="color-box pattern-box"></div>
+                <div>
+                    <div style="color: #d8b4fe; font-weight: 500;">Food Swamp</div>
+                    <div style="color: #94a3b8; font-size: 0.75rem;">Unhealthy Food > 4x Healthy Food</div>
+                </div>
+            </div>
+
+            <div class="legend-item">
+                <div class="color-box" style="background: var(--low-income-good-access);"></div>
+                <div>
+                    <div style="color: #fff; font-weight: 500;">Low Income (Access OK)</div>
+                    <div style="color: #94a3b8; font-size: 0.75rem;">Poverty but Grocery < 0.5 Mile</div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="color-box" style="background: var(--good-color);"></div>
+                    <div>
+                        <div style="color: #fff; font-weight: 500;">Sufficient Access</div>
+                        <div style="color: #94a3b8; font-size: 0.75rem;">Good Income & Access</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: auto;">
+                <div class="stat-row">
+                    <span>Food Deserts:</span>
+                    <span id="desert-count" style="color: var(--desert-color); font-weight: 600;">--</span>
+                </div>
+                <div class="stat-row">
+                    <span>High Vehicle Risk:</span>
+                    <span id="risk-count" style="color: var(--vehicle-risk-color); font-weight: 600;">--</span>
+                </div>
+                <div class="stat-row">
+                    <span>Food Swamps:</span>
+                    <span id="swamp-count" style="color: var(--swamp-color); font-weight: 600;">--</span>
+                </div>
+
+                <div
+                    style="font-size: 0.7rem; color: #64748b; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <strong>Note:</strong> Vehicle access is estimated based on high poverty correlations. Food Swamp
+                    defined as ratio of (Fast Food+Convenience) to Grocery > 4.
+                </div>
+            </div>
+        </div>
+
+        <div id="map-container">
+            <div id="tooltip"></div>
+        </div>
+
+        <script>
+            if (window !== window.top) {
+              document.getElementById('sidebar').style.display = 'none';
+              document.body.style.display = 'block';
+            }
+            const container = document.getElementById("map-container");
+            const width = container.clientWidth || 800;
+            const height = container.clientHeight || 600;
+
+            const svg = d3.select("#map-container")
+                .append("svg")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .attr("preserveAspectRatio", "xMidYMid meet");
+
+            // Define Swamp Pattern
+            const defs = svg.append("defs");
+            const pattern = defs.append("pattern")
+                .attr("id", "swampPattern")
+                .attr("width", 8)
+                .attr("height", 8)
+                .attr("patternUnits", "userSpaceOnUse")
+                .attr("patternTransform", "rotate(45)");
+            pattern.append("rect")
+                .attr("width", 2)
+                .attr("height", 8)
+                .attr("transform", "translate(0,0)")
+                .attr("fill", "rgba(168, 85, 247, 0.4)");
+
+            const g = svg.append("g");
+            const tooltip = d3.select("#tooltip");
+
+            const povertyEstimates = {
+                "Lower Price Hill": 0.77, "Villages at Roll Hill": 0.67, "Winton Hills": 0.65, "Over-the-Rhine": 0.56,
+                "South Cumminsville": 0.51, "Millvale": 0.51, "North Fairmount": 0.51, "English Woods": 0.51,
+                "West End": 0.49, "Avondale": 0.33, "Walnut Hills": 0.33, "East Price Hill": 0.30,
+                "West Price Hill": 0.25, "Westwood": 0.20, "Mount Auburn": 0.25, "Hyde Park": 0.05,
+                "Mt. Lookout": 0.04, "Oakley": 0.08, "Columbia Tusculum": 0.06, "Mount Adams": 0.05,
+                "Evanston": 0.28, "Bond Hill": 0.25, "Roselawn": 0.25
+            };
+
+            const EARTH_RADIUS_MILES = 3959;
+            const POVERTY_THRESHOLD = 0.20;
+            const DESERT_DISTANCE = 1.0;
+            const VEHICLE_RISK_DISTANCE = 0.5;
+            const SWAMP_THRESHOLD = 4.0;
+
+            async function init() {
+                try {
+                    const [geoData, foodData] = await Promise.all([
+                        d3.json("cincinnati_neighborhoods.geojson"),
+                        d3.json("food_data.json")
+                    ]);
+
+                    const projection = d3.geoMercator().fitSize([width, height], geoData);
+                    const path = d3.geoPath().projection(projection);
+
+                    let desertCount = 0;
+                    let vehicleRiskCount = 0;
+                    let swampCount = 0;
+                    const neighborhoodStats = {};
+
+                    geoData.features.forEach(feature => {
+                        const name = feature.properties.SNA_NAME;
+                        const centroid = d3.geoCentroid(feature);
+
+                        // 1. Distances & Counts
+                        let minGroceryDist = Infinity;
+                        let healthyCount = 0; // Grocery, Supermarket, Farmers Market
+                        let unhealthyCount = 0; // Fast Food, Convenience, Dollar Store
+
+                        foodData.forEach(m => {
+                            const p = [m.Long, m.Lat];
+                            const inZone = d3.geoContains(feature, p);
+
+                            // Categorize
+                            if (['Grocery Store', 'Supermarket', 'Farmers Market/Health'].includes(m.Type)) {
+                                // Distance logic only needs ONE nearest grocery, doesn't have to be in zone
+                                const dist = d3.geoDistance(centroid, p) * EARTH_RADIUS_MILES;
+                                if (dist < minGroceryDist) minGroceryDist = dist;
+                                if (inZone) healthyCount++;
+                            } else if (['Fast Food', 'Convenience/Market', 'Dollar Store'].includes(m.Type)) {
+                                if (inZone) unhealthyCount++;
+                            }
+                        });
+
+                        // 2. Poverty (Existing Logic)
+                        let povertyRate = povertyEstimates[name];
+                        if (povertyRate === undefined) {
+                            const keys = Object.keys(povertyEstimates);
+                            const match = keys.find(k => name.includes(k) || k.includes(name));
+                            povertyRate = match ? povertyEstimates[match] : (0.10 + (name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) % 25) / 100);
+                        }
+                        const isLowIncome = povertyRate >= POVERTY_THRESHOLD;
+
+                        // 3. Classifications
+                        const isDesert = isLowIncome && (minGroceryDist > DESERT_DISTANCE);
+                        const isVehicleRisk = isLowIncome && (minGroceryDist > VEHICLE_RISK_DISTANCE) && !isDesert; // Risk if > 0.5 but < 1.0 (if >1.0 it's a desert)
+
+                        // Swamp Ratio: (Unhealthy) / (Healthy + 1)
+                        const swampRatio = unhealthyCount / (healthyCount + 1);
+                        const isSwamp = swampRatio > SWAMP_THRESHOLD;
+
+                        if (isDesert) desertCount++;
+                        if (isVehicleRisk) vehicleRiskCount++;
+                        if (isSwamp) swampCount++;
+
+                        neighborhoodStats[name] = {
+                            minGroceryDist,
+                            povertyRate,
+                            isDesert,
+                            isVehicleRisk,
+                            isLowIncome,
+                            isSwamp,
+                            swampRatio,
+                            healthyCount,
+                            unhealthyCount
+                        };
+                    });
+
+                    document.getElementById("desert-count").textContent = desertCount;
+                    document.getElementById("risk-count").textContent = vehicleRiskCount;
+                    document.getElementById("swamp-count").textContent = swampCount;
+
+                    // Draw Base Layer (Color Status)
+                    g.selectAll(".neighborhood-base")
+                        .data(geoData.features)
+                        .enter()
+                        .append("path")
+                        .attr("class", "neighborhood")
+                        .attr("d", path)
+                        .attr("fill", d => {
+                            const s = neighborhoodStats[d.properties.SNA_NAME];
+                            if (!s) return "#334155";
+                            if (s.isDesert) return "var(--desert-color)"; // Priority 1
+                            if (s.isVehicleRisk) return "var(--vehicle-risk-color)"; // Priority 2
+                            if (s.isLowIncome) return "var(--low-income-good-access)"; // Poor but close to food
+                            return "var(--good-color)"; // Good income & access
+                        })
+                        .attr("fill-opacity", 0.8)
+                        .on("mouseover", (event, d) => showTooltip(event, d, neighborhoodStats[d.properties.SNA_NAME]))
+                        .on("mouseout", () => tooltip.style("opacity", 0));
+
+                    // Draw Swamp Overlay (Pattern)
+                    g.selectAll(".neighborhood-swamp")
+                        .data(geoData.features.filter(d => neighborhoodStats[d.properties.SNA_NAME]?.isSwamp))
+                        .enter()
+                        .append("path")
+                        .attr("class", "neighborhood-overlay")
+                        .attr("d", path)
+                        .attr("fill", "url(#swampPattern)") // The stripe pattern
+                        .attr("stroke", "var(--swamp-color)")
+                        .attr("stroke-width", "1.5px")
+                        .attr("stroke-dasharray", "4,2");
+
+                } catch (error) {
+                    console.error("Error loading map:", error);
+                }
+            }
+
+            function showTooltip(event, d, stats) {
+                const name = d.properties.SNA_NAME;
+                if (!stats) return;
+
+                let statusTitle = "Sufficient Access";
+                let statusColor = "#10b981";
+
+                if (stats.isDesert) {
+                    statusTitle = "USDA FOOD DESERT"; statusColor = "#ef4444";
+                } else if (stats.isVehicleRisk) {
+                    statusTitle = "High Vehicle Access Risk"; statusColor = "#f97316";
+                } else if (stats.isLowIncome) {
+                    statusTitle = "Low Income (Good Access)"; statusColor = "#eab308";
+                }
+
+                let swampBadge = stats.isSwamp
+                    ? `<span class="badge badge-swamp">FOOD SWAMP (Ratio ${stats.swampRatio.toFixed(1)})</span>`
+                    : "";
+
+                tooltip.style("opacity", 1)
+                    .html(`
+             <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 4px;">${name}</div>
+             <div style="font-weight: 600; color: ${statusColor}; margin-bottom: 8px; font-size: 0.8rem; letter-spacing: 0.05em; display: flex; align-items: center;">
+                ${statusTitle} ${swampBadge}
+             </div>
+             <div style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.6;">
+               <div style="display:flex; justify-content:space-between;"><span>Est. Poverty:</span> <strong>${(stats.povertyRate * 100).toFixed(1)}%</strong></div>
+               <div style="display:flex; justify-content:space-between;"><span>Dist. to Grocery:</span> <strong>${stats.minGroceryDist.toFixed(2)} mi</strong></div>
+               <hr style="border-color: rgba(255,255,255,0.1); margin: 6px 0;">
+               <div style="display:flex; justify-content:space-between;"><span>Healthy Sources:</span> <strong>${stats.healthyCount}</strong></div>
+               <div style="display:flex; justify-content:space-between;"><span>Unhealthy Sources:</span> <strong>${stats.unhealthyCount}</strong></div>
+               <div style="display:flex; justify-content:space-between; color: ${stats.isSwamp ? '#d8b4fe' : '#64748b'}"><span>Swamp Ratio:</span> <strong>${stats.swampRatio.toFixed(1)}</strong></div>
+             </div>
+           `);
+            }
+
+            init();
+        </script>
+</body>
+
+</html>

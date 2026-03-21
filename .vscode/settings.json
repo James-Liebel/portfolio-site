@@ -1,0 +1,37 @@
+{
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/projects/web/vendor/**": true,
+    "**/projects/web/visualizations/node_modules/**": true,
+    "**/intro/**": true,
+    "**/globe/**": true,
+    "**/rockets/**": true,
+    "**/servers/**": true,
+    "**/*.jpg": true,
+    "**/*.jpeg": true,
+    "**/*.png": true,
+    "**/*.mp4": true,
+    "**/*.pbix": true,
+    "**/projects/web/visualizations/*.geojson": true,
+    "**/projects/web/visualizations/*.json": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/projects/web/vendor": true,
+    "**/projects/web/visualizations/node_modules": true,
+    "**/intro": true,
+    "**/globe": true,
+    "**/rockets": true,
+    "**/servers": true,
+    "**/*.jpg": true,
+    "**/*.jpeg": true,
+    "**/*.png": true,
+    "**/*.mp4": true,
+    "**/*.pbix": true,
+    "**/projects/web/visualizations/*.geojson": true,
+    "**/projects/web/visualizations/*.json": true
+  },
+  "files.exclude": {
+    "**/node_modules": true
+  }
+}

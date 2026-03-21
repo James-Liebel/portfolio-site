@@ -1,0 +1,8 @@
+node_modules/
+.tmp/
+.npm/
+.npm-cache/
+
+# Keep local editor/project noise out of the repo.
+.DS_Store
+Thumbs.db

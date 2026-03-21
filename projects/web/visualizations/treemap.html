@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treemap Visualization Dashboard</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #34495e;
+      --bg: #f8fafc;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background: var(--bg);
+      padding: 40px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #title {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    #description {
+      font-size: 16px;
+      color: #64748b;
+      margin: 10px 0 20px 0;
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      background: white;
+      color: var(--secondary);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .chart-container {
+      background: white;
+      padding: 24px;
+      border-radius: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .tile {
+      stroke: white;
+      stroke-width: 1px;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+
+    .tile:hover {
+      opacity: 0.8;
+    }
+
+    .tile-text {
+      font-size: 10px;
+      fill: white;
+      pointer-events: none;
+      font-weight: 400;
+    }
+
+    #tooltip {
+      position: absolute;
+      padding: 12px 16px;
+      background: rgba(15, 23, 42, 0.95);
+      color: white;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      font-size: 13px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      line-height: 1.5;
+    }
+
+    #legend {
+      margin-top: 30px;
+      font-size: 11px;
+      color: #475569;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1 id="title">Hierarchical Data Explorer</h1>
+    <p id="description">Explore different datasets using interactive treemap layouts</p>
+  </div>
+
+  <div class="controls">
+    <button class="btn active" onclick="loadData('videogames')">Video Games</button>
+    <button class="btn" onclick="loadData('movies')">Movies</button>
+    <button class="btn" onclick="loadData('kickstarter')">Kickstarter</button>
+  </div>
+
+  <div class="chart-container">
+    <div id="tooltip"></div>
+    <div id="chart"></div>
+    <div id="legend"></div>
+  </div>
+
+  <script>
+    const DATASETS = {
+      videogames: {
+        title: "Video Game Sales",
+        description: "Top 100 Most Sold Video Games Grouped by Platform",
+        url: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json"
+      },
+      movies: {
+        title: "Movie Sales",
+        description: "Top 95 Highest Grossing Movies Grouped by Genre",
+        url: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json"
+      },
+      kickstarter: {
+        title: "Kickstarter Pledges",
+        description: "Top 100 Most Pledged Kickstarter Campaigns Grouped by Category",
+        url: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/kickstarter-funding-data.json"
+      }
+    };
+
+    const width = 1000;
+    const height = 650;
+    const color = d3.scaleOrdinal(d3.schemeTableau10);
+
+    function loadData(id) {
+      d3.select("#chart").html("");
+      d3.select("#legend").html("");
+
+      // Update UI
+      d3.selectAll(".btn").classed("active", false);
+      d3.select(`.btn[onclick*='${id}']`).classed("active", true);
+
+      const config = DATASETS[id];
+      d3.select("#title").text(config.title);
+      d3.select("#description").text(config.description);
+
+      d3.json(config.url).then(data => {
+        const svg = d3.select("#chart")
+          .append("svg")
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", `0 0 ${width} ${height}`)
+          .attr("preserveAspectRatio", "xMidYMid meet");
+
+        const root = d3.hierarchy(data)
+          .eachBefore(d => d.data.id = (d.parent ? d.parent.data.id + "." : "") + d.data.name)
+          .sum(d => d.value)
+          .sort((a, b) => b.value - a.value);
+
+        d3.treemap()
+          .size([width, height])
+          .paddingInner(1)
+          (root);
+
+        const tooltip = d3.select("#tooltip");
+
+        const cell = svg.selectAll("g")
+          .data(root.leaves())
+          .enter().append("g")
+          .attr("transform", d => `translate(${d.x0},${d.y1})`); // Note: y1 is modified for entry animation
+
+        cell.append("rect")
+          .attr("id", d => d.data.id)
+          .attr("class", "tile")
+          .attr("width", d => d.x1 - d.x0)
+          .attr("height", 0) // Start at 0 for animation
+          .attr("fill", d => color(d.data.category))
+          .attr("data-name", d => d.data.name)
+          .attr("data-category", d => d.data.category)
+          .attr("data-value", d => d.data.value)
+          .on("mouseover", (event, d) => {
+            tooltip.transition().duration(100).style("opacity", 1);
+            tooltip.html(`
+                            <strong>${d.data.name}</strong><br/>
+                            Category: ${d.data.category}<br/>
+                            Value: ${d.data.value.toLocaleString()}
+                        `)
+              .style("left", (event.pageX + 20) + "px")
+              .style("top", (event.pageY - 40) + "px");
+          })
+          .on("mouseout", () => {
+            tooltip.transition().duration(300).style("opacity", 0);
+          })
+          .transition()
+          .duration(800)
+          .delay((d, i) => i * 1)
+          .attr("transform", d => `translate(0, ${d.y0 - d.y1})`) // Move it back to correct y0
+          .attr("height", d => d.y1 - d.y0);
+
+        cell.append("text")
+          .attr("class", "tile-text")
+          .attr("transform", d => `translate(0, ${d.y0 - d.y1})`) // Adjust text as well
+          .selectAll("tspan")
+          .data(d => d.data.name.split(/(?=[A-Z][^A-Z])/g))
+          .enter().append("tspan")
+          .attr("x", 4)
+          .attr("y", (d, i) => 13 + i * 10)
+          .text(d => d)
+          .attr("opacity", 0)
+          .transition()
+          .duration(1000)
+          .attr("opacity", 1);
+
+        // Legend
+        const categories = root.leaves().map(nodes => nodes.data.category);
+        const uniqueCategories = categories.filter((category, index, self) => self.indexOf(category) === index);
+
+        const legendSvg = d3.select("#legend")
+          .append("svg")
+          .attr("width", "100%")
+          .attr("height", "100%")
+          .attr("viewBox", `0 0 ${width} 100`)
+          .attr("preserveAspectRatio", "xMidYMid meet");
+
+        const legendItems = legendSvg.selectAll("g")
+          .data(uniqueCategories)
+          .enter().append("g")
+          .attr("transform", (d, i) => `translate(${(i % 6) * 160}, ${Math.floor(i / 6) * 25})`);
+
+        legendItems.append("rect")
+          .attr("width", 15)
+          .attr("height", 15)
+          .attr("fill", d => color(d))
+          .attr("rx", 3);
+
+        legendItems.append("text")
+          .attr("x", 20)
+          .attr("y", 12)
+          .text(d => d);
+      });
+    }
+
+    // Initial load
+    loadData('videogames');
+  </script>
+</body>
+
+</html>
