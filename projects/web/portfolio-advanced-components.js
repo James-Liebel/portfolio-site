@@ -715,11 +715,11 @@
         flat = flat.slice(-400);
 
         function level(n) {
-          if (!n) return { c: 'rgba(99,102,241,0.08)', g: null };
-          if (n < 4) return { c: 'rgba(99,102,241,0.25)', g: null };
-          if (n < 7) return { c: 'rgba(99,102,241,0.5)', g: null };
-          if (n < 10) return { c: 'rgba(99,102,241,0.75)', g: null };
-          return { c: 'rgba(99,102,241,1)', g: '0 0 8px rgba(99,102,241,0.6)' };
+          if (!n) return { c: 'rgba(99,102,241,0.07)', g: null };
+          if (n < 4) return { c: 'rgba(99,102,241,0.28)', g: null };
+          if (n < 7) return { c: 'rgba(129,140,248,0.55)', g: null };
+          if (n < 10) return { c: 'rgba(167,139,250,0.82)', g: '0 0 7px rgba(139,92,246,0.45)' };
+          return { c: 'rgba(192,132,252,1)', g: '0 0 10px rgba(99,102,241,0.75)' };
         }
 
         var dateMap = {};
@@ -756,8 +756,8 @@
             ctx.fillStyle = L.c;
             ctx.shadowColor = 'transparent';
             if (L.g) {
-              ctx.shadowBlur = 8;
-              ctx.shadowColor = 'rgba(99,102,241,0.6)';
+              ctx.shadowBlur = 10;
+              ctx.shadowColor = 'rgba(99,102,241,0.65)';
             }
             ctx.fillRect(cellInfo.x, cellInfo.y, cell, cell);
             ctx.shadowBlur = 0;
@@ -778,10 +778,37 @@
         ctx.clearRect(0, 0, cw, ch);
         ctx.font = '700 10px "Space Mono", monospace';
         ctx.fillStyle = 'rgba(245,247,255,0.55)';
-        var months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-        months.forEach(function (m, mi) {
-          ctx.fillText(m, padX + mi * Math.floor(cols / 12) * (cell + gap), 14);
-        });
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+
+        var monthLetters = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+        var colOnFirstOfMonth = {};
+        var colFirstWeekForMonth = {};
+        var wc;
+        var rc;
+        for (wc = 0; wc < cols; wc++) {
+          for (rc = 0; rc < rows; rc++) {
+            var cinfo = colData[wc][rc];
+            var dt = new Date(cinfo.date + 'T12:00:00');
+            var yk = dt.getFullYear();
+            var mk = dt.getMonth() + 1;
+            var mkey = yk + '-' + String(mk).padStart(2, '0');
+            if (colFirstWeekForMonth[mkey] === undefined) colFirstWeekForMonth[mkey] = wc;
+            else colFirstWeekForMonth[mkey] = Math.min(colFirstWeekForMonth[mkey], wc);
+            if (dt.getDate() === 1) colOnFirstOfMonth[mkey] = wc;
+          }
+        }
+
+        var monthKeys = Object.keys(colFirstWeekForMonth).sort();
+        for (var ki = 0; ki < monthKeys.length; ki++) {
+          var key = monthKeys[ki];
+          var wLabel = colOnFirstOfMonth[key] != null ? colOnFirstOfMonth[key] : colFirstWeekForMonth[key];
+          var mNum = parseInt(key.split('-')[1], 10);
+          if (mNum < 1 || mNum > 12) continue;
+          var letter = monthLetters[mNum - 1];
+          var xMid = padX + wLabel * (cell + gap) + cell * 0.5;
+          ctx.fillText(letter, xMid, 14);
+        }
 
         requestAnimationFrame(frame);
 

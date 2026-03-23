@@ -629,9 +629,69 @@
     .hero-line { display: block; }
     .hero-rotator {
       color: var(--accent);
-      min-height: 1.35em;
       line-height: 1.05;
       overflow: hidden;
+      min-height: 2.12em;
+    }
+    .hero-word-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.04em;
+    }
+    .hero-word-line {
+      display: block;
+      line-height: 1.02;
+    }
+    .hero-github {
+      margin-top: clamp(14px, 2.2vw, 22px);
+      max-width: min(100%, var(--container));
+    }
+    .hero-github-heatmap {
+      margin: 0;
+      padding: 20px 22px 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        linear-gradient(155deg, rgba(99, 102, 241, 0.16), rgba(34, 211, 238, 0.06) 38%, transparent 52%),
+        rgba(6, 8, 18, 0.42);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow:
+        0 8px 36px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    :root[data-theme="light"] .hero-github-heatmap {
+      background:
+        linear-gradient(155deg, rgba(99, 102, 241, 0.12), transparent 48%),
+        rgba(255, 255, 255, 0.78);
+      border-color: rgba(15, 23, 42, 0.12);
+      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+    }
+    .hero-github-heatmap .gh-kicker {
+      margin-bottom: 14px;
+      font: 700 10px/1.2 "Space Mono", monospace;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #22d3ee;
+      text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+    }
+    .hero-github-heatmap .gh-kicker a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .hero-github-heatmap .gh-kicker a:hover {
+      text-decoration: underline;
+    }
+    :root[data-theme="light"] .hero-github-heatmap .gh-kicker {
+      color: #0891b2;
+      text-shadow: none;
+    }
+    .hero-github-heatmap canvas {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
     }
     .summary {
       margin: 22px 0 0;
@@ -893,6 +953,15 @@
       text-shadow: 0 0 18px rgba(240, 171, 252, 0.35);
     }
     .hero-terminal .terminal-copy h2 {
+      color: #ffffff;
+      text-shadow: 0 2px 24px rgba(255, 255, 255, 0.08);
+    }
+    .hero-terminal .terminal-snapshot-title {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+      font-weight: 600;
       color: #ffffff;
       text-shadow: 0 2px 24px rgba(255, 255, 255, 0.08);
     }
@@ -1794,28 +1863,8 @@
     .journey-head-grid > div:first-child h2 {
       margin: 0 0 14px;
     }
-    .journey-github-spotlight {
-      margin: 0 !important;
-      padding: 20px 22px 18px;
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background:
-        linear-gradient(155deg, rgba(99, 102, 241, 0.12), transparent 45%),
-        rgba(255, 255, 255, 0.04);
-    }
-    :root[data-theme="light"] .journey-github-spotlight {
-      background: rgba(255, 255, 255, 0.72);
-      border-color: rgba(15, 23, 42, 0.1);
-    }
-    .journey-github-spotlight .gh-kicker {
-      margin-bottom: 14px;
-    }
     .journey-rail-wrap {
       margin-bottom: 18px;
-    }
-    .journey-github-spotlight canvas {
-      max-width: 100%;
-      height: auto;
     }
     .rail {
       display: flex;
@@ -2267,17 +2316,7 @@
       display: inline-block;
       will-change: transform;
     }
-    #github-heatmap:not(.journey-github-spotlight) {
-      margin: 24px 0 8px;
-      padding: 18px 0 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
     #github-heatmap .gh-kicker {
-      font: 700 10px/1 "Space Mono", monospace;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
       margin: 0 0 12px;
     }
     #github-heatmap canvas { display: block; margin: 0 auto; }
@@ -2914,9 +2953,22 @@
           <p class="eyebrow">Chicago · Data Science · Product-Minded Analytics</p>
           <h1 class="hero-title" id="heroTitle" data-headline>
             <span class="hero-name">James Liebel</span>
-            <span class="hero-line hero-rotator"><span id="heroWord">data science</span></span>
-            <span class="hero-line">built to be read fast</span>
+            <span class="hero-line hero-rotator">
+              <span class="hero-word-stack" id="heroWord">
+                <span class="hero-word-line hw">data</span>
+                <span class="hero-word-line hw">science</span>
+              </span>
+            </span>
           </h1>
+          <div class="hero-github" id="heroGithub" aria-label="GitHub contribution activity">
+            <div id="github-heatmap" class="hero-github-heatmap" hidden>
+              <p class="gh-kicker">
+                <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub activity · Last 12 months</a>
+              </p>
+              <canvas id="ghHeatmapCanvas" width="900" height="140" aria-label="GitHub contributions last twelve months"></canvas>
+              <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
+            </div>
+          </div>
           <p class="summary">Incoming University of Chicago student, Class of 2030, pursuing a B.S. in Data Science and Statistics. I build machine learning projects, AI-assisted tools, and interactive visual systems that make technical work legible to recruiters, clients, and teams.</p>
 
           <div class="hero-signal-band">
@@ -2997,9 +3049,7 @@
             </div>
             <div class="terminal-top">
               <div class="terminal-copy">
-                <p class="terminal-label">Recruiter Snapshot</p>
-                <h2>Pick the lens.</h2>
-                <p>Data engineering, data science, or data analysis. The same body of work, framed for the job you are actually hiring for.</p>
+                <h2 class="terminal-snapshot-title">Role-aligned portfolio</h2>
               </div>
               <div class="switch" id="modeSwitch" role="tablist" aria-label="Profile modes">
                 <span class="switch-indicator" id="modeIndicator" aria-hidden="true"></span>
@@ -3535,11 +3585,6 @@
               <p class="section-kicker">Background</p>
               <h2>Background, summarized.</h2>
               <p>Use the tabs below to jump between overview, experience, education, and leadership. The timeline scrolls horizontally through the same story—use the arrows or keyboard when it is in view.</p>
-            </div>
-            <div id="github-heatmap" class="journey-github-spotlight" hidden>
-              <p class="gh-kicker">GitHub Activity · Last 12 Months</p>
-              <canvas id="ghHeatmapCanvas" width="900" height="140" aria-label="GitHub contributions last twelve months"></canvas>
-              <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
         </div>

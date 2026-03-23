@@ -58,6 +58,7 @@
         return;
       }
       if (node.nodeType === 1) {
+        if (node.classList && node.classList.contains("hero-rotator")) return;
         var children = [].slice.call(node.childNodes);
         children.forEach(walk);
       }

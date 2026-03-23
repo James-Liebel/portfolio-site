@@ -127,7 +127,12 @@
     }
   };
 
-  const heroWords = ["data science", "machine learning", "visualization", "AI prototyping"];
+  const heroWordPairs = [
+    ["data", "science"],
+    ["machine", "learning"],
+    ["visual", "stories"],
+    ["AI", "products"]
+  ];
   let heroWordIndex = 0;
   let lenis = null;
   let gsapScrollProgress = false;
@@ -1898,14 +1903,25 @@
     step();
   }
 
+  function applyHeroWordPair(index) {
+    if (!heroWord) return;
+    const pair = heroWordPairs[index];
+    if (!pair) return;
+    const lines = heroWord.querySelectorAll(".hero-word-line");
+    if (lines[0]) lines[0].textContent = pair[0];
+    if (lines[1]) lines[1].textContent = pair[1];
+  }
+
   function setupHeroWordCycle() {
-    if (!heroWord || !window.gsap) return;
+    if (!heroWord || !window.gsap || reduced) return;
+    const lines = heroWord.querySelectorAll(".hero-word-line");
+    if (lines.length < 2) return;
     if (heroWordTimer) window.clearInterval(heroWordTimer);
     heroWord.style.opacity = "1";
     heroWord.style.transform = "translateY(0%)";
+    applyHeroWordPair(heroWordIndex);
     heroWordTimer = window.setInterval(() => {
-      heroWordIndex = (heroWordIndex + 1) % heroWords.length;
-      const nextWord = heroWords[heroWordIndex];
+      heroWordIndex = (heroWordIndex + 1) % heroWordPairs.length;
       const tl = window.gsap.timeline();
       tl.to(heroWord, {
         yPercent: -100,
@@ -1914,7 +1930,7 @@
         ease: "power3.inOut"
       })
         .call(() => {
-          heroWord.textContent = nextWord;
+          applyHeroWordPair(heroWordIndex);
           window.gsap.set(heroWord, { yPercent: 100 });
         })
         .to(heroWord, {
