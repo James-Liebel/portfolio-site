@@ -411,243 +411,7 @@
     });
   }
 
-  // ─── 4. D3 force graph ────────────────────────────────────────────────────
-  function initSkillsForceGraph() {
-    var host = document.getElementById('skills-force-graph');
-    if (!host || !window.d3) return;
-
-    var tooltip = document.getElementById('skillsFgTooltip');
-    var cardEl = document.getElementById('skills-force-card');
-
-    var hub = { id: 'JL', group: 'hub', r: 28 };
-    var eng = { id: 'Data Engineering', group: 'eng', r: 28 };
-    var sci = { id: 'Data Science', group: 'sci', r: 28 };
-    var ana = { id: 'Data Analysis', group: 'ana', r: 28 };
-
-    var skillMeta = {
-      SQL: { root: 'eng', r: 14, text: 'Core for structuring data, ETL prep, and reliable inputs across projects.' },
-      'ETL Pipelines': { root: 'eng', r: 13, text: 'Ingestion and transformation patterns that feed modeling and dashboards.' },
-      'Data Warehousing': { root: 'eng', r: 12, text: 'Storage and routing so downstream analysis has dependable data.' },
-      'Schema Design': { root: 'eng', r: 11, text: 'Shapes how data is consumed by apps, SQL, and BI layers.' },
-      'Power Query': { root: 'eng', r: 11, text: 'Excel/Power BI side preparation and repeatable refresh workflows.' },
-      FastAPI: { root: 'eng', r: 13, text: 'Lightweight APIs and workflow glue used in portfolio prototypes.' },
-      'Scikit-learn': { root: 'sci', r: 15, text: 'Primary toolkit for supervised workflows and evaluation in projects.' },
-      XGBoost: { root: 'sci', r: 14, text: 'Gradient boosting used for tabular classification (e.g. fraud detection).' },
-      TensorFlow: { root: 'sci', r: 12, text: 'Neural network experiments and coursework-adjacent modeling.' },
-      NLP: { root: 'sci', r: 14, text: 'Text features, sentiment, and feature extraction from headlines.' },
-      'Feature Engineering': { root: 'sci', r: 13, text: 'Bridging raw tables to model-ready inputs.' },
-      'Model Evaluation': { root: 'sci', r: 12, text: 'Recall, validation, and comparing approaches with clear metrics.' },
-      'Power BI': { root: 'ana', r: 15, text: 'Dashboard delivery, DAX, and PL-300 credential alignment.' },
-      DAX: { root: 'ana', r: 12, text: 'Modeling metrics and calculations inside semantic layers.' },
-      'PL-300': { root: 'ana', r: 11, text: 'Microsoft-certified data analyst track.' },
-      'D3.js': { root: 'ana', r: 14, text: 'Interactive maps, charts, and narrative visuals in the portfolio.' },
-      GeoJSON: { root: 'ana', r: 12, text: 'Geographic data for choropleths and access maps.' },
-      Matplotlib: { root: 'ana', r: 11, text: 'Static analysis plots supporting notebooks and writeups.' }
-    };
-
-    var nodes = [hub, eng, sci, ana];
-    var links = [
-      { source: 'JL', target: 'Data Engineering' },
-      { source: 'JL', target: 'Data Science' },
-      { source: 'JL', target: 'Data Analysis' }
-    ];
-
-    Object.keys(skillMeta).forEach(function (name) {
-      var m = skillMeta[name];
-      nodes.push({ id: name, group: m.root, r: m.r });
-      links.push({ source: name, target: m.root === 'eng' ? 'Data Engineering' : m.root === 'sci' ? 'Data Science' : 'Data Analysis' });
-    });
-
-    var color = {
-      hub: '#6366f1',
-      eng: '#3b82f6',
-      sci: '#8b5cf6',
-      ana: '#06b6d4'
-    };
-
-    var width = host.clientWidth || 800;
-    var height = 500;
-
-    var svg = window.d3
-      .select(host)
-      .append('svg')
-      .attr('viewBox', [0, 0, width, height])
-      .attr('width', '100%')
-      .attr('height', height);
-
-    var g = svg.append('g');
-
-    var simulation = window.d3
-      .forceSimulation(nodes)
-      .force(
-        'link',
-        window.d3
-          .forceLink(links)
-          .id(function (d) {
-            return d.id;
-          })
-          .distance(80)
-      )
-      .force('charge', window.d3.forceManyBody().strength(-200))
-      .force('center', window.d3.forceCenter(width / 2, height / 2))
-      .force('collide', window.d3.forceCollide().radius(function (d) { return (d.r || 12) + 20; }));
-
-    var link = g
-      .append('g')
-      .attr('stroke', 'rgba(99,102,241,0.3)')
-      .attr('stroke-width', 1)
-      .selectAll('line')
-      .data(links)
-      .join('line');
-
-    var node = g
-      .append('g')
-      .selectAll('g')
-      .data(nodes)
-      .join('g')
-      .call(
-        window.d3
-          .drag()
-          .on('start', function (event, d) {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-          })
-          .on('drag', function (event, d) {
-            d.fx = event.x;
-            d.fy = event.y;
-          })
-          .on('end', function (event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-          })
-      );
-
-    function nodeFill(d) {
-      if (d.group === 'hub') return color.hub;
-      if (d.id === 'Data Engineering') return color.eng;
-      if (d.id === 'Data Science') return color.sci;
-      if (d.id === 'Data Analysis') return color.ana;
-      if (d.group === 'eng') return 'rgba(59,130,246,0.65)';
-      if (d.group === 'sci') return 'rgba(139,92,246,0.65)';
-      if (d.group === 'ana') return 'rgba(6,182,212,0.65)';
-      return color.hub;
-    }
-
-    node
-      .append('circle')
-      .attr('r', function (d) {
-        return d.r || 12;
-      })
-      .attr('fill', nodeFill)
-      .attr('stroke', 'rgba(255,255,255,0.12)')
-      .attr('stroke-width', 1);
-
-    node
-      .append('text')
-      .text(function (d) {
-        return d.id.length > 14 ? d.id.slice(0, 12) + '…' : d.id;
-      })
-      .attr('text-anchor', 'middle')
-      .attr('dy', '0.35em')
-      .attr('fill', 'rgba(245,247,255,0.85)')
-      .style('font-size', '9px')
-      .style('font-family', 'Inter, sans-serif')
-      .style('pointer-events', 'none');
-
-    var io = new IntersectionObserver(
-      function (ents) {
-        ents.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          nodes.forEach(function (d) {
-            d.x = width / 2 + (Math.random() - 0.5) * 12;
-            d.y = height / 2 + (Math.random() - 0.5) * 12;
-          });
-          simulation.alpha(1).restart();
-        });
-      },
-      { threshold: 0.12 }
-    );
-    io.observe(host);
-
-    simulation.on('tick', function () {
-      link
-        .attr('x1', function (d) {
-          return d.source.x;
-        })
-        .attr('y1', function (d) {
-          return d.source.y;
-        })
-        .attr('x2', function (d) {
-          return d.target.x;
-        })
-        .attr('y2', function (d) {
-          return d.target.y;
-        });
-
-      node.attr('transform', function (d) {
-        return 'translate(' + d.x + ',' + d.y + ')';
-      });
-    });
-
-    simulation.alpha(0.3).restart();
-
-    var hovered = null;
-
-    function linkTouches(l, nodeId) {
-      var s = l.source.id != null ? l.source.id : l.source;
-      var t = l.target.id != null ? l.target.id : l.target;
-      return s === nodeId || t === nodeId;
-    }
-
-    node
-      .on('mouseenter', function (event, d) {
-        hovered = d;
-        link.attr('stroke', function (l) {
-          return linkTouches(l, d.id) ? 'rgba(255,255,255,0.9)' : 'rgba(99,102,241,0.12)';
-        });
-        node.style('opacity', function (n) {
-          if (n === d) return 1;
-          var conn = links.some(function (l) {
-            var s = typeof l.source === 'object' ? l.source.id : l.source;
-            var t = typeof l.target === 'object' ? l.target.id : l.target;
-            return (s === d.id && t === n.id) || (t === d.id && s === n.id);
-          });
-          return conn ? 1 : 0.2;
-        });
-        if (tooltip) {
-          var rootLabel = d.group === 'hub' ? 'Hub' : d.group === 'eng' ? 'Data Engineering' : d.group === 'sci' ? 'Data Science' : 'Data Analysis';
-          tooltip.textContent = d.id + ' · ' + rootLabel;
-          tooltip.classList.add('is-on');
-        }
-      })
-      .on('mousemove', function (event) {
-        if (!tooltip) return;
-        tooltip.style.left = event.clientX + 12 + 'px';
-        tooltip.style.top = event.clientY + 12 + 'px';
-      })
-      .on('mouseleave', function () {
-        hovered = null;
-        link.attr('stroke', 'rgba(99,102,241,0.3)');
-        node.style('opacity', 1);
-        if (tooltip) tooltip.classList.remove('is-on');
-      })
-      .on('click', function (event, d) {
-        if (!cardEl) return;
-        var meta = skillMeta[d.id];
-        var title = d.id;
-        var body = meta
-          ? meta.text
-          : d.id === 'JL'
-            ? 'Central hub connecting engineering, science, and analysis roots.'
-            : 'Root category for the skills orbit — see cards below for full context.';
-        cardEl.innerHTML = '<h4>' + title + '</h4><p>' + body + '</p>';
-        cardEl.classList.add('is-visible');
-      });
-  }
-
-  // ─── 5. Velocity marquee ─────────────────────────────────────────────────
+  // ─── 4. Velocity marquee ─────────────────────────────────────────────────
   function initVelocityMarquees() {
     var heroTrack = document.getElementById('heroPills');
     var skillsTrack = document.querySelector('.skills-marquee-track');
@@ -1129,7 +893,7 @@
     var numEl = document.getElementById('sectionCounterNum');
     if (!el || !inner || !lineFill || !numEl) return;
 
-    var sections = ['hero', 'capabilities', 'projects', 'visualizations', 'journey', 'resume'].map(function (id) {
+    var sections = ['hero', 'skills', 'projects', 'visualizations', 'journey', 'resume'].map(function (id) {
       return document.getElementById(id);
     }).filter(Boolean);
 
@@ -1145,16 +909,8 @@
 
     numEl.textContent = format(0);
 
-    window.addEventListener(
-      'intro-complete',
-      function () {
-        el.classList.add('is-visible');
-      },
-      { once: true }
-    );
-
     function updateCounter() {
-      var y = window.scrollY + window.innerHeight * 0.35;
+      var y = window.scrollY + window.innerHeight * 0.42;
       var idx = 0;
       sections.forEach(function (s, i) {
         var top = s.getBoundingClientRect().top + window.scrollY;
@@ -1206,6 +962,14 @@
     }
 
     window.addEventListener('scroll', updateCounter, { passive: true });
+    window.addEventListener(
+      'intro-complete',
+      function () {
+        el.classList.add('is-visible');
+        requestAnimationFrame(updateCounter);
+      },
+      { once: true }
+    );
     updateCounter();
   }
 
@@ -1366,11 +1130,8 @@
     });
     initVelocityMarquees();
     /* Cursor trail canvas disabled — mouse-following ribbon read as spinning particles */
-    initMagneticButtons();
+    /* Magnetic buttons + scroll effects: portfolio-premium.js */
     initJourneyNoise();
-    waitForGsap(function () {
-      if (window.d3) initSkillsForceGraph();
-    });
     initGithubHeatmap();
   });
 })();

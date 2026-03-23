@@ -688,7 +688,7 @@ const bodyMid = `
       <nav class="nav-links" aria-label="Primary">
         <span class="nav-indicator" id="navIndicator" aria-hidden="true"></span>
         <a class="nav-link" href="#hero">Home</a>
-        <a class="nav-link" href="#capabilities">Skills</a>
+        <a class="nav-link" href="#skills">Skills</a>
         <a class="nav-link" href="#projects">Featured Work</a>
         <a class="nav-link" href="#visualizations">Visualizations</a>
         <a class="nav-link" href="#journey">Journey</a>
@@ -721,7 +721,7 @@ const bodyMid = `
       </div>
       <nav class="mobile-nav-links" aria-label="Mobile">
         <a href="#hero">Home</a>
-        <a href="#capabilities">Skills</a>
+        <a href="#skills">Skills</a>
         <a href="#projects">Featured Work</a>
         <a href="#visualizations">Visualizations</a>
         <a href="#journey">Journey</a>

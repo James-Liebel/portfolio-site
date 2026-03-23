@@ -1,6 +1,7 @@
 (() => {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduced) {
+    /* Legacy intro elements removed from HTML; keep as no-op for cached builds */
     document.getElementById("intro-canvas")?.remove();
     document.getElementById("introSkip")?.remove();
     document.getElementById("intro-poster")?.remove();
@@ -296,7 +297,7 @@
   function scrollToTarget(target) {
     if (!target) return;
     if (lenis) {
-      lenis.scrollTo(target, { offset: -92, duration: 1.2 });
+      lenis.scrollTo(target, { offset: -86, duration: 1.2 });
     } else {
       target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     }
@@ -375,7 +376,7 @@
 
     const activeSection = document.getElementById(activeId);
     const titleEl = activeSection?.querySelector(".project-copy h3") ?? null;
-    const summaryEl = activeSection?.querySelector(".project-copy > p") ?? null;
+    const summaryEl = activeSection?.querySelector(".project-copy .project-lede") ?? null;
     const metricEls = activeSection ? [...activeSection.querySelectorAll(".project-metrics .metric-pill")] : [];
 
     projectRailPreviewTitle && (projectRailPreviewTitle.textContent = titleEl?.textContent?.trim() ?? "");
@@ -422,12 +423,14 @@
     projectSections.forEach(section => projectObserver.observe(section));
 
     if (reduced) {
+      const jt = document.getElementById("journey-timeline");
+      const jRoot = jt ? jt.querySelector(".jt-strip") : document.querySelector(".journey-track-shell");
       const journeyObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
           updateJourneyRail(entry.target.dataset.panel || "");
         });
-      }, { root: document.querySelector(".journey-track-shell"), threshold: 0.55 });
+      }, { root: jRoot || null, threshold: 0.55 });
 
       journeyStops.forEach(stop => journeyObserver.observe(stop));
     }
@@ -1346,26 +1349,6 @@
       }
     });
 
-    cards.forEach(card => {
-      const frame = card.querySelector(".visual-frame");
-      if (frame && !frame.querySelector(".visual-overlay")) {
-        const titleSource = card.querySelector("h3, .visual-label, .powerbi-embed-meta strong");
-        const actionSource = card.querySelector(".visual-actions a");
-        const overlay = document.createElement("div");
-        const copy = document.createElement("div");
-        const title = document.createElement("strong");
-        const action = document.createElement("span");
-        overlay.className = "visual-overlay";
-        overlay.setAttribute("aria-hidden", "true");
-        copy.className = "visual-overlay-copy";
-        title.textContent = titleSource ? titleSource.textContent.trim() : "";
-        action.textContent = actionSource ? actionSource.textContent.trim() : "";
-        copy.append(title, action);
-        overlay.appendChild(copy);
-        frame.appendChild(overlay);
-      }
-    });
-
     gsap.from(cards, {
       y: 55,
       opacity: 0,
@@ -1432,7 +1415,7 @@
   function setupLazyD3Iframes() {
     if (reduced) return;
     if (!("IntersectionObserver" in window)) return;
-    const iframes = [...document.querySelectorAll("#visualizations iframe.viz-iframe[data-src]")];
+    const iframes = [...document.querySelectorAll("#visualizations .visual-frame iframe[data-src]")];
     if (!iframes.length) return;
 
     const io = new IntersectionObserver(entries => {
@@ -1469,7 +1452,7 @@
   function setupJourneyMotion() {
     if (reduced || !window.gsap || !window.ScrollTrigger || !journey || !journeyTrack || !journeyStops.length) return;
     // Rebuilt site: rocket canvas scrub zone handles journey intro; avoid conflicting pin.
-    if (document.getElementById("journey-rocket-zone")) return;
+    if (document.getElementById("journey-rocket-zone") || document.getElementById("journey-timeline")) return;
     if (window.innerWidth <= 768) {
       journey.classList.remove("journey-motion-active");
       journeyScrollTrigger = null;
@@ -2137,7 +2120,7 @@
 
   /** Run full hero entrance in final state (for desktop intro: layout resolves under the canvas before crossfade). */
   function startHeroMotionInstantFinal() {
-    if (heroMotionStarted || !window.gsap) return;
+    if (!window.gsap || heroMotionStarted) return;
     heroMotionStarted = true;
     setupHeroGrain();
     setupHeroParallax();
@@ -2166,10 +2149,6 @@
   function initHeroEntrance() {
     if (window.__portfolioIntroExitHandled) {
       if (!heroMotionStarted) {
-        heroMotionStarted = true;
-        setupHeroGrain();
-        setupHeroParallax();
-        splitHeadlineWords();
         startHeroMotionInstantFinal();
       }
       if (!heroWordCycleStarted) {
@@ -2317,6 +2296,7 @@
     const { gsap, ScrollTrigger, Lenis } = window;
     gsap.registerPlugin(ScrollTrigger);
     lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    window.portfolioLenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     lenis.on("scroll", updateNavState);
     gsap.ticker.add(time => lenis.raf(time * 1000));
@@ -2350,25 +2330,14 @@
       initHeroEntrance();
     };
 
-    const desktopIntro =
-      !reduced &&
-      document.getElementById("intro-canvas") &&
-      !window.matchMedia("(max-width: 767px)").matches;
-
-    // Desktop canvas intro: hero resolves to final layout under the intro before crossfade (see index.html timers).
-    if (desktopIntro) {
-      prepareHeroUnderIntroCanvas();
-      window.addEventListener("intro-complete", finish, { once: true });
-      return;
-    }
-
-    // Mobile poster / no intro canvas: wait for intro-complete if poster path still runs.
-    if (!reduced && document.getElementById("intro-poster")) {
-      window.addEventListener("intro-complete", finish, { once: true });
-      return;
-    }
-
-    finish();
+    window.addEventListener("intro-complete", finish, { once: true });
+    window.setTimeout(() => {
+      if (!window.__portfolioIntroExitHandled) {
+        window.__portfolioIntroExitHandled = true;
+        document.body.classList.add("hero-live");
+        initHeroEntrance();
+      }
+    }, 12000);
   }
 
   function setupCustomCursor() {
@@ -2392,7 +2361,7 @@
 
     const updateHoverState = target => {
       state.linkHover = Boolean(target?.closest("a, button, [role='button']"));
-      state.cardHover = Boolean(target?.closest(".bento-card, .visual-card, .work-visual-card, .journey-stop, .ring-card, .stack"));
+      state.cardHover = Boolean(target?.closest(".bento-card, .visual-card, .work-visual-card, .journey-stop, .jt-panel, .stack"));
       state.darkSection = Boolean(target?.closest("#hero, #visualizations, #journey"));
       customCursor.classList.toggle("is-hover-link", state.linkHover || state.cardHover);
       customCursor.classList.toggle("is-dark", state.darkSection);
@@ -2473,6 +2442,28 @@
       const target = document.querySelector(anchor.getAttribute("href"));
       if (!target) return;
       event.preventDefault();
+      const journeyTl = document.getElementById("journey-timeline");
+      if (journeyTl && target.classList.contains("jt-panel")) {
+        const strip = journeyTl.querySelector(".jt-strip");
+        if (strip) {
+          const panels = [...strip.querySelectorAll(".jt-panel")];
+          const j = panels.indexOf(target);
+          const mobile = window.matchMedia("(max-width: 767px)").matches;
+          if (j >= 0) {
+            if (mobile) {
+              let top = 0;
+              for (let k = 0; k < j; k++) top += panels[k].offsetHeight;
+              strip.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
+            } else {
+              let left = 0;
+              for (let k = 0; k < j; k++) left += panels[k].offsetWidth;
+              strip.scrollTo({ left, behavior: reduced ? "auto" : "smooth" });
+            }
+          }
+        }
+        closeMobileNav();
+        return;
+      }
       if (target.closest("#journey-track")) {
         scrollToJourneyStop(target);
       } else {
@@ -2511,9 +2502,8 @@
     setupLazyD3Iframes();
     setupJourneyMotion();
     setupCountUps();
-    setupCustomCursor();
     setupMicroInteractions();
-    setupScrollReveals();
+    if (!window.__disableLegacyScrollReveals) setupScrollReveals();
   }
 
   updateProgress();
