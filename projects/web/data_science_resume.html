@@ -7,18 +7,30 @@
     <title>James Liebel - Data Science Resume</title>
     <style>
         @media print {
+            @page {
+                size: letter;
+                margin: 0.45in;
+            }
             body {
                 margin: 0;
-                padding: 10px 30px;
+                padding: 0;
+                font-size: 10.25pt;
+                line-height: 1.28;
             }
-
-            .no-print {
-                display: none;
-            }
-
+            .no-print,
             .buttons {
-                display: none;
+                display: none !important;
             }
+            h1 { font-size: 22pt !important; }
+            h2 { margin: 8px 0 4px !important; font-size: 11pt !important; }
+            .section { margin-bottom: 7px !important; }
+            .entry { margin-bottom: 7px !important; }
+            .summary,
+            li,
+            .description,
+            .skill-item-row { font-size: 9.5pt !important; line-height: 1.3 !important; }
+            .contact-info { font-size: 9.5pt !important; }
+            .skills-grid { gap: 6px 16px !important; }
         }
 
         body {
@@ -245,12 +257,11 @@
     <div class="section">
         <h2>PROFESSIONAL SUMMARY</h2>
         <p class="summary">
-            Incoming <strong>University of Chicago</strong> student (Class of 2030) majoring in <strong>Data Science &
-                Statistics</strong> with hands-on experience in <strong>predictive modeling</strong>,
-            <strong>machine learning pipelines</strong>, <strong>NLP</strong>, and
-            <strong>AI-assisted prototyping</strong>. Builds analytical systems and interactive tools using Python,
-            SQL, FastAPI, React, and modern visualization stacks. Seeking a Summer 2026 internship in data science,
-            analytics, or ML-adjacent product work.
+            Incoming <strong>University of Chicago</strong> B.S. <strong>Data Science &amp; Statistics</strong> (Class of 2030).
+            End-to-end analytics: <strong>classification</strong> and fraud detection (~91% recall on imbalanced data),
+            <strong>NLP</strong> sentiment pipelines, <strong>Power BI</strong> / PL-300 dashboards, and <strong>D3.js</strong> / GeoJSON maps.
+            Ships interfaces with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong> (live client site).
+            Seeking <strong>Summer 2026</strong> internship in data science, analytics engineering, or ML-adjacent product roles.
         </p>
     </div>
 
@@ -267,7 +278,7 @@
                 <strong>Machine Learning & AI</strong>
                 <div class="skill-item-row"><b>Core ML:</b> Scikit-Learn, XGBoost, Random Forests, Ensemble Methods
                 </div>
-                <div class="skill-item-row"><b>Workflow:</b> Feature Engineering, Model Evaluation, Classification, Regression</div>
+                <div class="skill-item-row"><b>Workflow:</b> Feature engineering, evaluation, imbalanced data, <b>SMOTE</b>, classification &amp; regression</div>
                 <div class="skill-item-row"><b>Deep Learning:</b> TensorFlow/Keras, CNNs, RNNs, Neural Networks</div>
                 <div class="skill-item-row"><b>NLP / AI:</b> NLTK, VADER, TF-IDF, Prompting, Local AI Workflows</div>
             </div>
@@ -279,7 +290,7 @@
             </div>
             <div class="skill-category">
                 <strong>Visualization & Strategy</strong>
-                <div class="skill-item-row"><b>Tools:</b> Matplotlib, Seaborn, Plotly/Dash, Power BI, D3.js, GeoJSON, Next.js</div>
+                <div class="skill-item-row"><b>Tools:</b> <b>Power BI, DAX</b>, Matplotlib, Seaborn, Plotly/Dash, <b>D3.js</b>, GeoJSON, Next.js</div>
                 <div class="skill-item-row"><b>Analysis:</b> A/B Testing, Exp. Design, Causal Inference</div>
                 <div class="skill-item-row"><b>Communication:</b> Technical Documentation, Storytelling</div>
             </div>
@@ -336,6 +347,19 @@
                     model engineering.</li>
             </ul>
         </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <span class="job-title">Interactive Visualizations &amp; Geospatial (D3.js)</span>
+                </div>
+                <span class="date">Portfolio</span>
+            </div>
+            <ul>
+                <li>Cincinnati <strong>choropleth</strong> and food-access <strong>maps</strong> (GeoJSON, D3); linked set of interactive charts (bar, scatter, heatmap, treemap).</li>
+                <li>Readable delivery—tooltips, scales, and labels—not static screenshots.</li>
+            </ul>
+        </div>
     </div>
 
     <div class="section">
@@ -368,6 +392,18 @@
                 <li>Help students move from broad AI interest to clearer implementation and presentation decisions.</li>
             </ul>
         </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <span class="job-title">DECA — Competitive Business Events</span>
+                </div>
+                <span class="date">2022 – 2024</span>
+            </div>
+            <ul>
+                <li>Presented <strong>data-backed</strong> analysis and strategic recommendations under structured time limits.</li>
+            </ul>
+        </div>
     </div>
 
     <div class="section">
@@ -381,7 +417,7 @@
             </div>
             <div class="description">
                 <strong>Major:</strong> Data Science & Statistics<br>
-                <strong>Relevant Coursework:</strong> AP Statistics, AP Computer Science A, AP Calculus BC
+                <strong>Prep:</strong> AP Statistics, AP Computer Science A, AP Calculus BC
             </div>
         </div>
         <div class="entry">

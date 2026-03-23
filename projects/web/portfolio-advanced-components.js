@@ -290,8 +290,11 @@
       });
     }
 
+    setup('sectionDividerHeroSkills', 'pathHeroSkills', 'dotHeroSkills');
     setup('sectionDividerCapProj', 'pathCapProj', 'dotCapProj');
     setup('sectionDividerProjViz', 'pathProjViz', 'dotProjViz');
+    setup('sectionDividerVizJourney', 'pathVizJourney', 'dotVizJourney');
+    setup('sectionDividerJourneyResume', 'pathJourneyResume', 'dotJourneyResume');
   }
 
   // ─── 3. Project card WebGL distortion ─────────────────────────────────────
@@ -1131,6 +1134,378 @@
     requestAnimationFrame(tick);
   }
 
+  // ─── Skills section: SVG pipeline (spines, converging feeders, trunk) ─────
+  function initSkillsPipeline() {
+    var region = document.getElementById('skillsPipelineRegion');
+    var svg = document.getElementById('skillsPipelineSvg');
+    var bridge = document.getElementById('skillsPipelineSummary');
+    if (!region || !svg || !bridge) return;
+
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var played = false;
+    var resizeTimer = null;
+    var mergePulseTween = null;
+
+    var COL = {
+      eng: { base: '#1d4ed8', mid: '#3b82f6', glow: '#60a5fa' },
+      sci: { base: '#5b21b6', mid: '#7c3aed', glow: '#a78bfa' },
+      ana: { base: '#0e7490', mid: '#0891b2', glow: '#22d3ee' }
+    };
+
+    function ns(tag, attrs, parent) {
+      var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      if (attrs) {
+        Object.keys(attrs).forEach(function (k) {
+          el.setAttribute(k, attrs[k]);
+        });
+      }
+      if (parent) parent.appendChild(el);
+      return el;
+    }
+
+    function setDashReveal(path, hidden) {
+      try {
+        var len = path.getTotalLength();
+        if (!len || !isFinite(len)) len = 1;
+        path.style.strokeDasharray = String(len);
+        path.style.strokeDashoffset = hidden ? String(len) : '0';
+      } catch (e) {
+        path.style.strokeDasharray = 'none';
+        path.style.strokeDashoffset = '0';
+      }
+    }
+
+    function revealAll(paths) {
+      paths.forEach(function (p) {
+        setDashReveal(p, false);
+      });
+    }
+
+    /** @param {boolean} fullReveal after first play (resize) — skip dash hide */
+    function layoutAndPaint(fullReveal) {
+      var cols = region.querySelectorAll('.skills-atlas-column');
+      if (cols.length < 3) return null;
+
+      var r = region.getBoundingClientRect();
+      var br = bridge.getBoundingClientRect();
+      var H = Math.max(0, Math.round(br.top - r.top));
+      var W = Math.max(1, Math.round(r.width));
+      if (H < 48) {
+        svg.setAttribute('height', '0');
+        svg.style.height = '0';
+        return null;
+      }
+
+      svg.innerHTML = '';
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+      svg.setAttribute('width', String(W));
+      svg.setAttribute('height', String(H));
+      svg.style.height = H + 'px';
+
+      var defs = ns('defs', null, svg);
+      var filter = ns(
+        'filter',
+        { id: 'skillsMergeGlow', x: '-100%', y: '-100%', width: '300%', height: '300%' },
+        defs
+      );
+      ns('feGaussianBlur', { in: 'SourceGraphic', stdDeviation: '5', result: 'skillsBlur' }, filter);
+      var mergeEl = ns('feMerge', null, filter);
+      ns('feMergeNode', { in: 'skillsBlur' }, mergeEl);
+      ns('feMergeNode', { in: 'SourceGraphic' }, mergeEl);
+
+      var gradFlow = ns(
+        'linearGradient',
+        { id: 'skillsPipeFlowGrad', x1: '0', y1: '0', x2: '0', y2: String(H), gradientUnits: 'userSpaceOnUse' },
+        defs
+      );
+      ns('stop', { offset: '0%', 'stop-color': '#0c4a6e', 'stop-opacity': '1' }, gradFlow);
+      ns('stop', { offset: '40%', 'stop-color': '#2563eb', 'stop-opacity': '1' }, gradFlow);
+      ns('stop', { offset: '100%', 'stop-color': '#22d3ee', 'stop-opacity': '1' }, gradFlow);
+      if (!reduced) {
+        var animY1 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        animY1.setAttribute('attributeName', 'y1');
+        animY1.setAttribute('values', '-' + H + ';' + H + ';-' + H);
+        animY1.setAttribute('dur', '2.8s');
+        animY1.setAttribute('repeatCount', 'indefinite');
+        gradFlow.appendChild(animY1);
+        var animY2 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        animY2.setAttribute('attributeName', 'y2');
+        animY2.setAttribute('values', '0;' + H * 2 + ';0');
+        animY2.setAttribute('dur', '2.8s');
+        animY2.setAttribute('repeatCount', 'indefinite');
+        gradFlow.appendChild(animY2);
+      }
+
+      var bx = br.left - r.left + br.width / 2;
+      var by = H;
+      var mx = W * 0.5;
+      var bend = W * 0.15;
+
+      var order = ['eng', 'sci', 'ana'];
+      var colMeta = [];
+      var maxSy = 0;
+      var i;
+      for (i = 0; i < 3; i++) {
+        var colEl = cols[i];
+        var cr = colEl.getBoundingClientRect();
+        var sy = Math.round(cr.bottom - r.top);
+        if (sy > maxSy) maxSy = sy;
+        colMeta.push({
+          col: colEl,
+          key: order[i],
+          topY: Math.max(0, Math.round(cr.top - r.top)),
+          sy: sy,
+          spineX: Math.round(cr.left - r.left + 3)
+        });
+      }
+
+      var gapBand = H - maxSy;
+      var my = maxSy + Math.max(40, gapBand * 0.5);
+      if (my > H - 32) my = H - 32;
+      if (my <= maxSy + 12) my = Math.min(H - 28, maxSy + Math.max(24, gapBand * 0.35));
+
+      var stackCols =
+        window.matchMedia && window.matchMedia('(max-width: 1024px)').matches;
+
+      var columnBasePaths = [];
+      var columnGradPaths = [];
+      var columnFlowPaths = [];
+
+      for (i = 0; i < 3; i++) {
+        var meta = colMeta[i];
+        var key = meta.key;
+        var spineX = meta.spineX;
+        var topY = meta.topY;
+        var sy = meta.sy;
+        var curveFromY = stackCols ? maxSy : sy;
+        if (curveFromY < sy) curveFromY = sy;
+
+        var cp1x = spineX;
+        var cp1y = curveFromY + (my - curveFromY) * 0.38;
+        var cp2x = i === 0 ? mx - bend : i === 2 ? mx + bend : spineX + (mx - spineX) * 0.55;
+        var cp2y = my - Math.max(20, (my - curveFromY) * 0.22);
+
+        var d =
+          'M ' +
+          spineX +
+          ' ' +
+          topY +
+          ' L ' +
+          spineX +
+          ' ' +
+          sy +
+          (curveFromY > sy + 1
+            ? ' L ' + spineX + ' ' + curveFromY
+            : '') +
+          ' C ' +
+          cp1x +
+          ' ' +
+          cp1y +
+          ', ' +
+          cp2x +
+          ' ' +
+          cp2y +
+          ', ' +
+          mx +
+          ' ' +
+          my;
+
+        var baseF = ns('path', { class: 'skills-pipe-column-base', fill: 'none' }, svg);
+        baseF.setAttribute('d', d);
+        baseF.setAttribute('stroke', COL[key].base);
+        baseF.setAttribute('stroke-width', '3');
+        baseF.setAttribute('stroke-linecap', 'round');
+        baseF.setAttribute('stroke-linejoin', 'round');
+        baseF.setAttribute('opacity', '0.9');
+        columnBasePaths.push(baseF);
+
+        var feed = ns('path', { class: 'skills-pipe-column-grad', fill: 'none' }, svg);
+        feed.setAttribute('d', d);
+        feed.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
+        feed.setAttribute('stroke-width', '2');
+        feed.setAttribute('stroke-linecap', 'round');
+        feed.setAttribute('stroke-linejoin', 'round');
+        columnGradPaths.push(feed);
+
+        var flow = ns('path', { class: 'skills-pipe-column-flow', fill: 'none' }, svg);
+        flow.setAttribute('d', d);
+        flow.setAttribute('stroke', COL[key].glow);
+        flow.setAttribute('stroke-width', '2');
+        flow.setAttribute('stroke-linecap', 'round');
+        flow.setAttribute('stroke-linejoin', 'round');
+        flow.setAttribute('stroke-dasharray', '10 22');
+        flow.setAttribute('opacity', '0');
+        columnFlowPaths.push(flow);
+      }
+
+      var trunkD = 'M ' + mx + ' ' + my + ' L ' + bx + ' ' + by;
+      var trunkBase = ns('path', { class: 'skills-pipe-trunk-base', fill: 'none' }, svg);
+      trunkBase.setAttribute('d', trunkD);
+      trunkBase.setAttribute('stroke', '#1e3a8a');
+      trunkBase.setAttribute('stroke-width', '3.5');
+      trunkBase.setAttribute('stroke-linecap', 'round');
+      trunkBase.setAttribute('opacity', '0.92');
+
+      var trunk = ns('path', { class: 'skills-pipe-trunk', fill: 'none' }, svg);
+      trunk.setAttribute('d', trunkD);
+      trunk.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
+      trunk.setAttribute('stroke-width', '2.5');
+      trunk.setAttribute('stroke-linecap', 'round');
+
+      var trunkFlow = ns('path', { class: 'skills-pipe-trunk-flow', fill: 'none' }, svg);
+      trunkFlow.setAttribute('d', trunkD);
+      trunkFlow.setAttribute('stroke', '#f0f9ff');
+      trunkFlow.setAttribute('stroke-width', '1.5');
+      trunkFlow.setAttribute('stroke-linecap', 'round');
+      trunkFlow.setAttribute('stroke-dasharray', '8 18');
+      trunkFlow.setAttribute('opacity', '0');
+
+      var mergeNode = ns('circle', { class: 'skills-pipe-merge-node', cx: String(mx), cy: String(my), r: '6' }, svg);
+      mergeNode.setAttribute('fill', '#22d3ee');
+      mergeNode.setAttribute('filter', 'url(#skillsMergeGlow)');
+      mergeNode.setAttribute('opacity', fullReveal || reduced ? '0.95' : '0');
+      mergeNode.setAttribute('stroke', '#f0f9ff');
+      mergeNode.setAttribute('stroke-width', '1.5');
+
+      var i2;
+      if (reduced || fullReveal) {
+        revealAll(columnBasePaths);
+        revealAll(columnGradPaths);
+        revealAll([trunkBase, trunk]);
+        columnFlowPaths.forEach(function (f) {
+          f.setAttribute('opacity', '0.85');
+        });
+        trunkFlow.setAttribute('opacity', '0.85');
+      } else {
+        for (i2 = 0; i2 < columnBasePaths.length; i2++) setDashReveal(columnBasePaths[i2], true);
+        for (i2 = 0; i2 < columnGradPaths.length; i2++) setDashReveal(columnGradPaths[i2], true);
+        setDashReveal(trunkBase, true);
+        setDashReveal(trunk, true);
+      }
+
+      return {
+        columnBasePaths: columnBasePaths,
+        columnGradPaths: columnGradPaths,
+        columnFlowPaths: columnFlowPaths,
+        trunk: trunk,
+        trunkBase: trunkBase,
+        trunkFlow: trunkFlow,
+        mergeNode: mergeNode
+      };
+    }
+
+    function startFlowLoops(gsap) {
+      if (!gsap || reduced) return;
+      svg.querySelectorAll('.skills-pipe-column-flow, .skills-pipe-trunk-flow').forEach(function (p) {
+        gsap.killTweensOf(p);
+        gsap.set(p, { strokeDashoffset: 0 });
+        gsap.to(p, {
+          strokeDashoffset: -48,
+          duration: 2.4,
+          ease: 'none',
+          repeat: -1
+        });
+      });
+    }
+
+    function startMergePulse(gsap, node) {
+      if (!gsap || reduced || !node) return;
+      if (mergePulseTween) mergePulseTween.kill();
+      mergePulseTween = gsap.to(node, {
+        attr: { r: 10 },
+        duration: 0.75,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1
+      });
+    }
+
+    function runDraw(gsap) {
+      if (played || reduced) return;
+      played = true;
+      var o = layoutAndPaint(false);
+      if (!o || !o.trunk) return;
+
+      var tl = gsap.timeline();
+
+      tl.to(o.columnBasePaths.concat(o.columnGradPaths), {
+        strokeDashoffset: 0,
+        duration: 1.35,
+        ease: 'power2.inOut'
+      });
+
+      tl.to(o.mergeNode, { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.32');
+
+      tl.to([o.trunkBase, o.trunk], { strokeDashoffset: 0, duration: 0.75, ease: 'power2.inOut' }, '+=0.08');
+
+      tl.to([o.trunkFlow].concat(o.columnFlowPaths), { opacity: 0.88, duration: 0.25, ease: 'power1.out' }, '-=0.35');
+
+      tl.call(function () {
+        startMergePulse(gsap, o.mergeNode);
+        startFlowLoops(gsap);
+      });
+
+      tl.call(function () {
+        gsap.to(bridge, {
+          scale: 1.03,
+          duration: 0.34,
+          ease: 'power2.out',
+          yoyo: true,
+          repeat: 1,
+          transformOrigin: '50% 50%'
+        });
+      });
+    }
+
+    var io = new IntersectionObserver(
+      function (ents) {
+        ents.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.disconnect();
+          waitForGsap(function () {
+            if (reduced) {
+              layoutAndPaint(true);
+              return;
+            }
+            if (!window.gsap) {
+              layoutAndPaint(true);
+              return;
+            }
+            runDraw(window.gsap);
+          });
+        });
+      },
+      { threshold: 0.14, rootMargin: '0px 0px -6% 0px' }
+    );
+    io.observe(region);
+
+    window.addEventListener(
+      'resize',
+      function () {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          if (window.gsap) {
+            window.gsap.killTweensOf(bridge);
+            svg.querySelectorAll('.skills-pipe-column-flow, .skills-pipe-trunk-flow').forEach(function (p) {
+              window.gsap.killTweensOf(p);
+            });
+            if (mergePulseTween) mergePulseTween.kill();
+          }
+          var o = layoutAndPaint(played || reduced);
+          if (played && !reduced && window.gsap && o) {
+            startMergePulse(window.gsap, o.mergeNode);
+            startFlowLoops(window.gsap);
+          }
+        }, 140);
+      },
+      { passive: true }
+    );
+
+    requestAnimationFrame(function () {
+      if (!played) layoutAndPaint(false);
+    });
+  }
+
   // ─── Boot ─────────────────────────────────────────────────────────────────
   function waitForGsap(cb) {
     if (window.gsap) {
@@ -1150,6 +1525,7 @@
   window.addEventListener('load', function () {
     /* Hero WebGL particles disabled — animated field behind the cursor was distracting */
     initPathDividers();
+    initSkillsPipeline();
     initProjectDistortion();
     waitForGsap(function () {
       initSplitHeadings();

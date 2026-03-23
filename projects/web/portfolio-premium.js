@@ -191,6 +191,7 @@
     var root = document.getElementById("journey-timeline");
     if (!root) return;
 
+    var stack = root.classList.contains("jt-layout-stack");
     var strip = root.querySelector(".jt-strip");
     var panels = [].slice.call(root.querySelectorAll(".jt-panel"));
     var dots = [].slice.call(root.querySelectorAll(".jt-dot"));
@@ -200,6 +201,15 @@
     if (!strip || !panels.length) return;
 
     var idx = 0;
+    var scrollRaf = 0;
+
+    function syncJourneyRailLinks() {
+      var key = panels[idx] ? panels[idx].dataset.panel : "";
+      if (!key) return;
+      document.querySelectorAll(".rail a[data-journey]").forEach(function (a) {
+        a.classList.toggle("active", a.dataset.journey === key);
+      });
+    }
 
     function panelSpan() {
       if (MOBILE) {
@@ -209,7 +219,12 @@
     }
 
     function scrollPanelToIndex(i) {
-      if (MOBILE) {
+      i = Math.max(0, Math.min(panels.length - 1, i));
+      var el = panels[i];
+      if (!el) return;
+      if (stack) {
+        el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      } else if (MOBILE) {
         var top = 0;
         for (var k = 0; k < i; k++) top += panels[k] ? panels[k].offsetHeight : 0;
         if (strip.scrollTo) strip.scrollTo({ top: top, behavior: "smooth" });
@@ -222,6 +237,22 @@
     }
 
     function readScrollIndex() {
+      if (stack) {
+        var navOff = 96;
+        var best = 0;
+        var bestVis = -1;
+        for (var k = 0; k < panels.length; k++) {
+          var r = panels[k].getBoundingClientRect();
+          if (r.bottom < navOff + 32) continue;
+          if (r.top > window.innerHeight * 0.92) continue;
+          var vis = Math.min(r.bottom, window.innerHeight * 0.72) - Math.max(r.top, navOff);
+          if (vis > bestVis) {
+            bestVis = vis;
+            best = k;
+          }
+        }
+        return best;
+      }
       if (MOBILE) {
         var mid = strip.scrollTop + strip.clientHeight * 0.25;
         var acc = 0;
@@ -236,19 +267,24 @@
       return Math.round(strip.scrollLeft / pw);
     }
 
-    function setIndex(i) {
+    function applyUiFromIndex(i, scrollToo) {
       idx = Math.max(0, Math.min(panels.length - 1, i));
-      scrollPanelToIndex(idx);
+      if (scrollToo) scrollPanelToIndex(idx);
       dots.forEach(function (d, j) {
         d.classList.toggle("is-active", j === idx);
         d.setAttribute("aria-current", j === idx ? "true" : "false");
       });
       if (fill) fill.style.width = ((idx + 1) / panels.length) * 100 + "%";
+      syncJourneyRailLinks();
       animatePanel(panels[idx]);
     }
 
+    function setIndex(i) {
+      applyUiFromIndex(i, true);
+    }
+
     function animatePanel(panel) {
-      if (!window.gsap || panel.dataset.gsapDone === "1") return;
+      if (!window.gsap || !panel || panel.dataset.gsapDone === "1") return;
       panel.dataset.gsapDone = "1";
       var h = panel.querySelector("h3");
       var p = panel.querySelector("p");
@@ -265,22 +301,37 @@
         );
     }
 
-    strip.addEventListener(
-      "scroll",
-      function () {
-        var i = readScrollIndex();
-        if (i !== idx) {
-          idx = i;
-          dots.forEach(function (d, j) {
-            d.classList.toggle("is-active", j === idx);
-            d.setAttribute("aria-current", j === idx ? "true" : "false");
+    function onStripScroll() {
+      var i = readScrollIndex();
+      if (i !== idx) {
+        idx = i;
+        dots.forEach(function (d, j) {
+          d.classList.toggle("is-active", j === idx);
+          d.setAttribute("aria-current", j === idx ? "true" : "false");
+        });
+        if (fill) fill.style.width = ((idx + 1) / panels.length) * 100 + "%";
+        syncJourneyRailLinks();
+        animatePanel(panels[idx]);
+      }
+    }
+
+    if (stack) {
+      window.addEventListener(
+        "scroll",
+        function () {
+          if (scrollRaf) return;
+          scrollRaf = requestAnimationFrame(function () {
+            scrollRaf = 0;
+            var r = root.getBoundingClientRect();
+            if (r.bottom < 40 || r.top > window.innerHeight) return;
+            onStripScroll();
           });
-          if (fill) fill.style.width = ((idx + 1) / panels.length) * 100 + "%";
-          animatePanel(panels[idx]);
-        }
-      },
-      { passive: true }
-    );
+        },
+        { passive: true }
+      );
+    } else {
+      strip.addEventListener("scroll", onStripScroll, { passive: true });
+    }
 
     if (prev)
       prev.addEventListener("click", function () {
@@ -298,13 +349,20 @@
     });
 
     document.addEventListener("keydown", function (e) {
-      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
       var r = root.getBoundingClientRect();
       var inView = r.top < window.innerHeight * 0.92 && r.bottom > window.innerHeight * 0.08;
       if (!inView) return;
-      e.preventDefault();
-      if (e.key === "ArrowLeft") setIndex(idx - 1);
-      else setIndex(idx + 1);
+      if (stack) {
+        if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+        e.preventDefault();
+        if (e.key === "ArrowUp") setIndex(idx - 1);
+        else setIndex(idx + 1);
+      } else {
+        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+        e.preventDefault();
+        if (e.key === "ArrowLeft") setIndex(idx - 1);
+        else setIndex(idx + 1);
+      }
     });
 
     document.querySelectorAll('.rail a[href^="#journey-"]').forEach(function (a) {
@@ -313,21 +371,24 @@
         var p = document.getElementById(id);
         if (p && strip.contains(p)) {
           e.preventDefault();
+          e.stopPropagation();
           var j = panels.indexOf(p);
           if (j >= 0) setIndex(j);
         }
       });
     });
 
-    window.addEventListener(
-      "resize",
-      function () {
-        scrollPanelToIndex(idx);
-      },
-      { passive: true }
-    );
+    if (!stack) {
+      window.addEventListener(
+        "resize",
+        function () {
+          scrollPanelToIndex(idx);
+        },
+        { passive: true }
+      );
+    }
 
-    setIndex(0);
+    applyUiFromIndex(readScrollIndex(), false);
   }
 
   function initVizParallax() {

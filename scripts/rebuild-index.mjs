@@ -44,10 +44,10 @@ if (!main.includes('id="servers-scrub-zone"')) {
   );
 }
 
-// Remove laptop block inside skills-atlas (slice from machine open to nexus open)
+// Remove laptop block inside skills-atlas (slice from machine open to rails open)
 {
   const a = main.indexOf('<div class="skills-machine" id="laptopScene"');
-  const b = main.indexOf('<div class="skills-atlas-nexus">');
+  const b = main.indexOf('<div class="skills-atlas-columns">');
   if (a !== -1 && b !== -1 && b > a) {
     main = main.slice(0, a) + main.slice(b);
   } else {
@@ -442,7 +442,7 @@ const cinematicCss = `
     .skills-atlas { position: relative; margin-top: 24px; }
     .skills-atlas-cables { width: 100%; height: auto; opacity: 0.35; }
 
-    .skills-atlas-nexus, .skills-atlas-branches {
+    .skills-atlas-branches {
       margin-top: 32px;
     }
     .skills-branch {

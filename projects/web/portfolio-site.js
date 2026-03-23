@@ -25,25 +25,7 @@
   const heroWord = document.getElementById("heroWord");
   const modeButtons = [...document.querySelectorAll(".switch button[data-mode]")];
   const modeIndicator = document.getElementById("modeIndicator");
-  const signalTags = document.getElementById("signalTags");
-  const signalTitle = document.getElementById("signalTitle");
-  const signalBadge = document.getElementById("signalBadge");
-  const signalBody = document.getElementById("signalBody");
-  const s1l = document.getElementById("s1l");
-  const s1v = document.getElementById("s1v");
-  const s1n = document.getElementById("s1n");
-  const s2l = document.getElementById("s2l");
-  const s2v = document.getElementById("s2v");
-  const s2n = document.getElementById("s2n");
-  const s3l = document.getElementById("s3l");
-  const s3v = document.getElementById("s3v");
-  const s3n = document.getElementById("s3n");
-  const projectLinks = [...document.querySelectorAll(".project-rail a[href^='#project-']")];
   const projectSections = [...document.querySelectorAll(".project-section[data-project-section]")];
-  const projectRailPreview = document.getElementById("projectRailPreview");
-  const projectRailPreviewTitle = projectRailPreview?.querySelector(".project-rail-preview-title") ?? null;
-  const projectRailPreviewSummary = projectRailPreview?.querySelector(".project-rail-preview-summary") ?? null;
-  const projectRailPreviewMetrics = projectRailPreview?.querySelector(".project-rail-preview-metrics") ?? null;
   const journey = document.getElementById("journey");
   const journeyTrack = document.getElementById("journey-track");
   const journeyLinks = [...document.querySelectorAll(".rail a[data-journey]")];
@@ -88,42 +70,63 @@
   const modeData = {
     builder: {
       angle: 300,
-      word: "Data Engineering",
-      label: "",
-      title: "Best evidence for data engineering work",
-      badge: "Pipelines + delivery",
-      body: "This view highlights transformation work, SQL structure, application plumbing, and moving data into usable outputs.",
-      s1: ["Core tools", "Python / SQL / FastAPI", "Main stack for data movement, workflow logic, and lightweight back-end delivery."],
-      s2: ["Workflow focus", "ETL + modeling + APIs", "Projects show preparation, structuring, and exposing data in recruiter-readable formats."],
-      s3: ["What stands out", "Usable systems", "The work connects raw inputs to dashboards, tools, maps, and interactive outputs."],
-      foot: "Best fit for data engineering, analytics engineering, and platform-adjacent internships.",
-      tags: ["SQL", "ETL", "FastAPI", "Power Query"]
+      boxes: [
+        {
+          title: "Pipelines & data",
+          text: "The featured card-fraud project ingests and models tens of thousands of rows: cleaning, features, and trainable tables in Python/SQL, with a story you can follow from raw inputs to scored outcomes. Power Query and structured extracts show up wherever the data needed shaping before modeling.",
+          skills: ["SQL", "Python", "ETL"]
+        },
+        {
+          title: "APIs & apps",
+          text: "JimAI is a local AI workspace prototype: FastAPI plus a React/Vite front end for prompts, small workflows, and experimentation—not a hosted product, but a believable full-stack slice. Other builds expose JSON APIs and simple UIs so models and tools are usable, not only notebook-bound.",
+          skills: ["FastAPI", "React", "TypeScript"]
+        },
+        {
+          title: "Sites & surfaces",
+          text: "CustomStrat is a live Next.js advisory site on a real domain. The portfolio itself ships interactive D3 maps and charts in the browser, plus a Power BI–style embedded report mock so BI-style delivery sits next to code-first work.",
+          skills: ["Next.js", "D3.js", "Power BI"]
+        }
+      ]
     },
     analyst: {
       angle: 210,
-      word: "Data Science",
-      label: "",
-      title: "Best evidence for data science work",
-      badge: "Modeling + evaluation",
-      body: "This view highlights supervised learning, NLP, EDA, feature work, and recruiter-readable evaluation.",
-      s1: ["Model work", "Fraud + sentiment", "Classification and text analysis projects show applied modeling experience."],
-      s2: ["Evaluation", "Validation / benchmarks / tradeoffs", "Results are framed with metrics, comparisons, and tradeoffs."],
-      s3: ["Communication", "Charts + writeups", "Visuals and plain-language explanations support the technical work."],
-      foot: "Best fit for data science, analytics, and research-oriented internships.",
-      tags: ["Scikit-learn", "XGBoost", "EDA", "TF-IDF"]
+      boxes: [
+        {
+          title: "Models",
+          text: "The fraud classifier is the headline tabular application: strong validation recall (~91%) with honest accuracy context (~85% range) so the tradeoff is visible. News sentiment uses NLP pipelines (e.g. TF-IDF-style text features) to turn headlines into labeled signals you can inspect.",
+          skills: ["Scikit-learn", "XGBoost", "NLP"]
+        },
+        {
+          title: "Evaluation",
+          text: "Projects spell out splits, confusion-matrix style results, and why a metric matters for the use case—not a single cherry-picked number. EDA and feature work are shown as part of the same story as the final model.",
+          skills: ["pandas", "Metrics", "EDA"]
+        },
+        {
+          title: "How it is shown",
+          text: "Deliverables mix notebooks with static D3 pages and short writeups beside charts so a reviewer sees both the method and the visual. The goal is legible science: what was tried, what changed, and what the chart is claiming.",
+          skills: ["Jupyter", "D3.js", "Visualization"]
+        }
+      ]
     },
     operator: {
       angle: 120,
-      word: "Data Analysis",
-      label: "",
-      title: "Best evidence for data analysis work",
-      badge: "Dashboards + reporting",
-      body: "This view highlights exploratory analysis, clear visual explanation, BI delivery, and turning findings into readable outputs.",
-      s1: ["Analysis stack", "SQL / Power BI / D3", "The portfolio emphasizes reporting, visual framing, and digging into structured data."],
-      s2: ["Output style", "Dashboards + stories", "Projects are packaged as charts, maps, and panels another person can review quickly."],
-      s3: ["What stands out", "Readable decisions", "The work focuses on making results understandable, comparable, and useful."],
-      foot: "Best fit for data analysis, BI, and decision-support internships.",
-      tags: ["Power BI", "DAX", "D3.js", "Reporting"]
+      boxes: [
+        {
+          title: "BI & modeling",
+          text: "PL-300-backed Power BI work: DAX for measures and KPI logic, SQL and Power Query for shaped tables, and a reading-view style layout on the portfolio that mimics how a hiring manager would open a real report—filters, pages, and narrative tiles.",
+          skills: ["Power BI", "DAX", "SQL"]
+        },
+        {
+          title: "D3 applications",
+          text: "Six linked D3 builds cover bar and scatter stories, heatmaps, treemaps, and Cincinnati-focused choropleth maps—each is a small standalone app with real interaction (tooltips, scales) rather than a screenshot. They’re the analysis portfolio in executable form.",
+          skills: ["D3.js", "JavaScript", "GeoJSON"]
+        },
+        {
+          title: "Reporting lens",
+          text: "Analysis work is framed for people who decide from dashboards: drill paths, comparison views, and plain-language labels so a stakeholder can scan KPIs without opening a repo. The same lens applies when maps and charts replace a slide deck.",
+          skills: ["Dashboards", "KPIs", "PL-300"]
+        }
+      ]
     }
   };
 
@@ -137,7 +140,6 @@
   let lenis = null;
   let gsapScrollProgress = false;
   let heroWordTimer = null;
-  let heroTypeTimer = null;
   let heroMotionStarted = false;
   let heroWordCycleStarted = false;
   let journeyScrollTrigger = null;
@@ -358,41 +360,26 @@
     const activeButton = modeButtons.find(button => button.dataset.mode === key);
     modeButtons.forEach(button => button.classList.toggle("active", button === activeButton));
     movePillIndicator(modeIndicator, activeButton, true);
-    if (signalTitle) signalTitle.textContent = next.title;
-    if (signalBadge) signalBadge.textContent = next.badge;
-    if (signalBody) signalBody.textContent = next.body;
-    [[s1l, s1v, s1n, next.s1], [s2l, s2v, s2n, next.s2], [s3l, s3v, s3n, next.s3]].forEach(([a, b, c, values]) => {
-      if (a) a.textContent = values[0];
-      if (b) b.textContent = values[1];
-      if (c) c.textContent = values[2];
-    });
-    if (signalTags) {
-      signalTags.innerHTML = next.tags.map(tag => `<span class="tag">${tag}</span>`).join("");
+    const boxes = next.boxes || [];
+    for (let i = 0; i < 3; i++) {
+      const box = boxes[i];
+      const titleEl = document.getElementById(`snapshotBox${i}Title`);
+      const textEl = document.getElementById(`snapshotBox${i}Text`);
+      const skillsEl = document.getElementById(`snapshotBox${i}Skills`);
+      if (!box) {
+        if (titleEl) titleEl.textContent = "";
+        if (textEl) textEl.textContent = "";
+        if (skillsEl) skillsEl.innerHTML = "";
+        continue;
+      }
+      if (titleEl) titleEl.textContent = box.title;
+      if (textEl) textEl.textContent = box.text;
+      if (skillsEl) {
+        skillsEl.innerHTML = box.skills
+          .map(skill => `<span class="snapshot-skill">${skill}</span>`)
+          .join("");
+      }
     }
-  }
-
-  function updateProjectRail(activeId) {
-    projectLinks.forEach(link => {
-      const isActive = link.getAttribute("href") === `#${activeId}`;
-      link.classList.toggle("active", isActive);
-    });
-
-    if (!projectRailPreview || !activeId) return;
-
-    const activeSection = document.getElementById(activeId);
-    const titleEl = activeSection?.querySelector(".project-copy h3") ?? null;
-    const summaryEl = activeSection?.querySelector(".project-copy .project-lede") ?? null;
-    const metricEls = activeSection ? [...activeSection.querySelectorAll(".project-metrics .metric-pill")] : [];
-
-    projectRailPreviewTitle && (projectRailPreviewTitle.textContent = titleEl?.textContent?.trim() ?? "");
-    projectRailPreviewSummary && (projectRailPreviewSummary.textContent = summaryEl?.textContent?.trim() ?? "");
-    if (projectRailPreviewMetrics) {
-      projectRailPreviewMetrics.innerHTML = metricEls
-        .map(el => `<span class="metric-pill">${(el.textContent || "").trim()}</span>`)
-        .join("");
-    }
-
-    projectRailPreview.classList.toggle("is-visible", Boolean(titleEl));
   }
 
   function updateJourneyRail(activePanel) {
@@ -418,27 +405,16 @@
 
     sectionTargets.forEach(section => navObserver.observe(section));
 
-    const projectObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        updateProjectRail(entry.target.id);
-      });
-    }, { threshold: 0.45 });
-
-    projectSections.forEach(section => projectObserver.observe(section));
-
-    if (reduced) {
-      const jt = document.getElementById("journey-timeline");
-      const jRoot = jt ? jt.querySelector(".jt-strip") : document.querySelector(".journey-track-shell");
-      const journeyObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          updateJourneyRail(entry.target.dataset.panel || "");
-        });
-      }, { root: jRoot || null, threshold: 0.55 });
-
-      journeyStops.forEach(stop => journeyObserver.observe(stop));
-    }
+    const journeyPanelObserver = new IntersectionObserver(
+      entries => {
+        const visible = entries.filter(e => e.isIntersecting && e.target.dataset.panel);
+        if (!visible.length) return;
+        visible.sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0));
+        updateJourneyRail(visible[0].target.dataset.panel || "");
+      },
+      { threshold: [0.12, 0.22, 0.35, 0.5], rootMargin: "-16% 0px -38% 0px" }
+    );
+    journeyStops.forEach(stop => journeyPanelObserver.observe(stop));
   }
 
   function setupCountUps() {
@@ -699,7 +675,7 @@
 
     // Populate the three Root boxes on the laptop screen.
     const screenCards = atlas ? [...atlas.querySelectorAll(".skills-screen-grid .skills-screen-card")] : [];
-    const branchesForContent = atlas ? [...atlas.querySelectorAll(".skills-atlas-branches .skills-branch")] : [];
+    const branchesForContent = atlas ? [...atlas.querySelectorAll(".skills-atlas-column .skills-branch")] : [];
 
     if (atlas && screenCards.length >= 3 && branchesForContent.length >= 3) {
       screenCards.slice(0, 3).forEach((card, index) => {
@@ -1268,11 +1244,15 @@
       newsTrack.dataset.duplicated = "true";
     }
 
-    projectSections.forEach(section => {
+    function revealProjectPanel(section) {
+      if (section.dataset.panelRevealDone === "true") return;
+      const det = section.querySelector(".project-disclosure");
+      if (det && !det.open) return;
       const inner = section.querySelector(".project-inner");
       const copy = section.querySelector(".project-copy");
       const visual = section.querySelector(".work-visual-card");
       if (!copy || !visual) return;
+      section.dataset.panelRevealDone = "true";
 
       const isReverse = inner?.classList.contains("reverse");
       const copyOffset = isReverse ? 60 : -60;
@@ -1281,25 +1261,24 @@
       gsap.set(copy, { x: copyOffset, opacity: 0 });
       gsap.set(visual, { x: visualOffset, opacity: 0 });
 
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 74%",
-          once: true
-        }
-      })
+      gsap
+        .timeline()
         .to(copy, {
           x: 0,
           opacity: 1,
           duration: 0.8,
           ease: "power3.out"
         })
-        .to(visual, {
-          x: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out"
-        }, 0.08);
+        .to(
+          visual,
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out"
+          },
+          0.08
+        );
 
       gsap.to(visual, {
         "--float-y": "-12px",
@@ -1308,15 +1287,59 @@
         repeat: -1,
         yoyo: true
       });
+    }
+
+    projectSections.forEach(section => {
+      const det = section.querySelector(".project-disclosure");
 
       ScrollTrigger.create({
         trigger: section,
-        start: "top center",
-        end: "bottom center",
-        onEnter: () => updateProjectRail(section.id),
-        onEnterBack: () => updateProjectRail(section.id)
+        start: "top 74%",
+        once: true,
+        onEnter: () => revealProjectPanel(section)
+      });
+
+      det?.addEventListener("toggle", () => {
+        if (!det.open) return;
+        window.requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+          revealProjectPanel(section);
+        });
+      });
+
+    });
+  }
+
+  function setupProjectDisclosures() {
+    if (!projectSections.length) return;
+
+    projectSections.forEach(section => {
+      const det = section.querySelector(".project-disclosure");
+      if (!det) return;
+      det.addEventListener("toggle", () => {
+        if (!det.open) return;
+        projectSections.forEach(other => {
+          if (other === section) return;
+          const otherDet = other.querySelector(".project-disclosure");
+          if (otherDet) otherDet.open = false;
+        });
       });
     });
+
+    function syncOpenProjectFromHash() {
+      const hash = (location.hash || "").replace("#", "");
+      if (!hash.startsWith("project-")) return;
+      const section = document.getElementById(hash);
+      const det = section?.querySelector(".project-disclosure");
+      if (!section || !det) return;
+      projectSections.forEach(other => {
+        const o = other.querySelector(".project-disclosure");
+        if (o) o.open = other.id === hash;
+      });
+    }
+
+    window.addEventListener("hashchange", syncOpenProjectFromHash);
+    syncOpenProjectFromHash();
   }
 
   function setupVisualizationGallery() {
@@ -1435,6 +1458,39 @@
     }, { rootMargin: "220px 0px", threshold: 0.01 });
 
     iframes.forEach(iframe => io.observe(iframe));
+  }
+
+  function setupVizPaneScales() {
+    const panes = [...document.querySelectorAll("#visualizations .viz-pane")];
+    if (!panes.length) return;
+
+    const apply = (pane, entry) => {
+      const w = parseFloat(pane.dataset.vizBaseW);
+      const h = parseFloat(pane.dataset.vizBaseH);
+      const baseW = Number.isFinite(w) && w > 0 ? w : 1280;
+      const baseH = Number.isFinite(h) && h > 0 ? h : 720;
+      pane.style.setProperty("--viz-base-w", `${baseW}px`);
+      pane.style.setProperty("--viz-base-h", `${baseH}px`);
+      const cw = entry ? entry.contentRect.width : pane.getBoundingClientRect().width;
+      const ch = entry ? entry.contentRect.height : pane.getBoundingClientRect().height;
+      if (!cw || !ch) return;
+      /* Scale up or down so the design-size iframe fits the pane (contain), filling the box */
+      const scale = Math.min(cw / baseW, ch / baseH);
+      pane.style.setProperty("--viz-scale", String(scale));
+    };
+
+    if ("ResizeObserver" in window) {
+      const ro = new ResizeObserver(entries => {
+        entries.forEach(e => apply(e.target, e));
+      });
+      panes.forEach(p => {
+        apply(p, null);
+        ro.observe(p);
+      });
+    } else {
+      panes.forEach(p => apply(p, null));
+      window.addEventListener("resize", () => panes.forEach(p => apply(p, null)), { passive: true });
+    }
   }
 
   function scrollToJourneyStop(target) {
@@ -1886,23 +1942,6 @@
     }
   }
 
-  function typeSignalBody() {
-    if (!signalBody) return;
-    const fullText = signalBody.textContent || "";
-    if (!fullText) return;
-    signalBody.textContent = "";
-    if (heroTypeTimer) window.clearTimeout(heroTypeTimer);
-    let index = 0;
-    const step = () => {
-      signalBody.textContent = fullText.slice(0, index);
-      index += 1;
-      if (index <= fullText.length) {
-        heroTypeTimer = window.setTimeout(step, 16);
-      }
-    };
-    step();
-  }
-
   function applyHeroWordPair(index) {
     if (!heroWord) return;
     const pair = heroWordPairs[index];
@@ -2126,7 +2165,29 @@
       .from(".hw", { y: "110%", opacity: 0, duration: 0.72, stagger: 0.055 }, "-=0.25")
       .from(".summary", { opacity: 0, y: 24, duration: 0.6 }, "-=0.3")
       .from(pillItems, { opacity: 0, y: 14, stagger: 0.07, duration: 0.38 }, "-=0.2")
-      .from("#heroTerminal", { opacity: 0, x: 80, scale: 0.96, duration: 0.9, ease: "power3.out", onComplete: typeSignalBody }, 0.35);
+      .from(
+        "#heroTerminal",
+        {
+          opacity: 0,
+          x: 80,
+          scale: 0.96,
+          duration: 0.9,
+          ease: "power3.out",
+          onComplete: () => {
+            const cards = document.querySelectorAll("#snapshotBoxes .snapshot-box");
+            if (cards.length && window.gsap) {
+              window.gsap.from(cards, {
+                opacity: 0,
+                y: 10,
+                stagger: 0.08,
+                duration: 0.38,
+                ease: "power2.out"
+              });
+            }
+          }
+        },
+        0.35
+      );
 
     if (!heroWordCycleStarted) {
       heroWordCycleStarted = true;
@@ -2146,16 +2207,13 @@
     const pillItems = heroPills ? heroPills.querySelectorAll(".pill") : [];
     const activeMode =
       modeButtons.find(button => button.classList.contains("active"))?.dataset.mode || "builder";
-    const bodyFallback = modeData[activeMode]?.body ?? signalBody?.textContent ?? "";
+    renderMode(activeMode);
 
     gsap.set(".eyebrow", { opacity: 1, y: 0 });
     gsap.set(".hw", { y: "0%", opacity: 1 });
     gsap.set(".summary", { opacity: 1, y: 0 });
     gsap.set(pillItems, { opacity: 1, y: 0 });
     gsap.set("#heroTerminal", { opacity: 1, x: 0, scale: 1 });
-    if (signalBody) {
-      signalBody.textContent = bodyFallback;
-    }
     movePillIndicator(modeIndicator, document.querySelector(".switch button.active"), false);
     window.__heroIntroHandoff = true;
   }
@@ -2205,20 +2263,37 @@
       const pass = () => {
         if (settled) return;
         settled = true;
+        frame.hidden = false;
         fallback.hidden = true;
       };
 
       frame.addEventListener("load", pass, { once: true });
       frame.addEventListener("error", fail, { once: true });
 
-      const src = frame.dataset.src;
-      if (src && !frame.getAttribute("src")) {
-        frame.setAttribute("src", src);
+      const dataSrc = frame.getAttribute("data-src");
+      if (dataSrc && !frame.getAttribute("src")) {
+        frame.setAttribute("src", dataSrc);
       }
+
+      const tryPassIfAlreadyLoaded = () => {
+        if (!frame.getAttribute("src")) return;
+        try {
+          const doc = frame.contentDocument;
+          if (doc && doc.readyState === "complete") pass();
+        } catch {
+          /* cross-origin */
+        }
+      };
+
+      tryPassIfAlreadyLoaded();
+      window.requestAnimationFrame(() => {
+        tryPassIfAlreadyLoaded();
+        window.requestAnimationFrame(tryPassIfAlreadyLoaded);
+      });
 
       window.setTimeout(() => {
         if (!settled) fail();
-      }, 3500);
+      }, 10000);
     };
 
     if (!("IntersectionObserver" in window)) {
@@ -2256,7 +2331,7 @@
     resume.style.top = "0";
     const pageHeightIn = 11;
     const pageWidthIn = 8.5;
-    const marginIn = 1.5 / 2.54;
+    const marginIn = 0.45;
     const printableHeightPx = (pageHeightIn - marginIn * 2) * 96;
     const printableWidthIn = pageWidthIn - marginIn * 2;
     resume.style.width = `${printableWidthIn}in`;
@@ -2265,7 +2340,7 @@
     page.style.marginBottom = "";
     const height = page.scrollHeight;
     let scale = 1;
-    if (height > printableHeightPx) scale = Math.max(0.78, printableHeightPx / height);
+    if (height > printableHeightPx) scale = Math.max(0.62, printableHeightPx / height);
     page.style.transform = `scale(${scale.toFixed(3)})`;
     page.style.marginBottom = `-${(1 - scale) * height}px`;
     resume.style.display = previous.display;
@@ -2417,29 +2492,21 @@
   }
 
   setupObservers();
-
-  // Ensure the projects preview panel is populated immediately for the initial active dot.
-  const initialProjectLink = projectLinks.find(link => link.classList.contains("active"));
-  const initialProjectId = initialProjectLink?.getAttribute("href")?.replace("#", "") ?? projectSections[0]?.id ?? "";
-  if (initialProjectId) updateProjectRail(initialProjectId);
+  setupProjectDisclosures();
 
   setupVizFallbacks();
+  setupVizPaneScales();
 
   modeButtons.forEach(button => {
     button.addEventListener("click", () => {
       renderMode(button.dataset.mode);
-      if (signalBody) {
-        window.gsap?.fromTo(signalBody, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" });
-      }
-      if (signalTags) {
-        const tags = signalTags.querySelectorAll(".tag");
-        window.gsap?.from(tags, {
-          scale: 0.8,
-          opacity: 0,
-          stagger: 0.04,
-          duration: 0.28,
-          ease: "back.out(1.4)"
-        });
+      const cards = document.querySelectorAll("#snapshotBoxes .snapshot-box");
+      if (cards.length && window.gsap) {
+        window.gsap.fromTo(
+          cards,
+          { opacity: 0, y: 8 },
+          { opacity: 1, y: 0, stagger: 0.06, duration: 0.28, ease: "power2.out" }
+        );
       }
     });
   });
@@ -2455,31 +2522,13 @@
 
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", event => {
-      const target = document.querySelector(anchor.getAttribute("href"));
-      if (!target) return;
-      event.preventDefault();
-      const journeyTl = document.getElementById("journey-timeline");
-      if (journeyTl && target.classList.contains("jt-panel")) {
-        const strip = journeyTl.querySelector(".jt-strip");
-        if (strip) {
-          const panels = [...strip.querySelectorAll(".jt-panel")];
-          const j = panels.indexOf(target);
-          const mobile = window.matchMedia("(max-width: 767px)").matches;
-          if (j >= 0) {
-            if (mobile) {
-              let top = 0;
-              for (let k = 0; k < j; k++) top += panels[k].offsetHeight;
-              strip.scrollTo({ top, behavior: reduced ? "auto" : "smooth" });
-            } else {
-              let left = 0;
-              for (let k = 0; k < j; k++) left += panels[k].offsetWidth;
-              strip.scrollTo({ left, behavior: reduced ? "auto" : "smooth" });
-            }
-          }
-        }
+      if (anchor.matches(".rail a[data-journey]")) {
         closeMobileNav();
         return;
       }
+      const target = document.querySelector(anchor.getAttribute("href"));
+      if (!target) return;
+      event.preventDefault();
       if (target.closest("#journey-track")) {
         scrollToJourneyStop(target);
       } else {
@@ -2491,6 +2540,12 @@
 
   pdfButtons.forEach(button => button.addEventListener("click", printResume));
   window.printResume = printResume;
+  window.addEventListener("beforeprint", () => {
+    fitResumeToOnePage();
+  });
+  window.addEventListener("afterprint", () => {
+    clearResumeScale();
+  });
 
   window.addEventListener("resize", () => {
     movePillIndicator(modeIndicator, document.querySelector(".switch button.active"));
@@ -2525,7 +2580,6 @@
   updateProgress();
   updateNavState();
   markActiveNav("hero");
-  updateProjectRail("project-fraud");
   updateJourneyRail("overview");
   movePillIndicator(modeIndicator, document.querySelector(".switch button.active"));
 

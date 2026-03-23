@@ -542,6 +542,47 @@
       line-height: 0.98;
       letter-spacing: -0.05em;
     }
+    #skills .section-head .skills-section-title {
+      margin: 0;
+      font-size: clamp(2.4rem, 5.5vw, 3.85rem);
+      line-height: 1.02;
+      letter-spacing: -0.07em;
+      font-weight: 800;
+      background: linear-gradient(
+        102deg,
+        #60a5fa 0%,
+        #c084fc 42%,
+        #5eead4 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    #skills .section-head .skills-section-title::after {
+      content: "";
+      display: block;
+      width: min(7.5rem, 34vw);
+      height: 4px;
+      margin-top: 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3b82f6, #a855f7, #22d3ee);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    }
+    :root[data-theme="light"] #skills .section-head .skills-section-title {
+      background: linear-gradient(
+        102deg,
+        #1d4ed8 0%,
+        #6d28d9 45%,
+        #0f766e 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    :root[data-theme="light"] #skills .section-head .skills-section-title::after {
+      background: linear-gradient(90deg, #2563eb, #7c3aed, #0891b2);
+      box-shadow: 0 0 16px rgba(79, 70, 229, 0.35);
+    }
     .section-head p,
     .journey-head p,
     .resume-intro,
@@ -705,7 +746,6 @@
       margin-top: 28px;
     }
     .mini,
-    .signal-grid .mini,
     .hero-metric,
     .visual-card,
     .bento-card,
@@ -744,14 +784,23 @@
       overflow: visible;
     }
     .hero-carousel-bleed {
+      position: relative;
+      left: 50%;
       width: 100vw;
       max-width: none;
-      /* Align to viewport: hero-copy is only the left grid column; 50% was half of that column, not the centered shell */
-      margin-left: calc((var(--container) - 100vw) / 2);
+      margin-left: 0;
+      margin-right: 0;
+      /* True edge-to-edge from centered content; avoids column-width miscentering */
+      transform: translateX(-50%);
       padding: 22px 0 24px;
       overflow: hidden;
-      position: relative;
       z-index: 0;
+    }
+    @supports (width: 100dvw) {
+      .hero-carousel-bleed {
+        width: 100dvw;
+        transform: translateX(-50%);
+      }
     }
     .hero-carousel-bleed .hero-carousel-tracks {
       animation: hero-carousel-tracks-breathe 5.5s ease-in-out infinite;
@@ -779,11 +828,15 @@
       padding: 14px 0;
       box-sizing: content-box;
     }
+    @keyframes hero-creation-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-33.3333333333%); }
+    }
     .hero-creation-track {
       display: flex;
       gap: 12px;
       width: max-content;
-      animation: marquee 50s linear infinite;
+      animation: hero-creation-marquee 50s linear infinite;
       will-change: transform;
     }
     .hero-creation-row.reverse .hero-creation-track {
@@ -833,13 +886,23 @@
       font-size: 13px;
     }
     .hero-marquee {
+      position: relative;
+      left: 50%;
       margin-top: 18px;
       width: 100vw;
       max-width: none;
-      margin-left: calc((var(--container) - 100vw) / 2);
+      margin-left: 0;
+      margin-right: 0;
+      transform: translateX(-50%);
       overflow: hidden;
       padding: 10px 0 4px;
       box-sizing: border-box;
+    }
+    @supports (width: 100dvw) {
+      .hero-marquee {
+        width: 100dvw;
+        transform: translateX(-50%);
+      }
     }
     .hero-pill-track {
       display: flex;
@@ -879,6 +942,14 @@
       align-items: center;
     }
 
+    .hero-top-row {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .hero-copy-primary {
+      min-width: 0;
+    }
     .hero-terminal {
       position: relative;
       min-width: 0;
@@ -958,7 +1029,7 @@
     }
     .hero-terminal .terminal-snapshot-title {
       margin: 0;
-      font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+      font-size: clamp(1.22rem, 2.5vw, 1.65rem);
       line-height: 1.12;
       letter-spacing: -0.04em;
       font-weight: 600;
@@ -969,14 +1040,71 @@
       color: #93c5fd;
       text-shadow: none;
     }
-    .hero-terminal #signalTitle {
-      color: #fef3c7;
-    }
     .hero-terminal .terminal-copy > p {
       color: #cbd5e1;
     }
-    .hero-terminal #signalBody {
-      color: #e2e8f0;
+    .hero-terminal .snapshot-boxes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .hero-terminal .snapshot-box {
+      margin: 0;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(99, 102, 241, 0.22);
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .hero-terminal .snapshot-box-title {
+      margin: 0 0 6px;
+      font-size: clamp(0.74rem, 1.02vw, 0.84rem);
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #e0f2fe;
+      text-shadow: 0 0 16px rgba(147, 197, 253, 0.28);
+      line-height: 1.25;
+    }
+    .hero-terminal .snapshot-box-text {
+      margin: 0 0 10px;
+      font-size: clamp(0.86rem, 1.06vw, 0.96rem);
+      line-height: 1.48;
+      color: #f1f5f9;
+      font-weight: 500;
+    }
+    .hero-terminal .snapshot-box-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .hero-terminal .snapshot-skill {
+      font: 700 8px/1.2 "Space Mono", monospace;
+      letter-spacing: 0.04em;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 211, 238, 0.32);
+      color: #a5f3fc;
+      background: rgba(34, 211, 238, 0.08);
+    }
+    :root[data-theme="light"] .hero-terminal .snapshot-box {
+      background: rgba(255, 255, 255, 0.65);
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+    :root[data-theme="light"] .hero-terminal .snapshot-box-text {
+      color: #1e293b;
+      font-weight: 500;
+    }
+    :root[data-theme="light"] .hero-terminal .snapshot-box-title {
+      color: #312e81;
+      text-shadow: none;
+      font-size: clamp(0.76rem, 1.05vw, 0.86rem);
+    }
+    :root[data-theme="light"] .hero-terminal .snapshot-skill {
+      border-color: rgba(8, 145, 178, 0.35);
+      color: #0e7490;
+      background: rgba(8, 145, 178, 0.08);
     }
     .hero-terminal .switch {
       background: #101014;
@@ -1020,12 +1148,6 @@
       border-color: rgba(34, 211, 238, 0.35);
       color: #a5f3fc;
       background: rgba(34, 211, 238, 0.08);
-    }
-    .hero-terminal #signalBadge.pill,
-    .hero-terminal .stack-top .pill {
-      border-color: rgba(244, 114, 182, 0.45);
-      color: #fbcfe8;
-      background: rgba(244, 114, 182, 0.1);
     }
     .hero-terminal .terminal-dots span:nth-child(1) {
       background: #ff5f57;
@@ -1120,29 +1242,6 @@
       overflow: hidden;
       clip: rect(0, 0, 0, 0);
     }
-    .stack-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-    #signalTitle {
-      margin: 6px 0 0;
-      font-size: 1.45rem;
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-    }
-    #signalBody {
-      margin: 16px 0 0;
-      color: var(--muted);
-    }
-    .signal-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 18px;
-    }
     .mini {
       padding: 16px;
       border-radius: 18px;
@@ -1152,74 +1251,140 @@
       --root-eng: #3b82f6;
       --root-sci: #8b5cf6;
       --root-ana: #22d3ee;
-      display: grid;
-      gap: 22px;
+      --skills-group-gap: 12px;
+      --skills-between-groups: clamp(48px, 6vw, 64px);
+      --skills-spine-inset: 18px;
+      --skills-child-indent: 20px;
     }
-    .skills-atlas-nexus {
-      max-width: 760px;
+    .skills-atlas > .skills-grid {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(40px, 5vw, 52px);
     }
-    .skills-atlas-lead {
-      margin-top: 14px;
+    .skills-pipeline-region {
+      --skills-pipeline-merge-gap: clamp(88px, 14vw, 168px);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--skills-pipeline-merge-gap);
     }
-    .skills-nexus-rails {
+    .skills-pipeline-svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 0;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .skills-atlas-columns {
+      position: relative;
+      z-index: 1;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      align-items: stretch;
+      column-gap: 22px;
+      row-gap: var(--skills-between-groups);
+      align-items: start;
+    }
+    .skills-atlas-column {
+      --column-accent: var(--accent);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--skills-group-gap);
+      padding-left: var(--skills-spine-inset);
+      border-left: 2px solid transparent;
+      min-width: 0;
+    }
+    .skills-atlas-column--eng { --column-accent: var(--root-eng); }
+    .skills-atlas-column--sci { --column-accent: var(--root-sci); }
+    .skills-atlas-column--ana { --column-accent: var(--root-ana); }
+    .skills-column-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--skills-group-gap);
+      margin-left: var(--skills-child-indent);
+      min-width: 0;
     }
     .skills-nexus-rail {
-      --rail-accent: var(--accent);
-      padding: 16px 18px 18px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-top: 3px solid var(--rail-accent);
-      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+      --rail-accent: var(--column-accent);
+      margin: 0;
+      padding: 0 0 2px;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      border-top: 0;
+      box-shadow: none;
     }
-    .skills-nexus-rail--eng { --rail-accent: var(--root-eng); }
-    .skills-nexus-rail--sci { --rail-accent: var(--root-sci); }
-    .skills-nexus-rail--ana { --rail-accent: var(--root-ana); }
     .skills-nexus-rail-label {
       display: block;
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       font: 700 10px/1.2 "Space Mono", monospace;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--rail-accent);
     }
-    .skills-nexus-rail p {
+    .skills-root-chapter-title {
+      margin: 0 0 10px;
+      font: 800 clamp(0.95rem, 1.35vw, 1.08rem)/1.2 Inter, system-ui, sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: none;
+      color: var(--column-accent);
+    }
+    .skills-atlas-column--eng .skills-root-chapter-title {
+      text-shadow: 0 0 22px rgba(59, 130, 246, 0.28);
+    }
+    .skills-atlas-column--sci .skills-root-chapter-title {
+      text-shadow: 0 0 22px rgba(139, 92, 246, 0.28);
+    }
+    .skills-atlas-column--ana .skills-root-chapter-title {
+      text-shadow: 0 0 22px rgba(34, 211, 238, 0.28);
+    }
+    :root[data-theme="light"] .skills-atlas-column .skills-root-chapter-title {
+      text-shadow: none;
+    }
+    .skills-root-lede {
       margin: 0;
+      margin-left: var(--skills-child-indent);
+      padding-left: 0;
       font-size: 0.94rem;
       line-height: 1.58;
       color: var(--muted);
     }
-    .skills-column-connectors {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      height: 18px;
-      margin: -6px 0 -10px;
-      pointer-events: none;
+    .skills-root-index {
+      margin-bottom: 6px;
+      opacity: 0.55;
+      font-size: 10px;
     }
-    .skills-column-connector {
-      justify-self: center;
-      width: 3px;
-      height: 100%;
-      border-radius: 3px;
-      background: linear-gradient(180deg, var(--conn) 0%, rgba(255, 255, 255, 0.06) 100%);
-      opacity: 0.85;
+    .skills-branch-subtitle {
+      margin: 0 0 8px;
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
     }
-    .skills-column-connector--eng { --conn: var(--root-eng); }
-    .skills-column-connector--sci { --conn: var(--root-sci); }
-    .skills-column-connector--ana { --conn: var(--root-ana); }
+    .skills-atlas-column .skills-branch .hero-note {
+      margin-top: 0;
+    }
+    .skills-atlas-column .skills-branch-orbit {
+      margin-top: 12px;
+    }
+    .skills-atlas-column .skills-branch {
+      margin-left: var(--skills-child-indent);
+    }
     .skills-branch--eng,
     .skills-branch--sci,
     .skills-branch--ana {
-      border-top: 3px solid var(--branch-accent, rgba(255, 255, 255, 0.1));
+      border-top: 2px solid rgba(255, 255, 255, 0.08);
     }
-    .skills-branch--eng { --branch-accent: var(--root-eng); }
-    .skills-branch--sci { --branch-accent: var(--root-sci); }
-    .skills-branch--ana { --branch-accent: var(--root-ana); }
+    .skills-branch--eng { --branch-accent: var(--root-eng); border-top-color: rgba(59, 130, 246, 0.48); }
+    .skills-branch--sci { --branch-accent: var(--root-sci); border-top-color: rgba(139, 92, 246, 0.48); }
+    .skills-branch--ana { --branch-accent: var(--root-ana); border-top-color: rgba(34, 211, 238, 0.48); }
+    :root[data-theme="light"] .skills-branch--eng { border-top-color: rgba(37, 99, 235, 0.5); }
+    :root[data-theme="light"] .skills-branch--sci { border-top-color: rgba(109, 40, 217, 0.5); }
+    :root[data-theme="light"] .skills-branch--ana { border-top-color: rgba(8, 145, 178, 0.55); }
     .skills-root-card--eng,
     .skills-root-card--sci,
     .skills-root-card--ana {
@@ -1228,26 +1393,24 @@
     .skills-root-card--eng { --card-accent: var(--root-eng); }
     .skills-root-card--sci { --card-accent: var(--root-sci); }
     .skills-root-card--ana { --card-accent: var(--root-ana); }
-    :root[data-theme="light"] .skills-nexus-rail {
-      background: rgba(15, 23, 42, 0.03);
-      border-color: rgba(15, 23, 42, 0.08);
+    .skills-atlas-column .skills-column-stack .skills-root-card {
+      border-left: 0;
+    }
+    :root[data-theme="light"] .skills-atlas-column .skills-nexus-rail {
+      background: transparent;
+      border: 0;
       box-shadow: none;
     }
-    :root[data-theme="light"] .skills-nexus-rail p {
+    :root[data-theme="light"] .skills-root-lede {
       color: var(--muted);
     }
     .skills-atlas h3,
     .bento-card h3,
-    .project-copy h3,
+    .project-summary-title,
     .visual-card h3,
     .journey-stop h3 {
       margin: 0;
       letter-spacing: -0.04em;
-    }
-    .skills-atlas-branches {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
     }
     .skills-branch,
     .bento-card {
@@ -1258,8 +1421,7 @@
     }
     .skills-branch::before,
     .bento-card::before,
-    .journey-stop::before,
-    .project-section::before {
+    .journey-stop::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -1271,10 +1433,14 @@
     .skills-branch-orbit,
     .skills-inline-chips,
     .skills-cluster {
-      margin-top: 18px;
+      margin-top: 14px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+    }
+    .skills-atlas-column .skills-inline-chips,
+    .skills-atlas-column .skills-cluster {
+      margin-top: 12px;
     }
     .skills-branch-node,
     .skills-inline-chips span,
@@ -1288,32 +1454,158 @@
       color: var(--muted);
       font-size: 12px;
     }
-    .skills-grid {
+    .skills-root-card { min-height: 0; }
+    .skills-bridge-card { grid-column: 1 / -1; }
+    #skillsPipelineSummary {
+      transform-origin: 50% 50%;
+    }
+    .skills-process-lead {
+      margin-top: 10px;
+      max-width: 68ch;
+    }
+    .skills-process-timeline {
+      list-style: none;
+      margin: 26px 0 0;
+      padding: 28px 0 0;
+      position: relative;
+      z-index: 1;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 28px;
-    }
-    .skills-root-card { min-height: 340px; }
-    .skills-bridge-card { grid-column: 1 / -1; }
-    .skills-link-list {
-      display: grid;
-      gap: 16px;
-      margin-top: 18px;
-    }
-    .skills-link-row {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 16px;
+      column-gap: clamp(10px, 2.4vw, 28px);
       align-items: start;
-      padding: 16px 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
     }
-    .skills-link-label {
-      color: var(--accent);
-      font: 700 10px/1.4 "Space Mono", monospace;
-      letter-spacing: 0.12em;
+    .skills-process-timeline::before {
+      content: "";
+      position: absolute;
+      left: calc(100% / 6);
+      width: calc(100% * 2 / 3);
+      top: 7px;
+      height: 2px;
+      border-radius: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(59, 130, 246, 0.55),
+        rgba(139, 92, 246, 0.55),
+        rgba(34, 211, 238, 0.55)
+      );
+    }
+    :root[data-theme="light"] .skills-process-timeline::before {
+      background: linear-gradient(
+        90deg,
+        rgba(59, 130, 246, 0.4),
+        rgba(139, 92, 246, 0.4),
+        rgba(8, 145, 178, 0.45)
+      );
+    }
+    .skills-process-step {
+      position: relative;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-width: 0;
+    }
+    .skills-process-step::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 1px;
+      width: 14px;
+      height: 14px;
+      margin-left: -7px;
+      border-radius: 50%;
+      background: var(--panel-solid);
+      border: 2px solid var(--step-accent, var(--accent));
+      box-shadow: 0 0 0 3px rgba(7, 10, 20, 0.55);
+      z-index: 1;
+    }
+    :root[data-theme="light"] .skills-process-step::before {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.92);
+    }
+    .skills-process-step--eng { --step-accent: var(--root-eng); }
+    .skills-process-step--sci { --step-accent: var(--root-sci); }
+    .skills-process-step--ana { --step-accent: var(--root-ana); }
+    .skills-process-title-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin: 22px 0 6px;
+      width: 100%;
+    }
+    .skills-process-num {
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
+      color: var(--step-accent);
+    }
+    .skills-process-phase {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+    .skills-process-step .hero-note {
+      margin: 0 0 12px;
+      font-size: 14px;
+    }
+    .skills-process-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    .skills-process-chips span {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    :root[data-theme="light"] .skills-process-chips span {
+      background: rgba(15, 23, 42, 0.04);
+      border-color: rgba(15, 23, 42, 0.08);
+    }
+    .skills-process-step--eng .skills-process-chips span {
+      border-color: rgba(59, 130, 246, 0.32);
+    }
+    .skills-process-step--sci .skills-process-chips span {
+      border-color: rgba(139, 92, 246, 0.32);
+    }
+    .skills-process-step--ana .skills-process-chips span {
+      border-color: rgba(34, 211, 238, 0.32);
+    }
+    :root[data-theme="light"] .skills-process-step--eng .skills-process-chips span {
+      border-color: rgba(59, 130, 246, 0.28);
+    }
+    :root[data-theme="light"] .skills-process-step--sci .skills-process-chips span {
+      border-color: rgba(139, 92, 246, 0.28);
+    }
+    :root[data-theme="light"] .skills-process-step--ana .skills-process-chips span {
+      border-color: rgba(8, 145, 178, 0.3);
+    }
+    @media (max-width: 560px) {
+      .skills-process-timeline {
+        grid-template-columns: repeat(3, minmax(124px, 1fr));
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-gutter: stable;
+      }
+      .skills-process-step .hero-note {
+        font-size: 13px;
+      }
+      .skills-process-phase {
+        font-size: 15px;
+      }
     }
     .skills-marquee {
       margin-top: 20px;
@@ -1343,92 +1635,317 @@
       margin: 0 auto;
       padding: 0 0 100px;
     }
-    .projects-toolbar {
+    #projects > .section-head {
       margin-bottom: 28px;
-      padding: 22px 22px 20px;
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    #projects {
+      interpolate-size: allow-keywords;
+    }
+    #projects .project-section {
+      --project-accent: #6366f1;
+      --project-accent-glow: rgba(99, 102, 241, 0.22);
+      --project-watermark: rgba(99, 102, 241, 0.072);
+      --project-edge: rgba(99, 102, 241, 0.11);
+      position: relative;
+      isolation: isolate;
+      padding: 26px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-top: 2px solid color-mix(in srgb, var(--project-accent) 58%, transparent);
+      box-shadow:
+        var(--shadow),
+        0 0 0 1px color-mix(in srgb, var(--project-accent) 8%, transparent) inset,
+        -18px 0 48px color-mix(in srgb, var(--project-accent) 6%, transparent);
       background:
-        linear-gradient(165deg, rgba(99, 102, 241, 0.08), transparent 42%),
-        rgba(255, 255, 255, 0.02);
+        linear-gradient(
+          102deg,
+          color-mix(in srgb, var(--project-accent) 14%, rgba(22, 28, 52, 0.55)) 0%,
+          rgba(12, 16, 30, 0.2) 38%,
+          rgba(10, 13, 24, 0.92) 72%
+        ),
+        linear-gradient(180deg, rgba(18, 22, 42, 0.96), rgba(10, 13, 24, 0.94));
     }
-    :root[data-theme="light"] .projects-toolbar {
-      background: rgba(255, 255, 255, 0.65);
-      border-color: rgba(15, 23, 42, 0.08);
+    :root[data-theme="light"] #projects .project-section {
+      border-top-color: color-mix(in srgb, var(--project-accent) 45%, transparent);
+      box-shadow:
+        var(--shadow),
+        0 0 0 1px color-mix(in srgb, var(--project-accent) 10%, transparent) inset;
+      background:
+        linear-gradient(
+          102deg,
+          color-mix(in srgb, var(--project-accent) 10%, rgba(255, 255, 255, 0.92)) 0%,
+          rgba(255, 255, 255, 0.55) 42%,
+          rgba(248, 249, 252, 0.98) 78%
+        ),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 244, 252, 0.96));
     }
-    .projects-toolbar-label {
+    #projects .project-section--ml {
+      --project-accent: #6366f1;
+      --project-watermark: rgba(99, 102, 241, 0.078);
+      --project-edge: rgba(99, 102, 241, 0.12);
+    }
+    #projects .project-section--ai {
+      --project-accent: #a855f7;
+      --project-watermark: rgba(168, 85, 247, 0.08);
+      --project-edge: rgba(168, 85, 247, 0.14);
+    }
+    #projects .project-section--client {
+      --project-accent: #22d3ee;
+      --project-watermark: rgba(34, 211, 238, 0.085);
+      --project-edge: rgba(34, 211, 238, 0.13);
+    }
+    #projects .project-section--nlp {
+      --project-accent: #34d399;
+      --project-watermark: rgba(52, 211, 153, 0.08);
+      --project-edge: rgba(52, 211, 153, 0.12);
+    }
+    :root[data-theme="light"] #projects .project-section--ml {
+      --project-watermark: rgba(99, 102, 241, 0.11);
+    }
+    :root[data-theme="light"] #projects .project-section--ai {
+      --project-watermark: rgba(168, 85, 247, 0.11);
+    }
+    :root[data-theme="light"] #projects .project-section--client {
+      --project-watermark: rgba(8, 145, 178, 0.12);
+    }
+    :root[data-theme="light"] #projects .project-section--nlp {
+      --project-watermark: rgba(5, 150, 105, 0.11);
+    }
+    #projects .project-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          118deg,
+          color-mix(in srgb, var(--project-accent) 22%, transparent) 0%,
+          transparent 46%
+        ),
+        radial-gradient(
+          ellipse 70% 55% at 92% 18%,
+          color-mix(in srgb, var(--project-accent) 10%, transparent),
+          transparent 58%
+        );
+      opacity: 0.85;
+    }
+    #projects .project-section::after {
+      content: attr(data-project-num);
+      position: absolute;
+      right: min(3%, 18px);
+      top: 50%;
+      transform: translateY(-52%);
+      z-index: 0;
+      font: 700 clamp(3.5rem, 14vw, 7.5rem) / 0.85 "Space Mono", monospace;
+      letter-spacing: -0.06em;
+      color: var(--project-watermark);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      #projects .project-section::after {
+        font-size: clamp(2.8rem, 22vw, 4.2rem);
+        opacity: 0.9;
+      }
+    }
+    #projects .project-category-kicker {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
       margin: 0 0 12px;
-      font: 700 10px/1 "Space Mono", monospace;
-      letter-spacing: 0.14em;
+      padding: 9px 16px 9px 18px;
+      font: 700 11px/1.2 "Space Mono", monospace;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: color-mix(in srgb, var(--project-accent) 42%, var(--text));
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--project-accent) 22%, transparent),
+        color-mix(in srgb, var(--project-accent) 6%, transparent)
+      );
+      border: 1px solid color-mix(in srgb, var(--project-accent) 38%, transparent);
+      border-left: 4px solid var(--project-accent);
+      border-radius: 6px 999px 999px 6px;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 12px 36px color-mix(in srgb, var(--project-accent) 12%, transparent);
     }
-    .project-rail {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 0 0 16px;
+    :root[data-theme="light"] #projects .project-category-kicker {
+      color: color-mix(in srgb, var(--project-accent) 55%, var(--text));
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--project-accent) 14%, rgba(255, 255, 255, 0.95)),
+        color-mix(in srgb, var(--project-accent) 5%, rgba(255, 255, 255, 0.6))
+      );
+      border-color: color-mix(in srgb, var(--project-accent) 28%, transparent);
+      box-shadow: 0 10px 28px color-mix(in srgb, var(--project-accent) 10%, transparent);
     }
-    .project-rail a {
-      padding: 11px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      color: var(--muted);
-      font: 700 11px/1 "Space Mono", monospace;
+    #projects .project-summary-metrics .metric-pill {
+      padding: 8px 13px;
+      font: 700 9px/1.25 "Space Mono", monospace;
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: color-mix(in srgb, var(--project-accent) 35%, var(--muted));
+      background: color-mix(in srgb, var(--project-accent) 9%, rgba(8, 10, 20, 0.65));
+      border: 1px solid color-mix(in srgb, var(--project-accent) 28%, rgba(255, 255, 255, 0.12));
+      border-radius: 8px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
     }
-    .project-rail a.active {
-      color: var(--text);
-      border-color: var(--border);
-      background: rgba(99, 102, 241, 0.14);
+    :root[data-theme="light"] #projects .project-summary-metrics .metric-pill {
+      color: color-mix(in srgb, var(--project-accent) 40%, var(--text));
+      background: color-mix(in srgb, var(--project-accent) 8%, rgba(255, 255, 255, 0.92));
+      border-color: color-mix(in srgb, var(--project-accent) 22%, rgba(15, 23, 42, 0.12));
     }
-    .project-rail-preview {
-      margin: 0;
-      padding: 16px 18px 18px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.07);
-      background: rgba(6, 8, 16, 0.45);
+    #projects .project-disclosure[open] .project-inner {
+      animation: project-inner-enter 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
-    :root[data-theme="light"] .project-rail-preview {
-      background: rgba(248, 249, 252, 0.95);
-      border-color: rgba(15, 23, 42, 0.08);
+    @supports (interpolate-size: allow-keywords) {
+      #projects .project-disclosure::details-content {
+        transition: block-size 0.48s cubic-bezier(0.33, 1, 0.68, 1);
+        overflow: clip;
+      }
+      #projects .project-disclosure:not([open])::details-content {
+        block-size: 0;
+      }
+      #projects .project-disclosure[open]::details-content {
+        block-size: auto;
+      }
+      #projects .project-disclosure[open] .project-inner {
+        animation: none;
+      }
     }
-    .project-rail-preview-eyebrow {
-      margin: 0 0 6px;
-      font: 700 10px/1 "Space Mono", monospace;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
+    @keyframes project-inner-enter {
+      from {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .project-rail-preview-title {
-      margin: 0;
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      color: var(--text);
-    }
-    .project-rail-preview-summary {
-      margin: 10px 0 14px;
-      font-size: 0.98rem;
-      line-height: 1.62;
-      color: var(--muted);
-    }
-    .project-rail-preview-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    @media (prefers-reduced-motion: reduce) {
+      #projects .project-disclosure::details-content {
+        transition: none !important;
+      }
+      #projects .project-disclosure[open] .project-inner {
+        animation: none !important;
+      }
+      #projects .project-summary-chevron {
+        transition: none !important;
+      }
     }
     .project-stack {
       display: grid;
       gap: 24px;
     }
-    .project-section {
-      padding: 26px;
-      border-radius: 28px;
+    .project-disclosure {
+      position: relative;
+      z-index: 3;
+    }
+    .project-summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 2px 4px 16px;
+      position: relative;
+    }
+    .project-summary::-webkit-details-marker {
+      display: none;
+    }
+    .project-summary::marker {
+      content: "";
+    }
+    .project-summary:focus {
+      outline: none;
+    }
+    .project-summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 12px;
+    }
+    .project-disclosure[open] .project-summary {
+      padding-bottom: 18px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    :root[data-theme="light"] .project-disclosure[open] .project-summary {
+      border-bottom-color: rgba(15, 23, 42, 0.08);
+    }
+    .project-summary-grid {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 16px 20px;
+      align-items: start;
+    }
+    .project-summary-intro .section-kicker {
+      margin: 0 0 6px;
+    }
+    .project-summary-title {
+      font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+      line-height: 1.08;
+      font-weight: 650;
+      color: var(--text);
+    }
+    .project-summary-blurb {
+      margin: 10px 0 0;
+      max-width: 58ch;
+      font-size: clamp(0.86rem, 1.25vw, 0.96rem);
+      line-height: 1.55;
+      color: var(--muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+    .project-summary-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .project-summary-expand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+      pointer-events: none;
+    }
+    .project-summary-chevron {
+      flex-shrink: 0;
+      transform-origin: 50% 50%;
+      transition: transform 0.42s cubic-bezier(0.33, 1, 0.68, 1);
+      opacity: 0.88;
+    }
+    .project-disclosure[open] .project-summary-chevron {
+      transform: rotate(180deg);
+    }
+    .project-expanded {
+      padding: 18px 0 0;
+      position: relative;
+      z-index: 3;
+    }
+    @media (max-width: 820px) {
+      .project-summary-grid {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+      }
+      .project-summary-metrics {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+      }
+      .project-summary-expand {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        align-self: start;
+      }
     }
     .project-inner {
       display: grid;
@@ -1451,11 +1968,6 @@
     }
     .project-copy-header .section-kicker {
       margin-bottom: 10px;
-    }
-    .project-copy h3 {
-      margin: 0;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      line-height: 1.05;
     }
     .project-lede {
       margin: 0 0 18px;
@@ -1649,9 +2161,10 @@
 
     #visualizations {
       position: relative;
-      overflow: hidden;
+      overflow-x: clip;
+      overflow-y: visible;
       background: #07090f;
-      min-height: 100vh;
+      padding-bottom: clamp(48px, 8vw, 100px);
     }
     #visualizations::before {
       content: '';
@@ -1670,6 +2183,47 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
+    .visual-grid.visual-collage {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      /* Dashboard full width on top; six D3 tiles in two wide rows below (larger previews). */
+      grid-template-areas:
+        "viz-hero viz-hero viz-hero viz-hero viz-hero viz-hero"
+        "viz-d3-1 viz-d3-1 viz-d3-2 viz-d3-2 viz-d3-3 viz-d3-3"
+        "viz-d3-4 viz-d3-4 viz-d3-5 viz-d3-5 viz-d3-6 viz-d3-6";
+      gap: clamp(16px, 2.2vw, 22px);
+      align-items: stretch;
+    }
+    .visual-collage .viz-hero { grid-area: viz-hero; }
+    .visual-collage .viz-d3-1 { grid-area: viz-d3-1; }
+    .visual-collage .viz-d3-2 { grid-area: viz-d3-2; }
+    .visual-collage .viz-d3-3 { grid-area: viz-d3-3; }
+    .visual-collage .viz-d3-4 { grid-area: viz-d3-4; }
+    .visual-collage .viz-d3-5 { grid-area: viz-d3-5; }
+    .visual-collage .viz-d3-6 { grid-area: viz-d3-6; }
+    @media (max-width: 1100px) {
+      .visual-grid.visual-collage {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas:
+          "viz-hero viz-hero"
+          "viz-d3-1 viz-d3-2"
+          "viz-d3-3 viz-d3-4"
+          "viz-d3-5 viz-d3-6";
+        gap: clamp(14px, 2vw, 18px);
+      }
+    }
+    @media (max-width: 640px) {
+      .visual-grid.visual-collage {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "viz-hero"
+          "viz-d3-1"
+          "viz-d3-2"
+          "viz-d3-3"
+          "viz-d3-4"
+          "viz-d3-5"
+          "viz-d3-6";
+      }
+    }
     .visual-card {
       position: relative;
       border-radius: 24px;
@@ -1677,8 +2231,51 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       background: rgba(12, 15, 26, 0.75);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s ease;
     }
-    .visual-card.featured { grid-column: 1 / -1; }
+    .visual-collage .visual-card {
+      border-radius: 20px;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border-top: 2px solid rgba(99, 102, 241, 0.42);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    }
+    :root[data-theme="light"] .visual-collage .visual-card {
+      border-top-color: rgba(79, 70, 229, 0.38);
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.1);
+    }
+    .visual-collage .visual-card--feature {
+      border-top-color: rgba(99, 102, 241, 0.72);
+      box-shadow: 0 22px 56px rgba(0, 0, 0, 0.38);
+      min-height: 0;
+    }
+    :root[data-theme="light"] .visual-collage .visual-card--feature {
+      border-top-color: rgba(79, 70, 229, 0.55);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.14);
+    }
+    .visual-collage .visual-card:hover,
+    .visual-collage .visual-card:focus-within {
+      transform: translateY(-4px);
+      z-index: 5;
+      box-shadow: 0 26px 56px rgba(0, 0, 0, 0.42);
+    }
+    .visual-collage .visual-card--feature:hover,
+    .visual-collage .visual-card--feature:focus-within {
+      box-shadow: 0 32px 72px rgba(0, 0, 0, 0.45);
+    }
+    :root[data-theme="light"] .visual-collage .visual-card:hover,
+    :root[data-theme="light"] .visual-collage .visual-card:focus-within {
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.16);
+    }
+    :root[data-theme="light"] .visual-collage .visual-card--feature:hover,
+    :root[data-theme="light"] .visual-collage .visual-card--feature:focus-within {
+      box-shadow: 0 28px 56px rgba(15, 23, 42, 0.18);
+    }
+    .visual-collage .visual-line {
+      display: none;
+    }
     .visual-line {
       height: 2px;
       background: linear-gradient(90deg, var(--accent), transparent 70%);
@@ -1718,7 +2315,276 @@
       border: 0;
       background: #0a0c12;
     }
-    .viz-fallback,
+    .visual-collage .viz-preview-chrome {
+      position: relative;
+      z-index: 0;
+      width: 100%;
+      box-sizing: border-box;
+      background: #0d1117;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .visual-collage .viz-preview-chrome::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 32%;
+      pointer-events: none;
+      z-index: 3;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(12, 15, 26, 0.35) 45%,
+        rgba(12, 15, 26, 0.78) 100%
+      );
+    }
+    :root[data-theme="light"] .visual-collage .viz-preview-chrome::after {
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(248, 250, 252, 0.35) 50%,
+        rgba(248, 250, 252, 0.9) 100%
+      );
+    }
+    /* Hero dashboard: 16×9 frame fills content width; real embed + mock both size to this box. */
+    .visual-collage .visual-card--feature .visual-frame.visual-frame--dashboard {
+      flex: 0 0 auto;
+      width: 100%;
+      margin-top: 8px;
+      aspect-ratio: 16 / 9;
+      min-height: min(220px, 52vw);
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.22);
+    }
+    :root[data-theme="light"] .visual-collage .visual-card--feature .visual-frame.visual-frame--dashboard {
+      border-color: rgba(15, 23, 42, 0.12);
+      background: rgba(248, 250, 252, 0.5);
+    }
+    .visual-collage .viz-preview-chrome--hero {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(10px, 1.2vw, 14px);
+      box-sizing: border-box;
+      min-height: 0;
+    }
+    .visual-collage .viz-preview-chrome--hero .pb-shell {
+      position: relative;
+      z-index: 1;
+      flex: 1 1 auto;
+      min-height: 0;
+      height: 100%;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .visual-collage .pb-shell .powerbi-embed-container:not([hidden]) {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .visual-collage .viz-preview-chrome--hero .pb-layout {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .visual-collage .viz-preview-chrome--hero .pb-mock {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+    }
+    .visual-collage .pb-shell.powerbi-shell-embed {
+      min-height: 0;
+    }
+    .visual-collage .pb-shell .powerbi-embed-container {
+      min-height: 0;
+    }
+    .visual-collage .visual-card--feature .visual-card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      padding: clamp(12px, 1.4vw, 16px);
+    }
+    .visual-collage .visual-card--feature .visual-label {
+      margin-bottom: 8px;
+    }
+    .visual-collage .visual-card--feature .tag-row {
+      margin-bottom: 4px;
+    }
+    .visual-collage .visual-card--feature .visual-frame:not(.visual-frame--dashboard) {
+      flex: 1 1 auto;
+      min-height: 0;
+      margin-top: 8px;
+      border: 0;
+      background: transparent;
+      border-radius: 0;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-card-body {
+      padding: 12px 12px 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-label {
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) h3 {
+      font-size: clamp(1rem, 1.55vw, 1.22rem);
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      margin: 0;
+      flex-shrink: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-frame {
+      flex: 1 1 0;
+      min-height: 0;
+      margin-top: 10px;
+      border: 0;
+      background: transparent;
+      border-radius: 0;
+    }
+    /* Do not force min-height:0 on .viz-pane — it only has position:absolute children, so it
+       would collapse to 0px and hide iframes. ID selector previously beat .viz-pane’s min-height. */
+    #visualizations .visual-collage .visual-frame:not(.viz-pane) {
+      min-height: 0;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane {
+      --viz-scale: 0.35;
+      --viz-base-w: 1280px;
+      --viz-base-h: 720px;
+      flex: 1 1 0;
+      min-height: clamp(300px, 36vw, 480px);
+      align-self: stretch;
+      position: relative;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane .viz-preview-chrome {
+      position: absolute;
+      inset: 0;
+      width: auto;
+      height: auto;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane .viz-pane-scale {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--viz-base-w);
+      height: var(--viz-base-h);
+      margin-left: calc(var(--viz-base-w) / -2);
+      margin-top: calc(var(--viz-base-h) / -2);
+      transform: scale(var(--viz-scale));
+      transform-origin: center center;
+      z-index: 1;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane .viz-pane-scale iframe {
+      display: block;
+      width: var(--viz-base-w) !important;
+      height: var(--viz-base-h) !important;
+      min-height: 0 !important;
+      max-width: none;
+      border: 0;
+      background: #0a0c12;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane .viz-fallback {
+      z-index: 5;
+    }
+    /* Jump nav: reach D3 previews below the dashboard (fixed header offset). */
+    .viz-jump-nav {
+      margin: clamp(8px, 1.5vw, 16px) 0 clamp(20px, 2.5vw, 28px);
+      padding: clamp(14px, 2vw, 18px) clamp(16px, 2.2vw, 22px);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      scroll-margin-top: 96px;
+    }
+    :root[data-theme="light"] .viz-jump-nav {
+      border-color: rgba(15, 23, 42, 0.1);
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .viz-jump-nav-lead {
+      margin: 0 0 12px;
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+    }
+    .viz-jump-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      align-items: center;
+    }
+    .viz-jump-nav-links a {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--muted);
+      font: 700 11px/1.2 "Space Mono", monospace;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+    :root[data-theme="light"] .viz-jump-nav-links a {
+      border-color: rgba(15, 23, 42, 0.12);
+      background: rgba(255, 255, 255, 0.85);
+      color: #475569;
+    }
+    .viz-jump-nav-links a:hover,
+    .viz-jump-nav-links a:focus-visible {
+      color: var(--text);
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.12);
+      outline: none;
+    }
+    .visual-collage .visual-card.viz-d3-target {
+      scroll-margin-top: 96px;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-actions {
+      margin-top: auto;
+      padding-top: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .visual-collage .visual-card--feature .visual-actions {
+      margin-top: auto;
+      padding-top: 12px;
+      flex-shrink: 0;
+    }
+    .viz-fallback {
+      position: absolute;
+      inset: 0;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      font: 700 12px/1 "Space Mono", monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(5, 7, 15, 0.88);
+    }
+    .viz-fallback[hidden] {
+      display: none !important;
+    }
+    .viz-fallback:not([hidden]) {
+      display: flex;
+    }
     .viz-hover-overlay {
       position: absolute;
       inset: 0;
@@ -1730,8 +2596,6 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       background: rgba(5, 7, 15, 0.72);
-    }
-    .viz-hover-overlay {
       opacity: 0;
       transition: opacity 0.25s ease;
       pointer-events: none;
@@ -1854,6 +2718,71 @@
     .journey-head {
       margin-bottom: 0;
     }
+    .journey-section .journey-head {
+      margin-bottom: clamp(16px, 2.5vw, 26px);
+    }
+    .journey-section .journey-head .journey-head-grid > div:first-child h2 {
+      margin: 0;
+    }
+    .journey-rail.rail {
+      gap: 10px;
+      margin-bottom: 0;
+    }
+    .journey-rail.rail a {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      padding: 12px 18px;
+      border-radius: 16px;
+      text-transform: none;
+      letter-spacing: 0;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
+      line-height: 1.25;
+    }
+    .journey-rail .rail-chapter {
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+    :root[data-theme="light"] .journey-rail .rail-chapter {
+      color: #0e7490;
+    }
+    .journey-rail .rail-label {
+      color: var(--muted);
+      max-width: 14em;
+    }
+    .journey-rail.rail a.active .rail-label {
+      color: var(--text);
+    }
+    .journey-chapter-tag {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin: 0 0 clamp(14px, 2.2vw, 20px);
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    :root[data-theme="light"] .journey-chapter-tag {
+      border-bottom-color: rgba(15, 23, 42, 0.08);
+    }
+    .journey-chapter-tag__num {
+      font: 700 11px/1 "Space Mono", monospace;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+    }
+    :root[data-theme="light"] .journey-chapter-tag__num {
+      color: #0e7490;
+    }
+    .journey-chapter-tag__title {
+      font: 700 clamp(0.72rem, 1.1vw, 0.82rem)/1 "Space Mono", monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+    }
     .journey-head-grid {
       align-items: start;
     }
@@ -1861,10 +2790,145 @@
       margin-bottom: 12px;
     }
     .journey-head-grid > div:first-child h2 {
-      margin: 0 0 14px;
+      margin: 0 0 16px;
     }
     .journey-rail-wrap {
-      margin-bottom: 18px;
+      margin-top: clamp(8px, 1.5vw, 14px);
+      margin-bottom: clamp(20px, 3vw, 28px);
+    }
+    #journey-overview .journey-chapter-opening {
+      margin-bottom: clamp(22px, 4vw, 34px);
+      padding-bottom: clamp(20px, 3.5vw, 30px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    :root[data-theme="light"] #journey-overview .journey-chapter-opening {
+      border-bottom-color: rgba(15, 23, 42, 0.08);
+    }
+    #journey-overview .journey-chapter-stack {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 3vw, 26px);
+      margin-top: 0;
+    }
+    #journey-overview .journey-step {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      border-radius: 22px;
+      background: transparent;
+    }
+    #journey-overview .journey-step--primary {
+      padding: clamp(22px, 3.2vw, 32px) clamp(22px, 3vw, 30px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+        0 1px 0 rgba(255, 255, 255, 0.06) inset;
+    }
+    :root[data-theme="light"] #journey-overview .journey-step--primary {
+      border-color: rgba(15, 23, 42, 0.14);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+    }
+    #journey-overview .journey-step--primary h4 {
+      font-size: clamp(1.08rem, 2.1vw, 1.28rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    #journey-overview .journey-step--secondary {
+      padding: clamp(18px, 2.6vw, 24px) clamp(20px, 2.8vw, 26px);
+      max-width: min(100%, 48rem);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    }
+    :root[data-theme="light"] #journey-overview .journey-step--secondary {
+      border-color: rgba(15, 23, 42, 0.1);
+    }
+    #journey-overview .journey-step--secondary h4 {
+      font-size: clamp(1.02rem, 1.85vw, 1.12rem);
+      font-weight: 650;
+      margin-bottom: 10px;
+    }
+    #journey-overview .journey-step--signal {
+      padding: clamp(16px, 2.2vw, 22px) clamp(18px, 2.5vw, 24px);
+      max-width: min(100%, 40rem);
+      border: 1px solid rgba(255, 255, 255, 0.075);
+    }
+    :root[data-theme="light"] #journey-overview .journey-step--signal {
+      border-color: rgba(15, 23, 42, 0.08);
+    }
+    #journey-overview .journey-step--signal h4 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .journey-signal-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 2.5vw, 22px);
+      margin-top: 6px;
+    }
+    .journey-metric {
+      min-width: 0;
+    }
+    .journey-metric-value {
+      display: block;
+      font: 700 clamp(2.1rem, 5.2vw, 3.25rem) / 1 "Space Mono", monospace;
+      letter-spacing: -0.04em;
+      color: #5eead4;
+      text-shadow:
+        0 0 42px rgba(34, 211, 238, 0.45),
+        0 0 2px rgba(94, 234, 212, 0.9);
+    }
+    :root[data-theme="light"] .journey-metric-value {
+      color: #0d9488;
+      text-shadow: none;
+    }
+    .journey-metric-label {
+      display: block;
+      margin-top: 10px;
+      font: 700 11px/1.25 "Space Mono", monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .journey-metric-desc {
+      margin: 8px 0 0;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--muted-soft);
+      max-width: 32ch;
+    }
+    .journey-chapter-conclusion {
+      margin-top: clamp(36px, 6vw, 56px);
+      padding: clamp(22px, 3.2vw, 30px) clamp(22px, 3vw, 28px);
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        linear-gradient(165deg, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(10, 14, 26, 0.35) 100%);
+      box-shadow:
+        0 0 0 1px rgba(99, 102, 241, 0.08) inset,
+        0 18px 48px rgba(0, 0, 0, 0.22);
+    }
+    :root[data-theme="light"] .journey-chapter-conclusion {
+      border-color: rgba(15, 23, 42, 0.12);
+      background: linear-gradient(165deg, rgba(255, 255, 255, 0.95), rgba(241, 245, 249, 0.88));
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
+    .journey-chapter-conclusion-kicker {
+      margin: 0 0 12px;
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+    :root[data-theme="light"] .journey-chapter-conclusion-kicker {
+      color: #0e7490;
+    }
+    .journey-chapter-conclusion-body {
+      margin: 0;
+      max-width: 68ch;
+      font-size: clamp(0.98rem, 1.4vw, 1.06rem);
+      line-height: 1.7;
+      color: var(--muted);
     }
     .rail {
       display: flex;
@@ -2161,29 +3225,54 @@
     @media (min-width: 920px) {
       .nav-availability { display: inline-flex; }
       .section-head-grid { grid-template-columns: 1.05fr 0.95fr; }
-      .hero-inner { grid-template-columns: 1.05fr 0.95fr; }
+      .hero-top-row {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 32px;
+        align-items: stretch;
+      }
+      .hero-terminal {
+        height: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .hero-terminal .terminal-shell {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .hero-terminal .terminal-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .hero-terminal .snapshot-boxes {
+        flex: 1;
+        min-height: 0;
+      }
     }
 
     @media (max-width: 1024px) {
-      .skills-nexus-rails,
-      .skills-atlas-branches,
-      .skills-grid,
-      .visual-grid,
+      .skills-atlas-columns {
+        grid-template-columns: 1fr;
+      }
+      .visual-grid:not(.visual-collage),
       .timeline-grid,
       .timeline-stack,
-      .signal-grid,
+      .snapshot-boxes,
       .hero-signal-band,
       .project-inner,
       .project-details,
       .pb-layout {
         grid-template-columns: 1fr;
       }
-      .skills-link-row,
       .journey-overview {
         grid-template-columns: 1fr;
       }
-      .pb-nav,
-      .skills-column-connectors {
+      .pb-nav {
         display: none;
       }
       .pb-filters {
@@ -2204,6 +3293,13 @@
         order: initial;
       }
       .mini-stack { grid-template-columns: 1fr; }
+      .journey-signal-metrics {
+        grid-template-columns: 1fr;
+      }
+      #journey-overview .journey-step--secondary,
+      #journey-overview .journey-step--signal {
+        max-width: 100%;
+      }
     }
 
     @media (max-width: 920px) {
@@ -2219,8 +3315,8 @@
     }
 
     @media print {
-      @page { size: letter; margin: 0.59in; }
-      body { background: #fff; }
+      @page { size: letter; margin: 0.45in; }
+      body { background: #fff !important; }
       body * { visibility: hidden !important; }
       #resume, #resume * { visibility: visible !important; }
       #resume {
@@ -2228,17 +3324,79 @@
         left: 0;
         top: 0;
         width: 100%;
-        background: #fff;
+        background: #fff !important;
       }
+      #resume .resume-shell-section,
       #resume .section-shell {
-        padding: 0;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #fff !important;
+      }
+      #resume .resume-panel {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+      #resume .noprint,
+      #resume .resume-kicker,
+      #resume .resume-title,
+      #resume .resume-intro,
+      #resume .resume-actions {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
       }
       #resume .resume-page {
-        margin-top: 0;
-        max-width: none;
-        padding: 10px 30px;
-        box-shadow: none;
-        border-radius: 0;
+        margin: 0 !important;
+        max-width: none !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        font-size: 10.25pt;
+        line-height: 1.28;
+      }
+      #resume .resume-pdf-header {
+        padding-bottom: 6px !important;
+        margin-bottom: 10px !important;
+      }
+      #resume .resume-pdf-name {
+        font-size: 22pt !important;
+      }
+      #resume .resume-pdf-contact {
+        font-size: 9.5pt !important;
+      }
+      #resume .resume-pdf-h2 {
+        margin: 8px 0 4px !important;
+        padding-bottom: 2px !important;
+        font-size: 11pt !important;
+      }
+      #resume .resume-pdf-section {
+        margin-bottom: 7px !important;
+      }
+      #resume .resume-pdf-summary,
+      #resume .resume-page .resume-list li,
+      #resume .resume-pdf-desc,
+      #resume .resume-pdf-skill-row {
+        font-size: 9.5pt !important;
+        line-height: 1.3 !important;
+      }
+      #resume .resume-pdf-skills-grid {
+        gap: 6px 16px !important;
+      }
+      #resume .resume-pdf-entry {
+        margin-bottom: 7px !important;
+      }
+      #resume .resume-pdf-job-title,
+      #resume .resume-pdf-university-line {
+        font-size: 10.5pt !important;
+      }
+      #resume .resume-pdf-date {
+        font-size: 9.5pt !important;
+      }
+      #resume .resume-page .resume-list li {
+        margin-bottom: 1px !important;
       }
       .noprint,
       .site-nav,
@@ -2248,7 +3406,9 @@
       #scroll-section-rail,
       #section-counter,
       #customCursor,
-      #customCursorDot {
+      #customCursorDot,
+      #dragon-bg,
+      .site-intro {
         display: none !important;
       }
     }
@@ -2374,14 +3534,6 @@
       background: linear-gradient(180deg, var(--accent), var(--cyan));
       transition: height 0.12s linear;
     }
-    #noise-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
     .journey-section { position: relative; }
     .journey-section > .section-shell {
       position: relative;
@@ -2390,7 +3542,6 @@
     @media (max-width: 767px) {
       #hero-webgl,
       #section-counter,
-      #noise-canvas,
       .project-distortion-canvas { display: none !important; }
     }
   </style>
@@ -2471,12 +3622,75 @@
       margin-top: 8px;
       position: relative;
     }
-    .jt-inner {
+    .jt-layout-stack .jt-inner {
+      display: block;
+    }
+    .jt-layout-stack .jt-arrow {
+      display: none !important;
+    }
+    .jt-layout-stack .jt-viewport {
       display: flex;
-      align-items: stretch;
-      gap: 10px;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+      position: relative;
+    }
+    .jt-layout-stack .jt-progress-rail {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 6px 0 4px;
+      order: 0;
+    }
+    .jt-layout-stack .jt-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow: visible;
+      min-height: 0;
+      border-radius: 0;
+      scroll-snap-type: none;
+      position: relative;
+      order: 1;
+    }
+    .jt-layout-stack .jt-panel {
+      flex: 0 0 auto;
+      width: 100%;
+      min-height: 0;
+      box-sizing: border-box;
+      scroll-margin-top: 96px;
+      position: relative;
+      padding: 22px 24px 26px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: none;
+      overflow: visible;
+    }
+    :root[data-theme="light"] .jt-layout-stack .jt-panel {
+      background: rgba(255, 255, 255, 0.58);
+      border-color: rgba(15, 23, 42, 0.09);
+    }
+    .jt-layout-stack .jt-num {
+      position: absolute;
+      left: 10px;
+      top: 6px;
+      font: 700 clamp(52px, 10vw, 88px) / 1 "Space Mono", monospace;
+      color: rgba(99, 102, 241, 0.14);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .jt-layout-stack .jt-panel-scroll {
+      position: relative;
+      z-index: 1;
+      max-height: none;
+      overflow: visible;
     }
     .jt-arrow {
+      display: none;
       flex: 0 0 44px;
       align-self: center;
       min-height: 52px;
@@ -2503,25 +3717,13 @@
     .jt-strip {
       flex: 1;
       display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      min-height: 80vh;
-      border-radius: 24px;
+      flex-direction: column;
+      overflow: visible;
       position: relative;
-      scrollbar-width: thin;
     }
     .jt-panel {
-      flex: 0 0 100%;
-      min-height: 80vh;
-      scroll-snap-align: start;
-      box-sizing: border-box;
-      background: linear-gradient(145deg, rgba(12, 16, 32, 0.94), rgba(8, 10, 22, 0.98));
-      border: 1px solid rgba(99, 102, 241, 0.18);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
       position: relative;
+      overflow: hidden;
     }
     .jt-num {
       position: absolute;
@@ -2535,17 +3737,15 @@
     .jt-panel-scroll {
       position: relative;
       z-index: 1;
-      max-height: 80vh;
-      overflow: auto;
     }
     .jt-progress-rail {
-      flex: 0 0 44px;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      padding: 8px 4px;
+      gap: 12px;
+      padding: 6px 0;
     }
     .jt-dot {
       width: 12px;
@@ -2577,7 +3777,8 @@
     }
     #visualizations {
       position: relative;
-      overflow: clip;
+      overflow-x: clip;
+      overflow-y: visible;
     }
     .viz-parallax-layers {
       position: absolute;
@@ -2689,39 +3890,6 @@
     @media (max-width: 767px) {
       #scroll-section-rail {
         display: none !important;
-      }
-      .jt-inner {
-        flex-direction: column;
-      }
-      .jt-arrow {
-        display: none;
-      }
-      .jt-viewport {
-        flex-direction: column;
-      }
-      .jt-progress-rail {
-        flex-direction: row;
-        flex: none;
-        justify-content: center;
-        padding: 10px 0 14px;
-        order: -1;
-      }
-      .jt-strip {
-        flex-direction: column;
-        overflow-x: hidden;
-        overflow-y: auto;
-        scroll-snap-type: y mandatory;
-        min-height: 0;
-      }
-      .jt-panel {
-        flex: 0 0 auto;
-        min-height: auto;
-        width: 100%;
-        scroll-snap-align: start;
-      }
-      .jt-panel-scroll {
-        max-height: none;
-        overflow: visible;
       }
     }
   </style>
@@ -2897,7 +4065,7 @@
     <div class="ss-dots">
       <button type="button" class="ss-dot" aria-label="Home section"><span class="ss-abbr">HM</span></button>
       <button type="button" class="ss-dot" aria-label="Skills"><span class="ss-abbr">SK</span></button>
-      <button type="button" class="ss-dot" aria-label="Featured work section"><span class="ss-abbr">WK</span></button>
+      <button type="button" class="ss-dot" aria-label="Projects section"><span class="ss-abbr">PR</span></button>
       <button type="button" class="ss-dot" aria-label="Visualizations section"><span class="ss-abbr">VZ</span></button>
       <button type="button" class="ss-dot" aria-label="Journey section"><span class="ss-abbr">JN</span></button>
       <button type="button" class="ss-dot" aria-label="Resume section"><span class="ss-abbr">RS</span></button>
@@ -2917,7 +4085,7 @@
         <span class="nav-indicator" id="navIndicator" aria-hidden="true"></span>
         <a class="nav-link active" href="#hero">Home</a>
         <a class="nav-link" href="#skills">Skills</a>
-        <a class="nav-link" href="#projects">Featured Work</a>
+        <a class="nav-link" href="#projects">Projects</a>
         <a class="nav-link" href="#visualizations">Visualizations</a>
         <a class="nav-link" href="#journey">Journey</a>
         <a class="nav-link" href="#resume">Resume</a>
@@ -2950,6 +4118,8 @@
       </div>
       <div class="hero-inner">
         <div class="hero-copy">
+          <div class="hero-top-row">
+            <div class="hero-copy-primary">
           <p class="eyebrow">Chicago · Data Science · Product-Minded Analytics</p>
           <h1 class="hero-title" id="heroTitle" data-headline>
             <span class="hero-name">James Liebel</span>
@@ -2983,6 +4153,48 @@
               <span>IBM Data Science Professional Certificate and Microsoft Power BI Data Analyst.</span>
             </article>
           </div>
+            </div>
+
+        <aside class="hero-terminal" id="heroTerminal">
+          <div class="terminal-shell">
+            <div class="terminal-chrome">
+              <div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+              <span>james@uchicago:~/portfolio</span>
+            </div>
+            <div class="terminal-top">
+              <div class="terminal-copy">
+                <h2 class="terminal-snapshot-title">Role-aligned portfolio</h2>
+              </div>
+              <div class="switch" id="modeSwitch" role="tablist" aria-label="Profile modes">
+                <span class="switch-indicator" id="modeIndicator" aria-hidden="true"></span>
+                <button class="active" type="button" data-mode="builder">Data Engineering</button>
+                <button type="button" data-mode="analyst">Data Science</button>
+                <button type="button" data-mode="operator">Data Analysis</button>
+              </div>
+            </div>
+            <div class="terminal-body">
+              <div class="snapshot-boxes" id="snapshotBoxes" aria-live="polite">
+                <article class="snapshot-box">
+                  <h4 class="snapshot-box-title" id="snapshotBox0Title"></h4>
+                  <p class="snapshot-box-text" id="snapshotBox0Text"></p>
+                  <div class="snapshot-box-skills" id="snapshotBox0Skills"></div>
+                </article>
+                <article class="snapshot-box">
+                  <h4 class="snapshot-box-title" id="snapshotBox1Title"></h4>
+                  <p class="snapshot-box-text" id="snapshotBox1Text"></p>
+                  <div class="snapshot-box-skills" id="snapshotBox1Skills"></div>
+                </article>
+                <article class="snapshot-box">
+                  <h4 class="snapshot-box-title" id="snapshotBox2Title"></h4>
+                  <p class="snapshot-box-text" id="snapshotBox2Text"></p>
+                  <div class="snapshot-box-skills" id="snapshotBox2Skills"></div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+          </div>
 
           <div class="hero-carousel" aria-label="Work and tools carousel">
             <div class="hero-carousel-bleed">
@@ -3001,10 +4213,22 @@
                     <article class="hero-creation"><strong>News Sentiment</strong><span>NLP features</span></article>
                     <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
                     <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
+                    <article class="hero-creation"><strong>Credit Card Fraud Detection</strong><span>ML pipeline</span></article>
+                    <article class="hero-creation"><strong>JimAI</strong><span>AI workspace prototype</span></article>
+                    <article class="hero-creation"><strong>CustomStrat</strong><span>Live client website</span></article>
+                    <article class="hero-creation"><strong>News Sentiment</strong><span>NLP features</span></article>
+                    <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
+                    <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
                   </div>
                 </div>
                 <div class="hero-creation-row reverse">
                   <div class="hero-creation-track">
+                    <article class="hero-creation"><strong>Python</strong><span>Core language</span></article>
+                    <article class="hero-creation"><strong>SQL</strong><span>Modeling + ETL</span></article>
+                    <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
+                    <article class="hero-creation"><strong>React</strong><span>Usable interfaces</span></article>
+                    <article class="hero-creation"><strong>XGBoost</strong><span>Tabular prediction</span></article>
+                    <article class="hero-creation"><strong>D3.js</strong><span>Storytelling</span></article>
                     <article class="hero-creation"><strong>Python</strong><span>Core language</span></article>
                     <article class="hero-creation"><strong>SQL</strong><span>Modeling + ETL</span></article>
                     <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
@@ -3040,210 +4264,180 @@
             </div>
           </div>
         </div>
-
-        <aside class="hero-terminal" id="heroTerminal">
-          <div class="terminal-shell">
-            <div class="terminal-chrome">
-              <div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-              <span>james@uchicago:~/portfolio</span>
-            </div>
-            <div class="terminal-top">
-              <div class="terminal-copy">
-                <h2 class="terminal-snapshot-title">Role-aligned portfolio</h2>
-              </div>
-              <div class="switch" id="modeSwitch" role="tablist" aria-label="Profile modes">
-                <span class="switch-indicator" id="modeIndicator" aria-hidden="true"></span>
-                <button class="active" type="button" data-mode="builder">Data Engineering</button>
-                <button type="button" data-mode="analyst">Data Science</button>
-                <button type="button" data-mode="operator">Data Analysis</button>
-              </div>
-            </div>
-            <div class="terminal-body">
-              <div class="stack">
-                <div class="stack-top">
-                  <div>
-                    <p class="terminal-label">Current view</p>
-                    <h3 id="signalTitle">Best evidence for data engineering work</h3>
-                  </div>
-                  <span class="pill" id="signalBadge">Pipelines + delivery</span>
-                </div>
-                <p id="signalBody">This view highlights transformation work, SQL structure, application plumbing, and moving data into usable outputs.</p>
-                <div class="signal-grid">
-                  <div class="mini"><small id="s1l">Core tools</small><strong id="s1v">Python / SQL / FastAPI</strong><span id="s1n">Main stack for data movement, workflow logic, and lightweight back-end delivery.</span></div>
-                  <div class="mini"><small id="s2l">Workflow focus</small><strong id="s2v">ETL + modeling + APIs</strong><span id="s2n">Projects show preparation, structuring, and exposing data in recruiter-readable formats.</span></div>
-                  <div class="mini"><small id="s3l">What stands out</small><strong id="s3v">Usable systems</strong><span id="s3n">The work connects raw inputs to dashboards, tools, maps, and interactive outputs.</span></div>
-                </div>
-                <div class="tag-row" id="signalTags">
-                  <span class="tag">SQL</span>
-                  <span class="tag">ETL</span>
-                  <span class="tag">FastAPI</span>
-                  <span class="tag">Power Query</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
       </div>
     </section>
 
+    <svg class="portfolio-section-divider" id="sectionDividerHeroSkills" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
+      <path id="pathHeroSkills" d="M0,42 Q400,8 800,38 T1200,42"></path>
+      <circle class="divider-dot" id="dotHeroSkills" r="5" cx="0" cy="42"></circle>
+    </svg>
+
     <section id="skills" class="section-shell">
       <div class="section-head">
-        <div class="section-head-grid">
-          <div>
-            <h2>Skills</h2>
-          </div>
-          <p>Everything here branches out of moving data, modeling data, or explaining data. The site is organized around those three roots so a recruiter can read it quickly.</p>
+        <div>
+          <h2 class="skills-section-title">Skills</h2>
         </div>
       </div>
 
       <div class="skills-atlas">
-        <div class="skills-atlas-nexus">
-          <p class="section-kicker">Skills</p>
-          <h3>Three roots feed the whole portfolio.</h3>
-          <p class="hero-note skills-atlas-lead">Each column is one root: how data moves in, how models use it, and how results become legible.</p>
-        </div>
-
-        <div class="skills-nexus-rails">
-          <div class="skills-nexus-rail skills-nexus-rail--eng">
-            <span class="skills-nexus-rail-label">Data engineering</span>
-            <p>Ingestion, cleaning, structure, and routing so everything downstream has dependable inputs.</p>
-          </div>
-          <div class="skills-nexus-rail skills-nexus-rail--sci">
-            <span class="skills-nexus-rail-label">Data science</span>
-            <p>Models, features, testing, and metrics — turning structured data into predictions you can evaluate.</p>
-          </div>
-          <div class="skills-nexus-rail skills-nexus-rail--ana">
-            <span class="skills-nexus-rail-label">Data analysis</span>
-            <p>Exploration, dashboards, and narrative visuals so technical output is readable for others.</p>
-          </div>
-        </div>
-
-        <div class="skills-column-connectors" aria-hidden="true">
-          <span class="skills-column-connector skills-column-connector--eng"></span>
-          <span class="skills-column-connector skills-column-connector--sci"></span>
-          <span class="skills-column-connector skills-column-connector--ana"></span>
-        </div>
-
-        <div class="skills-atlas-branches">
-          <article class="skills-branch skills-branch--eng">
-            <p class="section-kicker">Root 01</p>
-            <h3>Data Engineering</h3>
-            <p class="hero-note">Used to ingest, clean, structure, and route data so the rest of the work has dependable inputs.</p>
-            <div class="skills-branch-orbit">
-              <span class="skills-branch-node">SQL</span>
-              <span class="skills-branch-node">ETL Pipelines</span>
-              <span class="skills-branch-node">Data Warehousing</span>
-              <span class="skills-branch-node">Schema Design</span>
-              <span class="skills-branch-node">Power Query</span>
-              <span class="skills-branch-node">FastAPI</span>
-            </div>
-          </article>
-          <article class="skills-branch skills-branch--sci">
-            <p class="section-kicker">Root 02</p>
-            <h3>Data Science</h3>
-            <p class="hero-note">Used to build models, engineer features, test assumptions, and measure whether predictions are actually working.</p>
-            <div class="skills-branch-orbit">
-              <span class="skills-branch-node">Scikit-learn</span>
-              <span class="skills-branch-node">XGBoost</span>
-              <span class="skills-branch-node">TensorFlow</span>
-              <span class="skills-branch-node">NLP</span>
-              <span class="skills-branch-node">Feature Engineering</span>
-              <span class="skills-branch-node">Model Evaluation</span>
-            </div>
-          </article>
-          <article class="skills-branch skills-branch--ana">
-            <p class="section-kicker">Root 03</p>
-            <h3>Data Analysis</h3>
-            <p class="hero-note">Used to explore patterns, shape dashboards, and communicate results in forms a recruiter or teammate can read quickly.</p>
-            <div class="skills-branch-orbit">
-              <span class="skills-branch-node">Power BI</span>
-              <span class="skills-branch-node">DAX</span>
-              <span class="skills-branch-node">PL-300</span>
-              <span class="skills-branch-node">D3.js</span>
-              <span class="skills-branch-node">GeoJSON</span>
-              <span class="skills-branch-node">Matplotlib</span>
-            </div>
-          </article>
-        </div>
-
         <div class="skills-grid">
-          <article class="bento-card skills-root-card skills-root-card--eng">
-            <p class="section-kicker">Data Engineering</p>
-            <h3>The engineering spine the rest depends on.</h3>
-            <p class="hero-note">When work needs reliable inputs, structure, or a usable route into an app or dashboard, this is the layer doing the job.</p>
-            <div class="skills-inline-chips">
-              <span>SQL</span><span>Power Query</span><span>ETL</span><span>Data Warehousing</span><span>Schema Design</span><span>FastAPI</span>
+        <div class="skills-pipeline-region" id="skillsPipelineRegion">
+        <div class="skills-atlas-columns">
+          <div class="skills-atlas-column skills-atlas-column--eng">
+            <div class="skills-nexus-rail skills-nexus-rail--eng">
+              <span class="skills-nexus-rail-label skills-root-chapter-title">Data engineering</span>
+              <p class="skills-root-lede">Ingestion, cleaning, structure, and routing so everything downstream has dependable inputs.</p>
             </div>
-          </article>
-          <article class="bento-card skills-root-card skills-root-card--sci">
-            <p class="section-kicker">Data Science</p>
-            <h3>Modeling pulls signal out of cleaned data.</h3>
-            <p class="hero-note">The strongest examples here are fraud detection, sentiment extraction, evaluation, and framing technical tradeoffs in plain language.</p>
-            <div class="skills-inline-chips">
-              <span>Scikit-learn</span><span>XGBoost</span><span>TensorFlow</span><span>NLP</span><span>Evaluation</span><span>Feature Engineering</span>
-            </div>
-          </article>
-          <article class="bento-card skills-root-card skills-root-card--ana">
-            <p class="section-kicker">Data Analysis</p>
-            <h3>Results need a readable surface.</h3>
-            <p class="hero-note">Dashboards, maps, charts, and front-end delivery keep the work from ending as a notebook nobody opens.</p>
-            <div class="skills-inline-chips">
-              <span>Power BI</span><span>DAX</span><span>D3.js</span><span>GeoJSON</span><span>Seaborn</span><span>Responsive UI</span>
-            </div>
-          </article>
-          <article class="bento-card">
-            <p class="section-kicker">Languages + Core Stack</p>
-            <h3>Daily tools for analysis and product delivery.</h3>
-            <div class="skills-cluster">
-              <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">SciPy</span><span class="tag">SQL</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Git</span><span class="tag">Jupyter</span>
-            </div>
-          </article>
-          <article class="bento-card">
-            <p class="section-kicker">AI Prototyping</p>
-            <h3>Applied AI work, not vague AI interest.</h3>
-            <div class="skills-cluster">
-              <span class="quick-pill">Prompting</span><span class="quick-pill">Local AI</span><span class="quick-pill">Ollama</span><span class="quick-pill">Workflow Design</span><span class="quick-pill">Automation</span><span class="quick-pill">Fast Iteration</span>
-            </div>
-          </article>
-          <article class="bento-card">
-            <p class="section-kicker">Supporting Languages</p>
-            <h3>Technical breadth around the main stack.</h3>
-            <div class="skills-cluster">
-              <span class="tag">C++</span><span class="tag">R</span><span class="tag">Java</span><span class="tag">Seaborn</span><span class="tag">Matplotlib</span><span class="tag">GitHub Pages</span>
-            </div>
-          </article>
-          <article class="bento-card skills-bridge-card">
-            <p class="section-kicker">Where the tracks connect</p>
-            <h3>The site is strongest where these categories overlap.</h3>
-            <div class="skills-link-list">
-              <div class="skills-link-row">
-                <span class="skills-link-label">Engineering to Science</span>
-                <div>
-                  <strong>Clean data feeds better models.</strong>
-                  <p class="hero-note">Feature engineering, ETL cleanup, SQL prep, and schema decisions shape whether the modeling layer has usable training data at all.</p>
-                </div>
+            <article class="skills-branch skills-branch--eng">
+              <p class="section-kicker skills-root-index">Root 01</p>
+              <h3 class="skills-branch-subtitle">Data Engineering</h3>
+              <p class="hero-note">Used to ingest, clean, structure, and route data so the rest of the work has dependable inputs.</p>
+              <div class="skills-branch-orbit">
+                <span class="skills-branch-node">SQL</span>
+                <span class="skills-branch-node">ETL Pipelines</span>
+                <span class="skills-branch-node">Data Warehousing</span>
+                <span class="skills-branch-node">Schema Design</span>
+                <span class="skills-branch-node">Power Query</span>
+                <span class="skills-branch-node">FastAPI</span>
               </div>
-              <div class="skills-link-row">
-                <span class="skills-link-label">Science to Analysis</span>
-                <div>
-                  <strong>Metrics need explanation to matter.</strong>
-                  <p class="hero-note">Benchmarks, recall, validation, and tradeoffs only become useful when framed as visuals, dashboards, or readable summaries.</p>
+            </article>
+            <div class="skills-column-stack">
+              <article class="bento-card skills-root-card skills-root-card--eng">
+                <p class="section-kicker">Data Engineering</p>
+                <h3>The engineering spine the rest depends on.</h3>
+                <p class="hero-note">When work needs reliable inputs, structure, or a usable route into an app or dashboard, this is the layer doing the job.</p>
+                <div class="skills-inline-chips">
+                  <span>SQL</span><span>Power Query</span><span>ETL</span><span>Data Warehousing</span><span>Schema Design</span><span>FastAPI</span>
                 </div>
-              </div>
-              <div class="skills-link-row">
-                <span class="skills-link-label">Analysis to Product</span>
-                <div>
-                  <strong>Readable output forces cleaner systems.</strong>
-                  <p class="hero-note">When the final form is a usable site, map, or dashboard, the underlying structure has to be stronger, not weaker.</p>
+              </article>
+              <article class="bento-card">
+                <p class="section-kicker">Languages + Core Stack</p>
+                <h3>Daily tools for analysis and product delivery.</h3>
+                <div class="skills-cluster">
+                  <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">SciPy</span><span class="tag">SQL</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Git</span><span class="tag">Jupyter</span>
                 </div>
-              </div>
+              </article>
             </div>
+          </div>
+
+          <div class="skills-atlas-column skills-atlas-column--sci">
+            <div class="skills-nexus-rail skills-nexus-rail--sci">
+              <span class="skills-nexus-rail-label skills-root-chapter-title">Data science</span>
+              <p class="skills-root-lede">Models, features, testing, and metrics — turning structured data into predictions you can evaluate.</p>
+            </div>
+            <article class="skills-branch skills-branch--sci">
+              <p class="section-kicker skills-root-index">Root 02</p>
+              <h3 class="skills-branch-subtitle">Data Science</h3>
+              <p class="hero-note">Used to build models, engineer features, test assumptions, and measure whether predictions are actually working.</p>
+              <div class="skills-branch-orbit">
+                <span class="skills-branch-node">Scikit-learn</span>
+                <span class="skills-branch-node">XGBoost</span>
+                <span class="skills-branch-node">TensorFlow</span>
+                <span class="skills-branch-node">NLP</span>
+                <span class="skills-branch-node">Feature Engineering</span>
+                <span class="skills-branch-node">Model Evaluation</span>
+              </div>
+            </article>
+            <div class="skills-column-stack">
+              <article class="bento-card skills-root-card skills-root-card--sci">
+                <p class="section-kicker">Data Science</p>
+                <h3>Modeling pulls signal out of cleaned data.</h3>
+                <p class="hero-note">The strongest examples here are fraud detection, sentiment extraction, evaluation, and framing technical tradeoffs in plain language.</p>
+                <div class="skills-inline-chips">
+                  <span>Scikit-learn</span><span>XGBoost</span><span>TensorFlow</span><span>NLP</span><span>Evaluation</span><span>Feature Engineering</span>
+                </div>
+              </article>
+              <article class="bento-card">
+                <p class="section-kicker">AI Prototyping</p>
+                <h3>Applied AI work, not vague AI interest.</h3>
+                <div class="skills-cluster">
+                  <span class="quick-pill">Prompting</span><span class="quick-pill">Local AI</span><span class="quick-pill">Ollama</span><span class="quick-pill">Workflow Design</span><span class="quick-pill">Automation</span><span class="quick-pill">Fast Iteration</span>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="skills-atlas-column skills-atlas-column--ana">
+            <div class="skills-nexus-rail skills-nexus-rail--ana">
+              <span class="skills-nexus-rail-label skills-root-chapter-title">Data analysis</span>
+              <p class="skills-root-lede">Exploration, dashboards, and narrative visuals so technical output is readable for others.</p>
+            </div>
+            <article class="skills-branch skills-branch--ana">
+              <p class="section-kicker skills-root-index">Root 03</p>
+              <h3 class="skills-branch-subtitle">Data Analysis</h3>
+              <p class="hero-note">Used to explore patterns, shape dashboards, and communicate results in forms a recruiter or teammate can read quickly.</p>
+              <div class="skills-branch-orbit">
+                <span class="skills-branch-node">Power BI</span>
+                <span class="skills-branch-node">DAX</span>
+                <span class="skills-branch-node">PL-300</span>
+                <span class="skills-branch-node">D3.js</span>
+                <span class="skills-branch-node">GeoJSON</span>
+                <span class="skills-branch-node">Matplotlib</span>
+              </div>
+            </article>
+            <div class="skills-column-stack">
+              <article class="bento-card skills-root-card skills-root-card--ana">
+                <p class="section-kicker">Data Analysis</p>
+                <h3>Results need a readable surface.</h3>
+                <p class="hero-note">Dashboards, maps, charts, and front-end delivery keep the work from ending as a notebook nobody opens.</p>
+                <div class="skills-inline-chips">
+                  <span>Power BI</span><span>DAX</span><span>D3.js</span><span>GeoJSON</span><span>Seaborn</span><span>Responsive UI</span>
+                </div>
+              </article>
+              <article class="bento-card">
+                <p class="section-kicker">Supporting Languages</p>
+                <h3>Technical breadth around the main stack.</h3>
+                <div class="skills-cluster">
+                  <span class="tag">R</span><span class="tag">Java</span><span class="tag">Seaborn</span><span class="tag">Matplotlib</span><span class="tag">GitHub Pages</span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <svg class="skills-pipeline-svg" id="skillsPipelineSvg" aria-hidden="true" focusable="false"></svg>
+          <article class="bento-card skills-bridge-card" id="skillsPipelineSummary">
+            <p class="section-kicker">Process, in order</p>
+            <h3>From pipelines to dashboards—one connected path.</h3>
+            <p class="hero-note skills-process-lead">The three columns above mirror how I work end to end: stand up trustworthy data first, model and evaluate on top of it, then translate outcomes into visuals and interfaces people actually open.</p>
+            <ol class="skills-process-timeline" aria-label="Skills in process order">
+              <li class="skills-process-step skills-process-step--eng">
+                <div class="skills-process-title-row">
+                  <span class="skills-process-num">Step 1</span>
+                  <p class="skills-process-phase">Data engineering</p>
+                </div>
+                <p class="hero-note">Ingest, clean, and warehouse inputs so modeling isn’t fighting messy sources. SQL, ETL, APIs, and schema choices are where useful features start—or never appear at all.</p>
+                <div class="skills-process-chips">
+                  <span>Python</span><span>SQL</span><span>FastAPI</span><span>ETL</span>
+                </div>
+              </li>
+              <li class="skills-process-step skills-process-step--sci">
+                <div class="skills-process-title-row">
+                  <span class="skills-process-num">Step 2</span>
+                  <p class="skills-process-phase">Data science</p>
+                </div>
+                <p class="hero-note">Train, validate, and compare models on the prepared signals from step one. Benchmarks and tradeoffs only land when the data underneath is consistent.</p>
+                <div class="skills-process-chips">
+                  <span>Scikit-learn</span><span>TensorFlow</span><span>XGBoost</span><span>Validation</span>
+                </div>
+              </li>
+              <li class="skills-process-step skills-process-step--ana">
+                <div class="skills-process-title-row">
+                  <span class="skills-process-num">Step 3</span>
+                  <p class="skills-process-phase">Analysis &amp; delivery</p>
+                </div>
+                <p class="hero-note">Charts, maps, and dashboards—and when it helps, a responsive UI—make the work legible. That surface pressure usually tightens everything upstream.</p>
+                <div class="skills-process-chips">
+                  <span>Power BI</span><span>D3.js</span><span>GeoJSON</span><span>Responsive UI</span>
+                </div>
+              </li>
+            </ol>
             <div class="skills-marquee" aria-label="Skills">
               <div class="skills-marquee-track">
                 <span>Python</span><span>SQL</span><span>FastAPI</span><span>React</span><span>Next.js</span><span>Scikit-learn</span><span>XGBoost</span><span>TensorFlow</span><span>Power BI</span><span>DAX</span><span>D3.js</span><span>ETL Pipelines</span><span>Data Warehousing</span><span>Prompting</span><span>Automation</span><span>Python</span><span>SQL</span><span>FastAPI</span><span>React</span><span>Next.js</span><span>Scikit-learn</span><span>XGBoost</span><span>TensorFlow</span><span>Power BI</span>
               </div>
             </div>
           </article>
+        </div>
         </div>
       </div>
     </section>
@@ -3253,56 +4447,38 @@
       <circle class="divider-dot" id="dotCapProj" r="5" cx="0" cy="40"></circle>
     </svg>
 
-    <section id="projects" class="work-section">
+    <section id="projects" class="work-section" aria-labelledby="projects-heading">
       <div class="section-head">
-        <div class="section-head-grid">
-          <div>
-            <p class="section-kicker">Featured Work</p>
-            <h2>Start here for the clearest proof of work.</h2>
-          </div>
-          <p>Jump to a project below, or scroll—this panel mirrors whichever card is most in view so the headline, summary, and key facts stay aligned.</p>
-        </div>
-      </div>
-
-      <div class="projects-toolbar">
-        <p class="projects-toolbar-label">Pick a project</p>
-        <nav class="project-rail" aria-label="Featured projects">
-          <a class="active" href="#project-fraud" data-project="fraud">Fraud Detection</a>
-          <a href="#project-jimai" data-project="jimai">JimAI</a>
-          <a href="#project-customstrat" data-project="customstrat">CustomStrat</a>
-          <a href="#project-sentiment" data-project="sentiment">Sentiment Analysis</a>
-        </nav>
-
-        <div id="projectRailPreview" class="project-rail-preview is-visible" aria-hidden="true">
-          <p class="project-rail-preview-eyebrow">In view</p>
-          <p class="project-rail-preview-title">Credit Card Fraud Detection</p>
-          <p class="project-rail-preview-summary">A fraud-detection workflow built for a heavily imbalanced dataset using XGBoost, Random Forest, SMOTE, and recall-focused evaluation.</p>
-          <div class="project-rail-preview-metrics" aria-label="Key facts">
-            <span class="metric-pill">91% recall</span>
-            <span class="metric-pill">284k+ rows</span>
-            <span class="metric-pill">XGBoost + SMOTE</span>
-          </div>
-        </div>
+        <p class="section-kicker">Selected work</p>
+        <h2 id="projects-heading">Projects</h2>
       </div>
 
       <div class="project-stack">
-        <article class="project-section" id="project-fraud" data-project-section="fraud">
+        <article class="project-section project-section--ml" id="project-fraud" data-project-section="fraud" data-project-num="01">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
-          <div class="project-inner">
-            <div class="project-copy">
-              <header class="project-copy-header">
-                <p class="section-kicker">01 · Machine Learning</p>
-                <h3>Credit Card Fraud Detection</h3>
-              </header>
-              <p class="project-lede">A fraud-detection workflow built for a heavily imbalanced dataset using XGBoost, Random Forest, SMOTE, and recall-focused evaluation.</p>
-              <div class="project-metrics-block">
-                <p class="project-meta-label">Key facts</p>
-                <div class="project-metrics">
+          <details class="project-disclosure">
+            <summary class="project-summary">
+              <div class="project-summary-grid">
+                <div class="project-summary-intro">
+                  <p class="section-kicker project-category-kicker">Machine Learning</p>
+                  <h3 class="project-summary-title">Credit Card Fraud Detection</h3>
+                  <p class="project-summary-blurb">A fraud-detection workflow built for a heavily imbalanced dataset using XGBoost, Random Forest, SMOTE, and recall-focused evaluation.</p>
+                </div>
+                <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">91% recall</span>
                   <span class="metric-pill">284k+ rows</span>
                   <span class="metric-pill">XGBoost + SMOTE</span>
                 </div>
+                <span class="project-summary-expand">
+                  <span class="project-summary-expand-label">Expand</span>
+                  <svg class="project-summary-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
               </div>
+            </summary>
+            <div class="project-expanded">
+          <div class="project-inner">
+            <div class="project-copy">
+              <p class="project-lede">A fraud-detection workflow built for a heavily imbalanced dataset using XGBoost, Random Forest, SMOTE, and recall-focused evaluation.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-fraud-why">
                   <h4 id="project-fraud-why">Why it matters</h4>
@@ -3334,25 +4510,35 @@
               </div>
             </div>
           </div>
+            </div>
+          </details>
         </article>
 
-        <article class="project-section" id="project-jimai" data-project-section="jimai">
+        <article class="project-section project-section--ai" id="project-jimai" data-project-section="jimai" data-project-num="02">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
-          <div class="project-inner reverse">
-            <div class="project-copy">
-              <header class="project-copy-header">
-                <p class="section-kicker">02 · AI Product Prototype</p>
-                <h3>JimAI AI Workspace Prototype</h3>
-              </header>
-              <p class="project-lede">An AI-assisted workspace prototype for research, code generation, and workflow testing, built through prompting, product iteration, and local AI workflows.</p>
-              <div class="project-metrics-block">
-                <p class="project-meta-label">Key facts</p>
-                <div class="project-metrics">
+          <details class="project-disclosure">
+            <summary class="project-summary">
+              <div class="project-summary-grid">
+                <div class="project-summary-intro">
+                  <p class="section-kicker project-category-kicker">AI Product Prototype</p>
+                  <h3 class="project-summary-title">JimAI AI Workspace Prototype</h3>
+                  <p class="project-summary-blurb">An AI-assisted workspace prototype for research, code generation, and workflow testing, built through prompting, product iteration, and local AI workflows.</p>
+                </div>
+                <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">FastAPI</span>
                   <span class="metric-pill">React + Vite</span>
                   <span class="metric-pill">Ollama</span>
                 </div>
+                <span class="project-summary-expand">
+                  <span class="project-summary-expand-label">Expand</span>
+                  <svg class="project-summary-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
               </div>
+            </summary>
+            <div class="project-expanded">
+          <div class="project-inner reverse">
+            <div class="project-copy">
+              <p class="project-lede">An AI-assisted workspace prototype for research, code generation, and workflow testing, built through prompting, product iteration, and local AI workflows.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-jimai-why">
                   <h4 id="project-jimai-why">Why it matters</h4>
@@ -3382,25 +4568,35 @@
               </div>
             </div>
           </div>
+            </div>
+          </details>
         </article>
 
-        <article class="project-section" id="project-customstrat" data-project-section="customstrat">
+        <article class="project-section project-section--client" id="project-customstrat" data-project-section="customstrat" data-project-num="03">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
-          <div class="project-inner">
-            <div class="project-copy">
-              <header class="project-copy-header">
-                <p class="section-kicker">03 · Client Delivery</p>
-                <h3>CustomStrat Advisory Website</h3>
-              </header>
-              <p class="project-lede">A live client website built and deployed for CustomStrat Advisory with reusable content structure, responsive design, and a custom domain.</p>
-              <div class="project-metrics-block">
-                <p class="project-meta-label">Key facts</p>
-                <div class="project-metrics">
+          <details class="project-disclosure">
+            <summary class="project-summary">
+              <div class="project-summary-grid">
+                <div class="project-summary-intro">
+                  <p class="section-kicker project-category-kicker">Client Delivery</p>
+                  <h3 class="project-summary-title">CustomStrat Advisory Website</h3>
+                  <p class="project-summary-blurb">A live client website built and deployed for CustomStrat Advisory with reusable content structure, responsive design, and a custom domain.</p>
+                </div>
+                <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">customstrat.com</span>
                   <span class="metric-pill">Next.js 14</span>
                   <span class="metric-pill">GitHub Pages</span>
                 </div>
+                <span class="project-summary-expand">
+                  <span class="project-summary-expand-label">Expand</span>
+                  <svg class="project-summary-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
               </div>
+            </summary>
+            <div class="project-expanded">
+          <div class="project-inner">
+            <div class="project-copy">
+              <p class="project-lede">A live client website built and deployed for CustomStrat Advisory with reusable content structure, responsive design, and a custom domain.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-customstrat-why">
                   <h4 id="project-customstrat-why">Why it matters</h4>
@@ -3432,25 +4628,35 @@
               </div>
             </div>
           </div>
+            </div>
+          </details>
         </article>
 
-        <article class="project-section" id="project-sentiment" data-project-section="sentiment">
+        <article class="project-section project-section--nlp" id="project-sentiment" data-project-section="sentiment" data-project-num="04">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
-          <div class="project-inner reverse">
-            <div class="project-copy">
-              <header class="project-copy-header">
-                <p class="section-kicker">04 · NLP</p>
-                <h3>News Sentiment Analysis</h3>
-              </header>
-              <p class="project-lede">An NLP pipeline that turns unstructured news headlines into quantitative sentiment features for downstream modeling.</p>
-              <div class="project-metrics-block">
-                <p class="project-meta-label">Key facts</p>
-                <div class="project-metrics">
+          <details class="project-disclosure">
+            <summary class="project-summary">
+              <div class="project-summary-grid">
+                <div class="project-summary-intro">
+                  <p class="section-kicker project-category-kicker">NLP</p>
+                  <h3 class="project-summary-title">News Sentiment Analysis</h3>
+                  <p class="project-summary-blurb">An NLP pipeline that turns unstructured news headlines into quantitative sentiment features for downstream modeling.</p>
+                </div>
+                <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">VADER</span>
                   <span class="metric-pill">TF-IDF</span>
                   <span class="metric-pill">Feature Engineering</span>
                 </div>
+                <span class="project-summary-expand">
+                  <span class="project-summary-expand-label">Expand</span>
+                  <svg class="project-summary-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
               </div>
+            </summary>
+            <div class="project-expanded">
+          <div class="project-inner reverse">
+            <div class="project-copy">
+              <p class="project-lede">An NLP pipeline that turns unstructured news headlines into quantitative sentiment features for downstream modeling.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-sentiment-why">
                   <h4 id="project-sentiment-why">Why it matters</h4>
@@ -3480,6 +4686,8 @@
               </div>
             </div>
           </div>
+            </div>
+          </details>
         </article>
       </div>
     </section>
@@ -3504,14 +4712,27 @@
           <div class="section-head-grid">
             <div>
               <p class="section-kicker">Visualizations</p>
-              <h2>Dashboards, maps, and embedded work.</h2>
+              <h2>Dashboard up front, six D3 builds below.</h2>
             </div>
-            <p>The goal here is the same as the rest of the site: turn technical output into something another person can grasp quickly. One featured Power BI-style dashboard and six existing D3 projects are linked directly.</p>
+            <p>Power BI (mock or embedded) uses a full-width <strong>16:9</strong> frame. The six D3 builds are below—use <strong>Jump to a chart</strong> or scroll the page. Each tile is interactive inside the frame; <strong>Open</strong> opens the full page.</p>
           </div>
         </div>
 
-        <div class="visual-grid">
-          <article class="visual-card featured">
+        <nav id="viz-d3-gallery" class="viz-jump-nav" aria-label="Jump to D3 visualization previews">
+          <p class="viz-jump-nav-lead">Jump to a chart</p>
+          <div class="viz-jump-nav-links">
+            <a href="#viz-dashboard">Dashboard</a>
+            <a href="#viz-d3-gdp">GDP bar</a>
+            <a href="#viz-d3-cycling">Cycling</a>
+            <a href="#viz-d3-heatmap">Heatmap</a>
+            <a href="#viz-d3-food-map">Food map</a>
+            <a href="#viz-d3-treemap">Treemap</a>
+            <a href="#viz-d3-deserts">Food deserts</a>
+          </div>
+        </nav>
+
+        <div class="visual-grid visual-collage" id="vizCollage">
+          <article id="viz-dashboard" class="visual-card visual-card--feature viz-hero viz-d3-target">
             <div class="visual-line"></div>
             <div class="visual-card-body">
               <span class="visual-label">Power BI Dashboard (PBIX)</span>
@@ -3520,7 +4741,8 @@
                 <span class="gallery-tag">Embedded report</span>
                 <span class="gallery-tag">KPIs · tiles · filters</span>
               </div>
-              <div class="visual-frame">
+              <div class="visual-frame visual-frame--dashboard">
+                <div class="viz-preview-chrome viz-preview-chrome--hero">
                 <div class="pb-shell">
                   <div id="powerbiReportContainer" class="powerbi-embed-container" aria-label="Power BI embedded report" hidden></div>
                   <div class="pb-mock">
@@ -3558,65 +4780,205 @@
                   </div>
                   </div>
                 </div>
+                </div>
               </div>
               <div class="visual-actions">
                 <div class="tag-row"><span class="gallery-tag">Power BI</span><span class="gallery-tag">PBIX</span></div>
+                <a class="resume-link" href="#viz-d3-gallery">D3 charts below</a>
                 <a class="resume-link" href="projects/web/powerbi/sales-dashboard.pbix" target="_blank" rel="noopener noreferrer">Download PBIX</a>
               </div>
             </div>
           </article>
 
-          <article class="visual-card"><div class="visual-line"></div><div class="visual-card-body"><span class="visual-label">D3.js</span><h3>United States GDP Growth Dynamics</h3><div class="visual-frame"><iframe data-src="projects/web/visualizations/bar_chart.html" title="United States GDP Growth Dynamics" loading="lazy"></iframe><div class="viz-fallback" hidden>Open visualization</div></div><div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Bar chart</span><span class="gallery-tag">Time series</span></div><a class="resume-link" href="projects/web/visualizations/bar_chart.html" target="_blank" rel="noopener noreferrer">Open</a></div></div></article>
-          <article class="visual-card"><div class="visual-line"></div><div class="visual-card-body"><span class="visual-label">D3.js</span><h3>Doping in Professional Cycling</h3><div class="visual-frame"><iframe data-src="projects/web/visualizations/scatter_plot.html" title="Doping in Professional Cycling" loading="lazy"></iframe><div class="viz-fallback" hidden>Open visualization</div></div><div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Scatter plot</span><span class="gallery-tag">EDA</span></div><a class="resume-link" href="projects/web/visualizations/scatter_plot.html" target="_blank" rel="noopener noreferrer">Open</a></div></div></article>
-          <article class="visual-card"><div class="visual-line"></div><div class="visual-card-body"><span class="visual-label">D3.js</span><h3>Global Temperature Heatmap</h3><div class="visual-frame"><iframe data-src="projects/web/visualizations/heatmap.html" title="Global Temperature Heatmap" loading="lazy"></iframe><div class="viz-fallback" hidden>Open visualization</div></div><div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Heatmap</span><span class="gallery-tag">Climate</span></div><a class="resume-link" href="projects/web/visualizations/heatmap.html" target="_blank" rel="noopener noreferrer">Open</a></div></div></article>
-          <article class="visual-card"><div class="visual-line"></div><div class="visual-card-body"><span class="visual-label">D3.js</span><h3>Cincinnati Food Access Map</h3><div class="visual-frame"><iframe data-src="projects/web/visualizations/choropleth_map.html" title="Cincinnati Food Access Map" loading="lazy"></iframe><div class="viz-fallback" hidden>Open visualization</div></div><div class="visual-actions"><div class="tag-row"><span class="gallery-tag">GeoJSON</span><span class="gallery-tag">Choropleth</span></div><a class="resume-link" href="projects/web/visualizations/choropleth_map.html" target="_blank" rel="noopener noreferrer">Open</a></div></div></article>
-          <article class="visual-card"><div class="visual-line"></div><div class="visual-card-body"><span class="visual-label">D3.js</span><h3>Multi-Dataset Treemap Dashboard</h3><div class="visual-frame"><iframe data-src="projects/web/visualizations/treemap.html" title="Multi-Dataset Treemap Dashboard" loading="lazy"></iframe><div class="viz-fallback" hidden>Open visualization</div></div><div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Treemap</span><span class="gallery-tag">Dynamic</span></div><a class="resume-link" href="projects/web/visualizations/treemap.html" target="_blank" rel="noopener noreferrer">Open</a></div></div></article>
-          <article class="visual-card"><div class="visual-line"></div><div class="visual-card-body"><span class="visual-label">D3.js</span><h3>Cincinnati Food Deserts</h3><div class="visual-frame"><iframe data-src="projects/web/visualizations/food_deserts.html" title="Cincinnati Food Deserts" loading="lazy"></iframe><div class="viz-fallback" hidden>Open visualization</div></div><div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Map</span><span class="gallery-tag">Access</span></div><a class="resume-link" href="projects/web/visualizations/food_deserts.html" target="_blank" rel="noopener noreferrer">Open</a></div></div></article>
+          <article id="viz-d3-gdp" class="visual-card viz-d3-1 viz-d3-target">
+            <div class="visual-line"></div>
+            <div class="visual-card-body">
+              <span class="visual-label">D3.js</span>
+              <h3>United States GDP Growth Dynamics</h3>
+              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720">
+                <div class="viz-preview-chrome">
+                  <div class="viz-pane-scale">
+                    <iframe data-src="projects/web/visualizations/bar_chart.html" title="United States GDP Growth Dynamics" loading="lazy" width="1280" height="720"></iframe>
+                  </div>
+                  <div class="viz-fallback" hidden>Open visualization</div>
+                </div>
+              </div>
+              <div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Bar chart</span><span class="gallery-tag">Time series</span></div><a class="resume-link" href="projects/web/visualizations/bar_chart.html" target="_blank" rel="noopener noreferrer">Open</a></div>
+            </div>
+          </article>
+          <article id="viz-d3-cycling" class="visual-card viz-d3-2 viz-d3-target">
+            <div class="visual-line"></div>
+            <div class="visual-card-body">
+              <span class="visual-label">D3.js</span>
+              <h3>Doping in Professional Cycling</h3>
+              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720">
+                <div class="viz-preview-chrome">
+                  <div class="viz-pane-scale">
+                    <iframe data-src="projects/web/visualizations/scatter_plot.html" title="Doping in Professional Cycling" loading="lazy" width="1280" height="720"></iframe>
+                  </div>
+                  <div class="viz-fallback" hidden>Open visualization</div>
+                </div>
+              </div>
+              <div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Scatter plot</span><span class="gallery-tag">EDA</span></div><a class="resume-link" href="projects/web/visualizations/scatter_plot.html" target="_blank" rel="noopener noreferrer">Open</a></div>
+            </div>
+          </article>
+          <article id="viz-d3-heatmap" class="visual-card viz-d3-3 viz-d3-target">
+            <div class="visual-line"></div>
+            <div class="visual-card-body">
+              <span class="visual-label">D3.js</span>
+              <h3>Global Temperature Heatmap</h3>
+              <div class="visual-frame viz-pane" data-viz-base-w="1200" data-viz-base-h="720">
+                <div class="viz-preview-chrome">
+                  <div class="viz-pane-scale">
+                    <iframe data-src="projects/web/visualizations/heatmap.html" title="Global Temperature Heatmap" loading="lazy" width="1200" height="720"></iframe>
+                  </div>
+                  <div class="viz-fallback" hidden>Open visualization</div>
+                </div>
+              </div>
+              <div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Heatmap</span><span class="gallery-tag">Climate</span></div><a class="resume-link" href="projects/web/visualizations/heatmap.html" target="_blank" rel="noopener noreferrer">Open</a></div>
+            </div>
+          </article>
+          <article id="viz-d3-food-map" class="visual-card viz-d3-4 viz-d3-target">
+            <div class="visual-line"></div>
+            <div class="visual-card-body">
+              <span class="visual-label">D3.js</span>
+              <h3>Cincinnati Food Access Map</h3>
+              <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720">
+                <div class="viz-preview-chrome">
+                  <div class="viz-pane-scale">
+                    <iframe data-src="projects/web/visualizations/choropleth_map.html" title="Cincinnati Food Access Map" loading="lazy" width="1440" height="720"></iframe>
+                  </div>
+                  <div class="viz-fallback" hidden>Open visualization</div>
+                </div>
+              </div>
+              <div class="visual-actions"><div class="tag-row"><span class="gallery-tag">GeoJSON</span><span class="gallery-tag">Choropleth</span></div><a class="resume-link" href="projects/web/visualizations/choropleth_map.html" target="_blank" rel="noopener noreferrer">Open</a></div>
+            </div>
+          </article>
+          <article id="viz-d3-treemap" class="visual-card viz-d3-5 viz-d3-target">
+            <div class="visual-line"></div>
+            <div class="visual-card-body">
+              <span class="visual-label">D3.js</span>
+              <h3>Multi-Dataset Treemap Dashboard</h3>
+              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="800">
+                <div class="viz-preview-chrome">
+                  <div class="viz-pane-scale">
+                    <iframe data-src="projects/web/visualizations/treemap.html" title="Multi-Dataset Treemap Dashboard" loading="lazy" width="1280" height="800"></iframe>
+                  </div>
+                  <div class="viz-fallback" hidden>Open visualization</div>
+                </div>
+              </div>
+              <div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Treemap</span><span class="gallery-tag">Dynamic</span></div><a class="resume-link" href="projects/web/visualizations/treemap.html" target="_blank" rel="noopener noreferrer">Open</a></div>
+            </div>
+          </article>
+          <article id="viz-d3-deserts" class="visual-card viz-d3-6 viz-d3-target">
+            <div class="visual-line"></div>
+            <div class="visual-card-body">
+              <span class="visual-label">D3.js</span>
+              <h3>Cincinnati Food Deserts</h3>
+              <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720">
+                <div class="viz-preview-chrome">
+                  <div class="viz-pane-scale">
+                    <iframe data-src="projects/web/visualizations/food_deserts.html" title="Cincinnati Food Deserts" loading="lazy" width="1440" height="720"></iframe>
+                  </div>
+                  <div class="viz-fallback" hidden>Open visualization</div>
+                </div>
+              </div>
+              <div class="visual-actions"><div class="tag-row"><span class="gallery-tag">Map</span><span class="gallery-tag">Access</span></div><a class="resume-link" href="projects/web/visualizations/food_deserts.html" target="_blank" rel="noopener noreferrer">Open</a></div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
+    <svg class="portfolio-section-divider" id="sectionDividerVizJourney" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
+      <path id="pathVizJourney" d="M0,38 C250,12 500,62 750,40 S1100,18 1200,42"></path>
+      <circle class="divider-dot" id="dotVizJourney" r="5" cx="0" cy="38"></circle>
+    </svg>
+
     <section id="journey" class="journey-section">
-      <canvas id="noise-canvas" aria-hidden="true"></canvas>
       <div class="section-shell">
         <div class="section-head journey-head">
           <div class="section-head-grid journey-head-grid">
             <div>
-              <p class="section-kicker">Background</p>
-              <h2>Background, summarized.</h2>
-              <p>Use the tabs below to jump between overview, experience, education, and leadership. The timeline scrolls horizontally through the same story—use the arrows or keyboard when it is in view.</p>
+              <h2>Journey</h2>
             </div>
           </div>
         </div>
 
         <div class="journey-rail-wrap">
-          <nav class="rail" id="journeyRail" aria-label="Journey sections">
-            <a class="active" href="#journey-overview" data-journey="overview">Overview</a>
-            <a href="#journey-experience" data-journey="experience">Experience</a>
-            <a href="#journey-education" data-journey="education">Education</a>
-            <a href="#journey-leadership" data-journey="leadership">Leadership</a>
+          <nav class="rail journey-rail" id="journeyRail" aria-label="Journey chapters">
+            <a class="active" href="#journey-overview" data-journey="overview"><span class="rail-chapter">01</span><span class="rail-label">Who I am</span></a>
+            <a href="#journey-experience" data-journey="experience"><span class="rail-chapter">02</span><span class="rail-label">What I’ve built</span></a>
+            <a href="#journey-education" data-journey="education"><span class="rail-chapter">03</span><span class="rail-label">Training</span></a>
+            <a href="#journey-leadership" data-journey="leadership"><span class="rail-chapter">04</span><span class="rail-label">Lead &amp; reach out</span></a>
           </nav>
         </div>
 
-        <div id="journey-timeline">
+        <div id="journey-timeline" class="jt-layout-stack">
           <div class="jt-inner">
-            <button type="button" class="jt-arrow jt-prev" aria-label="Previous journey section">‹</button>
+            <button type="button" class="jt-arrow jt-prev" aria-label="Previous journey section" hidden tabindex="-1">‹</button>
             <div class="jt-viewport">
-              <div class="jt-strip" tabindex="0" role="region" aria-label="Journey timeline panels">
+              <aside class="jt-progress-rail" aria-label="Chapter progress">
+                <button type="button" class="jt-dot is-active" aria-label="Chapter 1: Who I am" aria-current="true"></button>
+                <button type="button" class="jt-dot" aria-label="Chapter 2: What I've built" aria-current="false"></button>
+                <button type="button" class="jt-dot" aria-label="Chapter 3: Training" aria-current="false"></button>
+                <button type="button" class="jt-dot" aria-label="Chapter 4: Lead and reach out" aria-current="false"></button>
+              </aside>
+              <div class="jt-strip" tabindex="0" role="region" aria-label="Journey sections">
                 <article class="jt-panel journey-stop jpanel active" id="journey-overview" data-panel="overview">
                   <div class="jt-num" aria-hidden="true">01</div>
                   <div class="jt-panel-scroll">
-                    <div class="journey-overview">
+                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">01</span><span class="journey-chapter-tag__title">Who I am</span></div>
+                    <div class="journey-overview journey-chapter-opening">
                       <div class="journey-mark">JL</div>
                       <div>
-                        <h3>Technical work with clear outputs.</h3>
-                        <p>Incoming University of Chicago student focused on predictive modeling, analytics workflows, and interactive delivery. The strongest signal is not one resume bullet. It is the overlap of machine learning, interfaces, dashboards, and product-minded framing.</p>
+                        <h3>The overlap is the story.</h3>
+                        <p>I’m an incoming <strong>University of Chicago</strong> student (Data Science &amp; Statistics) who cares as much about <strong>clear evaluation</strong> as about <strong>shipping something people can open</strong>—notebooks and models, yes, but also dashboards, maps, and small products. The thread isn’t a single skill line on a résumé; it’s that those pieces actually connect.</p>
                       </div>
                     </div>
-                    <div class="timeline-grid">
-                      <div class="timeline"><h4>What stands out</h4><p class="meta">Core profile</p><ul><li>Builds classification and predictive workflows with measurable evaluation results.</li><li>Uses Python and SQL across data analysis, AI-assisted prototyping, and workflow design.</li><li>Presents work through D3.js, deployed sites, dashboards, and other recruiter-readable formats.</li></ul></div>
-                      <div class="timeline"><h4>Current direction</h4><p class="meta">Summer 2026 target</p><ul><li>Seeking internships where statistical rigor and communication both matter.</li><li>Interested in analytics engineering, data science, and ML-adjacent product roles.</li></ul></div>
-                      <div class="timeline"><h4>Signal snapshot</h4><p class="meta">Current benchmarks</p><div class="mini-stack"><div class="mini"><small>Validation</small><strong class="count-up-premium" data-target="85" data-suffix="%+">0%+</strong><span>Typical supervised benchmark range.</span></div><div class="mini"><small>Recall</small><strong class="count-up-premium" data-target="91" data-suffix="%">0%</strong><span>Fraud detection headline result.</span></div><div class="mini"><small>Scale</small><strong class="count-up-premium" data-target="10000" data-suffix="+" data-format="comma">0+</strong><span>Rows at scale in the featured fraud project.</span></div></div></div>
+                    <div class="journey-chapter-stack">
+                      <div class="timeline journey-step journey-step--primary">
+                        <h4>What stands out</h4>
+                        <p class="meta">Core profile</p>
+                        <ul>
+                          <li>Builds classification and predictive workflows with measurable evaluation results.</li>
+                          <li>Uses Python and SQL across data analysis, AI-assisted prototyping, and workflow design.</li>
+                          <li>Presents work through D3.js, deployed sites, dashboards, and other recruiter-readable formats.</li>
+                        </ul>
+                      </div>
+                      <div class="timeline journey-step journey-step--secondary">
+                        <h4>Current direction</h4>
+                        <p class="meta">Summer 2026 target</p>
+                        <ul>
+                          <li>Seeking internships where statistical rigor and communication both matter.</li>
+                          <li>Interested in analytics engineering, data science, and ML-adjacent product roles.</li>
+                        </ul>
+                      </div>
+                      <div class="timeline journey-step journey-step--signal">
+                        <h4>Signal snapshot</h4>
+                        <p class="meta">Current benchmarks</p>
+                        <div class="journey-signal-metrics" role="list">
+                          <div class="journey-metric" role="listitem">
+                            <strong class="journey-metric-value count-up-premium" data-target="85" data-suffix="%+">0%+</strong>
+                            <span class="journey-metric-label">Validation</span>
+                            <p class="journey-metric-desc">Typical supervised benchmark range on held-out evaluation.</p>
+                          </div>
+                          <div class="journey-metric" role="listitem">
+                            <strong class="journey-metric-value count-up-premium" data-target="91" data-suffix="%">0%</strong>
+                            <span class="journey-metric-label">Recall</span>
+                            <p class="journey-metric-desc">Fraud detection headline result on the featured imbalanced dataset.</p>
+                          </div>
+                          <div class="journey-metric" role="listitem">
+                            <strong class="journey-metric-value count-up-premium" data-target="10000" data-suffix="+" data-format="comma">0+</strong>
+                            <span class="journey-metric-label">Scale</span>
+                            <p class="journey-metric-desc">Rows at scale in the featured fraud modeling project.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="journey-chapter-conclusion" aria-labelledby="journey-synthesis-heading">
+                      <p class="journey-chapter-conclusion-kicker" id="journey-synthesis-heading">Before you scroll on</p>
+                      <p class="journey-chapter-conclusion-body">If the projects section showed <em>what</em> I ship, this chapter is <em>why it hangs together</em>: one person stress-testing models, tightening how they’re explained, and choosing formats—charts, sites, reports—that don’t stay trapped in a repo.</p>
                     </div>
                   </div>
                 </article>
@@ -3624,8 +4986,9 @@
                 <article class="jt-panel journey-stop jpanel" id="journey-experience" data-panel="experience">
                   <div class="jt-num" aria-hidden="true">02</div>
                   <div class="jt-panel-scroll">
-                    <h3>Project-based experience with shipped work.</h3>
-                    <p>The strongest signal comes from self-directed builds that combine analysis, interfaces, prototyping, and real deployment.</p>
+                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">02</span><span class="journey-chapter-tag__title">What I’ve built</span></div>
+                    <h3>Proof lives in shipped work.</h3>
+                    <p>After the profile: concrete builds—AI workspace tooling, a live client site, and the habit of closing the loop from analysis to something someone can click. This is where “can they deliver?” gets answered.</p>
                     <div class="timeline-stack">
                       <div class="timeline"><h4>JimAI / AI Workspace Prototype</h4><p class="meta">Independent build</p><ul><li>Built an AI-assisted local workspace prototype for research, code generation, and workflow experimentation.</li><li>Worked with FastAPI, React/Vite, local AI workflows, prompting, and automation-oriented interfaces.</li><li>Focused on practical product structure and usability rather than low-level model engineering.</li></ul></div>
                       <div class="timeline"><h4>CustomStrat Advisory Website</h4><p class="meta">Live deployment</p><ul><li>Built and deployed customstrat.com using Next.js 14, TypeScript, Tailwind CSS, GitHub Pages, and a custom domain.</li><li>Used AI-assisted iteration to speed up UI and content prototyping, then refined the result into a production-facing site.</li></ul></div>
@@ -3637,8 +5000,9 @@
                 <article class="jt-panel journey-stop jpanel" id="journey-education" data-panel="education">
                   <div class="jt-num" aria-hidden="true">03</div>
                   <div class="jt-panel-scroll">
-                    <h3>Formal training supported by project work.</h3>
-                    <p>The academic path is still early, supported by completed certifications and hands-on work in modeling, analytics, and visualization.</p>
+                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">03</span><span class="journey-chapter-tag__title">Training</span></div>
+                    <h3>Credentials that support the builds—not instead of them.</h3>
+                    <p>Formal training gives vocabulary and structure; the projects section shows execution. Together: a degree path I’m in, certifications I’ve finished, and a deliberate focus on delivery skills (viz, BI, communication) that make the technical work legible.</p>
                     <div class="timeline-stack">
                       <div class="timeline"><h4>University of Chicago</h4><p class="meta">Expected June 2030</p><ul><li>B.S. in Data Science and Statistics.</li><li>Quantitative training paired with modern computational tooling.</li></ul></div>
                       <div class="timeline"><h4>Certifications</h4><p class="meta">Completed credentials</p><ul><li>IBM Data Science Professional Certificate.</li><li>Microsoft PL-300 Power BI Data Analyst.</li></ul></div>
@@ -3650,8 +5014,9 @@
                 <article class="jt-panel journey-stop jpanel" id="journey-leadership" data-panel="leadership">
                   <div class="jt-num" aria-hidden="true">04</div>
                   <div class="jt-panel-scroll">
-                    <h3>Leadership here is practical and communication-focused.</h3>
-                    <p>The profile also shows workshop delivery, peer guidance, and presenting analytical work clearly under pressure.</p>
+                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">04</span><span class="journey-chapter-tag__title">Lead &amp; reach out</span></div>
+                    <h3>How I show up when the work involves other people.</h3>
+                    <p>Teaching-style leadership and high-pressure presentation aren’t separate from analytics—they’re how complex work gets understood. Here’s the bridge from solo builds to rooms, peers, and the next conversation.</p>
                     <div class="timeline-stack">
                       <div class="timeline"><h4>Co-President, Machine Learning Club</h4><p class="meta">Workshops + mentoring</p><ul><li>Runs workshops on neural networks, evaluation, and practical AI project framing.</li><li>Helps other students move from vague AI interest to concrete implementation.</li></ul></div>
                       <div class="timeline"><h4>DECA Competitor</h4><p class="meta">2022 to 2024</p><ul><li>Presented data-backed business analysis and strategic recommendations.</li><li>Built stronger judgment and composure under time pressure.</li></ul></div>
@@ -3660,27 +5025,26 @@
                   </div>
                 </article>
               </div>
-              <aside class="jt-progress-rail" aria-label="Timeline progress">
-                <button type="button" class="jt-dot is-active" aria-label="Overview" aria-current="true"></button>
-                <button type="button" class="jt-dot" aria-label="Experience" aria-current="false"></button>
-                <button type="button" class="jt-dot" aria-label="Education" aria-current="false"></button>
-                <button type="button" class="jt-dot" aria-label="Leadership" aria-current="false"></button>
-              </aside>
             </div>
-            <button type="button" class="jt-arrow jt-next" aria-label="Next journey section">›</button>
+            <button type="button" class="jt-arrow jt-next" aria-label="Next journey section" hidden tabindex="-1">›</button>
           </div>
           <div class="jt-bar" aria-hidden="true"><div class="jt-bar-fill"></div></div>
         </div>
       </div>
     </section>
 
+    <svg class="portfolio-section-divider" id="sectionDividerJourneyResume" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
+      <path id="pathJourneyResume" d="M0,36 C300,65 600,15 900,38 S1150,50 1200,34"></path>
+      <circle class="divider-dot" id="dotJourneyResume" r="5" cx="0" cy="36"></circle>
+    </svg>
+
     <section id="resume" class="resume-shell-section">
       <div class="section-shell">
         <div class="resume-panel">
-          <p class="resume-kicker">Resume</p>
-          <h2 class="resume-title">Print-ready résumé</h2>
-          <p class="resume-intro">Below is the same one-page layout and wording as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a> (Calibri-style PDF). Nothing is clipped—scroll the white page to read it all. Save PDF uses your browser print dialog.</p>
-          <div class="resume-actions">
+          <p class="resume-kicker noprint">Resume</p>
+          <h2 class="resume-title noprint">Print-ready résumé</h2>
+          <p class="resume-intro noprint">Same wording as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a>. <strong>Save PDF</strong> scales to one letter page. Browser print (Ctrl/Cmd+P) also outputs <strong>only the white résumé</strong> below—no site chrome.</p>
+          <div class="resume-actions noprint">
             <button class="btn noprint" id="pdfBtn" type="button">Save PDF</button>
             <a class="btn-soft noprint" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             <a class="btn-soft noprint" href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -3699,7 +5063,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Professional Summary</h2>
               <p class="resume-pdf-summary">
-                Incoming <strong>University of Chicago</strong> student (Class of 2030) majoring in <strong>Data Science &amp; Statistics</strong> with hands-on experience in <strong>predictive modeling</strong>, <strong>machine learning pipelines</strong>, <strong>NLP</strong>, and <strong>AI-assisted prototyping</strong>. Builds analytical systems and interactive tools using Python, SQL, FastAPI, React, and modern visualization stacks. Seeking a Summer 2026 internship in data science, analytics, or ML-adjacent product work.
+                Incoming <strong>University of Chicago</strong> B.S. <strong>Data Science &amp; Statistics</strong> (Class of 2030). Builds end-to-end analytics: <strong>classification</strong> and fraud detection (~91% recall on imbalanced data), <strong>NLP</strong> sentiment pipelines, <strong>Power BI</strong> / PL-300 dashboards, and <strong>D3.js</strong> / GeoJSON maps. Ships interfaces with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong> (live client site). Seeking <strong>Summer 2026</strong> internship in data science, analytics engineering, or ML-adjacent product roles.
               </p>
             </section>
 
@@ -3715,7 +5079,7 @@
                 <div class="resume-pdf-skill-cat">
                   <strong>Machine Learning &amp; AI</strong>
                   <div class="resume-pdf-skill-row"><b>Core ML:</b> Scikit-Learn, XGBoost, Random Forests, Ensemble Methods</div>
-                  <div class="resume-pdf-skill-row"><b>Workflow:</b> Feature Engineering, Model Evaluation, Classification, Regression</div>
+                  <div class="resume-pdf-skill-row"><b>Workflow:</b> Feature engineering, evaluation, imbalanced data, <strong>SMOTE</strong>, classification &amp; regression</div>
                   <div class="resume-pdf-skill-row"><b>Deep Learning:</b> TensorFlow/Keras, CNNs, RNNs, Neural Networks</div>
                   <div class="resume-pdf-skill-row"><b>NLP / AI:</b> NLTK, VADER, TF-IDF, Prompting, Local AI Workflows</div>
                 </div>
@@ -3727,7 +5091,7 @@
                 </div>
                 <div class="resume-pdf-skill-cat">
                   <strong>Visualization &amp; Strategy</strong>
-                  <div class="resume-pdf-skill-row"><b>Tools:</b> Matplotlib, Seaborn, Plotly/Dash, Power BI, D3.js, GeoJSON, Next.js</div>
+                  <div class="resume-pdf-skill-row"><b>Tools:</b> <strong>Power BI, DAX</strong>, Matplotlib, Seaborn, Plotly/Dash, <strong>D3.js</strong>, GeoJSON, Next.js</div>
                   <div class="resume-pdf-skill-row"><b>Analysis:</b> A/B Testing, Exp. Design, Causal Inference</div>
                   <div class="resume-pdf-skill-row"><b>Communication:</b> Technical Documentation, Storytelling</div>
                 </div>
@@ -3772,6 +5136,17 @@
                   <li>Focused on practical prompting, product structure, and usable workflow design rather than low-level model engineering.</li>
                 </ul>
               </div>
+
+              <div class="resume-pdf-entry">
+                <div class="resume-pdf-entry-head">
+                  <span class="resume-pdf-job-title">Interactive Visualizations &amp; Geospatial (D3.js)</span>
+                  <span class="resume-pdf-date">Portfolio</span>
+                </div>
+                <ul class="resume-list">
+                  <li>Cincinnati <strong>choropleth</strong> and food-access <strong>maps</strong> (GeoJSON, D3); linked set of interactive charts (bar, scatter, heatmap, treemap).</li>
+                  <li>Readable, recruiter-facing delivery—tooltips, scales, and narrative labels—not static screenshots.</li>
+                </ul>
+              </div>
             </section>
 
             <section class="resume-pdf-section" aria-labelledby="resume-exp-heading">
@@ -3798,6 +5173,16 @@
                   <li>Help students move from broad AI interest to clearer implementation and presentation decisions.</li>
                 </ul>
               </div>
+
+              <div class="resume-pdf-entry">
+                <div class="resume-pdf-entry-head">
+                  <span class="resume-pdf-job-title">DECA — Competitive Business Events</span>
+                  <span class="resume-pdf-date">2022 – 2024</span>
+                </div>
+                <ul class="resume-list">
+                  <li>Presented <strong>data-backed</strong> analysis and strategic recommendations under structured time limits.</li>
+                </ul>
+              </div>
             </section>
 
             <section class="resume-pdf-section" aria-labelledby="resume-edu-heading">
@@ -3809,7 +5194,7 @@
                 </div>
                 <div class="resume-pdf-desc">
                   <strong>Major:</strong> Data Science &amp; Statistics<br>
-                  <strong>Relevant Coursework:</strong> AP Statistics, AP Computer Science A, AP Calculus BC
+                  <strong>Prep:</strong> AP Statistics, AP Computer Science A, AP Calculus BC
                 </div>
               </div>
               <div class="resume-pdf-entry">
@@ -3826,7 +5211,7 @@
     <footer class="site-footer">
       <div class="site-footer-inner">
         <div class="footer-column"><h2>JL</h2><p>James Liebel · University of Chicago · Class of 2030</p><a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a></div>
-        <div class="footer-column"><p class="footer-kicker">Navigate</p><nav class="footer-nav" aria-label="Footer navigation"><a href="#hero">Home</a><a href="#skills">Skills</a><a href="#projects">Featured Work</a><a href="#visualizations">Visualizations</a><a href="#journey">Journey</a><a href="#resume">Resume</a></nav></div>
+        <div class="footer-column"><p class="footer-kicker">Navigate</p><nav class="footer-nav" aria-label="Footer navigation"><a href="#hero">Home</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#visualizations">Visualizations</a><a href="#journey">Journey</a><a href="#resume">Resume</a></nav></div>
         <div class="footer-column"><p class="footer-kicker">Elsewhere</p><div class="footer-links"><a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div class="footer-availability"><span class="footer-availability-dot" aria-hidden="true"></span><span>Available for Summer 2026 internships</span></div></div>
       </div>
       <div class="footer-divider"></div>
@@ -3854,7 +5239,7 @@
       <nav class="mobile-nav-links" aria-label="Mobile">
         <a href="#hero">Home</a>
         <a href="#skills">Skills</a>
-        <a href="#projects">Featured Work</a>
+        <a href="#projects">Projects</a>
         <a href="#visualizations">Visualizations</a>
         <a href="#journey">Journey</a>
         <a href="#resume">Resume</a>
