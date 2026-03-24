@@ -6,3 +6,4 @@ node_modules/
 # Keep local editor/project noise out of the repo.
 .DS_Store
 Thumbs.db
+.vercel

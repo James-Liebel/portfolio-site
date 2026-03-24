@@ -399,25 +399,16 @@
     var l1 = layers.querySelector(".viz-pl-1");
     var l2 = layers.querySelector(".viz-pl-2");
     var l3 = layers.querySelector(".viz-pl-3");
-    var y = 0;
-    var ty1 = 0;
-    var ty2 = 0;
-    var ty3 = 0;
 
     function onScroll() {
       var rect = section.getBoundingClientRect();
-      var prog = 1 - (rect.top + rect.height) / (window.innerHeight + rect.height);
-      y = prog * 200;
-    }
-
-    function tick() {
-      ty1 = lerp(ty1, y * 0.1, 0.08);
-      ty2 = lerp(ty2, y * 0.25, 0.08);
-      ty3 = lerp(ty3, y * 0.15, 0.08);
-      if (l1) l1.style.transform = "translateY(" + ty1 + "px)";
-      if (l2) l2.style.transform = "translateY(" + ty2 + "px)";
-      if (l3) l3.style.transform = "translateY(" + ty3 + "px)";
-      requestAnimationFrame(tick);
+      var vh = window.innerHeight;
+      if (rect.bottom <= 0 || rect.top >= vh) return;
+      var prog = 1 - (rect.top + rect.height) / (vh + rect.height);
+      var y = prog * 200;
+      if (l1) l1.style.transform = "translate3d(0," + y * 0.1 + "px,0)";
+      if (l2) l2.style.transform = "translate3d(0," + y * 0.25 + "px,0)";
+      if (l3) l3.style.transform = "translate3d(0," + y * 0.15 + "px,0)";
     }
 
     var lenis = window.portfolioLenis;
@@ -427,7 +418,6 @@
       window.addEventListener("scroll", onScroll, { passive: true });
     }
     onScroll();
-    requestAnimationFrame(tick);
   }
 
   function initMagnetic() {
@@ -481,6 +471,16 @@
       if (fill) fill.style.height = p * 100 + "%";
     }
 
+    var railPending = false;
+    function scheduleRailUpdate() {
+      if (railPending) return;
+      railPending = true;
+      requestAnimationFrame(function () {
+        railPending = false;
+        update();
+      });
+    }
+
     window.addEventListener(
       "intro-complete",
       function () {
@@ -490,8 +490,8 @@
     );
 
     var lenis = window.portfolioLenis;
-    if (lenis && lenis.on) lenis.on("scroll", update);
-    else window.addEventListener("scroll", update, { passive: true });
+    if (lenis && lenis.on) lenis.on("scroll", scheduleRailUpdate);
+    else window.addEventListener("scroll", scheduleRailUpdate, { passive: true });
     dots.forEach(function (d, i) {
       d.addEventListener("click", function () {
         var s = sections[i];

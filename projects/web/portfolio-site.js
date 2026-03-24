@@ -2386,10 +2386,24 @@
     if (!window.Lenis || !window.gsap || !window.ScrollTrigger) return;
     const { gsap, ScrollTrigger, Lenis } = window;
     gsap.registerPlugin(ScrollTrigger);
-    lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+    /* Higher lerp = scroll catches up faster (0.1 feels floaty / laggy on long pages). */
+    lenis = new Lenis({
+      lerp: 0.22,
+      smoothWheel: true,
+      wheelMultiplier: 1
+    });
     window.portfolioLenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
-    lenis.on("scroll", updateNavState);
+    var navScrollPending = false;
+    function updateNavStateOnScroll() {
+      if (navScrollPending) return;
+      navScrollPending = true;
+      requestAnimationFrame(function () {
+        navScrollPending = false;
+        updateNavState();
+      });
+    }
+    lenis.on("scroll", updateNavStateOnScroll);
     gsap.ticker.add(time => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
     gsap.to("#scroll-progress", {
@@ -2399,7 +2413,7 @@
         trigger: document.body,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.3
+        scrub: true
       }
     });
     gsapScrollProgress = true;
@@ -2458,12 +2472,18 @@
       customCursor.classList.toggle("is-dark", state.darkSection);
     };
 
+    var cursorRaf = 0;
     const tick = () => {
+      cursorRaf = 0;
+      if (!state.visible) return;
       state.currentX += (state.x - state.currentX) * 0.12;
       state.currentY += (state.y - state.currentY) * 0.12;
       customCursor.style.transform = `translate3d(${state.currentX}px, ${state.currentY}px, 0) scale(${state.cardHover ? 3.5 : state.linkHover ? 2.5 : 1})`;
       customCursorDot.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(1)`;
-      requestAnimationFrame(tick);
+      var dx = Math.abs(state.x - state.currentX);
+      var dy = Math.abs(state.y - state.currentY);
+      var moving = dx > 0.4 || dy > 0.4 || state.linkHover || state.cardHover;
+      if (moving) cursorRaf = requestAnimationFrame(tick);
     };
 
     document.addEventListener("pointermove", event => {
@@ -2475,20 +2495,24 @@
         customCursorDot.classList.add("visible");
       }
       updateHoverState(event.target);
+      if (!cursorRaf) cursorRaf = requestAnimationFrame(tick);
     }, { passive: true });
 
     document.addEventListener("pointerleave", () => {
       state.visible = false;
+      if (cursorRaf) cancelAnimationFrame(cursorRaf);
+      cursorRaf = 0;
       customCursor.classList.remove("visible");
       customCursorDot.classList.remove("visible");
     });
 
     window.addEventListener("blur", () => {
+      state.visible = false;
+      if (cursorRaf) cancelAnimationFrame(cursorRaf);
+      cursorRaf = 0;
       customCursor.classList.remove("visible");
       customCursorDot.classList.remove("visible");
     });
-
-    requestAnimationFrame(tick);
   }
 
   setupObservers();
