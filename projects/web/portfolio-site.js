@@ -73,17 +73,17 @@
       boxes: [
         {
           title: "Pipelines & data",
-          text: "Engineered fraud-detection ETL on 284k+ rows: cleaning, feature tables, and train/test splits in Python/SQL. Shaped `[X]` additional extracts with Power Query before scoring (fill).",
+          text: "Engineered fraud-detection ETL on 284,807 ULB-style rows: RobustScaler, stratified holdout 56,962 rows, PR/ROC evaluation aligned to the executed GitHub notebook.",
           skills: ["SQL", "Python", "ETL"]
         },
         {
           title: "APIs & apps",
-          text: "Deployed FastAPI services behind a React/Vite UI for local LLM workflows (JimAI). Exposed `[X]` JSON endpoints and cut round-trip time to `[X]` ms median in dev (fill).",
+          text: "JimAI: FastAPI app with 10 mounted routers and 76 backend Python modules; React/Vite client with 33 TS/TSX files and 90+ fetch calls wrapped with 30s/120s SSE timeouts (repo completion report).",
           skills: ["FastAPI", "React", "TypeScript"]
         },
         {
           title: "Sites & surfaces",
-          text: "Shipped CustomStrat on a production domain with Next.js 14. Built `[X]` route-level components and Lighthouse perf score `[X]` (fill). Portfolio embeds D3 + PL-300-style report views beside code artifacts.",
+          text: "CustomStrat ships on customstrat.com (Next.js 14, GitHub Pages). Portfolio surfaces 6 D3 gallery builds plus a Power BI–style embedded report mock—run Lighthouse on deploy and pin the score in README when measured.",
           skills: ["Next.js", "D3.js", "Power BI"]
         }
       ]
@@ -93,17 +93,17 @@
       boxes: [
         {
           title: "Models",
-          text: "Trained XGBoost + Random Forest on imbalanced fraud labels; held validation recall near 91% with accuracy in the ~85% band. Vectorized `[X]`k news headlines for TF-IDF + sentiment features (fill).",
+          text: "Fraud: XGBoost fraud-class recall 80%, precision 87%, ROC-AUC 0.939 on 56,962-row holdout; Random Forest fraud recall 64%, ROC-AUC 0.958. NLP: VADER on 15 simulated headlines; TF-IDF + PassiveAggressive scaffold for Colab CSV uploads.",
           skills: ["Scikit-learn", "XGBoost", "NLP"]
         },
         {
           title: "Evaluation",
-          text: "Reported PR-AUC, confusion matrices, and per-class metrics for each use case. Ran `[X]` feature ablations; logged best F1 delta of `[X]` pts vs. baseline (fill).",
+          text: "Notebook outputs include confusion matrices, sklearn classification_report, ROC-AUC, and PR framing for imbalance. Macro-averaged recall hit 90% for XGBoost—distinct from fraud-class recall (80%).",
           skills: ["pandas", "Metrics", "EDA"]
         },
         {
           title: "Delivery",
-          text: "Packaged notebooks plus static D3 pages with reproducible charts. Exported `[X]` figures and metric tables per release for reviewer sign-off (fill).",
+          text: "Shipped Jupyter artifacts on GitHub plus this portfolio with six D3 iframes and static chart exports recruiters can open without a GPU.",
           skills: ["Jupyter", "D3.js", "Visualization"]
         }
       ]
@@ -113,17 +113,17 @@
       boxes: [
         {
           title: "BI & modeling",
-          text: "Authored PL-300 Power BI models: DAX measures, SQL/Power Query staging, and `[X]` dashboard pages with drill filters (fill).",
+          text: "PL-300 credential plus Power BI report mock embedded in this portfolio: DAX-style KPI tiles, slicers, and multi-page narrative layout mirroring how managers consume analytics.",
           skills: ["Power BI", "DAX", "SQL"]
         },
         {
           title: "D3 applications",
-          text: "Shipped `[X]` interactive D3 modules (bars, heatmaps, treemaps, GeoJSON choropleths) with live tooltips and scales—executable viz, not screenshots (fill).",
+          text: "Six D3.js modules in the viz gallery (GDP bar, cycling scatter, heatmap, Cincinnati choropleth, treemap, desert comparison) plus a featured dashboard tile—each is a live iframe, not a PNG.",
           skills: ["D3.js", "JavaScript", "GeoJSON"]
         },
         {
           title: "Reporting",
-          text: "Structured stakeholder views with KPI tiles, comparison paths, and plain labels. Cut time-to-answer from `[X]` minutes to `[X]` for recurring reviews (fill).",
+          text: "Dashboard copy emphasizes drillable comparisons and plain-language labels; add measured time-to-answer once you have stakeholder interviews or usage logs.",
           skills: ["Dashboards", "KPIs", "PL-300"]
         }
       ]

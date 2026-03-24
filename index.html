@@ -4580,12 +4580,12 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Machine Learning</p>
                   <h3 class="project-summary-title">Credit Card Fraud Detection</h3>
-                  <p class="project-summary-blurb">Trained XGBoost + Random Forest on 284k+ rows; optimized recall on imbalanced fraud labels with SMOTE and PR-AUC tracking.</p>
+                  <p class="project-summary-blurb">Trained XGBoost + Random Forest on the Kaggle-style ULB fraud set (284,807 rows); stratified holdout 56,962 rows with RobustScaler + PR/ROC evaluation per the executed notebook.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">91% recall</span>
-                  <span class="metric-pill">284k+ rows</span>
-                  <span class="metric-pill">XGBoost + SMOTE</span>
+                  <span class="metric-pill">80% fraud recall (XGB)</span>
+                  <span class="metric-pill">284,807 rows</span>
+                  <span class="metric-pill">ROC-AUC 0.94</span>
                 </div>
                 <span class="project-summary-expand">
                   <span class="project-summary-expand-label">Expand</span>
@@ -4596,20 +4596,20 @@
             <div class="project-expanded">
           <div class="project-inner">
             <div class="project-copy">
-              <p class="project-lede">End-to-end fraud classifier: engineered features on 284k+ transactions, trained ensemble models, reported recall/precision tradeoffs for ops.</p>
+              <p class="project-lede">End-to-end fraud classifier on <strong>284,807</strong> transactions (<strong>492</strong> fraud, <strong>0.17%</strong> positive rate): stratified split train <strong>227,845</strong> / test <strong>56,962</strong>, <strong>RobustScaler</strong> on amount/time, default XGBoost/RandomForest training, confusion matrices + PR/ROC reporting (<a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">notebook</a>).</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-fraud-why">
                   <h4 id="project-fraud-why">Impact</h4>
                   <ul>
-                    <li>Engineered pipeline processing <strong>[X]</strong>k rows/hour in batch (fill).</li>
-                    <li>Achieved <strong>91%</strong> recall on held-out fraud slice; accuracy held in <strong>[X]–[X]%</strong> band (fill).</li>
-                    <li>Deployed evaluation notebook + metrics table for stakeholder review.</li>
+                    <li><strong>XGBoost</strong> on holdout: fraud-class recall <strong>80%</strong>, precision <strong>87%</strong>, ROC-AUC <strong>0.939</strong>; macro-averaged recall <strong>90%</strong> (sklearn <code>classification_report</code>—not the same as fraud recall).</li>
+                    <li><strong>Random Forest</strong> baseline on same holdout: fraud recall <strong>64%</strong>, ROC-AUC <strong>0.958</strong>; weighted accuracy ~<strong>100%</strong> (expected under extreme imbalance—metrics emphasize PR/ROC instead).</li>
+                    <li>Published reproducible notebook with confusion matrices, classification reports, and ROC curves for reviewer walkthrough.</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-fraud-stack">
                   <h4 id="project-fraud-stack">Technologies</h4>
                   <div class="detail-tags">
-                    <span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Random Forest</span><span class="tag">SMOTE</span><span class="tag">Precision-Recall</span><span class="tag">Evaluation</span>
+                    <span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Random Forest</span><span class="tag">RobustScaler</span><span class="tag">Precision-Recall</span><span class="tag">Evaluation</span>
                   </div>
                 </section>
               </div>
@@ -4656,14 +4656,14 @@
             <div class="project-expanded">
           <div class="project-inner reverse">
             <div class="project-copy">
-              <p class="project-lede">Shipped a local-first AI cockpit: REST APIs, streaming UI states, and prompt templates cut manual copy/paste by <strong>[X]%</strong> in internal tests (fill).</p>
+              <p class="project-lede">Shipped a local-first AI workspace: FastAPI backend + React/Vite UI + Ollama, with agent orchestration, research SSE streams, and desktop shell (see <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">JimAI</a>).</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-jimai-why">
                   <h4 id="project-jimai-why">Impact</h4>
                   <ul>
-                    <li>Built FastAPI services with <strong>[X]</strong> routes covering chat, search, and file ingest (fill).</li>
-                    <li>Implemented React flows with <strong>[X]</strong> reusable components and optimistic UI states.</li>
-                    <li>Benchmarked latency at <strong>[X]</strong> ms median per completion on local GPU (fill).</li>
+                    <li>Backend entrypoint mounts <strong>10</strong> FastAPI routers (chat, upload, vision, agents, feedback, completion, settings, webtools, builder, agent space); repo audit cites <strong>76</strong> Python modules in <code>backend/</code>.</li>
+                    <li>Frontend hardening: <strong>33</strong> TS/TSX modules (~215 KB source per internal audit); wrapped <strong>90+</strong> client calls with explicit timeouts (30s default, 120s SSE) plus error boundary and cancelable research.</li>
+                    <li>Ops-facing <code>/health</code> probes Ollama, ChromaDB, and Qdrant with <strong>3s</strong> timeouts; validation scripts + <code>npm run build</code> recorded clean in repo completion report.</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-jimai-stack">
@@ -4719,9 +4719,9 @@
                 <section class="detail project-detail" aria-labelledby="project-customstrat-why">
                   <h4 id="project-customstrat-why">Impact</h4>
                   <ul>
-                    <li>Shipped <strong>[X]</strong> pages/components with Lighthouse performance score <strong>[X]</strong> (fill).</li>
-                    <li>Reduced content update time from <strong>[X]</strong> hours to <strong>[X]</strong> minutes using structured MDX/markdown (fill).</li>
-                    <li>Configured DNS + HTTPS on custom domain with zero-downtime cutover.</li>
+                    <li>Live multi-section marketing site on <strong>customstrat.com</strong> (Next.js 14, TypeScript, Tailwind) deployed to <strong>GitHub Pages</strong> with custom domain + HTTPS.</li>
+                    <li>Structured content architecture (componentized sections) so non-dev updates stay copy-and-media swaps instead of full rewrites—benchmark Lighthouse locally and paste score in README when you have a number.</li>
+                    <li>DNS + TLS aligned to GitHub Pages; no third-party hosting lock-in for static delivery.</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-customstrat-stack">
@@ -4758,12 +4758,12 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">NLP</p>
                   <h3 class="project-summary-title">News Sentiment Analysis</h3>
-                  <p class="project-summary-blurb">Engineered NLP pipeline (VADER + TF-IDF) that vectorizes <strong>[X]</strong>k headlines for downstream models (fill).</p>
+                  <p class="project-summary-blurb">VADER sentiment on <strong>15</strong> simulated finance headlines; separate Colab notebook scaffolds <strong>TF-IDF + PassiveAggressiveClassifier</strong> on uploaded fake-news CSV (<a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Personal_Projects</a>).</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">VADER</span>
-                  <span class="metric-pill">TF-IDF</span>
-                  <span class="metric-pill">Feature Engineering</span>
+                  <span class="metric-pill">15-row VADER demo</span>
+                  <span class="metric-pill">TF-IDF scaffold</span>
+                  <span class="metric-pill">Notebook workflows</span>
                 </div>
                 <span class="project-summary-expand">
                   <span class="project-summary-expand-label">Expand</span>
@@ -4774,14 +4774,14 @@
             <div class="project-expanded">
           <div class="project-inner reverse">
             <div class="project-copy">
-              <p class="project-lede">Vectorized headline corpus into sentiment + TF-IDF features; improved downstream classifier F1 by <strong>[X]</strong> pts vs. baseline (fill).</p>
+              <p class="project-lede"><strong>stock_sentiment_analysis.ipynb</strong>: end-to-end VADER scoring + bullish/bearish labels on a <strong>15-row</strong> simulated ticker/headline table (quant finance narrative demo). <strong>news_sentiment_analysis.ipynb</strong>: sklearn pipeline template <code>TfidfVectorizer → PassiveAggressiveClassifier</code> for Colab-uploaded labeled articles—run cells to log your own row counts and accuracy.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-sentiment-why">
                   <h4 id="project-sentiment-why">Impact</h4>
                   <ul>
-                    <li>Processed <strong>[X]</strong> thousand rows of financial news text with dedup + cleaning (fill).</li>
-                    <li>Engineered <strong>[X]</strong> lexical features; cut training iteration time to <strong>[X]</strong> minutes per experiment (fill).</li>
-                    <li>Packaged notebook + API-ready dataframe exports for modeling team handoff.</li>
+                    <li>Finance demo stays honest on scale (<strong>15</strong> headlines) while still showing ingestion → sentiment features → time-series aggregation workflow.</li>
+                    <li>Fake-news notebook demonstrates text vectorization + linear classifier wiring suitable for larger corpora once you pin a public dataset and commit outputs.</li>
+                    <li>Both notebooks are recruiter-ready for <em>method</em>; add executed metrics when you freeze a dataset version in-repo.</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-sentiment-stack">
@@ -5019,17 +5019,16 @@
             <p class="experience-degree">B.S. Data Science &amp; Statistics — expected May 2030</p>
             <ul>
               <li>Completed IBM Data Science Professional Certificate; Microsoft PL-300 (Power BI Data Analyst).</li>
-              <li>Coursework in probability, linear algebra, algorithms, and statistical inference ([X] credits completed — fill).</li>
-              <li>Maintained GPA [X] in quantitative coursework (fill).</li>
+              <li>Coursework in probability, linear algebra, algorithms, and statistical inference (publish credit totals / GPA only if you want them on a public page).</li>
             </ul>
           </article>
           <article class="experience-card">
             <h3>Leadership</h3>
             <p class="experience-meta">Co-President · Machine Learning Club</p>
             <ul>
-              <li>Designed and taught neural network workshops to [X]+ students using PyTorch and reproducible notebooks.</li>
-              <li>Increased recurring attendance by [X]% vs. prior term (fill).</li>
-              <li>Mentored [X] project teams on validation metrics, pipeline structure, and technical writeups.</li>
+              <li>Designed and delivered PyTorch-forward neural network workshops with reproducible notebooks for the club.</li>
+              <li>Co-led programming and session planning (topics, hands-on formats, onboarding for new members).</li>
+              <li>Mentored peers on validation metrics, pipeline structure, and technical writeups—quantify headcount/attendance when you have sign-in sheets or official rosters.</li>
             </ul>
           </article>
         </div>
@@ -5074,7 +5073,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Professional Summary</h2>
               <p class="resume-pdf-summary">
-                <strong>Data scientist &amp; ML engineer</strong> pursuing a B.S. in <strong>Data Science &amp; Statistics</strong> at the <strong>University of Chicago</strong> (expected May 2030). Builds end-to-end ML: <strong>classification</strong> and fraud detection (~91% recall on imbalanced data), <strong>NLP</strong> sentiment pipelines, <strong>Power BI</strong> / PL-300 dashboards, and <strong>D3.js</strong> / GeoJSON maps. Ships interfaces with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong> (live client site). Targeting <strong>Summer 2026</strong> internships in data science, analytics engineering, or ML-adjacent product roles.
+                <strong>Data scientist &amp; ML engineer</strong> pursuing a B.S. in <strong>Data Science &amp; Statistics</strong> at the <strong>University of Chicago</strong> (expected May 2030). Builds end-to-end ML: fraud detection on <strong>284,807</strong> transactions with <strong>80%</strong> fraud-class recall (XGBoost holdout) and <strong>ROC-AUC 0.94</strong>; <strong>NLP</strong> notebooks (VADER demo + TF-IDF classifier scaffold); <strong>Power BI</strong> / PL-300 dashboards; <strong>D3.js</strong> / GeoJSON maps. Ships interfaces with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong> (live client site). Targeting <strong>Summer 2026</strong> internships in data science, analytics engineering, or ML-adjacent product roles.
               </p>
             </section>
 
@@ -5090,7 +5089,7 @@
                 <div class="resume-pdf-skill-cat">
                   <strong>Machine Learning &amp; AI</strong>
                   <div class="resume-pdf-skill-row"><b>Core ML:</b> Scikit-Learn, XGBoost, Random Forests, Ensemble Methods</div>
-                  <div class="resume-pdf-skill-row"><b>Workflow:</b> Feature engineering, evaluation, imbalanced data, <strong>SMOTE</strong>, classification &amp; regression</div>
+                  <div class="resume-pdf-skill-row"><b>Workflow:</b> Feature engineering, evaluation, imbalanced data (PR-AUC/ROC, resampling when warranted), classification &amp; regression</div>
                   <div class="resume-pdf-skill-row"><b>Deep Learning:</b> TensorFlow/Keras, CNNs, RNNs, Neural Networks</div>
                   <div class="resume-pdf-skill-row"><b>NLP / AI:</b> NLTK, VADER, TF-IDF, Prompting, Local AI Workflows</div>
                 </div>
@@ -5118,8 +5117,8 @@
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">See on GitHub</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li>Built an imbalanced fraud detection pipeline using <strong>XGBoost</strong> and <strong>Random Forest</strong> on 284k+ transactions.</li>
-                  <li>Applied <strong>SMOTE</strong> and <strong>RobustScaler</strong> to handle class imbalance and outliers, improving recall to 91%.</li>
+                  <li>Built an imbalanced fraud detection pipeline using <strong>XGBoost</strong> and <strong>Random Forest</strong> on <strong>284,807</strong> Kaggle ULB–style transactions (stratified test holdout <strong>56,962</strong> rows).</li>
+                  <li>Scaled amount/time with <strong>RobustScaler</strong> before fitting; <strong>XGBoost</strong> achieved <strong>80%</strong> fraud-class recall with <strong>87%</strong> precision and <strong>ROC-AUC 0.939</strong> on the stratified holdout (matches executed notebook—add SMOTE/class weights in-repo if you adopt them).</li>
                   <li>Evaluated performance with <strong>Precision-Recall</strong>, <strong>F1-score</strong>, and <strong>confusion matrices</strong> to frame tradeoffs beyond raw accuracy.</li>
                 </ul>
               </div>

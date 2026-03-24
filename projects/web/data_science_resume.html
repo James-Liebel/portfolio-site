@@ -257,9 +257,9 @@
     <div class="section">
         <h2>PROFESSIONAL SUMMARY</h2>
         <p class="summary">
-            Incoming <strong>University of Chicago</strong> B.S. <strong>Data Science &amp; Statistics</strong> (Class of 2030).
-            End-to-end analytics: <strong>classification</strong> and fraud detection (~91% recall on imbalanced data),
-            <strong>NLP</strong> sentiment pipelines, <strong>Power BI</strong> / PL-300 dashboards, and <strong>D3.js</strong> / GeoJSON maps.
+            <strong>Data scientist &amp; ML engineer</strong> pursuing a B.S. in <strong>Data Science &amp; Statistics</strong> at the <strong>University of Chicago</strong> (expected May 2030).
+            End-to-end ML: fraud detection on <strong>284,807</strong> transactions with <strong>80%</strong> fraud-class recall (XGBoost, 56,962-row holdout) and <strong>ROC-AUC 0.94</strong>;
+            <strong>NLP</strong> notebooks (VADER demo on simulated headlines; TF-IDF classifier scaffold); <strong>Power BI</strong> / PL-300 dashboards; <strong>D3.js</strong> / GeoJSON maps.
             Ships interfaces with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong> (live client site).
             Seeking <strong>Summer 2026</strong> internship in data science, analytics engineering, or ML-adjacent product roles.
         </p>
@@ -278,7 +278,7 @@
                 <strong>Machine Learning & AI</strong>
                 <div class="skill-item-row"><b>Core ML:</b> Scikit-Learn, XGBoost, Random Forests, Ensemble Methods
                 </div>
-                <div class="skill-item-row"><b>Workflow:</b> Feature engineering, evaluation, imbalanced data, <b>SMOTE</b>, classification &amp; regression</div>
+                <div class="skill-item-row"><b>Workflow:</b> Feature engineering, evaluation, imbalanced data (PR-AUC/ROC, resampling when warranted), classification &amp; regression</div>
                 <div class="skill-item-row"><b>Deep Learning:</b> TensorFlow/Keras, CNNs, RNNs, Neural Networks</div>
                 <div class="skill-item-row"><b>NLP / AI:</b> NLTK, VADER, TF-IDF, Prompting, Local AI Workflows</div>
             </div>
@@ -309,9 +309,9 @@
             </div>
             <ul>
                 <li>Built an imbalanced fraud detection pipeline using <strong>XGBoost</strong> and
-                    <strong>Random Forest</strong> on 284k+ transactions.</li>
-                <li>Applied <strong>SMOTE</strong> and <strong>RobustScaler</strong> to handle class imbalance and
-                    outliers, improving recall to 91%.</li>
+                    <strong>Random Forest</strong> on <strong>284,807</strong> Kaggle ULB–style transactions (stratified test holdout <strong>56,962</strong> rows).</li>
+                <li>Scaled amount/time with <strong>RobustScaler</strong> before fitting; <strong>XGBoost</strong> reached <strong>80%</strong> fraud-class recall,
+                    <strong>87%</strong> precision, and <strong>ROC-AUC 0.939</strong> on the stratified holdout (executed notebook outputs—no SMOTE in the committed pipeline).</li>
                 <li>Evaluated performance with <strong>Precision-Recall</strong>, <strong>F1-score</strong>, and
                     <strong>confusion matrices</strong> to frame tradeoffs beyond raw accuracy.</li>
             </ul>
@@ -325,10 +325,9 @@
                 <span class="date">See on GitHub</span>
             </div>
             <ul>
-                <li>Built an NLP pipeline to extract sentiment trends from unstructured news text.</li>
-                <li>Used <strong>VADER</strong> sentiment analysis and <strong>TF-IDF</strong> vectorization to process
-                    and classify headlines efficiently.</li>
-                <li>Visualized sentiment shifts over time to turn qualitative text into structured analytical output.</li>
+                <li><strong>stock_sentiment_analysis.ipynb</strong>: VADER sentiment + bullish/bearish labels on a <strong>15-row</strong> simulated finance headline table (workflow demo).</li>
+                <li><strong>news_sentiment_analysis.ipynb</strong>: sklearn <strong>TF-IDF + PassiveAggressiveClassifier</strong> scaffold for Colab-uploaded labeled articles—commit executed metrics when a dataset version is fixed in-repo.</li>
+                <li>Visualized sentiment aggregates over time in the finance demo to show how NLP features feed charts.</li>
             </ul>
         </div>
 
