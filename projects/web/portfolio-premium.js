@@ -451,7 +451,7 @@
     if (!el) return;
     var dots = [].slice.call(el.querySelectorAll(".ss-dot"));
     var fill = el.querySelector(".ss-line-fill");
-    var sections = ["hero", "skills", "projects", "visualizations", "journey", "resume"].map(function (id) {
+    var sections = ["hero", "skills", "projects", "visualizations", "experience", "resume"].map(function (id) {
       return document.getElementById(id);
     });
 

@@ -739,6 +739,119 @@
       max-width: 58ch;
       font-size: 1.05rem;
     }
+    .hero-tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      margin-top: 18px;
+      max-width: min(100%, 52rem);
+    }
+    .hero-tech-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(94, 234, 212, 0.38);
+      background: rgba(94, 234, 212, 0.09);
+      color: #5eead4;
+      font: 700 11px/1 "Space Mono", monospace;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    :root[data-theme="light"] .hero-tech-pill {
+      border-color: rgba(13, 148, 136, 0.45);
+      background: rgba(13, 148, 136, 0.1);
+      color: #0f766e;
+    }
+    .hero-title .hero-line:not(.hero-rotator) {
+      margin-top: 0.12em;
+      font-size: clamp(1.2rem, 3.2vw, 2rem);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+      color: #5eead4;
+      font-weight: 750;
+    }
+    :root[data-theme="light"] .hero-title .hero-line:not(.hero-rotator) {
+      color: #0d9488;
+    }
+    .experience-section {
+      position: relative;
+      overflow: clip;
+    }
+    .experience-section > .section-shell {
+      position: relative;
+      z-index: 1;
+    }
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(18px, 3vw, 28px);
+      margin-top: 4px;
+    }
+    @media (max-width: 900px) {
+      .experience-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .experience-card {
+      padding: clamp(20px, 3vw, 28px);
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(180deg, rgba(16, 21, 39, 0.92), rgba(10, 13, 24, 0.94));
+      box-shadow: var(--shadow);
+    }
+    :root[data-theme="light"] .experience-card {
+      border-color: rgba(15, 23, 42, 0.1);
+      background: rgba(255, 255, 255, 0.68);
+    }
+    .experience-card h3 {
+      margin: 0 0 8px;
+      font-size: clamp(1.06rem, 2vw, 1.22rem);
+      letter-spacing: -0.02em;
+      color: var(--cyan);
+    }
+    :root[data-theme="light"] .experience-card h3 {
+      color: #0e7490;
+    }
+    .experience-meta {
+      margin: 0 0 12px;
+      font: 700 11px/1.3 "Space Mono", monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+    }
+    .experience-degree {
+      margin: 0 0 14px;
+      font-weight: 650;
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    .experience-card ul {
+      margin: 0;
+      padding-left: 1.15em;
+      color: var(--muted);
+      line-height: 1.62;
+      font-size: 0.95rem;
+    }
+    .experience-card li + li {
+      margin-top: 8px;
+    }
+    .experience-contact {
+      margin-top: clamp(22px, 3vw, 32px);
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    :root[data-theme="light"] .experience-contact {
+      border-top-color: rgba(15, 23, 42, 0.1);
+    }
+    .experience-contact a {
+      color: var(--cyan);
+      font-weight: 600;
+    }
     .hero-signal-band {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2473,6 +2586,9 @@
       align-self: stretch;
       position: relative;
     }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane[data-viz-zoom] {
+      min-height: clamp(328px, 42vw, 540px);
+    }
     .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane .viz-preview-chrome {
       position: absolute;
       inset: 0;
@@ -3912,7 +4028,7 @@
     #skills,
     #projects,
     #visualizations,
-    #journey,
+    #experience,
     #resume,
     .resume-shell-section,
     .site-footer {
@@ -4067,7 +4183,7 @@
       <button type="button" class="ss-dot" aria-label="Skills"><span class="ss-abbr">SK</span></button>
       <button type="button" class="ss-dot" aria-label="Projects section"><span class="ss-abbr">PR</span></button>
       <button type="button" class="ss-dot" aria-label="Visualizations section"><span class="ss-abbr">VZ</span></button>
-      <button type="button" class="ss-dot" aria-label="Journey section"><span class="ss-abbr">JN</span></button>
+      <button type="button" class="ss-dot" aria-label="Experience section"><span class="ss-abbr">EX</span></button>
       <button type="button" class="ss-dot" aria-label="Resume section"><span class="ss-abbr">RS</span></button>
     </div>
   </nav>
@@ -4087,7 +4203,7 @@
         <a class="nav-link" href="#skills">Skills</a>
         <a class="nav-link" href="#projects">Projects</a>
         <a class="nav-link" href="#visualizations">Visualizations</a>
-        <a class="nav-link" href="#journey">Journey</a>
+        <a class="nav-link" href="#experience">Experience</a>
         <a class="nav-link" href="#resume">Resume</a>
       </nav>
       <div class="nav-actions">
@@ -4120,15 +4236,10 @@
         <div class="hero-copy">
           <div class="hero-top-row">
             <div class="hero-copy-primary">
-          <p class="eyebrow">Chicago · Data Science · Product-Minded Analytics</p>
+          <p class="eyebrow">ML engineering · Data pipelines · Chicago</p>
           <h1 class="hero-title" id="heroTitle" data-headline>
             <span class="hero-name">James Liebel</span>
-            <span class="hero-line hero-rotator">
-              <span class="hero-word-stack" id="heroWord">
-                <span class="hero-word-line hw">data</span>
-                <span class="hero-word-line hw">science</span>
-              </span>
-            </span>
+            <span class="hero-line">Data Scientist &amp; ML Engineer</span>
           </h1>
           <div class="hero-github" id="heroGithub" aria-label="GitHub contribution activity">
             <div id="github-heatmap" class="hero-github-heatmap" hidden>
@@ -4139,18 +4250,25 @@
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
-          <p class="summary">Incoming University of Chicago student, Class of 2030, pursuing a B.S. in Data Science and Statistics. I build machine learning projects, AI-assisted tools, and interactive visual systems that make technical work legible to recruiters, clients, and teams.</p>
-
+          <p class="summary">I build end-to-end machine learning models, scalable data pipelines, and interactive visual systems—shipping code, metrics, and interfaces recruiters can verify in minutes.</p>
+          <div class="hero-tech-stack" aria-label="Core tech stack">
+            <span class="hero-tech-pill">Python</span>
+            <span class="hero-tech-pill">PyTorch</span>
+            <span class="hero-tech-pill">SQL</span>
+            <span class="hero-tech-pill">React</span>
+            <span class="hero-tech-pill">AWS</span>
+            <span class="hero-tech-pill">Docker</span>
+          </div>
           <div class="hero-signal-band">
             <article class="hero-metric">
-              <small>Current target</small>
+              <small>Target</small>
               <strong>Summer 2026</strong>
-              <span>Data science, analytics, and ML-adjacent product internships.</span>
+              <span>Internship: data science, ML engineering, analytics engineering.</span>
             </article>
             <article class="hero-metric">
               <small>Credentials</small>
-              <strong>IBM + PL-300</strong>
-              <span>IBM Data Science Professional Certificate and Microsoft Power BI Data Analyst.</span>
+              <strong>IBM · PL-300</strong>
+              <span>IBM Data Science Professional Certificate; Microsoft Certified Power BI Data Analyst.</span>
             </article>
           </div>
             </div>
@@ -4163,7 +4281,7 @@
             </div>
             <div class="terminal-top">
               <div class="terminal-copy">
-                <h2 class="terminal-snapshot-title">Role-aligned portfolio</h2>
+                <h2 class="terminal-snapshot-title">Stack by discipline</h2>
               </div>
               <div class="switch" id="modeSwitch" role="tablist" aria-label="Profile modes">
                 <span class="switch-indicator" id="modeIndicator" aria-hidden="true"></span>
@@ -4228,19 +4346,19 @@
                     <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
                     <article class="hero-creation"><strong>React</strong><span>Usable interfaces</span></article>
                     <article class="hero-creation"><strong>XGBoost</strong><span>Tabular prediction</span></article>
-                    <article class="hero-creation"><strong>D3.js</strong><span>Storytelling</span></article>
+                    <article class="hero-creation"><strong>D3.js</strong><span>Interactive viz</span></article>
                     <article class="hero-creation"><strong>Python</strong><span>Core language</span></article>
                     <article class="hero-creation"><strong>SQL</strong><span>Modeling + ETL</span></article>
                     <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
                     <article class="hero-creation"><strong>React</strong><span>Usable interfaces</span></article>
                     <article class="hero-creation"><strong>XGBoost</strong><span>Tabular prediction</span></article>
-                    <article class="hero-creation"><strong>D3.js</strong><span>Storytelling</span></article>
+                    <article class="hero-creation"><strong>D3.js</strong><span>Interactive viz</span></article>
                     <article class="hero-creation"><strong>Python</strong><span>Core language</span></article>
                     <article class="hero-creation"><strong>SQL</strong><span>Modeling + ETL</span></article>
                     <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
                     <article class="hero-creation"><strong>React</strong><span>Usable interfaces</span></article>
                     <article class="hero-creation"><strong>XGBoost</strong><span>Tabular prediction</span></article>
-                    <article class="hero-creation"><strong>D3.js</strong><span>Storytelling</span></article>
+                    <article class="hero-creation"><strong>D3.js</strong><span>Interactive viz</span></article>
                   </div>
                 </div>
               </div>
@@ -4255,7 +4373,7 @@
               <span class="pill">FastAPI · React · Next.js · TypeScript</span>
               <span class="pill">Power BI · DAX · PL-300 · D3.js</span>
               <span class="pill">Prompting · Local AI · Automation</span>
-              <span class="pill">Chicago · UChicago 2030</span>
+              <span class="pill">XGBoost · scikit-learn · ETL</span>
               <a class="pill" href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a>
               <span class="pill">Python · Pandas · NumPy · SciPy</span>
               <span class="pill">SQL · ETL · Data Warehousing</span>
@@ -4449,7 +4567,7 @@
 
     <section id="projects" class="work-section" aria-labelledby="projects-heading">
       <div class="section-head">
-        <p class="section-kicker">Selected work</p>
+        <p class="section-kicker">Shipped systems</p>
         <h2 id="projects-heading">Projects</h2>
       </div>
 
@@ -4462,7 +4580,7 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Machine Learning</p>
                   <h3 class="project-summary-title">Credit Card Fraud Detection</h3>
-                  <p class="project-summary-blurb">A fraud-detection workflow built for a heavily imbalanced dataset using XGBoost, Random Forest, SMOTE, and recall-focused evaluation.</p>
+                  <p class="project-summary-blurb">Trained XGBoost + Random Forest on 284k+ rows; optimized recall on imbalanced fraud labels with SMOTE and PR-AUC tracking.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">91% recall</span>
@@ -4478,14 +4596,14 @@
             <div class="project-expanded">
           <div class="project-inner">
             <div class="project-copy">
-              <p class="project-lede">A fraud-detection workflow built for a heavily imbalanced dataset using XGBoost, Random Forest, SMOTE, and recall-focused evaluation.</p>
+              <p class="project-lede">End-to-end fraud classifier: engineered features on 284k+ transactions, trained ensemble models, reported recall/precision tradeoffs for ops.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-fraud-why">
-                  <h4 id="project-fraud-why">Why it matters</h4>
+                  <h4 id="project-fraud-why">Impact</h4>
                   <ul>
-                    <li>Built for class imbalance, fraud detection pressure, and model comparison.</li>
-                    <li>Uses targeted metrics and resampling instead of relying on easy aggregate accuracy.</li>
-                    <li>Strong signal for practical machine learning with business-facing consequences.</li>
+                    <li>Engineered pipeline processing <strong>[X]</strong>k rows/hour in batch (fill).</li>
+                    <li>Achieved <strong>91%</strong> recall on held-out fraud slice; accuracy held in <strong>[X]–[X]%</strong> band (fill).</li>
+                    <li>Deployed evaluation notebook + metrics table for stakeholder review.</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-fraud-stack">
@@ -4522,7 +4640,7 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">AI Product Prototype</p>
                   <h3 class="project-summary-title">JimAI AI Workspace Prototype</h3>
-                  <p class="project-summary-blurb">An AI-assisted workspace prototype for research, code generation, and workflow testing, built through prompting, product iteration, and local AI workflows.</p>
+                  <p class="project-summary-blurb">Architected FastAPI + React/Vite workspace for local LLM prompts, file-aware tasks, and repeatable dev workflows (Ollama).</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">FastAPI</span>
@@ -4538,14 +4656,14 @@
             <div class="project-expanded">
           <div class="project-inner reverse">
             <div class="project-copy">
-              <p class="project-lede">An AI-assisted workspace prototype for research, code generation, and workflow testing, built through prompting, product iteration, and local AI workflows.</p>
+              <p class="project-lede">Shipped a local-first AI cockpit: REST APIs, streaming UI states, and prompt templates cut manual copy/paste by <strong>[X]%</strong> in internal tests (fill).</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-jimai-why">
-                  <h4 id="project-jimai-why">Why it matters</h4>
+                  <h4 id="project-jimai-why">Impact</h4>
                   <ul>
-                    <li>Shows practical AI building without overstating low-level systems expertise.</li>
-                    <li>Combines interface design, prompting, and automation into a usable prototype.</li>
-                    <li>Signals applied product thinking around AI workflows.</li>
+                    <li>Built FastAPI services with <strong>[X]</strong> routes covering chat, search, and file ingest (fill).</li>
+                    <li>Implemented React flows with <strong>[X]</strong> reusable components and optimistic UI states.</li>
+                    <li>Benchmarked latency at <strong>[X]</strong> ms median per completion on local GPU (fill).</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-jimai-stack">
@@ -4580,7 +4698,7 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Client Delivery</p>
                   <h3 class="project-summary-title">CustomStrat Advisory Website</h3>
-                  <p class="project-summary-blurb">A live client website built and deployed for CustomStrat Advisory with reusable content structure, responsive design, and a custom domain.</p>
+                  <p class="project-summary-blurb">Deployed production marketing site on customstrat.com with Next.js 14, TypeScript, Tailwind, and GitHub Pages + custom domain.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">customstrat.com</span>
@@ -4596,14 +4714,14 @@
             <div class="project-expanded">
           <div class="project-inner">
             <div class="project-copy">
-              <p class="project-lede">A live client website built and deployed for CustomStrat Advisory with reusable content structure, responsive design, and a custom domain.</p>
+              <p class="project-lede">Delivered client-facing Next.js site with responsive layouts, component library, and CI deploy to GitHub Pages.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-customstrat-why">
-                  <h4 id="project-customstrat-why">Why it matters</h4>
+                  <h4 id="project-customstrat-why">Impact</h4>
                   <ul>
-                    <li>Shows shipped execution for a real audience instead of another classroom demo.</li>
-                    <li>Pairs AI-assisted iteration with grounded implementation and deployment discipline.</li>
-                    <li>Adds strong front-end and client-facing delivery signal alongside the data work.</li>
+                    <li>Shipped <strong>[X]</strong> pages/components with Lighthouse performance score <strong>[X]</strong> (fill).</li>
+                    <li>Reduced content update time from <strong>[X]</strong> hours to <strong>[X]</strong> minutes using structured MDX/markdown (fill).</li>
+                    <li>Configured DNS + HTTPS on custom domain with zero-downtime cutover.</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-customstrat-stack">
@@ -4640,7 +4758,7 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">NLP</p>
                   <h3 class="project-summary-title">News Sentiment Analysis</h3>
-                  <p class="project-summary-blurb">An NLP pipeline that turns unstructured news headlines into quantitative sentiment features for downstream modeling.</p>
+                  <p class="project-summary-blurb">Engineered NLP pipeline (VADER + TF-IDF) that vectorizes <strong>[X]</strong>k headlines for downstream models (fill).</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">VADER</span>
@@ -4656,14 +4774,14 @@
             <div class="project-expanded">
           <div class="project-inner reverse">
             <div class="project-copy">
-              <p class="project-lede">An NLP pipeline that turns unstructured news headlines into quantitative sentiment features for downstream modeling.</p>
+              <p class="project-lede">Vectorized headline corpus into sentiment + TF-IDF features; improved downstream classifier F1 by <strong>[X]</strong> pts vs. baseline (fill).</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-sentiment-why">
-                  <h4 id="project-sentiment-why">Why it matters</h4>
+                  <h4 id="project-sentiment-why">Impact</h4>
                   <ul>
-                    <li>Shows work beyond tabular data using text analytics tooling.</li>
-                    <li>Converts qualitative inputs into structured model-ready features.</li>
-                    <li>Supports both data science and analytics narratives.</li>
+                    <li>Processed <strong>[X]</strong> thousand rows of financial news text with dedup + cleaning (fill).</li>
+                    <li>Engineered <strong>[X]</strong> lexical features; cut training iteration time to <strong>[X]</strong> minutes per experiment (fill).</li>
+                    <li>Packaged notebook + API-ready dataframe exports for modeling team handoff.</li>
                   </ul>
                 </section>
                 <section class="detail project-detail" aria-labelledby="project-sentiment-stack">
@@ -4709,13 +4827,7 @@
       </div>
       <div class="section-shell">
         <div class="section-head">
-          <div class="section-head-grid">
-            <div>
-              <p class="section-kicker">Visualizations</p>
-              <h2>Dashboard up front, six D3 builds below.</h2>
-            </div>
-            <p>Power BI (mock or embedded) uses a full-width <strong>16:9</strong> frame. The six D3 builds are below—use <strong>Jump to a chart</strong> or scroll the page. Each tile is interactive inside the frame; <strong>Open</strong> opens the full page.</p>
-          </div>
+          <h2>Visualizations</h2>
         </div>
 
         <nav id="viz-d3-gallery" class="viz-jump-nav" aria-label="Jump to D3 visualization previews">
@@ -4795,7 +4907,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js</span>
               <h3>United States GDP Growth Dynamics</h3>
-              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720">
+              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
                     <iframe data-src="projects/web/visualizations/bar_chart.html" title="United States GDP Growth Dynamics" loading="lazy" width="1280" height="720"></iframe>
@@ -4811,7 +4923,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js</span>
               <h3>Doping in Professional Cycling</h3>
-              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720">
+              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
                     <iframe data-src="projects/web/visualizations/scatter_plot.html" title="Doping in Professional Cycling" loading="lazy" width="1280" height="720"></iframe>
@@ -4827,7 +4939,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js</span>
               <h3>Global Temperature Heatmap</h3>
-              <div class="visual-frame viz-pane" data-viz-base-w="1200" data-viz-base-h="720">
+              <div class="visual-frame viz-pane" data-viz-base-w="1200" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
                     <iframe data-src="projects/web/visualizations/heatmap.html" title="Global Temperature Heatmap" loading="lazy" width="1200" height="720"></iframe>
@@ -4859,7 +4971,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js</span>
               <h3>Multi-Dataset Treemap Dashboard</h3>
-              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="800">
+              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="800" data-viz-zoom="1.26">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
                     <iframe data-src="projects/web/visualizations/treemap.html" title="Multi-Dataset Treemap Dashboard" loading="lazy" width="1280" height="800"></iframe>
@@ -4895,141 +5007,40 @@
       <circle class="divider-dot" id="dotVizJourney" r="5" cx="0" cy="38"></circle>
     </svg>
 
-    <section id="journey" class="journey-section">
+    <section id="experience" class="experience-section">
       <div class="section-shell">
-        <div class="section-head journey-head">
-          <div class="section-head-grid journey-head-grid">
-            <div>
-              <h2>Journey</h2>
-            </div>
-          </div>
+        <div class="section-head">
+          <h2>Experience &amp; Education</h2>
         </div>
-
-        <div class="journey-rail-wrap">
-          <nav class="rail journey-rail" id="journeyRail" aria-label="Journey chapters">
-            <a class="active" href="#journey-overview" data-journey="overview"><span class="rail-chapter">01</span><span class="rail-label">Who I am</span></a>
-            <a href="#journey-experience" data-journey="experience"><span class="rail-chapter">02</span><span class="rail-label">What I’ve built</span></a>
-            <a href="#journey-education" data-journey="education"><span class="rail-chapter">03</span><span class="rail-label">Training</span></a>
-            <a href="#journey-leadership" data-journey="leadership"><span class="rail-chapter">04</span><span class="rail-label">Lead &amp; reach out</span></a>
-          </nav>
+        <div class="experience-grid">
+          <article class="experience-card">
+            <h3>Education</h3>
+            <p class="experience-meta">University of Chicago</p>
+            <p class="experience-degree">B.S. Data Science &amp; Statistics — expected May 2030</p>
+            <ul>
+              <li>Completed IBM Data Science Professional Certificate; Microsoft PL-300 (Power BI Data Analyst).</li>
+              <li>Coursework in probability, linear algebra, algorithms, and statistical inference ([X] credits completed — fill).</li>
+              <li>Maintained GPA [X] in quantitative coursework (fill).</li>
+            </ul>
+          </article>
+          <article class="experience-card">
+            <h3>Leadership</h3>
+            <p class="experience-meta">Co-President · Machine Learning Club</p>
+            <ul>
+              <li>Designed and taught neural network workshops to [X]+ students using PyTorch and reproducible notebooks.</li>
+              <li>Increased recurring attendance by [X]% vs. prior term (fill).</li>
+              <li>Mentored [X] project teams on validation metrics, pipeline structure, and technical writeups.</li>
+            </ul>
+          </article>
         </div>
-
-        <div id="journey-timeline" class="jt-layout-stack">
-          <div class="jt-inner">
-            <button type="button" class="jt-arrow jt-prev" aria-label="Previous journey section" hidden tabindex="-1">‹</button>
-            <div class="jt-viewport">
-              <aside class="jt-progress-rail" aria-label="Chapter progress">
-                <button type="button" class="jt-dot is-active" aria-label="Chapter 1: Who I am" aria-current="true"></button>
-                <button type="button" class="jt-dot" aria-label="Chapter 2: What I've built" aria-current="false"></button>
-                <button type="button" class="jt-dot" aria-label="Chapter 3: Training" aria-current="false"></button>
-                <button type="button" class="jt-dot" aria-label="Chapter 4: Lead and reach out" aria-current="false"></button>
-              </aside>
-              <div class="jt-strip" tabindex="0" role="region" aria-label="Journey sections">
-                <article class="jt-panel journey-stop jpanel active" id="journey-overview" data-panel="overview">
-                  <div class="jt-num" aria-hidden="true">01</div>
-                  <div class="jt-panel-scroll">
-                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">01</span><span class="journey-chapter-tag__title">Who I am</span></div>
-                    <div class="journey-overview journey-chapter-opening">
-                      <div class="journey-mark">JL</div>
-                      <div>
-                        <h3>The overlap is the story.</h3>
-                        <p>I’m an incoming <strong>University of Chicago</strong> student (Data Science &amp; Statistics) who cares as much about <strong>clear evaluation</strong> as about <strong>shipping something people can open</strong>—notebooks and models, yes, but also dashboards, maps, and small products. The thread isn’t a single skill line on a résumé; it’s that those pieces actually connect.</p>
-                      </div>
-                    </div>
-                    <div class="journey-chapter-stack">
-                      <div class="timeline journey-step journey-step--primary">
-                        <h4>What stands out</h4>
-                        <p class="meta">Core profile</p>
-                        <ul>
-                          <li>Builds classification and predictive workflows with measurable evaluation results.</li>
-                          <li>Uses Python and SQL across data analysis, AI-assisted prototyping, and workflow design.</li>
-                          <li>Presents work through D3.js, deployed sites, dashboards, and other recruiter-readable formats.</li>
-                        </ul>
-                      </div>
-                      <div class="timeline journey-step journey-step--secondary">
-                        <h4>Current direction</h4>
-                        <p class="meta">Summer 2026 target</p>
-                        <ul>
-                          <li>Seeking internships where statistical rigor and communication both matter.</li>
-                          <li>Interested in analytics engineering, data science, and ML-adjacent product roles.</li>
-                        </ul>
-                      </div>
-                      <div class="timeline journey-step journey-step--signal">
-                        <h4>Signal snapshot</h4>
-                        <p class="meta">Current benchmarks</p>
-                        <div class="journey-signal-metrics" role="list">
-                          <div class="journey-metric" role="listitem">
-                            <strong class="journey-metric-value count-up-premium" data-target="85" data-suffix="%+">0%+</strong>
-                            <span class="journey-metric-label">Validation</span>
-                            <p class="journey-metric-desc">Typical supervised benchmark range on held-out evaluation.</p>
-                          </div>
-                          <div class="journey-metric" role="listitem">
-                            <strong class="journey-metric-value count-up-premium" data-target="91" data-suffix="%">0%</strong>
-                            <span class="journey-metric-label">Recall</span>
-                            <p class="journey-metric-desc">Fraud detection headline result on the featured imbalanced dataset.</p>
-                          </div>
-                          <div class="journey-metric" role="listitem">
-                            <strong class="journey-metric-value count-up-premium" data-target="10000" data-suffix="+" data-format="comma">0+</strong>
-                            <span class="journey-metric-label">Scale</span>
-                            <p class="journey-metric-desc">Rows at scale in the featured fraud modeling project.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="journey-chapter-conclusion" aria-labelledby="journey-synthesis-heading">
-                      <p class="journey-chapter-conclusion-kicker" id="journey-synthesis-heading">Before you scroll on</p>
-                      <p class="journey-chapter-conclusion-body">If the projects section showed <em>what</em> I ship, this chapter is <em>why it hangs together</em>: one person stress-testing models, tightening how they’re explained, and choosing formats—charts, sites, reports—that don’t stay trapped in a repo.</p>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="jt-panel journey-stop jpanel" id="journey-experience" data-panel="experience">
-                  <div class="jt-num" aria-hidden="true">02</div>
-                  <div class="jt-panel-scroll">
-                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">02</span><span class="journey-chapter-tag__title">What I’ve built</span></div>
-                    <h3>Proof lives in shipped work.</h3>
-                    <p>After the profile: concrete builds—AI workspace tooling, a live client site, and the habit of closing the loop from analysis to something someone can click. This is where “can they deliver?” gets answered.</p>
-                    <div class="timeline-stack">
-                      <div class="timeline"><h4>JimAI / AI Workspace Prototype</h4><p class="meta">Independent build</p><ul><li>Built an AI-assisted local workspace prototype for research, code generation, and workflow experimentation.</li><li>Worked with FastAPI, React/Vite, local AI workflows, prompting, and automation-oriented interfaces.</li><li>Focused on practical product structure and usability rather than low-level model engineering.</li></ul></div>
-                      <div class="timeline"><h4>CustomStrat Advisory Website</h4><p class="meta">Live deployment</p><ul><li>Built and deployed customstrat.com using Next.js 14, TypeScript, Tailwind CSS, GitHub Pages, and a custom domain.</li><li>Used AI-assisted iteration to speed up UI and content prototyping, then refined the result into a production-facing site.</li></ul></div>
-                      <div class="timeline"><h4>What this signals</h4><p class="meta">Applied execution</p><ul><li>Comfort moving between data, interface, and deployment problems.</li><li>Work gets packaged for people to use, not just graded.</li></ul></div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="jt-panel journey-stop jpanel" id="journey-education" data-panel="education">
-                  <div class="jt-num" aria-hidden="true">03</div>
-                  <div class="jt-panel-scroll">
-                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">03</span><span class="journey-chapter-tag__title">Training</span></div>
-                    <h3>Credentials that support the builds—not instead of them.</h3>
-                    <p>Formal training gives vocabulary and structure; the projects section shows execution. Together: a degree path I’m in, certifications I’ve finished, and a deliberate focus on delivery skills (viz, BI, communication) that make the technical work legible.</p>
-                    <div class="timeline-stack">
-                      <div class="timeline"><h4>University of Chicago</h4><p class="meta">Expected June 2030</p><ul><li>B.S. in Data Science and Statistics.</li><li>Quantitative training paired with modern computational tooling.</li></ul></div>
-                      <div class="timeline"><h4>Certifications</h4><p class="meta">Completed credentials</p><ul><li>IBM Data Science Professional Certificate.</li><li>Microsoft PL-300 Power BI Data Analyst.</li></ul></div>
-                      <div class="timeline"><h4>Delivery focus</h4><p class="meta">Why this matters</p><ul><li>Practical grounding in data science workflows.</li><li>Visualization and reporting credibility.</li><li>Strongest signal still comes from shipped project work.</li></ul></div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="jt-panel journey-stop jpanel" id="journey-leadership" data-panel="leadership">
-                  <div class="jt-num" aria-hidden="true">04</div>
-                  <div class="jt-panel-scroll">
-                    <div class="journey-chapter-tag"><span class="journey-chapter-tag__num">04</span><span class="journey-chapter-tag__title">Lead &amp; reach out</span></div>
-                    <h3>How I show up when the work involves other people.</h3>
-                    <p>Teaching-style leadership and high-pressure presentation aren’t separate from analytics—they’re how complex work gets understood. Here’s the bridge from solo builds to rooms, peers, and the next conversation.</p>
-                    <div class="timeline-stack">
-                      <div class="timeline"><h4>Co-President, Machine Learning Club</h4><p class="meta">Workshops + mentoring</p><ul><li>Runs workshops on neural networks, evaluation, and practical AI project framing.</li><li>Helps other students move from vague AI interest to concrete implementation.</li></ul></div>
-                      <div class="timeline"><h4>DECA Competitor</h4><p class="meta">2022 to 2024</p><ul><li>Presented data-backed business analysis and strategic recommendations.</li><li>Built stronger judgment and composure under time pressure.</li></ul></div>
-                      <div class="timeline"><h4>Contact</h4><p class="meta">Current direction</p><ul><li>Available for Summer 2026 internships.</li><li><a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a></li><li><a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">github.com/James-Liebel</a></li></ul></div>
-                    </div>
-                  </div>
-                </article>
-              </div>
-            </div>
-            <button type="button" class="jt-arrow jt-next" aria-label="Next journey section" hidden tabindex="-1">›</button>
-          </div>
-          <div class="jt-bar" aria-hidden="true"><div class="jt-bar-fill"></div></div>
-        </div>
+        <p class="experience-contact">
+          <strong>Summer 2026 internships</strong> ·
+          <a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a>
+          ·
+          <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a>
+          ·
+          <a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </p>
       </div>
     </section>
 
@@ -5063,7 +5074,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Professional Summary</h2>
               <p class="resume-pdf-summary">
-                Incoming <strong>University of Chicago</strong> B.S. <strong>Data Science &amp; Statistics</strong> (Class of 2030). Builds end-to-end analytics: <strong>classification</strong> and fraud detection (~91% recall on imbalanced data), <strong>NLP</strong> sentiment pipelines, <strong>Power BI</strong> / PL-300 dashboards, and <strong>D3.js</strong> / GeoJSON maps. Ships interfaces with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong> (live client site). Seeking <strong>Summer 2026</strong> internship in data science, analytics engineering, or ML-adjacent product roles.
+                <strong>Data scientist &amp; ML engineer</strong> pursuing a B.S. in <strong>Data Science &amp; Statistics</strong> at the <strong>University of Chicago</strong> (expected May 2030). Builds end-to-end ML: <strong>classification</strong> and fraud detection (~91% recall on imbalanced data), <strong>NLP</strong> sentiment pipelines, <strong>Power BI</strong> / PL-300 dashboards, and <strong>D3.js</strong> / GeoJSON maps. Ships interfaces with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong> (live client site). Targeting <strong>Summer 2026</strong> internships in data science, analytics engineering, or ML-adjacent product roles.
               </p>
             </section>
 
@@ -5093,7 +5104,7 @@
                   <strong>Visualization &amp; Strategy</strong>
                   <div class="resume-pdf-skill-row"><b>Tools:</b> <strong>Power BI, DAX</strong>, Matplotlib, Seaborn, Plotly/Dash, <strong>D3.js</strong>, GeoJSON, Next.js</div>
                   <div class="resume-pdf-skill-row"><b>Analysis:</b> A/B Testing, Exp. Design, Causal Inference</div>
-                  <div class="resume-pdf-skill-row"><b>Communication:</b> Technical Documentation, Storytelling</div>
+                  <div class="resume-pdf-skill-row"><b>Communication:</b> Technical documentation, executive summaries</div>
                 </div>
               </div>
             </section>
@@ -5211,7 +5222,7 @@
     <footer class="site-footer">
       <div class="site-footer-inner">
         <div class="footer-column"><h2>JL</h2><p>James Liebel · University of Chicago · Class of 2030</p><a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a></div>
-        <div class="footer-column"><p class="footer-kicker">Navigate</p><nav class="footer-nav" aria-label="Footer navigation"><a href="#hero">Home</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#visualizations">Visualizations</a><a href="#journey">Journey</a><a href="#resume">Resume</a></nav></div>
+        <div class="footer-column"><p class="footer-kicker">Navigate</p><nav class="footer-nav" aria-label="Footer navigation"><a href="#hero">Home</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#visualizations">Visualizations</a><a href="#experience">Experience</a><a href="#resume">Resume</a></nav></div>
         <div class="footer-column"><p class="footer-kicker">Elsewhere</p><div class="footer-links"><a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div class="footer-availability"><span class="footer-availability-dot" aria-hidden="true"></span><span>Available for Summer 2026 internships</span></div></div>
       </div>
       <div class="footer-divider"></div>
@@ -5241,7 +5252,7 @@
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#visualizations">Visualizations</a>
-        <a href="#journey">Journey</a>
+        <a href="#experience">Experience</a>
         <a href="#resume">Resume</a>
       </nav>
       <div class="mobile-nav-actions">

@@ -923,7 +923,7 @@
     var numEl = document.getElementById('sectionCounterNum');
     if (!el || !inner || !lineFill || !numEl) return;
 
-    var sections = ['hero', 'skills', 'projects', 'visualizations', 'journey', 'resume'].map(function (id) {
+    var sections = ['hero', 'skills', 'projects', 'visualizations', 'experience', 'resume'].map(function (id) {
       return document.getElementById(id);
     }).filter(Boolean);
 

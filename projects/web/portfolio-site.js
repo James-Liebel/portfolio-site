@@ -73,17 +73,17 @@
       boxes: [
         {
           title: "Pipelines & data",
-          text: "The featured card-fraud project ingests and models tens of thousands of rows: cleaning, features, and trainable tables in Python/SQL, with a story you can follow from raw inputs to scored outcomes. Power Query and structured extracts show up wherever the data needed shaping before modeling.",
+          text: "Engineered fraud-detection ETL on 284k+ rows: cleaning, feature tables, and train/test splits in Python/SQL. Shaped `[X]` additional extracts with Power Query before scoring (fill).",
           skills: ["SQL", "Python", "ETL"]
         },
         {
           title: "APIs & apps",
-          text: "JimAI is a local AI workspace prototype: FastAPI plus a React/Vite front end for prompts, small workflows, and experimentation—not a hosted product, but a believable full-stack slice. Other builds expose JSON APIs and simple UIs so models and tools are usable, not only notebook-bound.",
+          text: "Deployed FastAPI services behind a React/Vite UI for local LLM workflows (JimAI). Exposed `[X]` JSON endpoints and cut round-trip time to `[X]` ms median in dev (fill).",
           skills: ["FastAPI", "React", "TypeScript"]
         },
         {
           title: "Sites & surfaces",
-          text: "CustomStrat is a live Next.js advisory site on a real domain. The portfolio itself ships interactive D3 maps and charts in the browser, plus a Power BI–style embedded report mock so BI-style delivery sits next to code-first work.",
+          text: "Shipped CustomStrat on a production domain with Next.js 14. Built `[X]` route-level components and Lighthouse perf score `[X]` (fill). Portfolio embeds D3 + PL-300-style report views beside code artifacts.",
           skills: ["Next.js", "D3.js", "Power BI"]
         }
       ]
@@ -93,17 +93,17 @@
       boxes: [
         {
           title: "Models",
-          text: "The fraud classifier is the headline tabular application: strong validation recall (~91%) with honest accuracy context (~85% range) so the tradeoff is visible. News sentiment uses NLP pipelines (e.g. TF-IDF-style text features) to turn headlines into labeled signals you can inspect.",
+          text: "Trained XGBoost + Random Forest on imbalanced fraud labels; held validation recall near 91% with accuracy in the ~85% band. Vectorized `[X]`k news headlines for TF-IDF + sentiment features (fill).",
           skills: ["Scikit-learn", "XGBoost", "NLP"]
         },
         {
           title: "Evaluation",
-          text: "Projects spell out splits, confusion-matrix style results, and why a metric matters for the use case—not a single cherry-picked number. EDA and feature work are shown as part of the same story as the final model.",
+          text: "Reported PR-AUC, confusion matrices, and per-class metrics for each use case. Ran `[X]` feature ablations; logged best F1 delta of `[X]` pts vs. baseline (fill).",
           skills: ["pandas", "Metrics", "EDA"]
         },
         {
-          title: "How it is shown",
-          text: "Deliverables mix notebooks with static D3 pages and short writeups beside charts so a reviewer sees both the method and the visual. The goal is legible science: what was tried, what changed, and what the chart is claiming.",
+          title: "Delivery",
+          text: "Packaged notebooks plus static D3 pages with reproducible charts. Exported `[X]` figures and metric tables per release for reviewer sign-off (fill).",
           skills: ["Jupyter", "D3.js", "Visualization"]
         }
       ]
@@ -113,17 +113,17 @@
       boxes: [
         {
           title: "BI & modeling",
-          text: "PL-300-backed Power BI work: DAX for measures and KPI logic, SQL and Power Query for shaped tables, and a reading-view style layout on the portfolio that mimics how a hiring manager would open a real report—filters, pages, and narrative tiles.",
+          text: "Authored PL-300 Power BI models: DAX measures, SQL/Power Query staging, and `[X]` dashboard pages with drill filters (fill).",
           skills: ["Power BI", "DAX", "SQL"]
         },
         {
           title: "D3 applications",
-          text: "Six linked D3 builds cover bar and scatter stories, heatmaps, treemaps, and Cincinnati-focused choropleth maps—each is a small standalone app with real interaction (tooltips, scales) rather than a screenshot. They’re the analysis portfolio in executable form.",
+          text: "Shipped `[X]` interactive D3 modules (bars, heatmaps, treemaps, GeoJSON choropleths) with live tooltips and scales—executable viz, not screenshots (fill).",
           skills: ["D3.js", "JavaScript", "GeoJSON"]
         },
         {
-          title: "Reporting lens",
-          text: "Analysis work is framed for people who decide from dashboards: drill paths, comparison views, and plain-language labels so a stakeholder can scan KPIs without opening a repo. The same lens applies when maps and charts replace a slide deck.",
+          title: "Reporting",
+          text: "Structured stakeholder views with KPI tiles, comparison paths, and plain labels. Cut time-to-answer from `[X]` minutes to `[X]` for recurring reviews (fill).",
           skills: ["Dashboards", "KPIs", "PL-300"]
         }
       ]
@@ -133,7 +133,7 @@
   const heroWordPairs = [
     ["data", "science"],
     ["machine", "learning"],
-    ["visual", "stories"],
+    ["MLOps", "pipelines"],
     ["AI", "products"]
   ];
   let heroWordIndex = 0;
@@ -1474,8 +1474,10 @@
       const cw = entry ? entry.contentRect.width : pane.getBoundingClientRect().width;
       const ch = entry ? entry.contentRect.height : pane.getBoundingClientRect().height;
       if (!cw || !ch) return;
-      /* Scale up or down so the design-size iframe fits the pane (contain), filling the box */
-      const scale = Math.min(cw / baseW, ch / baseH);
+      /* Contain-fit scale; optional data-viz-zoom multiplies (zoom in, may clip edges). */
+      const zm = parseFloat(pane.dataset.vizZoom);
+      const mult = Number.isFinite(zm) && zm > 0 ? zm : 1;
+      const scale = Math.min(cw / baseW, ch / baseH) * mult;
       pane.style.setProperty("--viz-scale", String(scale));
     };
 
@@ -2068,6 +2070,26 @@
       });
     });
 
+    // Experience & education cards
+    const expGrid = document.querySelector(".experience-grid");
+    if (expGrid) {
+      const cards = expGrid.querySelectorAll(".experience-card");
+      if (cards.length) {
+        gsap.from(cards, {
+          opacity: 0,
+          y: 36,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: expGrid,
+            start: "top 82%",
+            once: true
+          }
+        });
+      }
+    }
+
     // Project sections
     gsap.utils.toArray(".project-section").forEach(section => {
       const copy = section.querySelector(".project-copy");
@@ -2160,10 +2182,12 @@
 
     const tl = window.gsap.timeline({ defaults: { ease: "power3.out" } });
     const pillItems = heroPills ? heroPills.querySelectorAll(".pill") : [];
+    const heroTechPills = document.querySelectorAll(".hero-tech-pill");
 
     tl.from(".eyebrow", { opacity: 0, y: 20, duration: 0.6 })
       .from(".hw", { y: "110%", opacity: 0, duration: 0.72, stagger: 0.055 }, "-=0.25")
       .from(".summary", { opacity: 0, y: 24, duration: 0.6 }, "-=0.3")
+      .from(heroTechPills, { opacity: 0, y: 10, stagger: 0.045, duration: 0.32 }, "-=0.35")
       .from(pillItems, { opacity: 0, y: 14, stagger: 0.07, duration: 0.38 }, "-=0.2")
       .from(
         "#heroTerminal",
@@ -2205,6 +2229,7 @@
 
     const { gsap } = window;
     const pillItems = heroPills ? heroPills.querySelectorAll(".pill") : [];
+    const heroTechPills = document.querySelectorAll(".hero-tech-pill");
     const activeMode =
       modeButtons.find(button => button.classList.contains("active"))?.dataset.mode || "builder";
     renderMode(activeMode);
@@ -2212,6 +2237,7 @@
     gsap.set(".eyebrow", { opacity: 1, y: 0 });
     gsap.set(".hw", { y: "0%", opacity: 1 });
     gsap.set(".summary", { opacity: 1, y: 0 });
+    gsap.set(heroTechPills, { opacity: 1, y: 0 });
     gsap.set(pillItems, { opacity: 1, y: 0 });
     gsap.set("#heroTerminal", { opacity: 1, x: 0, scale: 1 });
     movePillIndicator(modeIndicator, document.querySelector(".switch button.active"), false);
@@ -2466,8 +2492,8 @@
 
     const updateHoverState = target => {
       state.linkHover = Boolean(target?.closest("a, button, [role='button']"));
-      state.cardHover = Boolean(target?.closest(".bento-card, .visual-card, .work-visual-card, .journey-stop, .jt-panel, .stack"));
-      state.darkSection = Boolean(target?.closest("#hero, #visualizations, #journey"));
+      state.cardHover = Boolean(target?.closest(".bento-card, .visual-card, .work-visual-card, .journey-stop, .experience-card, .jt-panel, .stack"));
+      state.darkSection = Boolean(target?.closest("#hero, #visualizations, #experience"));
       customCursor.classList.toggle("is-hover-link", state.linkHover || state.cardHover);
       customCursor.classList.toggle("is-dark", state.darkSection);
     };
