@@ -717,18 +717,31 @@
 
         flat = flat.slice(-400);
 
-        function level(n) {
-          if (!n) return { c: 'rgba(99,102,241,0.07)', g: null };
-          if (n < 4) return { c: 'rgba(99,102,241,0.28)', g: null };
-          if (n < 7) return { c: 'rgba(129,140,248,0.55)', g: null };
-          if (n < 10) return { c: 'rgba(167,139,250,0.82)', g: '0 0 7px rgba(139,92,246,0.45)' };
-          return { c: 'rgba(192,132,252,1)', g: '0 0 10px rgba(99,102,241,0.75)' };
-        }
-
         var dateMap = {};
         flat.forEach(function (entry) {
           if (entry.date) dateMap[entry.date] = entry.count != null ? entry.count : 0;
         });
+
+        var maxCount = 0;
+        Object.keys(dateMap).forEach(function (k) {
+          var v = dateMap[k];
+          if (typeof v === 'number' && v > maxCount) maxCount = v;
+        });
+        if (maxCount < 1) maxCount = 1;
+
+        function level(n) {
+          if (!n) return { c: 'rgba(99,102,241,0.07)', g: null };
+          var t = Math.min(1, Math.sqrt(n / maxCount));
+          var knee = 0.58;
+          var tailCompress = 0.52;
+          if (t > knee) {
+            t = knee + (t - knee) * tailCompress;
+          }
+          if (t <= 0.28) return { c: 'rgba(99,102,241,0.28)', g: null };
+          if (t <= 0.52) return { c: 'rgba(129,140,248,0.55)', g: null };
+          if (t <= 0.74) return { c: 'rgba(167,139,250,0.82)', g: '0 0 7px rgba(139,92,246,0.45)' };
+          return { c: 'rgba(192,132,252,1)', g: '0 0 10px rgba(99,102,241,0.75)' };
+        }
         var lastEntry = flat[flat.length - 1];
         var endD = lastEntry && lastEntry.date ? new Date(lastEntry.date + 'T12:00:00') : new Date();
         var cur = new Date(endD);
