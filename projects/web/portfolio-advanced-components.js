@@ -293,8 +293,8 @@
     setup('sectionDividerHeroSkills', 'pathHeroSkills', 'dotHeroSkills');
     setup('sectionDividerCapProj', 'pathCapProj', 'dotCapProj');
     setup('sectionDividerProjViz', 'pathProjViz', 'dotProjViz');
-    setup('sectionDividerVizJourney', 'pathVizJourney', 'dotVizJourney');
-    setup('sectionDividerJourneyResume', 'pathJourneyResume', 'dotJourneyResume');
+    setup('sectionDividerVizExperience', 'pathVizExperience', 'dotVizExperience');
+    setup('sectionDividerExperienceResume', 'pathExperienceResume', 'dotExperienceResume');
   }
 
   // ─── 3. Project card WebGL distortion ─────────────────────────────────────

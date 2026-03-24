@@ -292,7 +292,7 @@
                 <strong>Visualization & Strategy</strong>
                 <div class="skill-item-row"><b>Tools:</b> <b>Power BI, DAX</b>, Matplotlib, Seaborn, Plotly/Dash, <b>D3.js</b>, GeoJSON, Next.js</div>
                 <div class="skill-item-row"><b>Analysis:</b> A/B Testing, Exp. Design, Causal Inference</div>
-                <div class="skill-item-row"><b>Communication:</b> Technical Documentation, Storytelling</div>
+                <div class="skill-item-row"><b>Communication:</b> Technical documentation, executive summaries</div>
             </div>
         </div>
     </div>
@@ -305,13 +305,13 @@
                 <div>
                     <span class="job-title">Credit Card Fraud Detection System (XGBoost)</span>
                 </div>
-                <span class="date">See on GitHub</span>
+                <span class="date"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb">Notebook (evidence)</a></span>
             </div>
             <ul>
                 <li>Built an imbalanced fraud detection pipeline using <strong>XGBoost</strong> and
                     <strong>Random Forest</strong> on <strong>284,807</strong> Kaggle ULB–style transactions (stratified test holdout <strong>56,962</strong> rows).</li>
                 <li>Scaled amount/time with <strong>RobustScaler</strong> before fitting; <strong>XGBoost</strong> reached <strong>80%</strong> fraud-class recall,
-                    <strong>87%</strong> precision, and <strong>ROC-AUC 0.939</strong> on the stratified holdout (executed notebook outputs—no SMOTE in the committed pipeline).</li>
+                    <strong>87%</strong> precision, and <strong>ROC-AUC 0.939</strong> on the stratified holdout (values from executed cells in <code>fraud_detection_setup.ipynb</code> on <code>main</code>).</li>
                 <li>Evaluated performance with <strong>Precision-Recall</strong>, <strong>F1-score</strong>, and
                     <strong>confusion matrices</strong> to frame tradeoffs beyond raw accuracy.</li>
             </ul>
@@ -336,14 +336,12 @@
                 <div>
                     <span class="job-title">JimAI AI Workspace Prototype</span>
                 </div>
-                <span class="date">See on GitHub</span>
+                <span class="date"><a href="https://github.com/James-Liebel/JimAI">JimAI repo</a></span>
             </div>
             <ul>
-                <li>Built an AI-assisted workspace prototype for research, code generation, and workflow testing.</li>
-                <li>Worked with tools and concepts including <strong>FastAPI</strong>, <strong>React/Vite</strong>,
-                    local AI workflows, browser automation, and agent-oriented interfaces.</li>
-                <li>Focused on practical prompting, product structure, and usable workflow design rather than low-level
-                    model engineering.</li>
+                <li>Local-first stack: <strong>FastAPI</strong> backend with <strong>10</strong> mounted routers (<code>backend/main.py</code>), <strong>React/Vite</strong> UI, <strong>Ollama</strong> for local models.</li>
+                <li>Repo audit (COMPLETION_REPORT): <strong>76</strong> backend Python modules, <strong>33</strong> TS/TSX frontend files, <strong>90+</strong> HTTP calls with explicit timeouts (30s default, 120s SSE), multi-service <code>/health</code>.</li>
+                <li>Error boundaries, cancelable research streams, settings validation, and scripted validation—no claimed UX % lift without benchmark artifacts.</li>
             </ul>
         </div>
 
@@ -356,7 +354,7 @@
             </div>
             <ul>
                 <li>Cincinnati <strong>choropleth</strong> and food-access <strong>maps</strong> (GeoJSON, D3); linked set of interactive charts (bar, scatter, heatmap, treemap).</li>
-                <li>Readable delivery—tooltips, scales, and labels—not static screenshots.</li>
+                <li>Readable delivery: live tooltips, scales, and axis/legend labels—not static screenshots.</li>
             </ul>
         </div>
     </div>

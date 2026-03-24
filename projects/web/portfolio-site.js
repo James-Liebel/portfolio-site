@@ -83,7 +83,7 @@
         },
         {
           title: "Sites & surfaces",
-          text: "CustomStrat ships on customstrat.com (Next.js 14, GitHub Pages). Portfolio surfaces 6 D3 gallery builds plus a Power BI–style embedded report mock—run Lighthouse on deploy and pin the score in README when measured.",
+          text: "CustomStrat ships on customstrat.com (Next.js 14, GitHub Pages). This portfolio embeds 6 D3 gallery builds plus a Power BI–style report mock; Lighthouse/perf scores are not claimed without a saved CI or report artifact.",
           skills: ["Next.js", "D3.js", "Power BI"]
         }
       ]
@@ -123,7 +123,7 @@
         },
         {
           title: "Reporting",
-          text: "Dashboard copy emphasizes drillable comparisons and plain-language labels; add measured time-to-answer once you have stakeholder interviews or usage logs.",
+          text: "Dashboard copy emphasizes drillable comparisons and plain-language labels; time-to-answer impact is not measured in-repo.",
           skills: ["Dashboards", "KPIs", "PL-300"]
         }
       ]

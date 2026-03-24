@@ -1,4 +1,4 @@
-/* Premium page interactions — cinematic intro, skills graph, journey timeline, parallax, etc. */
+/* Premium page interactions — cinematic intro, skills graph, optional legacy timelines, parallax, etc. */
 (function () {
   "use strict";
 

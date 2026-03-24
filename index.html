@@ -2155,6 +2155,16 @@
     .project-copy .project-open {
       margin-top: 22px;
     }
+    .project-evidence-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+      align-items: center;
+    }
+    .project-evidence-actions .project-open {
+      margin-top: 0;
+    }
     .work-visual-card {
       position: relative;
       min-height: 320px;
@@ -4478,7 +4488,7 @@
           <div class="skills-atlas-column skills-atlas-column--ana">
             <div class="skills-nexus-rail skills-nexus-rail--ana">
               <span class="skills-nexus-rail-label skills-root-chapter-title">Data analysis</span>
-              <p class="skills-root-lede">Exploration, dashboards, and narrative visuals so technical output is readable for others.</p>
+              <p class="skills-root-lede">Exploration, dashboards, and executive-ready visuals so technical output scans fast for reviewers.</p>
             </div>
             <article class="skills-branch skills-branch--ana">
               <p class="section-kicker skills-root-index">Root 03</p>
@@ -4720,7 +4730,7 @@
                   <h4 id="project-customstrat-why">Impact</h4>
                   <ul>
                     <li>Live multi-section marketing site on <strong>customstrat.com</strong> (Next.js 14, TypeScript, Tailwind) deployed to <strong>GitHub Pages</strong> with custom domain + HTTPS.</li>
-                    <li>Structured content architecture (componentized sections) so non-dev updates stay copy-and-media swaps instead of full rewrites—benchmark Lighthouse locally and paste score in README when you have a number.</li>
+                    <li>Structured content architecture (componentized sections) so non-dev updates stay copy-and-media swaps instead of full rewrites. Web performance scores are <strong>not measured</strong> in this repo’s CI—add a saved Lighthouse report or workflow artifact before citing numbers.</li>
                     <li>DNS + TLS aligned to GitHub Pages; no third-party hosting lock-in for static delivery.</li>
                   </ul>
                 </section>
@@ -4774,7 +4784,7 @@
             <div class="project-expanded">
           <div class="project-inner reverse">
             <div class="project-copy">
-              <p class="project-lede"><strong>stock_sentiment_analysis.ipynb</strong>: end-to-end VADER scoring + bullish/bearish labels on a <strong>15-row</strong> simulated ticker/headline table (quant finance narrative demo). <strong>news_sentiment_analysis.ipynb</strong>: sklearn pipeline template <code>TfidfVectorizer → PassiveAggressiveClassifier</code> for Colab-uploaded labeled articles—run cells to log your own row counts and accuracy.</p>
+              <p class="project-lede"><strong>stock_sentiment_analysis.ipynb</strong>: end-to-end VADER scoring + bullish/bearish labels on a <strong>15-row</strong> simulated ticker/headline table (quant finance workflow demo). <strong>news_sentiment_analysis.ipynb</strong>: sklearn pipeline template <code>TfidfVectorizer → PassiveAggressiveClassifier</code> for Colab-uploaded labeled articles—run cells to log your own row counts and accuracy.</p>
               <div class="project-details">
                 <section class="detail project-detail" aria-labelledby="project-sentiment-why">
                   <h4 id="project-sentiment-why">Impact</h4>
@@ -4791,7 +4801,10 @@
                   </div>
                 </section>
               </div>
-              <a class="project-open" href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Open Project</a>
+              <div class="project-evidence-actions">
+                <a class="project-open" href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/stock_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">VADER demo notebook</a>
+                <a class="resume-link" href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">TF-IDF scaffold notebook</a>
+              </div>
             </div>
             <div class="work-visual-card">
               <div class="work-visual-shell news-ticker" aria-hidden="true">
@@ -5002,9 +5015,9 @@
       </div>
     </section>
 
-    <svg class="portfolio-section-divider" id="sectionDividerVizJourney" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
-      <path id="pathVizJourney" d="M0,38 C250,12 500,62 750,40 S1100,18 1200,42"></path>
-      <circle class="divider-dot" id="dotVizJourney" r="5" cx="0" cy="38"></circle>
+    <svg class="portfolio-section-divider" id="sectionDividerVizExperience" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
+      <path id="pathVizExperience" d="M0,38 C250,12 500,62 750,40 S1100,18 1200,42"></path>
+      <circle class="divider-dot" id="dotVizExperience" r="5" cx="0" cy="38"></circle>
     </svg>
 
     <section id="experience" class="experience-section">
@@ -5043,9 +5056,9 @@
       </div>
     </section>
 
-    <svg class="portfolio-section-divider" id="sectionDividerJourneyResume" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
-      <path id="pathJourneyResume" d="M0,36 C300,65 600,15 900,38 S1150,50 1200,34"></path>
-      <circle class="divider-dot" id="dotJourneyResume" r="5" cx="0" cy="36"></circle>
+    <svg class="portfolio-section-divider" id="sectionDividerExperienceResume" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
+      <path id="pathExperienceResume" d="M0,36 C300,65 600,15 900,38 S1150,50 1200,34"></path>
+      <circle class="divider-dot" id="dotExperienceResume" r="5" cx="0" cy="36"></circle>
     </svg>
 
     <section id="resume" class="resume-shell-section">
@@ -5114,11 +5127,11 @@
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
                   <span class="resume-pdf-job-title">Credit Card Fraud Detection System (XGBoost)</span>
-                  <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">See on GitHub</a></span>
+                  <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Notebook (evidence)</a></span>
                 </div>
                 <ul class="resume-list">
                   <li>Built an imbalanced fraud detection pipeline using <strong>XGBoost</strong> and <strong>Random Forest</strong> on <strong>284,807</strong> Kaggle ULB–style transactions (stratified test holdout <strong>56,962</strong> rows).</li>
-                  <li>Scaled amount/time with <strong>RobustScaler</strong> before fitting; <strong>XGBoost</strong> achieved <strong>80%</strong> fraud-class recall with <strong>87%</strong> precision and <strong>ROC-AUC 0.939</strong> on the stratified holdout (matches executed notebook—add SMOTE/class weights in-repo if you adopt them).</li>
+                  <li>Scaled amount/time with <strong>RobustScaler</strong> before fitting; <strong>XGBoost</strong> achieved <strong>80%</strong> fraud-class recall with <strong>87%</strong> precision and <strong>ROC-AUC 0.939</strong> on the stratified holdout (executed outputs in <code>fraud_detection_setup.ipynb</code> on <code>main</code>).</li>
                   <li>Evaluated performance with <strong>Precision-Recall</strong>, <strong>F1-score</strong>, and <strong>confusion matrices</strong> to frame tradeoffs beyond raw accuracy.</li>
                 </ul>
               </div>
@@ -5126,12 +5139,12 @@
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
                   <span class="resume-pdf-job-title">News Sentiment Analysis Pipeline (NLP)</span>
-                  <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">See on GitHub</a></span>
+                  <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Folder</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li>Built an NLP pipeline to extract sentiment trends from unstructured news text.</li>
-                  <li>Used <strong>VADER</strong> sentiment analysis and <strong>TF-IDF</strong> vectorization to process and classify headlines efficiently.</li>
-                  <li>Visualized sentiment shifts over time to turn qualitative text into structured analytical output.</li>
+                  <li><strong>stock_sentiment_analysis.ipynb</strong>: VADER sentiment on a <strong>15-row</strong> simulated finance headline table (workflow demo).</li>
+                  <li><strong>news_sentiment_analysis.ipynb</strong>: sklearn <strong>TF-IDF + PassiveAggressiveClassifier</strong> scaffold for Colab-uploaded labeled text—commit executed metrics when a dataset version is fixed in-repo.</li>
+                  <li>Plotted sentiment aggregates over time in the finance demo to connect NLP features to charts.</li>
                 </ul>
               </div>
 
@@ -5141,9 +5154,9 @@
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">See on GitHub</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li>Built an AI-assisted workspace prototype for research, code generation, and workflow testing.</li>
-                  <li>Worked with tools and concepts including <strong>FastAPI</strong>, <strong>React/Vite</strong>, local AI workflows, browser automation, and agent-oriented interfaces.</li>
-                  <li>Focused on practical prompting, product structure, and usable workflow design rather than low-level model engineering.</li>
+                  <li>Local-first stack: <strong>FastAPI</strong> backend with <strong>10</strong> mounted routers (<code>backend/main.py</code>), <strong>React/Vite</strong> UI, <strong>Ollama</strong> for local models.</li>
+                  <li>Repo audit (COMPLETION_REPORT): <strong>76</strong> backend Python modules, <strong>33</strong> TS/TSX frontend files, <strong>90+</strong> HTTP calls wrapped with explicit timeouts (30s default, 120s SSE), multi-service <code>/health</code> checks.</li>
+                  <li>Shipped error boundaries, cancelable research streams, settings validation, and validation scripts—no claimed end-user latency % without a benchmark artifact.</li>
                 </ul>
               </div>
 
@@ -5154,7 +5167,7 @@
                 </div>
                 <ul class="resume-list">
                   <li>Cincinnati <strong>choropleth</strong> and food-access <strong>maps</strong> (GeoJSON, D3); linked set of interactive charts (bar, scatter, heatmap, treemap).</li>
-                  <li>Readable, recruiter-facing delivery—tooltips, scales, and narrative labels—not static screenshots.</li>
+                  <li>Readable delivery: live tooltips, scales, and axis/legend labels—not static screenshots.</li>
                 </ul>
               </div>
             </section>
