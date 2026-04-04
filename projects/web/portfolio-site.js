@@ -236,6 +236,16 @@
     moveNavIndicator(activeLink);
   }
 
+  function focusNavToggleAfterMenuClose() {
+    requestAnimationFrame(() => {
+      try {
+        navToggle?.focus({ preventScroll: true });
+      } catch {
+        navToggle?.focus();
+      }
+    });
+  }
+
   function closeMobileNav() {
     if (!mobileNav || mobileNav.hidden) return;
     if (!window.gsap || reduced) {
@@ -245,6 +255,7 @@
         navToggle.classList.remove("is-open");
         navToggle.setAttribute("aria-expanded", "false");
       }
+      focusNavToggleAfterMenuClose();
       return;
     }
     const { gsap } = window;
@@ -260,6 +271,7 @@
           navToggle.classList.remove("is-open");
           navToggle.setAttribute("aria-expanded", "false");
         }
+        focusNavToggleAfterMenuClose();
       }
     });
   }
@@ -727,7 +739,7 @@
     const cableShells = cables ? [...cables.querySelectorAll(".skills-cable-shell")] : [];
     const cableCores = cables ? [...cables.querySelectorAll(".skills-cable-core")] : [];
     const cablePlugs = cables ? [...cables.querySelectorAll(".skills-cable-plug")] : [];
-    const prefersCompact = window.matchMedia("(max-width: 720px)").matches;
+    const prefersCompact = window.matchMedia("(max-width: 920px)").matches;
     // Apple-style opening: swing the lid further open and feel more “alive”
     // while remaining scroll-scrubbed.
     const CLOSED_DEG = prefersCompact ? -158 : -170;
@@ -2473,6 +2485,7 @@
 
   function setupCustomCursor() {
     if (!customCursor || !customCursorDot) return;
+    if (reduced) return;
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth <= 920) return;
     const { gsap } = window;
     if (!gsap) return;
@@ -2570,6 +2583,14 @@
     });
   }
 
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    if (mobileNav && !mobileNav.hidden) {
+      event.preventDefault();
+      closeMobileNav();
+    }
+  });
+
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", event => {
       if (anchor.matches(".rail a[data-journey]")) {
@@ -2632,6 +2653,31 @@
   markActiveNav("hero");
   updateJourneyRail("overview");
   movePillIndicator(modeIndicator, document.querySelector(".switch button.active"));
+
+  const skillsAtlasDetails = document.getElementById("skillsAtlasDetails");
+  if (skillsAtlasDetails) {
+    try {
+      if (sessionStorage.getItem("portfolio-skills-map") === "1") {
+        skillsAtlasDetails.open = true;
+      }
+    } catch {
+      /* ignore */
+    }
+    skillsAtlasDetails.addEventListener("toggle", () => {
+      try {
+        if (skillsAtlasDetails.open) {
+          sessionStorage.setItem("portfolio-skills-map", "1");
+        } else {
+          sessionStorage.removeItem("portfolio-skills-map");
+        }
+      } catch {
+        /* ignore */
+      }
+      requestAnimationFrame(() => {
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      });
+    });
+  }
 
   window.__portfolioShellReady = true;
   window.dispatchEvent(new Event("portfolio-shell-ready"));

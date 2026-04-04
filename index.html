@@ -2,9 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="James Liebel portfolio for data science, analytics, and ML-adjacent internships.">
-  <title>James Liebel | Data Science Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="James Liebel — UChicago B.S. Data Science & Statistics (2030). Portfolio: notebook-backed ML, shipped web, BI/D3. Seeking Summer 2026 internships.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="James Liebel · UChicago Data Science &amp; Statistics">
+  <meta property="og:description" content="Portfolio: notebook-backed ML, shipped web, Power BI, D3. UChicago B.S. DS &amp; Stats (2030). Seeking Summer 2026 internships.">
+  <meta property="og:url" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="James Liebel · UChicago DS &amp; Stats">
+  <meta name="twitter:description" content="Portfolio: notebook-backed ML, shipped web, Power BI, D3. Seeking Summer 2026 internships.">
+  <meta name="twitter:url" content="">
+  <title>James Liebel | UChicago DS &amp; Stats · Portfolio</title>
+  <script>
+    (function () {
+      try {
+        var base = window.location.origin + window.location.pathname.replace(/\/index\.html$/i, "");
+        if (base.endsWith("/")) base = base.slice(0, -1);
+        var canonical = base || window.location.origin;
+        var og = document.querySelector('meta[property="og:url"]');
+        if (og) og.setAttribute("content", canonical + "/");
+        var tw = document.querySelector('meta[name="twitter:url"]');
+        if (tw) tw.setAttribute("content", canonical + "/");
+      } catch (e) { /* ignore */ }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -32,6 +53,10 @@
       --radius-sm: 16px;
       --container: min(1200px, calc(100vw - 40px));
       --nav-height: 64px;
+      --nav-inner-pad-y: 12px;
+      --nav-bar-content: calc(var(--nav-height) + var(--nav-inner-pad-y));
+      --nav-bar-total: calc(env(safe-area-inset-top, 0px) + var(--nav-bar-content));
+      --section-scroll-margin: calc(var(--nav-bar-total) + 22px);
       --switch-track: rgba(255, 255, 255, 0.06);
       --switch-border: rgba(255, 255, 255, 0.1);
     }
@@ -302,9 +327,30 @@
       border: 0;
     }
 
-    #scroll-progress {
+    .skip-link {
       position: fixed;
       top: 0;
+      left: 12px;
+      z-index: 10050;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font: 700 13px/1.2 Inter, system-ui, sans-serif;
+      color: var(--text);
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transform: translateY(-120%);
+      transition: transform 0.2s ease;
+    }
+    .skip-link:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      transform: translateY(calc(env(safe-area-inset-top, 0px) + 10px));
+    }
+
+    #scroll-progress {
+      position: fixed;
+      top: env(safe-area-inset-top, 0px);
       left: 0;
       z-index: 1500;
       width: 0;
@@ -343,6 +389,7 @@
       position: sticky;
       top: 0;
       z-index: 1300;
+      padding-top: env(safe-area-inset-top, 0px);
       backdrop-filter: blur(18px);
       background: rgba(7, 10, 20, 0.72);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -468,7 +515,11 @@
       position: fixed;
       inset: 0;
       z-index: 1400;
-      padding: 24px;
+      padding:
+        calc(24px + env(safe-area-inset-top, 0px))
+        calc(24px + env(safe-area-inset-right, 0px))
+        calc(24px + env(safe-area-inset-bottom, 0px))
+        calc(24px + env(safe-area-inset-left, 0px));
       background: rgba(4, 6, 12, 0.7);
       backdrop-filter: blur(14px);
     }
@@ -505,7 +556,7 @@
       text-transform: uppercase;
     }
 
-    .site-main section[id] { scroll-margin-top: calc(var(--nav-height) + 22px); }
+    .site-main section[id] { scroll-margin-top: var(--section-scroll-margin); }
     .section-shell {
       width: var(--container);
       margin: 0 auto;
@@ -599,7 +650,9 @@
 
     .hero-section {
       position: relative;
-      min-height: calc(100vh - var(--nav-height));
+      min-height: calc(100vh - var(--nav-bar-total));
+      min-height: calc(100svh - var(--nav-bar-total));
+      min-height: calc(100dvh - var(--nav-bar-total));
       padding: 12px 0 max(72px, 8vh);
       opacity: 0;
       pointer-events: none;
@@ -763,6 +816,46 @@
       background: rgba(13, 148, 136, 0.1);
       color: #0f766e;
     }
+    .hero-start-here {
+      margin-top: 20px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(99, 102, 241, 0.28);
+      background: rgba(99, 102, 241, 0.08);
+      max-width: min(100%, 52rem);
+    }
+    :root[data-theme="light"] .hero-start-here {
+      border-color: rgba(79, 70, 229, 0.22);
+      background: rgba(79, 70, 229, 0.06);
+    }
+    .hero-start-here-label {
+      display: block;
+      margin-bottom: 10px;
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+    }
+    .hero-start-here-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 16px;
+    }
+    .hero-start-here-links a {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--cyan) 45%, transparent);
+    }
+    .hero-start-here-links a:hover {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+    :root[data-theme="light"] .hero-start-here-links a {
+      color: #0e7490;
+    }
     .hero-title .hero-line:not(.hero-rotator) {
       margin-top: 0.12em;
       font-size: clamp(1.2rem, 3.2vw, 2rem);
@@ -838,12 +931,18 @@
       margin-top: 8px;
     }
     .experience-contact {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px 14px;
       margin-top: clamp(22px, 3vw, 32px);
       padding-top: 18px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       font-size: 0.92rem;
       color: var(--muted);
       line-height: 1.6;
+      text-align: center;
     }
     :root[data-theme="light"] .experience-contact {
       border-top-color: rgba(15, 23, 42, 0.1);
@@ -1358,6 +1457,101 @@
     .mini {
       padding: 16px;
       border-radius: 18px;
+    }
+
+    .skills-compact-band {
+      max-width: var(--container);
+      margin: 0 auto clamp(28px, 4vw, 40px);
+      padding: clamp(18px, 3vw, 22px) clamp(20px, 3vw, 24px);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-soft);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .skills-compact-lede {
+      margin: 0 0 14px;
+      font-size: clamp(0.95rem, 1.25vw, 1.02rem);
+      line-height: 1.58;
+      color: var(--muted);
+    }
+    .skills-compact-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .skills-compact-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font: 700 10px/1.2 "Space Mono", monospace;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    :root[data-theme="light"] .skills-compact-chip {
+      border-color: rgba(15, 23, 42, 0.1);
+      background: rgba(15, 23, 42, 0.04);
+    }
+
+    .skills-atlas-disclosure {
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+    .skills-atlas-summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px 16px;
+      padding: clamp(14px, 2vw, 18px) clamp(18px, 2.5vw, 22px);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: rgba(99, 102, 241, 0.08);
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .skills-atlas-summary::-webkit-details-marker {
+      display: none;
+    }
+    .skills-atlas-summary::marker {
+      content: "";
+    }
+    .skills-atlas-summary:hover {
+      border-color: rgba(99, 102, 241, 0.45);
+      background: rgba(99, 102, 241, 0.12);
+    }
+    .skills-atlas-summary:focus {
+      outline: none;
+    }
+    .skills-atlas-summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .skills-atlas-summary-label {
+      font: 800 clamp(0.95rem, 1.2vw, 1.05rem)/1.25 Inter, system-ui, sans-serif;
+      letter-spacing: -0.02em;
+    }
+    .skills-atlas-summary-hint {
+      font-size: 12px;
+      color: var(--muted-soft);
+    }
+    .skills-atlas-disclosure[open] .skills-atlas-summary {
+      margin-bottom: clamp(20px, 3vw, 28px);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-color: transparent;
+    }
+    .skills-atlas-disclosure-inner {
+      padding-top: 4px;
+    }
+    :root[data-theme="light"] .skills-atlas-summary {
+      background: rgba(79, 70, 229, 0.08);
     }
 
     .skills-atlas {
@@ -2009,6 +2203,7 @@
       font-size: clamp(0.86rem, 1.25vw, 0.96rem);
       line-height: 1.55;
       color: var(--muted);
+      overflow-wrap: anywhere;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
@@ -2088,6 +2283,7 @@
       line-height: 1.65;
       color: var(--muted);
       max-width: 52ch;
+      overflow-wrap: anywhere;
     }
     .project-meta-label {
       margin: 0 0 8px;
@@ -2114,6 +2310,70 @@
       margin: 0;
       padding: 0;
       border: 0;
+    }
+    .project-panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin: 0 0 20px;
+      align-items: start;
+    }
+    .project-panel {
+      margin: 0;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: rgba(255, 255, 255, 0.035);
+      box-sizing: border-box;
+    }
+    :root[data-theme="light"] .project-panel {
+      border-color: rgba(15, 23, 42, 0.1);
+      background: rgba(255, 255, 255, 0.72);
+    }
+    .project-panel-title {
+      margin: 0 0 10px;
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+    }
+    .project-panel p {
+      margin: 0;
+      font-size: 0.94rem;
+      line-height: 1.58;
+      color: var(--muted);
+    }
+    .project-panel p + p {
+      margin-top: 10px;
+    }
+    .project-panel ul {
+      margin: 0;
+      padding-left: 1.1em;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+    .project-panel li + li {
+      margin-top: 6px;
+    }
+    .project-panel code {
+      font-size: 0.88em;
+      font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+      padding: 0.12em 0.35em;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+      word-break: break-word;
+    }
+    :root[data-theme="light"] .project-panel code {
+      background: rgba(15, 23, 42, 0.06);
+      color: #0f172a;
+    }
+    .project-panel .detail-tags {
+      margin-top: 2px;
+    }
+    .project-panel--wide {
+      grid-column: 1 / -1;
     }
     .detail h4,
     .timeline h4,
@@ -2636,7 +2896,7 @@
       border-radius: 18px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(255, 255, 255, 0.04);
-      scroll-margin-top: 96px;
+      scroll-margin-top: var(--section-scroll-margin);
     }
     :root[data-theme="light"] .viz-jump-nav {
       border-color: rgba(15, 23, 42, 0.1);
@@ -2656,7 +2916,10 @@
       align-items: center;
     }
     .viz-jump-nav-links a {
-      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px 16px;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(0, 0, 0, 0.2);
@@ -2679,7 +2942,7 @@
       outline: none;
     }
     .visual-collage .visual-card.viz-d3-target {
-      scroll-margin-top: 96px;
+      scroll-margin-top: var(--section-scroll-margin);
     }
     .visual-collage .visual-card:not(.visual-card--feature) .visual-actions {
       margin-top: auto;
@@ -3282,7 +3545,7 @@
       color: #333;
       line-height: 1.35;
     }
-    @media (max-width: 720px) {
+    @media (max-width: 920px) {
       .resume-pdf-summary {
         text-align: left;
       }
@@ -3298,7 +3561,7 @@
     }
 
     .site-footer {
-      padding: 72px 0 28px;
+      padding: 72px 0 calc(28px + env(safe-area-inset-bottom, 0px));
       background: linear-gradient(180deg, rgba(7, 10, 20, 0.2), rgba(5, 7, 13, 0.96));
       border-top: 1px solid rgba(255,255,255,0.05);
     }
@@ -3432,11 +3695,8 @@
       .nav-links,
       .nav-meta-link { display: none; }
       .nav-toggle { display: flex; }
-    }
-
-    @media (max-width: 767px) {
       .resume-page {
-        padding: 28px;
+        padding: 28px max(16px, env(safe-area-inset-left, 0px)) 28px max(16px, env(safe-area-inset-right, 0px));
       }
     }
 
@@ -3799,7 +4059,7 @@
       width: 100%;
       min-height: 0;
       box-sizing: border-box;
-      scroll-margin-top: 96px;
+      scroll-margin-top: var(--section-scroll-margin);
       position: relative;
       padding: 22px 24px 26px;
       border-radius: 22px;
@@ -4074,6 +4334,7 @@
     body.intro-running {
       overflow: hidden;
       height: 100vh;
+      height: 100dvh;
     }
     body.intro-running:not(.intro-dragon-hatch) #dragon-bg {
       opacity: 0;
@@ -4141,6 +4402,7 @@
     }
     body.intro-running .site-content-riser {
       transform: translate3d(0, 108vh, 0);
+      transform: translate3d(0, 108dvh, 0);
       opacity: 0.22;
       transition: opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -4189,6 +4451,7 @@
   </style>
 </head>
 <body class="intro-running">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <noscript><style>
     .site-intro { display: none !important; }
     .site-content-riser { transform: none !important; }
@@ -4246,7 +4509,7 @@
     </div>
   </header>
 
-  <main class="site-main">
+  <main id="main-content" class="site-main">
     <section id="hero" class="hero-section">
       <div class="hero-ambient" aria-hidden="true">
         <canvas id="hero-webgl" aria-hidden="true"></canvas>
@@ -4258,10 +4521,10 @@
         <div class="hero-copy">
           <div class="hero-top-row">
             <div class="hero-copy-primary">
-          <p class="eyebrow">ML engineering · Data pipelines · Chicago</p>
+          <p class="eyebrow">B.S. Data Science &amp; Statistics · University of Chicago · Class of 2030</p>
           <h1 class="hero-title" id="heroTitle" data-headline>
             <span class="hero-name">James Liebel</span>
-            <span class="hero-line">Data Scientist &amp; ML Engineer</span>
+            <span class="hero-line">Data science &amp; machine learning</span>
           </h1>
           <div class="hero-github" id="heroGithub" aria-label="GitHub contribution activity">
             <div id="github-heatmap" class="hero-github-heatmap" hidden>
@@ -4272,25 +4535,33 @@
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
-          <p class="summary">I build end-to-end machine learning models, scalable data pipelines, and interactive visual systems—shipping code, metrics, and interfaces recruiters can verify in minutes.</p>
-          <div class="hero-tech-stack" aria-label="Core tech stack">
+          <p class="summary">I build tabular ML with documented metrics, Power BI–style analytics, and small full-stack tools. Each headline below links to a notebook, repo, or live URL—not slide deck claims.</p>
+          <div class="hero-tech-stack" aria-label="Stack backed by this portfolio">
             <span class="hero-tech-pill">Python</span>
-            <span class="hero-tech-pill">PyTorch</span>
             <span class="hero-tech-pill">SQL</span>
-            <span class="hero-tech-pill">React</span>
-            <span class="hero-tech-pill">AWS</span>
-            <span class="hero-tech-pill">Docker</span>
+            <span class="hero-tech-pill">XGBoost</span>
+            <span class="hero-tech-pill">FastAPI</span>
+            <span class="hero-tech-pill">React / Next.js</span>
+            <span class="hero-tech-pill">Power BI</span>
+          </div>
+          <div class="hero-start-here" aria-label="Quick evidence links">
+            <span class="hero-start-here-label">Start here</span>
+            <div class="hero-start-here-links">
+              <a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Fraud notebook (metrics)</a>
+              <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com</a>
+              <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">JimAI repo</a>
+            </div>
           </div>
           <div class="hero-signal-band">
             <article class="hero-metric">
               <small>Target</small>
               <strong>Summer 2026</strong>
-              <span>Internship: data science, ML engineering, analytics engineering.</span>
+              <span>Internships in data science, ML engineering, or analytics engineering.</span>
             </article>
             <article class="hero-metric">
               <small>Credentials</small>
               <strong>IBM · PL-300</strong>
-              <span>IBM Data Science Professional Certificate; Microsoft Certified Power BI Data Analyst.</span>
+              <span>IBM Data Science Professional; Microsoft Power BI Data Analyst (PL-300). Google Cloud ML Engineer (in progress)—details on the résumé block.</span>
             </article>
           </div>
             </div>
@@ -4344,19 +4615,19 @@
                     <article class="hero-creation"><strong>Credit Card Fraud Detection</strong><span>ML pipeline</span></article>
                     <article class="hero-creation"><strong>JimAI</strong><span>AI workspace prototype</span></article>
                     <article class="hero-creation"><strong>CustomStrat</strong><span>Live client website</span></article>
-                    <article class="hero-creation"><strong>News Sentiment</strong><span>NLP features</span></article>
+                    <article class="hero-creation"><strong>NLP notebooks</strong><span>VADER + TF-IDF</span></article>
                     <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
                     <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
                     <article class="hero-creation"><strong>Credit Card Fraud Detection</strong><span>ML pipeline</span></article>
                     <article class="hero-creation"><strong>JimAI</strong><span>AI workspace prototype</span></article>
                     <article class="hero-creation"><strong>CustomStrat</strong><span>Live client website</span></article>
-                    <article class="hero-creation"><strong>News Sentiment</strong><span>NLP features</span></article>
+                    <article class="hero-creation"><strong>NLP notebooks</strong><span>VADER + TF-IDF</span></article>
                     <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
                     <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
                     <article class="hero-creation"><strong>Credit Card Fraud Detection</strong><span>ML pipeline</span></article>
                     <article class="hero-creation"><strong>JimAI</strong><span>AI workspace prototype</span></article>
                     <article class="hero-creation"><strong>CustomStrat</strong><span>Live client website</span></article>
-                    <article class="hero-creation"><strong>News Sentiment</strong><span>NLP features</span></article>
+                    <article class="hero-creation"><strong>NLP notebooks</strong><span>VADER + TF-IDF</span></article>
                     <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
                     <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
                   </div>
@@ -4395,7 +4666,6 @@
               <span class="pill">FastAPI · React · Next.js · TypeScript</span>
               <span class="pill">Power BI · DAX · PL-300 · D3.js</span>
               <span class="pill">Prompting · Local AI · Automation</span>
-              <span class="pill">XGBoost · scikit-learn · ETL</span>
               <a class="pill" href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a>
               <span class="pill">Python · Pandas · NumPy · SciPy</span>
               <span class="pill">SQL · ETL · Data Warehousing</span>
@@ -4419,6 +4689,25 @@
         </div>
       </div>
 
+      <div class="skills-compact-band" id="skillsCompactBand">
+        <p class="skills-compact-lede">Three tracks: <strong>engineering</strong> (SQL, ETL, APIs), <strong>modeling</strong> (tabular ML, NLP, evaluation), and <strong>delivery</strong> (Power BI, D3, responsive UI). Open the map below for columns, cards, and the end-to-end timeline.</p>
+        <div class="skills-compact-chips" aria-label="Representative tools">
+          <span class="skills-compact-chip">Python</span>
+          <span class="skills-compact-chip">SQL</span>
+          <span class="skills-compact-chip">XGBoost</span>
+          <span class="skills-compact-chip">FastAPI</span>
+          <span class="skills-compact-chip">Power BI</span>
+          <span class="skills-compact-chip">D3.js</span>
+          <span class="skills-compact-chip">Next.js</span>
+        </div>
+      </div>
+
+      <details class="skills-atlas-disclosure" id="skillsAtlasDetails">
+        <summary class="skills-atlas-summary">
+          <span class="skills-atlas-summary-label">Full skills map</span>
+          <span class="skills-atlas-summary-hint">Three columns + process timeline · click to expand</span>
+        </summary>
+        <div class="skills-atlas-disclosure-inner">
       <div class="skills-atlas">
         <div class="skills-grid">
         <div class="skills-pipeline-region" id="skillsPipelineRegion">
@@ -4580,6 +4869,8 @@
         </div>
         </div>
       </div>
+        </div>
+      </details>
     </section>
 
     <svg class="portfolio-section-divider" id="sectionDividerCapProj" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
@@ -4601,13 +4892,13 @@
               <div class="project-summary-grid">
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Machine Learning</p>
-                  <h3 class="project-summary-title">Credit Card Fraud Detection</h3>
-                  <p class="project-summary-blurb">Trained XGBoost + Random Forest on the Kaggle-style ULB fraud set (284,807 rows); stratified holdout 56,962 rows with RobustScaler + PR/ROC evaluation per the executed notebook.</p>
+                  <h3 class="project-summary-title">Credit card fraud detection</h3>
+                  <p class="project-summary-blurb">Binary classifier on <strong>285k</strong> card transactions, tuned for <strong>fraud recall</strong> on a held-out set. Headline metrics match the executed notebook on GitHub.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">80% fraud recall (XGB)</span>
+                  <span class="metric-pill">80% fraud recall</span>
                   <span class="metric-pill">284,807 rows</span>
-                  <span class="metric-pill">ROC-AUC 0.94</span>
+                  <span class="metric-pill">ROC-AUC ~0.94</span>
                 </div>
                 <span class="project-summary-expand">
                   <span class="project-summary-expand-label">Expand</span>
@@ -4618,24 +4909,44 @@
             <div class="project-expanded">
           <div class="project-inner">
             <div class="project-copy">
-              <p class="project-lede">End-to-end fraud classifier on <strong>284,807</strong> transactions (<strong>492</strong> fraud, <strong>0.17%</strong> positive rate): stratified split train <strong>227,845</strong> / test <strong>56,962</strong>, <strong>RobustScaler</strong> on amount/time, default XGBoost/RandomForest training, confusion matrices + PR/ROC reporting (<a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">notebook</a>).</p>
-              <div class="project-details">
-                <section class="detail project-detail" aria-labelledby="project-fraud-why">
-                  <h4 id="project-fraud-why">Impact</h4>
+              <div class="project-panels">
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-fraud-glance">At a glance</h4>
+                  <p><strong>284,807</strong> transactions, only <strong>492</strong> fraud (<strong>0.17%</strong> positive rate)—a classic imbalanced problem. Goal: catch fraud (recall) while keeping precision usable. Work is documented in a single runnable Jupyter notebook.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-fraud-pipeline">Pipeline</h4>
                   <ul>
-                    <li><strong>XGBoost</strong> on holdout: fraud-class recall <strong>80%</strong>, precision <strong>87%</strong>, ROC-AUC <strong>0.939</strong>; macro-averaged recall <strong>90%</strong> (sklearn <code>classification_report</code>—not the same as fraud recall).</li>
-                    <li><strong>Random Forest</strong> baseline on same holdout: fraud recall <strong>64%</strong>, ROC-AUC <strong>0.958</strong>; weighted accuracy ~<strong>100%</strong> (expected under extreme imbalance—metrics emphasize PR/ROC instead).</li>
-                    <li>Published reproducible notebook with confusion matrices, classification reports, and ROC curves for reviewer walkthrough.</li>
+                    <li>Stratified split: train <strong>227,845</strong> / test <strong>56,962</strong></li>
+                    <li><strong>RobustScaler</strong> on amount and time</li>
+                    <li><strong>XGBoost</strong> and <strong>Random Forest</strong> (default settings in the notebook)</li>
+                    <li>Reports: confusion matrices, PR/ROC curves</li>
                   </ul>
-                </section>
-                <section class="detail project-detail" aria-labelledby="project-fraud-stack">
-                  <h4 id="project-fraud-stack">Technologies</h4>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-fraud-metrics">Holdout metrics</h4>
+                  <ul>
+                    <li><strong>XGBoost:</strong> fraud recall <strong>80%</strong>, precision <strong>87%</strong>, ROC-AUC <strong>0.939</strong></li>
+                    <li><strong>RF:</strong> fraud recall <strong>64%</strong>, ROC-AUC <strong>0.958</strong></li>
+                    <li>Macro recall <strong>90%</strong> (sklearn report) ≠ fraud recall—don’t mix them up</li>
+                  </ul>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-fraud-reading">Reading the results</h4>
+                  <p>Accuracy is near <strong>100%</strong> for both models because negatives dominate—that’s why the story is <strong>PR-AUC / ROC / recall</strong>, not accuracy.</p>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-fraud-stack">Tech stack</h4>
                   <div class="detail-tags">
-                    <span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Random Forest</span><span class="tag">RobustScaler</span><span class="tag">Precision-Recall</span><span class="tag">Evaluation</span>
+                    <span class="tag">Python</span><span class="tag">Jupyter</span><span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Random Forest</span><span class="tag">RobustScaler</span><span class="tag">PR/ROC</span>
                   </div>
-                </section>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-fraud-evidence">Evidence</h4>
+                  <p>All numbers above come from executed cells in <a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">fraud_detection_setup.ipynb</a> on <code>main</code>.</p>
+                </div>
               </div>
-              <a class="project-open" href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Open Project</a>
+              <a class="project-open" href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Open repo folder</a>
             </div>
             <div class="work-visual-card">
               <div class="work-visual-shell fraud-grid" aria-hidden="true">
@@ -4661,13 +4972,13 @@
               <div class="project-summary-grid">
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">AI Product Prototype</p>
-                  <h3 class="project-summary-title">JimAI AI Workspace Prototype</h3>
-                  <p class="project-summary-blurb">Architected FastAPI + React/Vite workspace for local LLM prompts, file-aware tasks, and repeatable dev workflows (Ollama).</p>
+                  <h3 class="project-summary-title">JimAI</h3>
+                  <p class="project-summary-blurb">Local AI workspace: <strong>FastAPI</strong> + <strong>React</strong> + <strong>Ollama</strong>. Run prompts and multi-step tasks on your machine—nothing leaves the box unless you choose.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">FastAPI</span>
-                  <span class="metric-pill">React + Vite</span>
-                  <span class="metric-pill">Ollama</span>
+                  <span class="metric-pill">Local-first</span>
+                  <span class="metric-pill">10 API routes</span>
+                  <span class="metric-pill">SSE + health checks</span>
                 </div>
                 <span class="project-summary-expand">
                   <span class="project-summary-expand-label">Expand</span>
@@ -4678,24 +4989,38 @@
             <div class="project-expanded">
           <div class="project-inner reverse">
             <div class="project-copy">
-              <p class="project-lede">Shipped a local-first AI workspace: FastAPI backend + React/Vite UI + Ollama, with agent orchestration, research SSE streams, and desktop shell (see <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">JimAI</a>).</p>
-              <div class="project-details">
-                <section class="detail project-detail" aria-labelledby="project-jimai-why">
-                  <h4 id="project-jimai-why">Impact</h4>
+              <div class="project-panels">
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-jimai-glance">What it is</h4>
+                  <p>A browser-based workspace for research, code help, and agent-style flows. Backend talks to <strong>Ollama</strong> locally; the UI streams longer jobs over <strong>SSE</strong>. Full source: <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">JimAI on GitHub</a>.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-jimai-backend">Backend</h4>
                   <ul>
-                    <li>Backend entrypoint mounts <strong>10</strong> FastAPI routers (chat, upload, vision, agents, feedback, completion, settings, webtools, builder, agent space); repo audit cites <strong>76</strong> Python modules in <code>backend/</code>.</li>
-                    <li>Frontend hardening: <strong>33</strong> TS/TSX modules (~215 KB source per internal audit); wrapped <strong>90+</strong> client calls with explicit timeouts (30s default, 120s SSE) plus error boundary and cancelable research.</li>
-                    <li>Ops-facing <code>/health</code> probes Ollama, ChromaDB, and Qdrant with <strong>3s</strong> timeouts; validation scripts + <code>npm run build</code> recorded clean in repo completion report.</li>
+                    <li><strong>10</strong> FastAPI routers (chat, agents, uploads, settings, …)</li>
+                    <li><strong>76</strong> Python modules under <code>backend/</code> (repo audit)</li>
                   </ul>
-                </section>
-                <section class="detail project-detail" aria-labelledby="project-jimai-stack">
-                  <h4 id="project-jimai-stack">Technologies</h4>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-jimai-frontend">Frontend</h4>
+                  <ul>
+                    <li><strong>33</strong> TS/TSX files (~215 KB source)</li>
+                    <li><strong>90+</strong> HTTP calls with timeouts (30s default, 120s SSE)</li>
+                    <li>Error boundary + cancelable research streams</li>
+                  </ul>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-jimai-ops">Reliability</h4>
+                  <p><code>/health</code> probes Ollama, ChromaDB, and Qdrant (<strong>3s</strong> timeout each). Repo includes validation scripts and a recorded clean <code>npm run build</code>.</p>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-jimai-stack">Tech stack</h4>
                   <div class="detail-tags">
-                    <span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">Vite</span><span class="tag">Ollama</span><span class="tag">Prompting</span><span class="tag">Automation</span>
+                    <span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">Vite</span><span class="tag">TypeScript</span><span class="tag">Ollama</span><span class="tag">SSE</span><span class="tag">ChromaDB</span><span class="tag">Qdrant</span>
                   </div>
-                </section>
+                </div>
               </div>
-              <a class="project-open" href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">Open Project</a>
+              <a class="project-open" href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">Open GitHub repo</a>
             </div>
             <div class="work-visual-card">
               <div class="work-visual-shell chat-shell" aria-hidden="true">
@@ -4719,11 +5044,11 @@
               <div class="project-summary-grid">
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Client Delivery</p>
-                  <h3 class="project-summary-title">CustomStrat Advisory Website</h3>
-                  <p class="project-summary-blurb">Deployed production marketing site on customstrat.com with Next.js 14, TypeScript, Tailwind, and GitHub Pages + custom domain.</p>
+                  <h3 class="project-summary-title">CustomStrat</h3>
+                  <p class="project-summary-blurb">Live client site at <strong>customstrat.com</strong>: <strong>Next.js 14</strong>, static deploy to <strong>GitHub Pages</strong>, custom domain and HTTPS.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">customstrat.com</span>
+                  <span class="metric-pill">Live site</span>
                   <span class="metric-pill">Next.js 14</span>
                   <span class="metric-pill">GitHub Pages</span>
                 </div>
@@ -4736,24 +5061,31 @@
             <div class="project-expanded">
           <div class="project-inner">
             <div class="project-copy">
-              <p class="project-lede">Delivered client-facing Next.js site with responsive layouts, component library, and CI deploy to GitHub Pages.</p>
-              <div class="project-details">
-                <section class="detail project-detail" aria-labelledby="project-customstrat-why">
-                  <h4 id="project-customstrat-why">Impact</h4>
-                  <ul>
-                    <li>Live multi-section marketing site on <strong>customstrat.com</strong> (Next.js 14, TypeScript, Tailwind) deployed to <strong>GitHub Pages</strong> with custom domain + HTTPS.</li>
-                    <li>Structured content architecture (componentized sections) so non-dev updates stay copy-and-media swaps instead of full rewrites. Web performance scores are <strong>not measured</strong> in this repo’s CI—add a saved Lighthouse report or workflow artifact before citing numbers.</li>
-                    <li>DNS + TLS aligned to GitHub Pages; no third-party hosting lock-in for static delivery.</li>
-                  </ul>
-                </section>
-                <section class="detail project-detail" aria-labelledby="project-customstrat-stack">
-                  <h4 id="project-customstrat-stack">Technologies</h4>
+              <div class="project-panels">
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-cs-deliver">Deliverable</h4>
+                  <p>Public marketing site for an advisory client: responsive layout, multiple sections, <strong>HTTPS</strong> on a <strong>custom domain</strong>, deployed from this stack to <strong>GitHub Pages</strong>.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-cs-maintain">Updates</h4>
+                  <p>Sections are <strong>componentized</strong> so day-to-day work is mostly <strong>copy and media</strong> swaps—not layout rewrites.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-cs-hosting">Hosting</h4>
+                  <p><strong>DNS</strong> and <strong>TLS</strong> point at GitHub Pages; static files only—no separate app server for the marketing pages.</p>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-cs-note">Performance note</h4>
+                  <p><strong>Lighthouse / Core Web Vitals</strong> are not run in this repo’s CI. Add a saved report in the repo before citing specific scores.</p>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-cs-stack">Tech stack</h4>
                   <div class="detail-tags">
-                    <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Tailwind CSS</span><span class="tag">Responsive UI</span><span class="tag">Content Architecture</span>
+                    <span class="tag">Next.js 14</span><span class="tag">TypeScript</span><span class="tag">Tailwind CSS</span><span class="tag">GitHub Pages</span><span class="tag">Responsive UI</span>
                   </div>
-                </section>
+                </div>
               </div>
-              <a class="project-open" href="https://customstrat.com" target="_blank" rel="noopener noreferrer">Open Project</a>
+              <a class="project-open" href="https://customstrat.com" target="_blank" rel="noopener noreferrer">Open live site</a>
             </div>
             <div class="work-visual-card">
               <div class="work-visual-shell browser-shell" aria-hidden="true">
@@ -4779,13 +5111,13 @@
               <div class="project-summary-grid">
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">NLP</p>
-                  <h3 class="project-summary-title">News Sentiment Analysis</h3>
-                  <p class="project-summary-blurb">VADER sentiment on <strong>15</strong> simulated finance headlines; separate Colab notebook scaffolds <strong>TF-IDF + PassiveAggressiveClassifier</strong> on uploaded fake-news CSV (<a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Personal_Projects</a>).</p>
+                  <h3 class="project-summary-title">NLP notebooks</h3>
+                  <p class="project-summary-blurb">Two Python notebooks: a <strong>15-row</strong> VADER finance <em>demo</em>, and a <strong>TF-IDF + classifier template</strong> you can run on your own labeled text in Colab.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">15-row VADER demo</span>
-                  <span class="metric-pill">TF-IDF scaffold</span>
-                  <span class="metric-pill">Notebook workflows</span>
+                  <span class="metric-pill">VADER demo</span>
+                  <span class="metric-pill">TF-IDF template</span>
+                  <span class="metric-pill">GitHub</span>
                 </div>
                 <span class="project-summary-expand">
                   <span class="project-summary-expand-label">Expand</span>
@@ -4796,26 +5128,37 @@
             <div class="project-expanded">
           <div class="project-inner reverse">
             <div class="project-copy">
-              <p class="project-lede"><strong>stock_sentiment_analysis.ipynb</strong>: end-to-end VADER scoring + bullish/bearish labels on a <strong>15-row</strong> simulated ticker/headline table (quant finance workflow demo). <strong>news_sentiment_analysis.ipynb</strong>: sklearn pipeline template <code>TfidfVectorizer → PassiveAggressiveClassifier</code> for Colab-uploaded labeled articles—run cells to log your own row counts and accuracy.</p>
-              <div class="project-details">
-                <section class="detail project-detail" aria-labelledby="project-sentiment-why">
-                  <h4 id="project-sentiment-why">Impact</h4>
-                  <ul>
-                    <li>Finance demo stays honest on scale (<strong>15</strong> headlines) while still showing ingestion → sentiment features → time-series aggregation workflow.</li>
-                    <li>Fake-news notebook demonstrates text vectorization + linear classifier wiring suitable for larger corpora once you pin a public dataset and commit outputs.</li>
-                    <li>Both notebooks are recruiter-ready for <em>method</em>; add executed metrics when you freeze a dataset version in-repo.</li>
-                  </ul>
-                </section>
-                <section class="detail project-detail" aria-labelledby="project-sentiment-stack">
-                  <h4 id="project-sentiment-stack">Technologies</h4>
+              <div class="project-panels">
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="nlp-nb1">Notebook 1 — Finance sentiment (VADER)</h4>
+                  <p><strong>File:</strong> <code>stock_sentiment_analysis.ipynb</code></p>
+                  <p>Uses <strong>VADER</strong> on a <strong>15-row</strong> simulated ticker/headline table—small on purpose. Shows: load → score → label → simple time aggregation. <strong>Not</strong> a large-corpus benchmark.</p>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="nlp-nb2">Notebook 2 — Text classifier (TF-IDF)</h4>
+                  <p><strong>File:</strong> <code>news_sentiment_analysis.ipynb</code></p>
+                  <p>Sklearn pipeline: <code>TfidfVectorizer</code> → <code>PassiveAggressiveClassifier</code>. Designed for <strong>Colab</strong>: you upload labeled CSV text, run cells, and log <strong>your</strong> row counts and accuracy.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="nlp-scope">Scope</h4>
+                  <p>Both notebooks showcase <strong>method</strong>. For stable numbers on this portfolio page, pin a dataset version in the repo and commit <strong>executed</strong> outputs.</p>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="nlp-stack">Tech stack</h4>
                   <div class="detail-tags">
-                    <span class="tag">Python</span><span class="tag">NLP</span><span class="tag">VADER</span><span class="tag">TF-IDF</span><span class="tag">Visualization</span>
+                    <span class="tag">Python</span><span class="tag">Jupyter</span><span class="tag">VADER</span><span class="tag">NLTK</span><span class="tag">scikit-learn</span><span class="tag">TF-IDF</span>
                   </div>
-                </section>
-              </div>
-              <div class="project-evidence-actions">
-                <a class="project-open" href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/stock_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">VADER demo notebook</a>
-                <a class="resume-link" href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">TF-IDF scaffold notebook</a>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="nlp-evidence">Open the notebooks</h4>
+                  <p>
+                    <a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/stock_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">VADER demo</a>
+                    ·
+                    <a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">TF-IDF template</a>
+                    ·
+                    <a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Folder</a>
+                  </p>
+                </div>
               </div>
             </div>
             <div class="work-visual-card">
@@ -5040,10 +5383,10 @@
         <div class="experience-grid">
           <article class="experience-card">
             <h3>Contract &amp; client delivery</h3>
-            <p class="experience-meta">2025 · Paid evaluator · Live client site</p>
+            <p class="experience-meta">2025 · Paid evaluator · Client site delivery</p>
             <ul>
-              <li><strong>Alignerr:</strong> AI/ML code evaluator (remote, paid)—scores Python/ML, data-science, and NLP submissions across five technical domains; same role summarized on the print résumé below.</li>
-              <li><strong>CustomStrat:</strong> Shipped <strong>customstrat.com</strong> with Next.js 14, TypeScript, Tailwind, GitHub Pages, and a custom domain—traffic and distribution metrics match the résumé PDF block.</li>
+              <li><strong>Alignerr:</strong> Remote, paid reviewer of AI-generated Python/ML, data science, and NLP code across five qualification domains.</li>
+              <li><strong>CustomStrat:</strong> Live client site (<strong>customstrat.com</strong>, Next.js 14, GitHub Pages, custom domain). Metrics and build detail: <a href="#project-customstrat">Projects → CustomStrat</a>.</li>
             </ul>
           </article>
           <article class="experience-card">
@@ -5052,7 +5395,7 @@
             <p class="experience-degree">B.S. Data Science &amp; Statistics — expected May 2030</p>
             <ul>
               <li>IBM Data Science Professional Certificate; Microsoft PL-300 (Power BI Data Analyst); Google Cloud ML Engineer <em>(in progress)</em>.</li>
-              <li>Coursework in probability, linear algebra, algorithms, and statistical inference (publish credit totals / GPA only if you want them on a public page).</li>
+              <li>Coursework in probability, linear algebra, algorithms, and statistical inference.</li>
             </ul>
           </article>
           <article class="experience-card">
@@ -5061,17 +5404,18 @@
             <ul>
               <li>Designed and delivered PyTorch-forward neural network workshops with reproducible notebooks for the club.</li>
               <li>Co-led programming and session planning (topics, hands-on formats, onboarding for new members).</li>
-              <li>Weekly hands-on sessions for <strong>50+</strong> students—evaluation metrics, pipeline structure, and presentation-ready project framing.</li>
+              <li>Weekly hands-on sessions for <strong>50+</strong> students covering evaluation metrics, pipeline structure, and how to frame projects for presentation.</li>
             </ul>
           </article>
         </div>
         <p class="experience-contact">
-          <strong>Summer 2026 internships</strong> ·
           <a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a>
           ·
           <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a>
           ·
           <a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          ·
+          <a href="#resume">Résumé (PDF)</a>
         </p>
       </div>
     </section>
@@ -5086,7 +5430,7 @@
         <div class="resume-panel">
           <p class="resume-kicker noprint">Resume</p>
           <h2 class="resume-title noprint">Print-ready résumé</h2>
-          <p class="resume-intro noprint">Data-science–leaning one-pager (same as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a>), trimmed to print on <strong>one letter page</strong> with tighter margins. Print hides site chrome.</p>
+          <p class="resume-intro noprint">Same text as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a>—one letter page when you print or save PDF; site chrome is hidden.</p>
           <div class="resume-actions noprint">
             <button class="btn noprint" id="pdfBtn" type="button">Save PDF</button>
             <a class="btn-soft noprint" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -5106,7 +5450,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Professional Summary</h2>
               <p class="resume-pdf-summary">
-                <strong>University of Chicago</strong> B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML/code evaluator</strong> (Alignerr)—reviews AI-generated Python/ML, data-science, and NLP work. Hands-on with <strong>end-to-end modeling</strong> (tabular ML, metrics, notebooks), <strong>Power BI</strong> (PL-300), and <strong>SQL/Python</strong> stacks; ships supporting apps with <strong>FastAPI</strong>, <strong>React</strong>, <strong>Next.js</strong>. Portfolio: fraud detection with holdout metrics, PL-300-style dashboards, D3 visualizations, NLP notebooks (VADER, TF-IDF), and a local-LLM workspace prototype.
+                <strong>University of Chicago</strong>, B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML/code evaluator</strong> at Alignerr, reviewing AI-generated Python, ML, data science, and NLP outputs. Builds <strong>tabular models</strong> in notebooks with disciplined metrics, <strong>Power BI</strong> work aligned with PL-300, and <strong>SQL/Python</strong> analytics; ships supporting tools with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong>. Public samples include a fraud model with documented holdouts, BI-style dashboards, D3 charts, NLP notebooks (VADER, TF-IDF), and a local-LLM workspace prototype.
               </p>
             </section>
 
@@ -5116,16 +5460,16 @@
                 <div class="resume-pdf-skill-cat">
                   <strong>Data science &amp; ML</strong>
                   <div class="resume-pdf-skill-row"><b>Core:</b> Python, SQL, pandas, NumPy, scikit-learn, XGBoost, Jupyter, Git</div>
-                  <div class="resume-pdf-skill-row"><b>Practice:</b> Feature engineering, train/test splits, imbalanced classification, PR-AUC, ROC-AUC, F1, confusion matrices</div>
-                  <div class="resume-pdf-skill-row"><b>NLP:</b> VADER, TF-IDF, NLTK-style text features (Jupyter demos + scaffolds—see repo)</div>
-                  <div class="resume-pdf-skill-row"><b>Course / secondary:</b> R, Java; TensorFlow/Keras (CNN/RNN coursework). <b>Studying:</b> Google Cloud ML Engineer cert <em>(in progress)</em></div>
+                  <div class="resume-pdf-skill-row"><b>Modeling:</b> Feature engineering, train/test splits, imbalanced classification, PR-AUC, ROC-AUC, F1, confusion matrices</div>
+                  <div class="resume-pdf-skill-row"><b>NLP:</b> VADER, TF-IDF, text features in the NLTK style (notebook demos; scaffolds in GitHub)</div>
+                  <div class="resume-pdf-skill-row"><b>Coursework:</b> R, Java; TensorFlow/Keras (CNN/RNN). Google Cloud ML Engineer <em>(in progress)</em></div>
                 </div>
                 <div class="resume-pdf-skill-cat">
                   <strong>Analytics products &amp; delivery</strong>
                   <div class="resume-pdf-skill-row"><b>BI:</b> Power BI, DAX — Microsoft PL-300 (Data Analyst); multi-page KPI dashboards, slicers</div>
-                  <div class="resume-pdf-skill-row"><b>Viz:</b> Matplotlib; <strong>D3.js</strong>, GeoJSON — maps, heatmaps, treemap, bar/scatter (live on portfolio site)</div>
+                  <div class="resume-pdf-skill-row"><b>Viz:</b> Matplotlib; <strong>D3.js</strong> and GeoJSON for maps, heatmaps, treemap, bar and scatter (this portfolio)</div>
                   <div class="resume-pdf-skill-row"><b>Engineering:</b> FastAPI, React, Vite, Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domains</div>
-                  <div class="resume-pdf-skill-row"><b>AI tooling:</b> Ollama, prompting, workflow automation (<strong>JimAI</strong> prototype)</div>
+                  <div class="resume-pdf-skill-row"><b>LLM tooling:</b> Ollama, prompting, light automation (<strong>JimAI</strong> prototype)</div>
                 </div>
               </div>
             </section>
@@ -5139,17 +5483,17 @@
                   <span class="resume-pdf-date">2025 – Present · Paid · Remote</span>
                 </div>
                 <ul class="resume-list">
-                  <li>Evaluates AI-generated code across <strong>five</strong> domains (incl. Python/ML, data science, math); scores ML, NLP, fraud-style, and full-stack submissions and writes structured technical feedback.</li>
+                  <li>Reviews AI-generated work across <strong>five</strong> domains, including Python/ML, data science, and math—rates ML, NLP, fraud-style, and full-stack submissions and writes structured technical feedback.</li>
                 </ul>
               </div>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">CustomStrat Advisory — Analytics-facing web delivery</span>
+                  <span class="resume-pdf-job-title">CustomStrat Advisory — client site &amp; growth</span>
                   <span class="resume-pdf-date">2025 – Present</span>
                 </div>
                 <ul class="resume-list">
-                  <li>Production site <strong>customstrat.com</strong>: Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domain; <strong>200+</strong> unique visitors in first two weeks. LinkedIn distribution: <strong>+31%</strong> impressions (28d). NLP (sentiment, TF-IDF) used to inspect content themes.</li>
+                  <li>Shipped <strong>customstrat.com</strong> on Next.js 14, TypeScript, Tailwind, GitHub Pages, and a custom domain—<strong>200+</strong> unique visitors in the first two weeks and <strong>+31%</strong> LinkedIn impressions over 28 days. Used sentiment and TF-IDF passes to spot recurring themes in draft copy.</li>
                 </ul>
               </div>
 
@@ -5159,7 +5503,7 @@
                   <span class="resume-pdf-date">2023 – Present</span>
                 </div>
                 <ul class="resume-list">
-                  <li>Weekly workshops for <strong>50+</strong> students—neural networks, evaluation metrics, applied ML projects (aligns with on-site PyTorch-forward workshop framing).</li>
+                  <li>Lead weekly workshops for <strong>50+</strong> students on neural networks, evaluation metrics, and applied ML projects, including PyTorch-forward sessions with reproducible notebooks.</li>
                 </ul>
               </div>
             </section>
@@ -5169,31 +5513,31 @@
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">Credit card fraud — XGBoost (tabular ML)</span>
+                  <span class="resume-pdf-job-title">Credit card fraud detection (XGBoost)</span>
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Notebook</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li><strong>284,807</strong> rows (ULB-style); stratified split; <strong>RobustScaler</strong>; <strong>XGBoost</strong> / Random Forest. Holdout: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong>—matches executed notebook on <code>main</code>.</li>
+                  <li><strong>284,807</strong> ULB-style transactions with a stratified split, <strong>RobustScaler</strong>, and <strong>XGBoost</strong> plus Random Forest. Holdout results: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong> per the executed notebook on <code>main</code>.</li>
                 </ul>
               </div>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">Portfolio — BI + interactive analytics</span>
+                  <span class="resume-pdf-job-title">Portfolio dashboards &amp; D3 analytics</span>
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/portfolio-site" target="_blank" rel="noopener noreferrer">portfolio-site</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li>Embedded <strong>Power BI</strong>-style multi-page revenue dashboard (PL-300-aligned KPIs, slicers—see Visualizations). Six <strong>D3.js</strong> pieces (choropleth, heatmap, treemap, scatter, bar)—same work showcased on the public portfolio.</li>
+                  <li>Multi-page <strong>Power BI</strong>-style revenue dashboard (PL-300-style KPIs and slicers in the Visualizations section) plus six <strong>D3.js</strong> interactive charts and maps on the same portfolio.</li>
                 </ul>
               </div>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">JimAI — local LLM workspace</span>
+                  <span class="resume-pdf-job-title">JimAI (local LLM workspace)</span>
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">GitHub</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li><strong>FastAPI</strong> + <strong>React/Vite</strong> + <strong>Ollama</strong>: multi-router backend, timeouts/health checks, browser UI for research and code-assist workflows—shows model-adjacent product engineering.</li>
+                  <li><strong>FastAPI</strong>, <strong>React/Vite</strong>, and <strong>Ollama</strong>: multi-route backend with timeouts and health-checked dependencies; browser UI for research and code-assist flows—local LLM product work end to end.</li>
                 </ul>
               </div>
             </section>
@@ -5206,7 +5550,7 @@
                   <span class="resume-pdf-date">Expected: May 2030</span>
                 </div>
                 <div class="resume-pdf-desc">
-                  <strong>Major:</strong> Data Science &amp; Statistics · AP Statistics, AP CSA, AP Calc BC · <strong>Certs:</strong> IBM Data Science Professional; Microsoft PL-300 (Power BI Data Analyst); Google Cloud ML Engineer <em>(in progress)</em>
+                  <strong>Major:</strong> Data Science &amp; Statistics. <strong>Prep:</strong> AP Statistics, CSA, Calc BC. <strong>Certifications:</strong> IBM Data Science Professional; Microsoft PL-300 (Power BI Data Analyst); Google Cloud ML Engineer <em>(in progress)</em>
                 </div>
               </div>
             </section>
@@ -5219,7 +5563,7 @@
       <div class="site-footer-inner">
         <div class="footer-column"><h2>JL</h2><p>James Liebel · University of Chicago · Class of 2030</p><a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a></div>
         <div class="footer-column"><p class="footer-kicker">Navigate</p><nav class="footer-nav" aria-label="Footer navigation"><a href="#hero">Home</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#visualizations">Visualizations</a><a href="#experience">Experience</a><a href="#resume">Resume</a></nav></div>
-        <div class="footer-column"><p class="footer-kicker">Elsewhere</p><div class="footer-links"><a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div class="footer-availability"><span class="footer-availability-dot" aria-hidden="true"></span><span>Available for Summer 2026 internships</span></div></div>
+        <div class="footer-column"><p class="footer-kicker">Elsewhere</p><div class="footer-links"><a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div class="footer-availability"><span class="footer-availability-dot" aria-hidden="true"></span><span>Seeking Summer 2026 internships</span></div></div>
       </div>
       <div class="footer-divider"></div>
       <div class="footer-bottom">Built by James Liebel with data in mind · 2026</div>
@@ -5277,12 +5621,34 @@
     });
   }
 
+  function markIntroSeen() {
+    try {
+      sessionStorage.setItem('portfolio-intro-seen', '1');
+    } catch (e) { /* ignore */ }
+  }
+
+  var skipIntro = false;
+  try {
+    skipIntro = sessionStorage.getItem('portfolio-intro-seen') === '1';
+  } catch (e) { /* ignore */ }
+
+  if (skipIntro) {
+    document.body.classList.remove('intro-running');
+    document.body.classList.remove('intro-dragon-hatch');
+    document.body.classList.add('intro-done');
+    if (intro.parentNode) intro.parentNode.removeChild(intro);
+    riser.removeAttribute('aria-hidden');
+    setTimeout(syncPortfolioAfterIntro, 0);
+    return;
+  }
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.body.classList.remove('intro-running');
     document.body.classList.remove('intro-dragon-hatch');
     document.body.classList.add('intro-done');
     intro.remove();
     riser.removeAttribute('aria-hidden');
+    markIntroSeen();
     setTimeout(syncPortfolioAfterIntro, 0);
     return;
   }
@@ -5313,6 +5679,7 @@
     setTimeout(function () {
       if (intro.parentNode) intro.parentNode.removeChild(intro);
     }, 1320);
+    markIntroSeen();
   }
   function onTransitionEnd(ev) {
     if (ev.target !== riser || ev.propertyName !== 'transform') return;
