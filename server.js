@@ -3,7 +3,9 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname);
-const PORT = 3000;
+const preferredPort = Number.parseInt(process.env.PORT || "3000", 10);
+let port = Number.isFinite(preferredPort) ? preferredPort : 3000;
+const portCeiling = port + 20;
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -60,6 +62,24 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+let listeningLogged = false;
+function onListening() {
+  if (listeningLogged) return;
+  listeningLogged = true;
+  console.log(`Server running at http://localhost:${port}`);
+}
+
+server.on("error", err => {
+  if (err.code === "EADDRINUSE" && port < portCeiling) {
+    console.warn(`Port ${port} in use, trying ${port + 1}…`);
+    port += 1;
+    setImmediate(() => {
+      server.listen(port, onListening);
+    });
+  } else {
+    console.error(err);
+    process.exit(1);
+  }
 });
+
+server.listen(port, onListening);

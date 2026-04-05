@@ -14,33 +14,42 @@
             body {
                 margin: 0;
                 padding: 0;
-                font-size: 10.25pt;
-                line-height: 1.28;
+                font-size: 9.25pt;
+                line-height: 1.22;
             }
             .no-print,
             .buttons {
                 display: none !important;
             }
             .header {
-                padding-bottom: 4px !important;
-                margin-bottom: 6px !important;
-                border-bottom-width: 2px !important;
+                padding-bottom: 2px !important;
+                margin-bottom: 4px !important;
+                border-bottom-width: 1.5px !important;
             }
-            h1 { font-size: 20pt !important; line-height: 1.05 !important; }
-            h2 { margin: 5px 0 3px !important; padding-bottom: 1px !important; font-size: 10pt !important; }
-            .section { margin-bottom: 5px !important; }
-            .entry { margin-bottom: 5px !important; }
+            h1 { font-size: 17pt !important; line-height: 1 !important; }
+            h2 {
+                margin: 3px 0 2px !important;
+                padding-bottom: 0 !important;
+                font-size: 9pt !important;
+                border-bottom-width: 1px !important;
+            }
+            .section { margin-bottom: 3px !important; }
+            .entry { margin-bottom: 3px !important; }
             .summary,
             li,
             .description,
-            .skill-item-row { font-size: 8.75pt !important; line-height: 1.25 !important; }
-            .contact-info { font-size: 8.75pt !important; line-height: 1.35 !important; }
-            .skills-grid { gap: 4px 12px !important; }
-            .skill-category strong { font-size: 8.75pt !important; margin-bottom: 2px !important; padding-bottom: 1px !important; }
-            .job-title, .university { font-size: 10pt !important; }
-            .date { font-size: 8.75pt !important; }
-            ul { margin: 2px 0 !important; padding-left: 16px !important; }
+            .skill-item-row { font-size: 8pt !important; line-height: 1.2 !important; }
+            .summary { margin-bottom: 4px !important; text-align: left !important; }
+            .contact-info { font-size: 8pt !important; line-height: 1.25 !important; margin-top: 2px !important; }
+            .skills-grid { gap: 2px 10px !important; display: grid !important; grid-template-columns: 1fr 1fr !important; }
+            .skill-category strong { font-size: 8pt !important; margin-bottom: 1px !important; padding-bottom: 0 !important; }
+            .skill-item-row { margin-bottom: 1px !important; }
+            .job-title, .university { font-size: 9pt !important; }
+            .date { font-size: 8pt !important; }
+            .entry-header { display: flex !important; justify-content: space-between !important; gap: 8px !important; flex-wrap: wrap !important; }
+            ul { margin: 1px 0 !important; padding-left: 14px !important; }
             li { margin-bottom: 0 !important; }
+            .description { margin-top: 1px !important; }
         }
 
         body {
@@ -267,7 +276,7 @@
     <div class="section">
         <h2>PROFESSIONAL SUMMARY</h2>
         <p class="summary">
-            <strong>University of Chicago</strong>, B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML/code evaluator</strong> at Alignerr, reviewing AI-generated Python, ML, data science, and NLP outputs. Builds <strong>tabular models</strong> in notebooks with disciplined metrics, <strong>Power BI</strong> work aligned with PL-300, and <strong>SQL/Python</strong> analytics; ships supporting tools with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong>. Public samples include a fraud model with documented holdouts, BI-style dashboards, D3 charts, NLP notebooks (VADER, TF-IDF), and a local-LLM workspace prototype.
+            <strong>University of Chicago</strong>, B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML evaluator</strong> (Alignerr): Python/ML, NLP, and full-stack review. <strong>Tabular ML</strong> in notebooks, <strong>Power BI</strong> (PL-300), <strong>SQL/Python</strong>; ships <strong>FastAPI</strong>, <strong>React</strong>, <strong>Next.js</strong>. Public work: fraud model (documented holdouts), BI + D3 portfolio, NLP (VADER, TF-IDF), <strong>JimAI</strong> local LLM prototype.
         </p>
     </div>
 
@@ -313,7 +322,7 @@
                 <span class="date">2025 – Present</span>
             </div>
             <ul>
-                <li>Shipped <strong>customstrat.com</strong> on Next.js 14, TypeScript, Tailwind, GitHub Pages, and a custom domain—<strong>200+</strong> unique visitors in the first two weeks and <strong>+31%</strong> LinkedIn impressions over 28 days. Used sentiment and TF-IDF passes to spot recurring themes in draft copy.</li>
+                <li>Shipped <strong>customstrat.com</strong> (Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domain): <strong>200+</strong> visitors in two weeks; <strong>+31%</strong> LinkedIn impressions (28 days).</li>
             </ul>
         </div>
 
@@ -341,7 +350,7 @@
                 <span class="date"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb">Notebook</a></span>
             </div>
             <ul>
-                <li><strong>284,807</strong> ULB-style transactions with a stratified split, <strong>RobustScaler</strong>, and <strong>XGBoost</strong> plus Random Forest. Holdout results: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong> per the executed notebook on <code>main</code>.</li>
+                <li><strong>284,807</strong>-row fraud set: stratified split, <strong>RobustScaler</strong>, <strong>XGBoost</strong>/RF. Holdout: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong> (notebook on <code>main</code>).</li>
             </ul>
         </div>
 
@@ -353,7 +362,7 @@
                 <span class="date"><a href="https://github.com/James-Liebel/portfolio-site">portfolio-site</a></span>
             </div>
             <ul>
-                <li>Multi-page <strong>Power BI</strong>-style revenue dashboard (PL-300-style KPIs and slicers in the Visualizations section) plus six <strong>D3.js</strong> interactive charts and maps on the same portfolio.</li>
+                <li><strong>Power BI</strong>–style revenue dashboard + six <strong>D3.js</strong> charts/maps (portfolio Visualizations).</li>
             </ul>
         </div>
 
@@ -365,7 +374,7 @@
                 <span class="date"><a href="https://github.com/James-Liebel/JimAI">GitHub</a></span>
             </div>
             <ul>
-                <li><strong>FastAPI</strong>, <strong>React/Vite</strong>, and <strong>Ollama</strong>: multi-route backend with timeouts and health-checked dependencies; browser UI for research and code-assist flows—local LLM product work end to end.</li>
+                <li><strong>FastAPI</strong>, <strong>React/Vite</strong>, <strong>Ollama</strong>: multi-route backend (timeouts, health checks); browser UI for research/code-assist—local LLM prototype end to end.</li>
             </ul>
         </div>
     </div>
@@ -380,7 +389,7 @@
                 <span class="date">Expected: May 2030</span>
             </div>
             <div class="description">
-                <strong>Major:</strong> Data Science & Statistics. <strong>Prep:</strong> AP Statistics, CSA, Calc BC. <strong>Certifications:</strong> IBM Data Science Professional; Microsoft PL-300 (Power BI Data Analyst); Google Cloud ML Engineer <em>(in progress)</em>
+                <strong>Major:</strong> Data Science &amp; Statistics · <strong>Prep:</strong> AP Stats, CSA, Calc BC · <strong>Certs:</strong> IBM Data Science Professional; Microsoft PL-300; Google Cloud ML Engineer <em>(in progress)</em>
             </div>
         </div>
     </div>

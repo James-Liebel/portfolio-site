@@ -2734,13 +2734,13 @@
         rgba(248, 250, 252, 0.9) 100%
       );
     }
-    /* Hero dashboard: 16×9 frame fills content width; real embed + mock both size to this box. */
+    /* Hero dashboard: wide 16×9 viewport; real Power BI iframe fills this box edge-to-edge. */
     .visual-collage .visual-card--feature .visual-frame.visual-frame--dashboard {
       flex: 0 0 auto;
       width: 100%;
       margin-top: 8px;
       aspect-ratio: 16 / 9;
-      min-height: min(220px, 52vw);
+      min-height: clamp(280px, 48vw, 620px);
       position: relative;
       overflow: hidden;
       border-radius: 14px;
@@ -2792,6 +2792,27 @@
     }
     .visual-collage .pb-shell .powerbi-embed-container {
       min-height: 0;
+    }
+    /* Live Publish-to-web embed: fill the 16×9 frame (no letterboxing from iframe aspect-ratio). */
+    .visual-collage .pb-shell.powerbi-shell-embed .powerbi-embed-container {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      min-width: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #e8eaf2;
+    }
+    .visual-collage .pb-shell.powerbi-shell-embed .powerbi-embed-container iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      aspect-ratio: unset;
+      border: 0;
+      display: block;
     }
     .visual-collage .visual-card--feature .visual-card-body {
       display: flex;
@@ -3014,6 +3035,14 @@
     }
     .pb-shell.powerbi-shell-embed .powerbi-embed-container {
       display: block;
+    }
+    .powerbi-embed-container iframe {
+      width: 100%;
+      min-height: min(520px, 70vh);
+      aspect-ratio: 16 / 9;
+      border: 0;
+      display: block;
+      background: #f5f7fb;
     }
     .pb-shell.powerbi-shell-embed .pb-mock {
       display: none;
@@ -3704,7 +3733,7 @@
     }
 
     @media print {
-      @page { size: letter; margin: 0; }
+      @page { size: letter; margin: 0.35in; }
       html, body {
         height: auto !important;
         overflow: visible !important;
@@ -3739,9 +3768,40 @@
         padding: 0 !important;
         margin: 0 !important;
       }
-      #resume, #resume * { 
-        visibility: visible !important; 
-        display: block !important; 
+      #resume,
+      #resume * {
+        visibility: visible !important;
+      }
+      #resume .resume-pdf-entry-head {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: baseline !important;
+        flex-wrap: wrap !important;
+        gap: 2px 10px !important;
+      }
+      #resume .resume-pdf-skills-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+      }
+      #resume strong,
+      #resume b,
+      #resume a,
+      #resume code {
+        display: inline !important;
+      }
+      #resume .resume-list {
+        display: block !important;
+      }
+      #resume .resume-list li {
+        display: list-item !important;
+      }
+      #resume header,
+      #resume section,
+      #resume .resume-pdf-section,
+      #resume .resume-pdf-entry,
+      #resume .resume-pdf-skill-cat,
+      #resume .resume-pdf-desc {
+        display: block !important;
       }
       #resume {
         position: static !important;
@@ -3777,61 +3837,73 @@
         padding: 0 !important;
         box-shadow: none !important;
         border-radius: 0 !important;
-        font-size: 10.25pt;
-        line-height: 1.28;
+        font-size: 9.25pt;
+        line-height: 1.22;
       }
       #resume .resume-pdf-header {
-        padding-bottom: 4px !important;
-        margin-bottom: 6px !important;
-        border-bottom-width: 2px !important;
+        padding-bottom: 2px !important;
+        margin-bottom: 4px !important;
+        border-bottom-width: 1.5px !important;
       }
       #resume .resume-pdf-name {
-        font-size: 20pt !important;
-        line-height: 1.05 !important;
+        font-size: 17pt !important;
+        line-height: 1 !important;
       }
       #resume .resume-pdf-contact {
-        font-size: 8.75pt !important;
-        line-height: 1.35 !important;
+        font-size: 8pt !important;
+        line-height: 1.25 !important;
+        margin: 2px 0 0 !important;
       }
       #resume .resume-pdf-h2 {
-        margin: 5px 0 3px !important;
-        padding-bottom: 1px !important;
-        font-size: 10pt !important;
+        margin: 3px 0 2px !important;
+        padding-bottom: 0 !important;
+        font-size: 9pt !important;
+        border-bottom-width: 1px !important;
       }
       #resume .resume-pdf-section {
-        margin-bottom: 5px !important;
+        margin-bottom: 3px !important;
       }
       #resume .resume-pdf-summary,
       #resume .resume-page .resume-list li,
       #resume .resume-pdf-desc,
       #resume .resume-pdf-skill-row {
-        font-size: 8.75pt !important;
-        line-height: 1.25 !important;
+        font-size: 8pt !important;
+        line-height: 1.2 !important;
+      }
+      #resume .resume-pdf-summary {
+        margin: 0 0 4px !important;
+        text-align: left !important;
       }
       #resume .resume-pdf-skills-grid {
-        gap: 4px 12px !important;
+        gap: 2px 10px !important;
       }
       #resume .resume-pdf-skill-cat > strong {
-        font-size: 8.75pt !important;
-        margin-bottom: 2px !important;
-        padding-bottom: 1px !important;
+        font-size: 8pt !important;
+        margin-bottom: 1px !important;
+        padding-bottom: 0 !important;
+      }
+      #resume .resume-pdf-skill-row {
+        margin-bottom: 1px !important;
       }
       #resume .resume-pdf-entry {
-        margin-bottom: 5px !important;
+        margin-bottom: 3px !important;
       }
       #resume .resume-pdf-job-title,
       #resume .resume-pdf-university-line {
-        font-size: 10pt !important;
+        font-size: 9pt !important;
       }
       #resume .resume-pdf-date {
-        font-size: 8.75pt !important;
+        font-size: 8pt !important;
       }
       #resume .resume-page .resume-list li {
         margin-bottom: 0 !important;
       }
       #resume .resume-page .resume-list {
-        margin: 2px 0 !important;
-        padding-left: 16px !important;
+        margin: 1px 0 !important;
+        padding-left: 14px !important;
+      }
+      #resume .resume-pdf-desc {
+        margin-top: 1px !important;
       }
       .noprint,
       .site-nav,
@@ -5512,7 +5584,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Professional Summary</h2>
               <p class="resume-pdf-summary">
-                <strong>University of Chicago</strong>, B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML/code evaluator</strong> at Alignerr, reviewing AI-generated Python, ML, data science, and NLP outputs. Builds <strong>tabular models</strong> in notebooks with disciplined metrics, <strong>Power BI</strong> work aligned with PL-300, and <strong>SQL/Python</strong> analytics; ships supporting tools with <strong>FastAPI</strong>, <strong>React</strong>, and <strong>Next.js</strong>. Public samples include a fraud model with documented holdouts, BI-style dashboards, D3 charts, NLP notebooks (VADER, TF-IDF), and a local-LLM workspace prototype.
+                <strong>University of Chicago</strong>, B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML evaluator</strong> (Alignerr): Python/ML, NLP, and full-stack review. <strong>Tabular ML</strong> in notebooks, <strong>Power BI</strong> (PL-300), <strong>SQL/Python</strong>; ships <strong>FastAPI</strong>, <strong>React</strong>, <strong>Next.js</strong>. Public work: fraud model (documented holdouts), BI + D3 portfolio, NLP (VADER, TF-IDF), <strong>JimAI</strong> local LLM prototype.
               </p>
             </section>
 
@@ -5555,7 +5627,7 @@
                   <span class="resume-pdf-date">2025 – Present</span>
                 </div>
                 <ul class="resume-list">
-                  <li>Shipped <strong>customstrat.com</strong> on Next.js 14, TypeScript, Tailwind, GitHub Pages, and a custom domain—<strong>200+</strong> unique visitors in the first two weeks and <strong>+31%</strong> LinkedIn impressions over 28 days. Used sentiment and TF-IDF passes to spot recurring themes in draft copy.</li>
+                  <li>Shipped <strong>customstrat.com</strong> (Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domain): <strong>200+</strong> visitors in two weeks; <strong>+31%</strong> LinkedIn impressions (28 days).</li>
                 </ul>
               </div>
 
@@ -5579,7 +5651,7 @@
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Notebook</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li><strong>284,807</strong> ULB-style transactions with a stratified split, <strong>RobustScaler</strong>, and <strong>XGBoost</strong> plus Random Forest. Holdout results: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong> per the executed notebook on <code>main</code>.</li>
+                  <li><strong>284,807</strong>-row fraud set: stratified split, <strong>RobustScaler</strong>, <strong>XGBoost</strong>/RF. Holdout: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong> (notebook on <code>main</code>).</li>
                 </ul>
               </div>
 
@@ -5589,7 +5661,7 @@
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/portfolio-site" target="_blank" rel="noopener noreferrer">portfolio-site</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li>Multi-page <strong>Power BI</strong>-style revenue dashboard (PL-300-style KPIs and slicers in the Visualizations section) plus six <strong>D3.js</strong> interactive charts and maps on the same portfolio.</li>
+                  <li><strong>Power BI</strong>–style revenue dashboard + six <strong>D3.js</strong> charts/maps (portfolio Visualizations).</li>
                 </ul>
               </div>
 
@@ -5599,7 +5671,7 @@
                   <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">GitHub</a></span>
                 </div>
                 <ul class="resume-list">
-                  <li><strong>FastAPI</strong>, <strong>React/Vite</strong>, and <strong>Ollama</strong>: multi-route backend with timeouts and health-checked dependencies; browser UI for research and code-assist flows—local LLM product work end to end.</li>
+                  <li><strong>FastAPI</strong>, <strong>React/Vite</strong>, <strong>Ollama</strong>: multi-route backend (timeouts, health checks); browser UI for research/code-assist—local LLM prototype end to end.</li>
                 </ul>
               </div>
             </section>
@@ -5611,8 +5683,8 @@
                   <span class="resume-pdf-university-line">The University of Chicago, Chicago, IL</span>
                   <span class="resume-pdf-date">Expected: May 2030</span>
                 </div>
-                <div class="resume-pdf-desc">
-                  <strong>Major:</strong> Data Science &amp; Statistics. <strong>Prep:</strong> AP Statistics, CSA, Calc BC. <strong>Certifications:</strong> IBM Data Science Professional; Microsoft PL-300 (Power BI Data Analyst); Google Cloud ML Engineer <em>(in progress)</em>
+                  <div class="resume-pdf-desc">
+                  <strong>Major:</strong> Data Science &amp; Statistics · <strong>Prep:</strong> AP Stats, CSA, Calc BC · <strong>Certs:</strong> IBM Data Science Professional; Microsoft PL-300; Google Cloud ML Engineer <em>(in progress)</em>
                 </div>
               </div>
             </section>
@@ -5785,10 +5857,46 @@
       const container = document.getElementById('powerbiReportContainer');
       if (!container) return;
 
+      let embedAttempted = false;
+
       const embedNow = () => {
+        if (embedAttempted) return;
+
+        const iframeSrc = window.powerbiPublishedIframeSrc;
+        if (iframeSrc) {
+          embedAttempted = true;
+          if (shell) shell.classList.add('powerbi-shell-embed');
+          container.removeAttribute('hidden');
+          if (!container.querySelector('iframe')) {
+            let src = iframeSrc;
+            try {
+              const u = new URL(iframeSrc, window.location.href);
+              const pageName = window.powerbiPublishedPageName;
+              if (pageName && String(pageName).trim()) {
+                u.searchParams.set('pageName', String(pageName).trim());
+              }
+              src = u.toString();
+            } catch {
+              /* keep iframeSrc as-is */
+            }
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.title = window.powerbiPublishedReportTitle || 'Power BI report';
+            iframe.setAttribute('loading', 'lazy');
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute(
+              'allow',
+              'fullscreen; clipboard-read; clipboard-write; storage-access'
+            );
+            container.appendChild(iframe);
+          }
+          return;
+        }
+
         const cfg = window.powerbiEmbedConfig;
         if (!cfg || !cfg.embedUrl || !cfg.reportId || !cfg.accessToken) return;
 
+        embedAttempted = true;
         if (shell) shell.classList.add('powerbi-shell-embed');
         container.removeAttribute('hidden');
 
@@ -5822,6 +5930,14 @@
         return;
       }
 
+      // Observe a visible ancestor — #powerbiReportContainer is [hidden] + display:none
+      // until embed runs, so it never intersects and embedNow() would never fire.
+      const observeTarget = shell || document.getElementById('viz-dashboard');
+      if (!observeTarget) {
+        embedNow();
+        return;
+      }
+
       const io = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
@@ -5830,7 +5946,22 @@
         });
       }, { rootMargin: '300px 0px', threshold: 0.01 });
 
-      io.observe(container);
+      io.observe(observeTarget);
+    })();
+  </script>
+  <script>
+    (function () {
+      var u = window.powerbiOpenInServiceUrl;
+      if (!u) return;
+      var actions = document.querySelector("#viz-dashboard .visual-actions");
+      if (!actions) return;
+      var a = document.createElement("a");
+      a.className = "resume-link";
+      a.href = u;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Open in Power BI";
+      actions.insertBefore(a, actions.firstChild);
     })();
   </script>
   <script>
