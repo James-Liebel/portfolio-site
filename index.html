@@ -818,9 +818,10 @@
     }
     .hero-start-here {
       margin-top: 20px;
-      padding: 14px 16px;
+      padding: 14px 16px 14px 18px;
       border-radius: 16px;
       border: 1px solid rgba(99, 102, 241, 0.28);
+      border-left: 3px solid var(--cyan);
       background: rgba(99, 102, 241, 0.08);
       max-width: min(100%, 52rem);
     }
@@ -1118,9 +1119,9 @@
     }
     .hero-pill-track {
       display: flex;
-      gap: 10px;
+      gap: 28px;
       width: max-content;
-      animation: marquee 26s linear infinite;
+      animation: marquee 42s linear infinite;
     }
     .pill,
     .tag,
@@ -1501,30 +1502,29 @@
       margin: 0 auto;
     }
     .skills-atlas-summary {
-      list-style: none;
-      cursor: pointer;
       display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 10px 16px;
-      padding: clamp(14px, 2vw, 18px) clamp(18px, 2.5vw, 22px);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: rgba(99, 102, 241, 0.08);
-      font-family: Inter, system-ui, sans-serif;
-      color: var(--text);
-      transition: border-color 0.2s ease, background 0.2s ease;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      padding: 18px 24px;
+      margin: 12px auto 0;
+      border-radius: 18px;
+      border: 1px solid rgba(94, 234, 212, 0.45);
+      background: rgba(94, 234, 212, 0.08);
+      cursor: pointer;
+      list-style: none;
+      transition: all 0.22s cubic-bezier(0.23, 1, 0.32, 1);
+      max-width: fit-content;
     }
     .skills-atlas-summary::-webkit-details-marker {
       display: none;
     }
-    .skills-atlas-summary::marker {
-      content: "";
-    }
     .skills-atlas-summary:hover {
-      border-color: rgba(99, 102, 241, 0.45);
-      background: rgba(99, 102, 241, 0.12);
+      border-color: var(--cyan);
+      background: rgba(94, 234, 212, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     .skills-atlas-summary:focus {
       outline: none;
@@ -1534,18 +1534,20 @@
       outline-offset: 3px;
     }
     .skills-atlas-summary-label {
-      font: 800 clamp(0.95rem, 1.2vw, 1.05rem)/1.25 Inter, system-ui, sans-serif;
-      letter-spacing: -0.02em;
+      font: 700 11px/1 "Space Mono", monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #5eead4;
     }
     .skills-atlas-summary-hint {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted-soft);
+      opacity: 0.8;
     }
     .skills-atlas-disclosure[open] .skills-atlas-summary {
-      margin-bottom: clamp(20px, 3vw, 28px);
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      border-bottom-color: transparent;
+      background: rgba(94, 234, 212, 0.12);
+      border-color: var(--cyan);
+      margin-bottom: 24px;
     }
     .skills-atlas-disclosure-inner {
       padding-top: 4px;
@@ -2919,26 +2921,27 @@
       display: inline-flex;
       align-items: center;
       min-height: 44px;
-      padding: 10px 16px;
+      padding: 8px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.2);
-      color: var(--muted);
-      font: 700 11px/1.2 "Space Mono", monospace;
-      letter-spacing: 0.06em;
+      border: 1px solid rgba(94, 234, 212, 0.38);
+      background: rgba(94, 234, 212, 0.09);
+      color: #5eead4;
+      font: 700 11px/1 "Space Mono", monospace;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
       text-decoration: none;
       transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
     }
     :root[data-theme="light"] .viz-jump-nav-links a {
-      border-color: rgba(15, 23, 42, 0.12);
-      background: rgba(255, 255, 255, 0.85);
-      color: #475569;
+      border-color: rgba(13, 148, 136, 0.45);
+      background: rgba(13, 148, 136, 0.1);
+      color: #0f766e;
     }
     .viz-jump-nav-links a:hover,
     .viz-jump-nav-links a:focus-visible {
       color: var(--text);
-      border-color: var(--accent);
-      background: rgba(99, 102, 241, 0.12);
+      border-color: var(--cyan);
+      background: rgba(34, 211, 238, 0.18);
       outline: none;
     }
     .visual-collage .visual-card.viz-d3-target {
@@ -3701,16 +3704,50 @@
     }
 
     @media print {
-      @page { size: letter; margin: 0.35in; }
-      body { background: #fff !important; }
-      body * { visibility: hidden !important; }
-      #resume, #resume * { visibility: visible !important; }
-      #resume {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
+      @page { size: letter; margin: 0; }
+      html, body {
+        height: auto !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
         background: #fff !important;
+      }
+      body > *:not(#homeShell) {
+        display: none !important;
+      }
+      #homeShell,
+      #siteContentRiser,
+      #main-content {
+        display: block !important;
+        position: static !important;
+        transform: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        width: 100% !important;
+        box-shadow: none !important;
+      }
+      #main-content > *:not(#resume),
+      .site-nav,
+      .site-footer,
+      .rail,
+      .noprint,
+      .background-shell,
+      .pin-spacer {
+        display: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      #resume, #resume * { 
+        visibility: visible !important; 
+        display: block !important; 
+      }
+      #resume {
+        position: static !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
       #resume .resume-shell-section,
       #resume .section-shell {
@@ -3994,6 +4031,29 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       position: relative;
+    }
+    #scroll-section-rail .ss-dot::after {
+      content: attr(data-label);
+      position: absolute;
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font: 600 11px/1.4 Inter, sans-serif;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      letter-spacing: 0;
+      text-transform: none;
+      z-index: 500;
+    }
+    #scroll-section-rail .ss-dot:hover::after {
+      opacity: 1;
     }
     #scroll-section-rail .ss-dot::before {
       content: "";
@@ -4464,12 +4524,12 @@
   <nav id="scroll-section-rail" class="scroll-section-rail noprint" aria-label="Section navigation">
     <div class="ss-line" aria-hidden="true"><div class="ss-line-fill"></div></div>
     <div class="ss-dots">
-      <button type="button" class="ss-dot" aria-label="Home section"><span class="ss-abbr">HM</span></button>
-      <button type="button" class="ss-dot" aria-label="Skills"><span class="ss-abbr">SK</span></button>
-      <button type="button" class="ss-dot" aria-label="Projects section"><span class="ss-abbr">PR</span></button>
-      <button type="button" class="ss-dot" aria-label="Visualizations section"><span class="ss-abbr">VZ</span></button>
-      <button type="button" class="ss-dot" aria-label="Experience section"><span class="ss-abbr">EX</span></button>
-      <button type="button" class="ss-dot" aria-label="Resume section"><span class="ss-abbr">RS</span></button>
+      <button type="button" class="ss-dot" aria-label="Home section" data-label="Home"><span class="ss-abbr">HM</span></button>
+      <button type="button" class="ss-dot" aria-label="Skills" data-label="Skills"><span class="ss-abbr">SK</span></button>
+      <button type="button" class="ss-dot" aria-label="Projects section" data-label="Projects"><span class="ss-abbr">PR</span></button>
+      <button type="button" class="ss-dot" aria-label="Visualizations section" data-label="Visualizations"><span class="ss-abbr">VZ</span></button>
+      <button type="button" class="ss-dot" aria-label="Experience section" data-label="Experience"><span class="ss-abbr">EX</span></button>
+      <button type="button" class="ss-dot" aria-label="Resume section" data-label="Resume"><span class="ss-abbr">RS</span></button>
     </div>
   </nav>
 
@@ -4500,7 +4560,7 @@
         <a class="nav-icon-link" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <div class="nav-availability" aria-label="Available for internships">
           <span class="nav-availability-dot" aria-hidden="true"></span>
-          <span>Available · Summer 2026</span>
+          <span>Internship · Summer 2026</span>
         </div>
         <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Open navigation">
           <span></span><span></span><span></span>
@@ -4524,7 +4584,7 @@
           <p class="eyebrow">B.S. Data Science &amp; Statistics · University of Chicago · Class of 2030</p>
           <h1 class="hero-title" id="heroTitle" data-headline>
             <span class="hero-name">James Liebel</span>
-            <span class="hero-line">Data science &amp; machine learning</span>
+            <span class="hero-line">Data Scientist &amp; ML Engineer</span>
           </h1>
           <div class="hero-github" id="heroGithub" aria-label="GitHub contribution activity">
             <div id="github-heatmap" class="hero-github-heatmap" hidden>
@@ -4535,17 +4595,17 @@
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
-          <p class="summary">I build tabular ML with documented metrics, Power BI–style analytics, and small full-stack tools. Each headline below links to a notebook, repo, or live URL—not slide deck claims.</p>
+          <p class="summary">I build end-to-end machine learning models, scalable data pipelines, and interactive visual systems.</p>
           <div class="hero-tech-stack" aria-label="Stack backed by this portfolio">
             <span class="hero-tech-pill">Python</span>
+            <span class="hero-tech-pill">TensorFlow</span>
             <span class="hero-tech-pill">SQL</span>
-            <span class="hero-tech-pill">XGBoost</span>
-            <span class="hero-tech-pill">FastAPI</span>
-            <span class="hero-tech-pill">React / Next.js</span>
-            <span class="hero-tech-pill">Power BI</span>
+            <span class="hero-tech-pill">React</span>
+            <span class="hero-tech-pill">GCP</span>
+            <span class="hero-tech-pill">Docker</span>
           </div>
           <div class="hero-start-here" aria-label="Quick evidence links">
-            <span class="hero-start-here-label">Start here</span>
+            <span class="hero-start-here-label">Start here · Recruiter shortcut</span>
             <div class="hero-start-here-links">
               <a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Fraud notebook (metrics)</a>
               <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com</a>
@@ -4949,6 +5009,7 @@
               <a class="project-open" href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Open repo folder</a>
             </div>
             <div class="work-visual-card">
+              <p style="margin:0;padding:16px 22px 0;font:700 9px/1.4 'Space Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,247,255,0.45);" aria-hidden="true">285,807 transactions &middot; each cell &approx; 100 rows &middot; glowing cells = fraud cases (0.17%)</p>
               <div class="work-visual-shell fraud-grid" aria-hidden="true">
                 <span></span><span></span><span></span><span class="hot"></span><span></span><span></span><span></span><span></span><span></span><span></span>
                 <span></span><span></span><span></span><span></span><span></span><span class="hot"></span><span></span><span></span><span></span><span></span>
@@ -4977,7 +5038,8 @@
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">Local-first</span>
-                  <span class="metric-pill">10 API routes</span>
+                  <span class="metric-pill">76 Python modules</span>
+                  <span class="metric-pill">33 TSX files</span>
                   <span class="metric-pill">SSE + health checks</span>
                 </div>
                 <span class="project-summary-expand">
@@ -5402,7 +5464,7 @@
             <h3>Leadership</h3>
             <p class="experience-meta">Co-President · Machine Learning Club</p>
             <ul>
-              <li>Designed and delivered PyTorch-forward neural network workshops with reproducible notebooks for the club.</li>
+              <li>Designed and delivered TensorFlow-focused neural network workshops with reproducible notebooks for the club.</li>
               <li>Co-led programming and session planning (topics, hands-on formats, onboarding for new members).</li>
               <li>Weekly hands-on sessions for <strong>50+</strong> students covering evaluation metrics, pipeline structure, and how to frame projects for presentation.</li>
             </ul>
@@ -5503,7 +5565,7 @@
                   <span class="resume-pdf-date">2023 – Present</span>
                 </div>
                 <ul class="resume-list">
-                  <li>Lead weekly workshops for <strong>50+</strong> students on neural networks, evaluation metrics, and applied ML projects, including PyTorch-forward sessions with reproducible notebooks.</li>
+                  <li>Lead weekly workshops for <strong>50+</strong> students on neural networks, evaluation metrics, and applied ML projects, including TensorFlow-focused sessions with reproducible notebooks.</li>
                 </ul>
               </div>
             </section>

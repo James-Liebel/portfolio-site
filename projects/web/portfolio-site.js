@@ -409,6 +409,7 @@
       // Choose the most visible section so the nav indicator reliably follows
       // the user's scroll position (e.g. Home -> Skills).
       visible.sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0));
+      if (window.__projectExpanding) return;
       markActiveNav(visible[0].target.id);
     }, {
       rootMargin: "-20% 0px -65% 0px",
@@ -1313,9 +1314,12 @@
 
       det?.addEventListener("toggle", () => {
         if (!det.open) return;
+        window.__projectExpanding = true;
         window.requestAnimationFrame(() => {
-          ScrollTrigger.refresh();
+          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
           revealProjectPanel(section);
+          // Release lock after animation/scroll settle
+          setTimeout(() => { window.__projectExpanding = false; }, 800);
         });
       });
 
