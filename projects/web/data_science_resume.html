@@ -12,8 +12,10 @@
                 margin: 0.35in;
             }
             body {
-                margin: 0;
-                padding: 0;
+                margin: 0 !important;
+                padding: 0 !important;
+                max-width: none !important;
+                width: 100% !important;
                 font-size: 9.25pt;
                 line-height: 1.22;
             }
@@ -50,6 +52,9 @@
             ul { margin: 1px 0 !important; padding-left: 14px !important; }
             li { margin-bottom: 0 !important; }
             .description { margin-top: 1px !important; }
+            .tagline { font-size: 9pt !important; margin: 2px 0 0 !important; }
+            .project-tags { display: none !important; }
+            .entry-meta { font-size: 7.5pt !important; line-height: 1.2 !important; margin: 1px 0 2px !important; }
         }
 
         body {
@@ -87,6 +92,38 @@
             color: #2980b9;
             text-decoration: none;
             font-weight: 500;
+        }
+
+        .tagline {
+            margin: 6px 0 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .entry-meta {
+            margin: 2px 0 6px;
+            font-size: 10px;
+            font-style: italic;
+            color: #555;
+            line-height: 1.35;
+        }
+
+        .entry-meta a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .project-tags {
+            margin: 2px 0 6px;
+            font-size: 10px;
+            color: #555;
+            line-height: 1.3;
+        }
+
+        .skill-category > strong:not(:first-of-type) {
+            margin-top: 10px;
         }
 
         h2 {
@@ -264,38 +301,42 @@
     </div>
 
     <div class="header">
-        <h1>JAMES LIEBEL</h1>
+        <h1>James Liebel</h1>
+        <p class="tagline">Data Science &amp; Statistics · University of Chicago &apos;30</p>
         <div class="contact-info">
-            10 Camargo Pines, Cincinnati, OH 45243 | (513) 965-1578 |
+            (513) 965-1578 |
             <a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a> |
             <a href="https://github.com/James-Liebel">github.com/James-Liebel</a> |
-            <a href="https://linkedin.com/in/james-liebel">linkedin.com/in/james-liebel</a>
+            <a href="https://linkedin.com/in/james-liebel">linkedin.com/in/james-liebel</a> |
+            Cincinnati, OH
         </div>
     </div>
 
     <div class="section">
-        <h2>PROFESSIONAL SUMMARY</h2>
+        <h2>SUMMARY</h2>
         <p class="summary">
-            <strong>University of Chicago</strong>, B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML evaluator</strong> (Alignerr): Python/ML, NLP, and full-stack review. <strong>Tabular ML</strong> in notebooks, <strong>Power BI</strong> (PL-300), <strong>SQL/Python</strong>; ships <strong>FastAPI</strong>, <strong>React</strong>, <strong>Next.js</strong>. Public work: fraud model (documented holdouts), BI + D3 portfolio, NLP (VADER, TF-IDF), <strong>JimAI</strong> local LLM prototype.
+            Incoming University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks, and designed a local LLM workspace from scratch. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
         </p>
     </div>
 
     <div class="section">
-        <h2>TECHNICAL SKILLS</h2>
+        <h2>SKILLS</h2>
         <div class="skills-grid">
             <div class="skill-category">
-                <strong>Data science &amp; ML</strong>
-                <div class="skill-item-row"><b>Core:</b> Python, SQL, pandas, NumPy, scikit-learn, XGBoost, Jupyter, Git</div>
-                <div class="skill-item-row"><b>Modeling:</b> Feature engineering, train/test splits, imbalanced classification, PR-AUC, ROC-AUC, F1, confusion matrices</div>
-                <div class="skill-item-row"><b>NLP:</b> VADER, TF-IDF, text features in the NLTK style (notebook demos; scaffolds in GitHub)</div>
-                <div class="skill-item-row"><b>Coursework:</b> R, Java; TensorFlow/Keras (CNN/RNN). Google Cloud ML Engineer <em>(in progress)</em></div>
+                <strong>Languages</strong>
+                <div class="skill-item-row">Python, JavaScript, TypeScript, SQL, R, Java, HTML</div>
+                <strong>Data &amp; ML</strong>
+                <div class="skill-item-row">Pandas, NumPy, Scikit-Learn, XGBoost, TensorFlow, VADER, TF-IDF, Jupyter</div>
+                <strong>Engineering</strong>
+                <div class="skill-item-row">Next.js 14, FastAPI, React/Vite, Tailwind CSS, GitHub Pages, CI/CD, Git</div>
             </div>
             <div class="skill-category">
-                <strong>Analytics products &amp; delivery</strong>
-                <div class="skill-item-row"><b>BI:</b> Power BI, DAX — Microsoft PL-300 (Data Analyst); multi-page KPI dashboards, slicers</div>
-                <div class="skill-item-row"><b>Viz:</b> Matplotlib; <strong>D3.js</strong> and GeoJSON for maps, heatmaps, treemap, bar and scatter (this portfolio)</div>
-                <div class="skill-item-row"><b>Engineering:</b> FastAPI, React, Vite, Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domains</div>
-                <div class="skill-item-row"><b>LLM tooling:</b> Ollama, prompting, light automation (<strong>JimAI</strong> prototype)</div>
+                <strong>Analytics &amp; BI</strong>
+                <div class="skill-item-row">Power BI (PL-300), D3.js, Matplotlib, Plotly, A/B testing, GCP (BigQuery, Vertex AI)</div>
+                <strong>AI / LLM</strong>
+                <div class="skill-item-row">Ollama (local inference), prompt engineering, workflow automation, agentic systems</div>
+                <strong>Marketing &amp; SEO</strong>
+                <div class="skill-item-row">Content strategy, LinkedIn analytics, audience segmentation, semantic HTML, metadata optimization</div>
             </div>
         </div>
     </div>
@@ -305,24 +346,29 @@
         <div class="entry">
             <div class="entry-header">
                 <div>
-                    <span class="job-title">AI/ML Code Evaluator — Alignerr</span>
+                    <span class="job-title">AI/ML Code Evaluator &amp; Contractor — Alignerr</span>
                 </div>
-                <span class="date">2025 – Present · Paid · Remote</span>
+                <span class="date">2025 – Present</span>
             </div>
+            <p class="entry-meta">Paid Contract · Remote</p>
             <ul>
-                <li>Reviews AI-generated work across <strong>five</strong> domains, including Python/ML, data science, and math—rates ML, NLP, fraud-style, and full-stack submissions and writes structured technical feedback.</li>
+                <li>Qualified across <strong>five</strong> technical domains: Python/ML, Data Science, Math Foundations, NLP, and Software Engineering.</li>
+                <li>Evaluates AI-generated outputs spanning ML pipelines, fraud detection models, NLP systems, and full-stack applications—writing structured domain-specific feedback for production training data.</li>
             </ul>
         </div>
 
         <div class="entry">
             <div class="entry-header">
                 <div>
-                    <span class="job-title">CustomStrat Advisory — client site &amp; growth</span>
+                    <span class="job-title">CustomStrat Advisory — Developer &amp; AI Marketing</span>
                 </div>
                 <span class="date">2025 – Present</span>
             </div>
+            <p class="entry-meta">Next.js 14, TypeScript, Python, NLP · <a href="https://customstrat.com">customstrat.com</a></p>
             <ul>
-                <li>Shipped <strong>customstrat.com</strong> (Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domain): <strong>200+</strong> visitors in two weeks; <strong>+31%</strong> LinkedIn impressions (28 days).</li>
+                <li>Built and deployed a full business advisory website + AI-powered LinkedIn marketing bot—complete client acquisition funnel from content generation to site traffic.</li>
+                <li>LinkedIn bot generated <strong>3,279</strong> impressions (+31.4%) and reached <strong>2,189</strong> members (+41.1%) in 28 days using NLP sentiment analysis and TF-IDF for content optimization.</li>
+                <li>Site grew to <strong>200+</strong> unique users in two weeks (73.9% new user rate); configured custom domain and GitHub Pages CI/CD pipeline.</li>
             </ul>
         </div>
 
@@ -334,63 +380,115 @@
                 <span class="date">2023 – Present</span>
             </div>
             <ul>
-                <li>Lead weekly workshops for <strong>50+</strong> students on neural networks, evaluation metrics, and applied ML projects, including TensorFlow-focused sessions with reproducible notebooks.</li>
+                <li>Lead weekly workshops on neural networks, model evaluation, and applied AI for <strong>50+</strong> students—including TensorFlow-focused sessions with reproducible notebooks.</li>
+                <li>Mentored members through project framing, implementation, and public-facing presentations.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <span class="job-title">DECA — Competitive Business Events</span>
+                </div>
+                <span class="date">2022 – 2024</span>
+            </div>
+            <ul>
+                <li>Delivered market research analyses and promotional strategy under competition time pressure; developed persuasive, data-backed presentation skills.</li>
             </ul>
         </div>
     </div>
 
     <div class="section">
-        <h2>SELECTED PROJECTS</h2>
+        <h2>PROJECTS</h2>
 
         <div class="entry">
             <div class="entry-header">
                 <div>
-                    <span class="job-title">Credit card fraud detection (XGBoost)</span>
+                    <span class="job-title">JimAI — Local LLM Workspace</span>
                 </div>
-                <span class="date"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb">Notebook</a></span>
+                <span class="date">2025</span>
             </div>
+            <p class="entry-meta">FastAPI · React/Vite · Ollama · <a href="https://github.com/James-Liebel/JimAI">github.com/James-Liebel/JimAI</a></p>
+            <p class="project-tags">FastAPI · React · Ollama · LLM · Workflow automation</p>
             <ul>
-                <li><strong>284,807</strong>-row fraud set: stratified split, <strong>RobustScaler</strong>, <strong>XGBoost</strong>/RF. Holdout: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong> (notebook on <code>main</code>).</li>
+                <li>Designed and built a full local AI workspace supporting research queries, code generation, and multi-step workflow automation—FastAPI backend, React/Vite frontend, Ollama for on-device LLM inference.</li>
+                <li>Features include task queuing, context-aware prompt chaining, and a browser-based interface.</li>
             </ul>
         </div>
 
         <div class="entry">
             <div class="entry-header">
                 <div>
-                    <span class="job-title">Portfolio dashboards &amp; D3 analytics</span>
+                    <span class="job-title">Credit Card Fraud Detection (XGBoost)</span>
                 </div>
-                <span class="date"><a href="https://github.com/James-Liebel/portfolio-site">portfolio-site</a></span>
+                <span class="date">2024</span>
             </div>
+            <p class="entry-meta"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb">Notebook</a></p>
+            <p class="project-tags">XGBoost · SMOTE · Scikit-Learn · Imbalanced classification</p>
             <ul>
-                <li><strong>Power BI</strong>–style revenue dashboard + six <strong>D3.js</strong> charts/maps (portfolio Visualizations).</li>
+                <li>ML pipeline on <strong>284,807</strong> transactions using XGBoost + SMOTE on a heavily imbalanced dataset; <strong>91%</strong> recall evaluated via Precision-Recall curves and F1-scores.</li>
             </ul>
         </div>
 
         <div class="entry">
             <div class="entry-header">
                 <div>
-                    <span class="job-title">JimAI (local LLM workspace)</span>
+                    <span class="job-title">News Sentiment Analysis Pipeline</span>
                 </div>
-                <span class="date"><a href="https://github.com/James-Liebel/JimAI">GitHub</a></span>
+                <span class="date">2024</span>
             </div>
+            <p class="entry-meta"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb">Notebook</a></p>
+            <p class="project-tags">NLP · VADER · TF-IDF · Python</p>
             <ul>
-                <li><strong>FastAPI</strong>, <strong>React/Vite</strong>, <strong>Ollama</strong>: multi-route backend (timeouts, health checks); browser UI for research/code-assist—local LLM prototype end to end.</li>
+                <li>Python pipeline processing thousands of headlines with VADER and TF-IDF—visualizes sentiment trends over time, turning unstructured text into structured market intelligence.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <span class="job-title">Portfolio Dashboards &amp; D3 Analytics</span>
+                </div>
+                <span class="date">2025</span>
+            </div>
+            <p class="entry-meta"><a href="https://github.com/James-Liebel/portfolio-site">portfolio-site</a></p>
+            <p class="project-tags">Power BI · D3.js · DAX · GeoJSON</p>
+            <ul>
+                <li>Power BI revenue dashboard across regions, segments, and product categories (KPI tiles, trend lines, slicers)—plus six D3.js charts and maps including GeoJSON choropleth, heatmaps, and scatter plots.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <span class="job-title">SpaceX Falcon 9 Landing Prediction</span>
+                </div>
+                <span class="date">2024</span>
+            </div>
+            <p class="project-tags">Scikit-Learn · SVM · GridSearchCV · Classification</p>
+            <ul>
+                <li>Binary classifiers (Logistic Regression, SVM, KNN) on payload and orbit features; <strong>90%</strong> test accuracy via GridSearchCV.</li>
             </ul>
         </div>
     </div>
 
     <div class="section">
-        <h2>EDUCATION &amp; CERTIFICATIONS</h2>
+        <h2>EDUCATION</h2>
         <div class="entry">
             <div class="entry-header">
                 <div>
                     <span class="university">The University of Chicago</span>, Chicago, IL
                 </div>
-                <span class="date">Expected: May 2030</span>
+                <span class="date">Expected May 2030</span>
             </div>
             <div class="description">
-                <strong>Major:</strong> Data Science &amp; Statistics · <strong>Prep:</strong> AP Stats, CSA, Calc BC · <strong>Certs:</strong> IBM Data Science Professional; Microsoft PL-300; Google Cloud ML Engineer <em>(in progress)</em>
+                <strong>B.S. Data Science &amp; Statistics</strong> · Prep: AP Statistics, AP Computer Science A, AP Calculus BC
             </div>
+            <ul>
+                <li>IBM Data Science Professional Certificate</li>
+                <li>Microsoft PL-300 — Power BI Data Analyst</li>
+                <li>Google Cloud ML Engineer <em>(In Progress)</em></li>
+            </ul>
         </div>
     </div>
 

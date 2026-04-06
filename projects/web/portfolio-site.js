@@ -2373,18 +2373,19 @@
     resume.style.top = "0";
     const pageHeightIn = 11;
     const pageWidthIn = 8.5;
-    const marginIn = 0.45;
+    /* Keep in sync with @page { margin } in index.html @media print */
+    const marginIn = 0.35;
     const printableHeightPx = (pageHeightIn - marginIn * 2) * 96;
     const printableWidthIn = pageWidthIn - marginIn * 2;
     resume.style.width = `${printableWidthIn}in`;
-    page.style.transform = "";
-    page.style.transformOrigin = "top center";
-    page.style.marginBottom = "";
+    /* Reset zoom before measuring so scrollHeight is at natural size */
+    page.style.zoom = "";
     const height = page.scrollHeight;
-    let scale = 1;
-    if (height > printableHeightPx) scale = Math.max(0.62, printableHeightPx / height);
-    page.style.transform = `scale(${scale.toFixed(3)})`;
-    page.style.marginBottom = `-${(1 - scale) * height}px`;
+    /* Scale to fill the page: zoom up if content is short, zoom down if too tall.
+       Capped at 1.25× so text never looks oversized; floored at 0.55× as a safety net. */
+    let scale = Math.min(1.25, Math.max(0.55, printableHeightPx / height));
+    /* Use zoom (not transform) so browser page-break logic uses scaled dimensions */
+    if (Math.abs(scale - 1) > 0.005) page.style.zoom = scale.toFixed(3);
     resume.style.display = previous.display;
     resume.style.position = previous.position;
     resume.style.visibility = previous.visibility;
@@ -2396,9 +2397,7 @@
   function clearResumeScale() {
     const page = document.querySelector("#resume .resume-page");
     if (!page) return;
-    page.style.transform = "";
-    page.style.transformOrigin = "";
-    page.style.marginBottom = "";
+    page.style.zoom = "";
   }
 
   let printing = false;

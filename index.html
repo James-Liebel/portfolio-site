@@ -3516,6 +3516,9 @@
       text-transform: uppercase;
       border-bottom: 1px solid #eee;
     }
+    .resume-pdf-skill-cat > strong:not(:first-of-type) {
+      margin-top: 10px;
+    }
     .resume-pdf-skill-row {
       margin-bottom: 3px;
       line-height: 1.35;
@@ -3576,6 +3579,31 @@
       margin-top: 3px;
       color: #333;
       line-height: 1.35;
+    }
+    .resume-pdf-tagline {
+      margin: 4px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #34495e;
+      letter-spacing: 0.02em;
+    }
+    .resume-pdf-meta {
+      margin: 2px 0 6px;
+      font-size: 10px;
+      font-style: italic;
+      color: #555;
+      line-height: 1.35;
+    }
+    .resume-pdf-meta a {
+      color: #2980b9;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .resume-pdf-project-tags {
+      margin: 2px 0 4px;
+      font-size: 10px;
+      color: #555;
+      line-height: 1.3;
     }
     @media (max-width: 920px) {
       .resume-pdf-summary {
@@ -3755,6 +3783,7 @@
         height: auto !important;
         min-height: 0 !important;
         width: 100% !important;
+        max-width: none !important;
         box-shadow: none !important;
       }
       #main-content > *:not(#resume),
@@ -3814,10 +3843,15 @@
         padding: 0 !important;
         margin: 0 !important;
         background: #fff !important;
+        width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
       }
       #resume .resume-panel {
         padding: 0 !important;
         margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
         background: transparent !important;
         border-radius: 0 !important;
         box-shadow: none !important;
@@ -3834,9 +3868,11 @@
       #resume .resume-page {
         margin: 0 !important;
         max-width: none !important;
+        width: 100% !important;
         padding: 0 !important;
         box-shadow: none !important;
         border-radius: 0 !important;
+        box-sizing: border-box !important;
         font-size: 9.25pt;
         line-height: 1.22;
       }
@@ -3904,6 +3940,18 @@
       }
       #resume .resume-pdf-desc {
         margin-top: 1px !important;
+      }
+      #resume .resume-pdf-tagline {
+        font-size: 9pt !important;
+        margin: 2px 0 0 !important;
+      }
+      #resume .resume-pdf-project-tags {
+        display: none !important;
+      }
+      #resume .resume-pdf-meta {
+        font-size: 7.5pt !important;
+        line-height: 1.2 !important;
+        margin: 1px 0 2px !important;
       }
       .noprint,
       .site-nav,
@@ -5564,7 +5612,7 @@
         <div class="resume-panel">
           <p class="resume-kicker noprint">Resume</p>
           <h2 class="resume-title noprint">Print-ready résumé</h2>
-          <p class="resume-intro noprint">Same text as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a>—one letter page when you print or save PDF; site chrome is hidden.</p>
+          <p class="resume-intro noprint">Same text as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a>. Print or save PDF; site chrome is hidden.</p>
           <div class="resume-actions noprint">
             <button class="btn noprint" id="pdfBtn" type="button">Save PDF</button>
             <a class="btn-soft noprint" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -5572,38 +5620,42 @@
           </div>
           <div class="resume-page">
             <header class="resume-pdf-header">
-              <h1 class="resume-pdf-name">JAMES LIEBEL</h1>
+              <h1 class="resume-pdf-name">James Liebel</h1>
+              <p class="resume-pdf-tagline">Data Science &amp; Statistics · University of Chicago &apos;30</p>
               <p class="resume-pdf-contact">
-                10 Camargo Pines, Cincinnati, OH 45243 | (513) 965-1578 |
+                (513) 965-1578 |
                 <a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a> |
                 <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">github.com/James-Liebel</a> |
-                <a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">linkedin.com/in/james-liebel</a>
+                <a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">linkedin.com/in/james-liebel</a> |
+                Cincinnati, OH
               </p>
             </header>
 
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
-              <h2 class="resume-pdf-h2" id="resume-summary-heading">Professional Summary</h2>
+              <h2 class="resume-pdf-h2" id="resume-summary-heading">Summary</h2>
               <p class="resume-pdf-summary">
-                <strong>University of Chicago</strong>, B.S. <strong>Data Science &amp; Statistics</strong> (May 2030). <strong>Paid ML evaluator</strong> (Alignerr): Python/ML, NLP, and full-stack review. <strong>Tabular ML</strong> in notebooks, <strong>Power BI</strong> (PL-300), <strong>SQL/Python</strong>; ships <strong>FastAPI</strong>, <strong>React</strong>, <strong>Next.js</strong>. Public work: fraud model (documented holdouts), BI + D3 portfolio, NLP (VADER, TF-IDF), <strong>JimAI</strong> local LLM prototype.
+                Incoming University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks, and designed a local LLM workspace from scratch. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
               </p>
             </section>
 
             <section class="resume-pdf-section" aria-labelledby="resume-skills-heading">
-              <h2 class="resume-pdf-h2" id="resume-skills-heading">Technical Skills</h2>
+              <h2 class="resume-pdf-h2" id="resume-skills-heading">Skills</h2>
               <div class="resume-pdf-skills-grid">
                 <div class="resume-pdf-skill-cat">
-                  <strong>Data science &amp; ML</strong>
-                  <div class="resume-pdf-skill-row"><b>Core:</b> Python, SQL, pandas, NumPy, scikit-learn, XGBoost, Jupyter, Git</div>
-                  <div class="resume-pdf-skill-row"><b>Modeling:</b> Feature engineering, train/test splits, imbalanced classification, PR-AUC, ROC-AUC, F1, confusion matrices</div>
-                  <div class="resume-pdf-skill-row"><b>NLP:</b> VADER, TF-IDF, text features in the NLTK style (notebook demos; scaffolds in GitHub)</div>
-                  <div class="resume-pdf-skill-row"><b>Coursework:</b> R, Java; TensorFlow/Keras (CNN/RNN). Google Cloud ML Engineer <em>(in progress)</em></div>
+                  <strong>Languages</strong>
+                  <div class="resume-pdf-skill-row">Python, JavaScript, TypeScript, SQL, R, Java, HTML</div>
+                  <strong>Data &amp; ML</strong>
+                  <div class="resume-pdf-skill-row">Pandas, NumPy, Scikit-Learn, XGBoost, TensorFlow, VADER, TF-IDF, Jupyter</div>
+                  <strong>Engineering</strong>
+                  <div class="resume-pdf-skill-row">Next.js 14, FastAPI, React/Vite, Tailwind CSS, GitHub Pages, CI/CD, Git</div>
                 </div>
                 <div class="resume-pdf-skill-cat">
-                  <strong>Analytics products &amp; delivery</strong>
-                  <div class="resume-pdf-skill-row"><b>BI:</b> Power BI, DAX — Microsoft PL-300 (Data Analyst); multi-page KPI dashboards, slicers</div>
-                  <div class="resume-pdf-skill-row"><b>Viz:</b> Matplotlib; <strong>D3.js</strong> and GeoJSON for maps, heatmaps, treemap, bar and scatter (this portfolio)</div>
-                  <div class="resume-pdf-skill-row"><b>Engineering:</b> FastAPI, React, Vite, Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domains</div>
-                  <div class="resume-pdf-skill-row"><b>LLM tooling:</b> Ollama, prompting, light automation (<strong>JimAI</strong> prototype)</div>
+                  <strong>Analytics &amp; BI</strong>
+                  <div class="resume-pdf-skill-row">Power BI (PL-300), D3.js, Matplotlib, Plotly, A/B testing, GCP (BigQuery, Vertex AI)</div>
+                  <strong>AI / LLM</strong>
+                  <div class="resume-pdf-skill-row">Ollama (local inference), prompt engineering, workflow automation, agentic systems</div>
+                  <strong>Marketing &amp; SEO</strong>
+                  <div class="resume-pdf-skill-row">Content strategy, LinkedIn analytics, audience segmentation, semantic HTML, metadata optimization</div>
                 </div>
               </div>
             </section>
@@ -5613,21 +5665,26 @@
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">AI/ML Code Evaluator — Alignerr</span>
-                  <span class="resume-pdf-date">2025 – Present · Paid · Remote</span>
+                  <span class="resume-pdf-job-title">AI/ML Code Evaluator &amp; Contractor — Alignerr</span>
+                  <span class="resume-pdf-date">2025 – Present</span>
                 </div>
+                <p class="resume-pdf-meta">Paid Contract · Remote</p>
                 <ul class="resume-list">
-                  <li>Reviews AI-generated work across <strong>five</strong> domains, including Python/ML, data science, and math—rates ML, NLP, fraud-style, and full-stack submissions and writes structured technical feedback.</li>
+                  <li>Qualified across <strong>five</strong> technical domains: Python/ML, Data Science, Math Foundations, NLP, and Software Engineering.</li>
+                  <li>Evaluates AI-generated outputs spanning ML pipelines, fraud detection models, NLP systems, and full-stack applications—writing structured domain-specific feedback for production training data.</li>
                 </ul>
               </div>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">CustomStrat Advisory — client site &amp; growth</span>
+                  <span class="resume-pdf-job-title">CustomStrat Advisory — Developer &amp; AI Marketing</span>
                   <span class="resume-pdf-date">2025 – Present</span>
                 </div>
+                <p class="resume-pdf-meta">Next.js 14, TypeScript, Python, NLP · <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com</a></p>
                 <ul class="resume-list">
-                  <li>Shipped <strong>customstrat.com</strong> (Next.js 14, TypeScript, Tailwind, GitHub Pages, custom domain): <strong>200+</strong> visitors in two weeks; <strong>+31%</strong> LinkedIn impressions (28 days).</li>
+                  <li>Built and deployed a full business advisory website + AI-powered LinkedIn marketing bot—complete client acquisition funnel from content generation to site traffic.</li>
+                  <li>LinkedIn bot generated <strong>3,279</strong> impressions (+31.4%) and reached <strong>2,189</strong> members (+41.1%) in 28 days using NLP sentiment analysis and TF-IDF for content optimization.</li>
+                  <li>Site grew to <strong>200+</strong> unique users in two weeks (73.9% new user rate); configured custom domain and GitHub Pages CI/CD pipeline.</li>
                 </ul>
               </div>
 
@@ -5637,55 +5694,101 @@
                   <span class="resume-pdf-date">2023 – Present</span>
                 </div>
                 <ul class="resume-list">
-                  <li>Lead weekly workshops for <strong>50+</strong> students on neural networks, evaluation metrics, and applied ML projects, including TensorFlow-focused sessions with reproducible notebooks.</li>
+                  <li>Lead weekly workshops on neural networks, model evaluation, and applied AI for <strong>50+</strong> students—including TensorFlow-focused sessions with reproducible notebooks.</li>
+                  <li>Mentored members through project framing, implementation, and public-facing presentations.</li>
+                </ul>
+              </div>
+
+              <div class="resume-pdf-entry">
+                <div class="resume-pdf-entry-head">
+                  <span class="resume-pdf-job-title">DECA — Competitive Business Events</span>
+                  <span class="resume-pdf-date">2022 – 2024</span>
+                </div>
+                <ul class="resume-list">
+                  <li>Delivered market research analyses and promotional strategy under competition time pressure; developed persuasive, data-backed presentation skills.</li>
                 </ul>
               </div>
             </section>
 
             <section class="resume-pdf-section" aria-labelledby="resume-projects-heading">
-              <h2 class="resume-pdf-h2" id="resume-projects-heading">Selected Projects</h2>
+              <h2 class="resume-pdf-h2" id="resume-projects-heading">Projects</h2>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">Credit card fraud detection (XGBoost)</span>
-                  <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Notebook</a></span>
+                  <span class="resume-pdf-job-title">JimAI — Local LLM Workspace</span>
+                  <span class="resume-pdf-date">2025</span>
                 </div>
+                <p class="resume-pdf-meta">FastAPI · React/Vite · Ollama · <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">github.com/James-Liebel/JimAI</a></p>
+                <p class="resume-pdf-project-tags">FastAPI · React · Ollama · LLM · Workflow automation</p>
                 <ul class="resume-list">
-                  <li><strong>284,807</strong>-row fraud set: stratified split, <strong>RobustScaler</strong>, <strong>XGBoost</strong>/RF. Holdout: <strong>80%</strong> fraud recall, <strong>87%</strong> precision, <strong>ROC-AUC 0.939</strong> (notebook on <code>main</code>).</li>
+                  <li>Designed and built a full local AI workspace supporting research queries, code generation, and multi-step workflow automation—FastAPI backend, React/Vite frontend, Ollama for on-device LLM inference.</li>
+                  <li>Features include task queuing, context-aware prompt chaining, and a browser-based interface.</li>
                 </ul>
               </div>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">Portfolio dashboards &amp; D3 analytics</span>
-                  <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/portfolio-site" target="_blank" rel="noopener noreferrer">portfolio-site</a></span>
+                  <span class="resume-pdf-job-title">Credit Card Fraud Detection (XGBoost)</span>
+                  <span class="resume-pdf-date">2024</span>
                 </div>
+                <p class="resume-pdf-meta"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Notebook</a></p>
+                <p class="resume-pdf-project-tags">XGBoost · SMOTE · Scikit-Learn · Imbalanced classification</p>
                 <ul class="resume-list">
-                  <li><strong>Power BI</strong>–style revenue dashboard + six <strong>D3.js</strong> charts/maps (portfolio Visualizations).</li>
+                  <li>ML pipeline on <strong>284,807</strong> transactions using XGBoost + SMOTE on a heavily imbalanced dataset; <strong>91%</strong> recall evaluated via Precision-Recall curves and F1-scores.</li>
                 </ul>
               </div>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">JimAI (local LLM workspace)</span>
-                  <span class="resume-pdf-date"><a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">GitHub</a></span>
+                  <span class="resume-pdf-job-title">News Sentiment Analysis Pipeline</span>
+                  <span class="resume-pdf-date">2024</span>
                 </div>
+                <p class="resume-pdf-meta"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">Notebook</a></p>
+                <p class="resume-pdf-project-tags">NLP · VADER · TF-IDF · Python</p>
                 <ul class="resume-list">
-                  <li><strong>FastAPI</strong>, <strong>React/Vite</strong>, <strong>Ollama</strong>: multi-route backend (timeouts, health checks); browser UI for research/code-assist—local LLM prototype end to end.</li>
+                  <li>Python pipeline processing thousands of headlines with VADER and TF-IDF—visualizes sentiment trends over time, turning unstructured text into structured market intelligence.</li>
+                </ul>
+              </div>
+
+              <div class="resume-pdf-entry">
+                <div class="resume-pdf-entry-head">
+                  <span class="resume-pdf-job-title">Portfolio Dashboards &amp; D3 Analytics</span>
+                  <span class="resume-pdf-date">2025</span>
+                </div>
+                <p class="resume-pdf-meta"><a href="https://github.com/James-Liebel/portfolio-site" target="_blank" rel="noopener noreferrer">portfolio-site</a></p>
+                <p class="resume-pdf-project-tags">Power BI · D3.js · DAX · GeoJSON</p>
+                <ul class="resume-list">
+                  <li>Power BI revenue dashboard across regions, segments, and product categories (KPI tiles, trend lines, slicers)—plus six D3.js charts and maps including GeoJSON choropleth, heatmaps, and scatter plots.</li>
+                </ul>
+              </div>
+
+              <div class="resume-pdf-entry">
+                <div class="resume-pdf-entry-head">
+                  <span class="resume-pdf-job-title">SpaceX Falcon 9 Landing Prediction</span>
+                  <span class="resume-pdf-date">2024</span>
+                </div>
+                <p class="resume-pdf-project-tags">Scikit-Learn · SVM · GridSearchCV · Classification</p>
+                <ul class="resume-list">
+                  <li>Binary classifiers (Logistic Regression, SVM, KNN) on payload and orbit features; <strong>90%</strong> test accuracy via GridSearchCV.</li>
                 </ul>
               </div>
             </section>
 
             <section class="resume-pdf-section" aria-labelledby="resume-edu-heading">
-              <h2 class="resume-pdf-h2" id="resume-edu-heading">Education &amp; Certifications</h2>
+              <h2 class="resume-pdf-h2" id="resume-edu-heading">Education</h2>
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
                   <span class="resume-pdf-university-line">The University of Chicago, Chicago, IL</span>
-                  <span class="resume-pdf-date">Expected: May 2030</span>
+                  <span class="resume-pdf-date">Expected May 2030</span>
                 </div>
-                  <div class="resume-pdf-desc">
-                  <strong>Major:</strong> Data Science &amp; Statistics · <strong>Prep:</strong> AP Stats, CSA, Calc BC · <strong>Certs:</strong> IBM Data Science Professional; Microsoft PL-300; Google Cloud ML Engineer <em>(in progress)</em>
+                <div class="resume-pdf-desc">
+                  <strong>B.S. Data Science &amp; Statistics</strong> · Prep: AP Statistics, AP Computer Science A, AP Calculus BC
                 </div>
+                <ul class="resume-list">
+                  <li>IBM Data Science Professional Certificate</li>
+                  <li>Microsoft PL-300 — Power BI Data Analyst</li>
+                  <li>Google Cloud ML Engineer <em>(In Progress)</em></li>
+                </ul>
               </div>
             </section>
           </div>
