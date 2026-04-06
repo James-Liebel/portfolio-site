@@ -9,15 +9,33 @@
         @media print {
             @page {
                 size: letter;
-                margin: 0.35in;
+                margin: 0.5in;
+            }
+            html {
+                font-size: 11px !important;
+            }
+            body,
+            body * {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                backdrop-filter: none !important;
             }
             body {
                 margin: 0 !important;
                 padding: 0 !important;
-                max-width: none !important;
+                max-width: 100% !important;
                 width: 100% !important;
-                font-size: 9.25pt;
-                line-height: 1.22;
+                min-height: 0 !important;
+                height: auto !important;
+                font-size: 1em !important;
+                line-height: 1.25 !important;
+            }
+            .page {
+                max-width: 100% !important;
+                padding: 0 !important;
+                min-height: 0 !important;
+                height: auto !important;
+                zoom: 1.15 !important;
             }
             .no-print,
             .buttons {
@@ -28,43 +46,51 @@
                 margin-bottom: 4px !important;
                 border-bottom-width: 1.5px !important;
             }
-            h1 { font-size: 17pt !important; line-height: 1 !important; }
+            h1 { font-size: 1.55em !important; line-height: 1 !important; }
             h2 {
                 margin: 3px 0 2px !important;
                 padding-bottom: 0 !important;
-                font-size: 9pt !important;
+                font-size: 0.82em !important;
                 border-bottom-width: 1px !important;
             }
             .section { margin-bottom: 3px !important; }
-            .entry { margin-bottom: 3px !important; }
+            .entry {
+                margin-bottom: 3px !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
             .summary,
             li,
             .description,
-            .skill-item-row { font-size: 8pt !important; line-height: 1.2 !important; }
+            .skill-item-row { font-size: 0.73em !important; line-height: 1.2 !important; }
             .summary { margin-bottom: 4px !important; text-align: left !important; }
-            .contact-info { font-size: 8pt !important; line-height: 1.25 !important; margin-top: 2px !important; }
+            .contact-info { font-size: 0.73em !important; line-height: 1.25 !important; margin-top: 2px !important; }
             .skills-grid { gap: 2px 10px !important; display: grid !important; grid-template-columns: 1fr 1fr !important; }
-            .skill-category strong { font-size: 8pt !important; margin-bottom: 1px !important; padding-bottom: 0 !important; }
+            .skill-category strong { font-size: 0.73em !important; margin-bottom: 1px !important; padding-bottom: 0 !important; }
             .skill-item-row { margin-bottom: 1px !important; }
-            .job-title, .university { font-size: 9pt !important; }
-            .date { font-size: 8pt !important; }
+            .job-title, .university { font-size: 0.82em !important; }
+            .date { font-size: 0.73em !important; }
             .entry-header { display: flex !important; justify-content: space-between !important; gap: 8px !important; flex-wrap: wrap !important; }
             ul { margin: 1px 0 !important; padding-left: 14px !important; }
             li { margin-bottom: 0 !important; }
             .description { margin-top: 1px !important; }
-            .tagline { font-size: 9pt !important; margin: 2px 0 0 !important; }
+            .tagline { font-size: 0.82em !important; margin: 2px 0 0 !important; }
             .project-tags { display: none !important; }
-            .entry-meta { font-size: 7.5pt !important; line-height: 1.2 !important; margin: 1px 0 2px !important; }
+            .entry-meta { font-size: 0.69em !important; line-height: 1.2 !important; margin: 1px 0 2px !important; }
         }
 
         body {
+            margin: 0;
             font-family: 'Calibri', 'Arial', sans-serif;
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 20px 40px;
             background: white;
             color: #333;
             line-height: 1.3;
+        }
+
+        .page {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px 40px;
         }
 
         .header {
@@ -255,7 +281,7 @@
         }
 
         @media (max-width: 720px) {
-            body {
+            .page {
                 padding: 16px;
             }
 
@@ -300,6 +326,7 @@
         <button onclick="window.print()">📄 Save as PDF</button>
     </div>
 
+    <div class="page">
     <div class="header">
         <h1>James Liebel</h1>
         <p class="tagline">Data Science &amp; Statistics · University of Chicago &apos;30</p>
@@ -390,7 +417,7 @@
                 <div>
                     <span class="job-title">DECA — Competitive Business Events</span>
                 </div>
-                <span class="date">2022 – 2024</span>
+                <span class="date">2022 – 2026</span>
             </div>
             <ul>
                 <li>Delivered market research analyses and promotional strategy under competition time pressure; developed persuasive, data-backed presentation skills.</li>
@@ -406,7 +433,7 @@
                 <div>
                     <span class="job-title">JimAI — Local LLM Workspace</span>
                 </div>
-                <span class="date">2025</span>
+                <span class="date">2025 – 2026</span>
             </div>
             <p class="entry-meta">FastAPI · React/Vite · Ollama · <a href="https://github.com/James-Liebel/JimAI">github.com/James-Liebel/JimAI</a></p>
             <p class="project-tags">FastAPI · React · Ollama · LLM · Workflow automation</p>
@@ -449,7 +476,7 @@
                 <div>
                     <span class="job-title">Portfolio Dashboards &amp; D3 Analytics</span>
                 </div>
-                <span class="date">2025</span>
+                <span class="date">2025 – 2026</span>
             </div>
             <p class="entry-meta"><a href="https://github.com/James-Liebel/portfolio-site">portfolio-site</a></p>
             <p class="project-tags">Power BI · D3.js · DAX · GeoJSON</p>
@@ -490,6 +517,7 @@
                 <li>Google Cloud ML Engineer <em>(In Progress)</em></li>
             </ul>
         </div>
+    </div>
     </div>
 
 </body>

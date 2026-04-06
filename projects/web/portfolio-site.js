@@ -1399,6 +1399,7 @@
       stagger: 0.09,
       duration: 0.65,
       ease: "power3.out",
+      clearProps: "transform",
       scrollTrigger: {
         trigger: grid,
         start: "top 82%",
@@ -2354,52 +2355,6 @@
     shells.forEach(shell => observer.observe(shell));
   }
 
-  function fitResumeToOnePage() {
-    const resume = document.getElementById("resume");
-    const page = document.querySelector("#resume .resume-page");
-    if (!resume || !page) return;
-    const previous = {
-      display: resume.style.display,
-      position: resume.style.position,
-      visibility: resume.style.visibility,
-      left: resume.style.left,
-      top: resume.style.top,
-      width: resume.style.width
-    };
-    resume.style.display = "block";
-    resume.style.position = "absolute";
-    resume.style.visibility = "hidden";
-    resume.style.left = "-10000px";
-    resume.style.top = "0";
-    const pageHeightIn = 11;
-    const pageWidthIn = 8.5;
-    /* Keep in sync with @page { margin } in index.html @media print */
-    const marginIn = 0.35;
-    const printableHeightPx = (pageHeightIn - marginIn * 2) * 96;
-    const printableWidthIn = pageWidthIn - marginIn * 2;
-    resume.style.width = `${printableWidthIn}in`;
-    /* Reset zoom before measuring so scrollHeight is at natural size */
-    page.style.zoom = "";
-    const height = page.scrollHeight;
-    /* Scale to fill the page: zoom up if content is short, zoom down if too tall.
-       Capped at 1.25× so text never looks oversized; floored at 0.55× as a safety net. */
-    let scale = Math.min(1.25, Math.max(0.55, printableHeightPx / height));
-    /* Use zoom (not transform) so browser page-break logic uses scaled dimensions */
-    if (Math.abs(scale - 1) > 0.005) page.style.zoom = scale.toFixed(3);
-    resume.style.display = previous.display;
-    resume.style.position = previous.position;
-    resume.style.visibility = previous.visibility;
-    resume.style.left = previous.left;
-    resume.style.top = previous.top;
-    resume.style.width = previous.width;
-  }
-
-  function clearResumeScale() {
-    const page = document.querySelector("#resume .resume-page");
-    if (!page) return;
-    page.style.zoom = "";
-  }
-
   let printing = false;
   let printTimer = null;
 
@@ -2409,14 +2364,12 @@
       clearTimeout(printTimer);
       printTimer = null;
     }
-    clearResumeScale();
     printing = false;
   }
 
   function printResume() {
     if (printing) return;
     printing = true;
-    fitResumeToOnePage();
     window.addEventListener("afterprint", restoreResume, { once: true });
     window.addEventListener("focus", restoreResume, { once: true });
     printTimer = window.setTimeout(restoreResume, 4000);
@@ -2614,12 +2567,6 @@
 
   pdfButtons.forEach(button => button.addEventListener("click", printResume));
   window.printResume = printResume;
-  window.addEventListener("beforeprint", () => {
-    fitResumeToOnePage();
-  });
-  window.addEventListener("afterprint", () => {
-    clearResumeScale();
-  });
 
   window.addEventListener("resize", () => {
     movePillIndicator(modeIndicator, document.querySelector(".switch button.active"));
