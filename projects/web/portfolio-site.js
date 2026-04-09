@@ -1294,7 +1294,7 @@
         );
 
       gsap.to(visual, {
-        "--float-y": "-12px",
+        y: -12,
         duration: 4,
         ease: "sine.inOut",
         repeat: -1,

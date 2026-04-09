@@ -2457,7 +2457,8 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.04);
     }
-    .fraud-grid .hot {
+    .fraud-grid .hot,
+    .fraud-grid .is-hot {
       background: linear-gradient(135deg, #6366f1, #22d3ee);
       box-shadow: 0 0 24px rgba(99, 102, 241, 0.45);
     }
@@ -2466,6 +2467,9 @@
     .news-ticker {
       height: 100%;
       padding: 22px;
+    }
+    .news-ticker {
+      overflow: hidden;
     }
     .chat-shell {
       display: grid;
@@ -2501,6 +2505,32 @@
       background: rgba(99, 102, 241, 0.2);
       margin-left: 12%;
     }
+    .chat-typing {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+    }
+    .chat-typing.alt {
+      background: rgba(99, 102, 241, 0.2);
+      margin-left: 12%;
+    }
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+      animation: typing-bounce 1s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes typing-bounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
     .browser-body {
       display: grid;
       gap: 14px;
@@ -2526,10 +2556,17 @@
       background: rgba(255,255,255,0.05);
     }
     .news-track {
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
-      align-content: center;
-      height: 100%;
+      animation: news-scroll 8s linear infinite;
+    }
+    @keyframes news-scroll {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .news-track { animation: none; }
     }
     .news-item {
       display: grid;
