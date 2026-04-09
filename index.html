@@ -488,6 +488,9 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
+    @media (min-width: 980px) {
+      .nav-availability { display: flex; }
+    }
     .nav-availability-dot,
     .footer-availability-dot {
       width: 8px;
@@ -4758,6 +4761,7 @@
           <div class="hero-start-here" aria-label="Quick evidence links">
             <span class="hero-start-here-label">Start here · Recruiter shortcut</span>
             <div class="hero-start-here-links">
+              <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">Résumé PDF</a>
               <a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb" target="_blank" rel="noopener noreferrer">Fraud notebook (metrics)</a>
               <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com</a>
               <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">JimAI repo</a>
@@ -5098,7 +5102,7 @@
       <div class="project-stack">
         <article class="project-section project-section--ml" id="project-fraud" data-project-section="fraud" data-project-num="01">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
-          <details class="project-disclosure">
+          <details class="project-disclosure" open>
             <summary class="project-summary">
               <div class="project-summary-grid">
                 <div class="project-summary-intro">
