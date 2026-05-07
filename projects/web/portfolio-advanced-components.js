@@ -681,7 +681,9 @@
     var tip = document.getElementById('ghHeatmapTooltip');
     if (!wrap || !cvs) return;
 
-    fetch('https://github-contributions-api.jogruber.de/v4/James-Liebel?y=last')
+    var heatmapController = new AbortController();
+    var heatmapTimeout = setTimeout(function () { heatmapController.abort(); }, 5000);
+    fetch('https://github-contributions-api.jogruber.de/v4/James-Liebel?y=last', { signal: heatmapController.signal })
       .then(function (r) {
         if (!r.ok) throw new Error();
         return r.json();
@@ -857,6 +859,9 @@
       })
       .catch(function () {
         if (wrap) wrap.setAttribute('hidden', '');
+      })
+      .finally(function () {
+        clearTimeout(heatmapTimeout);
       });
   }
 
