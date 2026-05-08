@@ -4579,6 +4579,7 @@
     body::before,
     body::after {
       display: none !important;
+      animation: none !important;
     }
     @media print {
       #dragon-bg {
@@ -4600,12 +4601,17 @@
     body.intro-running.intro-dragon-hatch #dragon-bg {
       opacity: 1;
       visibility: visible;
-      transition: opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    body.intro-done #dragon-bg {
+    body.intro-done.canvas-ready #dragon-bg {
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.92s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    body.intro-done:not(.canvas-ready) #dragon-bg {
+      opacity: 0;
+      visibility: visible;
+      transition: none;
     }
     body.intro-running .scroll-section-rail,
     body.intro-running #scroll-progress,
@@ -6421,6 +6427,7 @@
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.drawImage(off, 0, 0);
     }
+    document.body.classList.add('canvas-ready');
   }
 
   function onResize() {
