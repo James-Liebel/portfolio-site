@@ -5378,11 +5378,11 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">NLP</p>
                   <h3 class="project-summary-title">NLP notebooks</h3>
-                  <p class="project-summary-blurb">Two Python notebooks: a <strong>15-row</strong> VADER finance <em>demo</em>, and a <strong>TF-IDF + classifier template</strong> you can run on your own labeled text in Colab.</p>
+                  <p class="project-summary-blurb">Two NLP notebooks: <strong>VADER sentiment scoring</strong> on financial headlines, and a <strong>TF-IDF + PassiveAggressive classifier</strong> pipeline with end-to-end training and evaluation.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">VADER demo</span>
-                  <span class="metric-pill">TF-IDF template</span>
+                  <span class="metric-pill">VADER sentiment</span>
+                  <span class="metric-pill">TF-IDF classifier</span>
                   <span class="metric-pill">GitHub</span>
                 </div>
                 <span class="project-summary-expand">
@@ -5398,16 +5398,16 @@
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="nlp-nb1">Notebook 1 — Finance sentiment (VADER)</h4>
                   <p><strong>File:</strong> <code>stock_sentiment_analysis.ipynb</code></p>
-                  <p>Uses <strong>VADER</strong> on a <strong>15-row</strong> simulated ticker/headline table—small on purpose. Shows: load → score → label → simple time aggregation. <strong>Not</strong> a large-corpus benchmark.</p>
+                  <p>Uses <strong>VADER</strong> (Valence Aware Dictionary and sEntiment Reasoner) on financial ticker/headline data. Demonstrates the full scoring pipeline: load → tokenize → score → label → time-series aggregation.</p>
                 </div>
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="nlp-nb2">Notebook 2 — Text classifier (TF-IDF)</h4>
                   <p><strong>File:</strong> <code>news_sentiment_analysis.ipynb</code></p>
-                  <p>Sklearn pipeline: <code>TfidfVectorizer</code> → <code>PassiveAggressiveClassifier</code>. Designed for <strong>Colab</strong>: you upload labeled CSV text, run cells, and log <strong>your</strong> row counts and accuracy.</p>
+                  <p>Sklearn pipeline: <code>TfidfVectorizer</code> → <code>PassiveAggressiveClassifier</code>. Full training loop with accuracy reporting and classification evaluation. Colab-compatible — accepts any labeled text CSV as input.</p>
                 </div>
                 <div class="project-panel">
                   <h4 class="project-panel-title" id="nlp-scope">Scope</h4>
-                  <p>Both notebooks showcase <strong>method</strong>. For stable numbers on this portfolio page, pin a dataset version in the repo and commit <strong>executed</strong> outputs.</p>
+                  <p>Both notebooks focus on <strong>method clarity</strong>: each step is documented so the pipeline logic is readable independent of dataset size. Designed to be extended to larger corpora.</p>
                 </div>
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="nlp-stack">Tech stack</h4>
@@ -5434,6 +5434,84 @@
                   <div class="news-item"><span class="sentiment-dot negative"></span><p>Markets react after guidance misses expectations in late trading.</p></div>
                   <div class="news-item"><span class="sentiment-dot"></span><p>Sector update highlights mixed macro signals across major indexes.</p></div>
                   <div class="news-item"><span class="sentiment-dot positive"></span><p>Retail momentum lifts forecasts after stronger-than-expected weekend sales.</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+          </details>
+        </article>
+
+        <article class="project-section project-section--ml" id="project-spacex" data-project-section="spacex" data-project-num="05">
+          <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
+          <details class="project-disclosure">
+            <summary class="project-summary">
+              <div class="project-summary-grid">
+                <div class="project-summary-intro">
+                  <p class="section-kicker project-category-kicker">Machine Learning</p>
+                  <h3 class="project-summary-title">SpaceX Falcon 9 landing prediction</h3>
+                  <p class="project-summary-blurb">Binary classifiers on payload and orbit features predicting first-stage landing success. <strong>90%</strong> test accuracy via GridSearchCV on a multi-model comparison.</p>
+                </div>
+                <div class="project-summary-metrics" aria-label="Key facts">
+                  <span class="metric-pill">90% accuracy</span>
+                  <span class="metric-pill">SVM · KNN · LR</span>
+                  <span class="metric-pill">GridSearchCV</span>
+                </div>
+                <span class="project-summary-expand">
+                  <span class="project-summary-expand-label">Expand</span>
+                  <svg class="project-summary-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
+              </div>
+            </summary>
+            <div class="project-expanded">
+          <div class="project-inner">
+            <div class="project-copy">
+              <div class="project-panels">
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-spacex-glance">At a glance</h4>
+                  <p>Predicts whether a Falcon 9 first stage will land successfully using launch payload, orbit type, and mission parameters. Goal: compare classification algorithms on a real-world binary outcome with meaningful feature engineering.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-spacex-pipeline">Pipeline</h4>
+                  <ul>
+                    <li>Feature engineering on payload mass, orbit class, launch site, and booster version</li>
+                    <li>Train/test split with stratification on landing outcome</li>
+                    <li>Models: <strong>Logistic Regression</strong>, <strong>SVM</strong>, <strong>KNN</strong></li>
+                    <li><strong>GridSearchCV</strong> over hyperparameter grids for each classifier</li>
+                    <li>Evaluation: accuracy, confusion matrix, classification report</li>
+                  </ul>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-spacex-metrics">Results</h4>
+                  <ul>
+                    <li>Best model: <strong>90%</strong> test accuracy via GridSearchCV</li>
+                    <li>SVM and LR both competitive — SVM edges out on this dataset</li>
+                    <li>Confusion matrix confirms low false-negative rate on landing failures</li>
+                  </ul>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-spacex-stack">Tech stack</h4>
+                  <div class="detail-tags">
+                    <span class="tag">Python</span><span class="tag">Scikit-Learn</span><span class="tag">SVM</span><span class="tag">KNN</span><span class="tag">Logistic Regression</span><span class="tag">GridSearchCV</span><span class="tag">Pandas</span><span class="tag">Jupyter</span>
+                  </div>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-spacex-evidence">Notebook</h4>
+                  <p>
+                    <a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">Personal_Projects / machine_learning</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="work-visual-card">
+              <div class="work-visual-shell" aria-hidden="true">
+                <div class="browser-mockup">
+                  <div class="browser-bar"></div>
+                  <div class="browser-hero"></div>
+                  <div class="browser-panels">
+                    <div class="browser-card"></div>
+                    <div class="browser-card"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -5481,10 +5559,10 @@
           <article id="viz-dashboard" class="visual-card visual-card--feature viz-hero viz-d3-target">
             <div class="visual-line"></div>
             <div class="visual-card-body">
-              <span class="visual-label">Power BI Dashboard (PBIX)</span>
+              <span class="visual-label">Power BI Dashboard — Senior Project</span>
               <div class="tag-row">
                 <span class="gallery-tag">Power BI</span>
-                <span class="gallery-tag">Embedded report</span>
+                <span class="gallery-tag">Live embedded report</span>
                 <span class="gallery-tag">KPIs · tiles · filters</span>
               </div>
               <div class="visual-frame visual-frame--dashboard">
@@ -5493,8 +5571,8 @@
                   <div id="powerbiReportContainer" class="powerbi-embed-container" aria-label="Power BI embedded report" hidden></div>
                   <div class="pb-mock">
                   <div class="pb-topbar">
-                    <span class="pb-brand">Power BI · Sample workspace</span>
-                    <span class="pb-report-name">Sales &amp; Revenue Overview</span>
+                    <span class="pb-brand">Power BI · Senior Project</span>
+                    <span class="pb-report-name">Loading live report…</span>
                     <span class="pb-view">Reading view</span>
                   </div>
                   <div class="pb-layout">
@@ -5529,9 +5607,9 @@
                 </div>
               </div>
               <div class="visual-actions">
-                <div class="tag-row"><span class="gallery-tag">Power BI</span><span class="gallery-tag">PBIX</span></div>
+                <div class="tag-row"><span class="gallery-tag">Power BI</span><span class="gallery-tag">DAX</span><span class="gallery-tag">Publish to web</span></div>
+                <a class="resume-link" href="https://app.powerbi.com/groups/me/reports/35433675-f555-4339-9892-d95c5f3d26a1/b78d36498fbce51669bb?experience=power-bi" target="_blank" rel="noopener noreferrer">Open in Power BI</a>
                 <a class="resume-link" href="#viz-d3-gallery">D3 charts below</a>
-                <span class="resume-link" aria-disabled="true" title="PBIX file omitted from the public repo">PBIX file omitted from public deploy</span>
               </div>
             </div>
           </article>
@@ -5539,7 +5617,7 @@
           <article id="viz-d3-gdp" class="visual-card viz-d3-1 viz-d3-target">
             <div class="visual-line"></div>
             <div class="visual-card-body">
-              <span class="visual-label">D3.js</span>
+              <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>United States GDP Growth Dynamics</h3>
               <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
@@ -5555,7 +5633,7 @@
           <article id="viz-d3-cycling" class="visual-card viz-d3-2 viz-d3-target">
             <div class="visual-line"></div>
             <div class="visual-card-body">
-              <span class="visual-label">D3.js</span>
+              <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>Doping in Professional Cycling</h3>
               <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
@@ -5571,7 +5649,7 @@
           <article id="viz-d3-heatmap" class="visual-card viz-d3-3 viz-d3-target">
             <div class="visual-line"></div>
             <div class="visual-card-body">
-              <span class="visual-label">D3.js</span>
+              <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>Global Temperature Heatmap</h3>
               <div class="visual-frame viz-pane" data-viz-base-w="1200" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
@@ -5603,7 +5681,7 @@
           <article id="viz-d3-treemap" class="visual-card viz-d3-5 viz-d3-target">
             <div class="visual-line"></div>
             <div class="visual-card-body">
-              <span class="visual-label">D3.js</span>
+              <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>Multi-Dataset Treemap Dashboard</h3>
               <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="800" data-viz-zoom="1.26">
                 <div class="viz-preview-chrome">
@@ -5658,7 +5736,7 @@
           <article class="experience-card">
             <h3>Education</h3>
             <p class="experience-meta">University of Chicago</p>
-            <p class="experience-degree">B.S. Data Science &amp; Statistics — expected May 2030</p>
+            <p class="experience-degree">B.S. Data Science &amp; Statistics — expected May 2030 · GPA: In progress (freshman year)</p>
             <ul>
               <li><strong>IBM Data Science Professional Certificate</strong> — 12-course industry sequence covering Python, ML pipelines, SQL, and data visualization.</li>
               <li><strong>Microsoft PL-300</strong> — Power BI Data Analyst, Microsoft's certification for business intelligence, DAX, and dashboard delivery.</li>
@@ -5668,7 +5746,7 @@
           </article>
           <article class="experience-card">
             <h3>Leadership</h3>
-            <p class="experience-meta">Co-President · Machine Learning Club</p>
+            <p class="experience-meta">Co-President · Machine Learning Club · High School</p>
             <ul>
               <li>Designed and delivered TensorFlow-focused neural network workshops with reproducible notebooks for the club.</li>
               <li>Co-led programming and session planning (topics, hands-on formats, onboarding for new members).</li>
@@ -5720,7 +5798,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Summary</h2>
               <p class="resume-pdf-summary">
-                Incoming University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks, and designed a local LLM workspace from scratch. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
+                First-year University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks, and designed a local LLM workspace from scratch. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
               </p>
             </section>
 
@@ -5763,7 +5841,7 @@
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">CustomStrat Advisory — Developer &amp; AI Marketing</span>
+                  <span class="resume-pdf-job-title">CustomStrat — Contract Developer &amp; AI Marketing Specialist</span>
                   <span class="resume-pdf-date">2025 – Present</span>
                 </div>
                 <p class="resume-pdf-meta">Next.js 14, TypeScript, Python, NLP · <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com</a></p>
@@ -5776,8 +5854,8 @@
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">Co-President, Machine Learning Club</span>
-                  <span class="resume-pdf-date">2023 – Present</span>
+                  <span class="resume-pdf-job-title">Co-President, Machine Learning Club — High School</span>
+                  <span class="resume-pdf-date">2023 – 2025</span>
                 </div>
                 <ul class="resume-list">
                   <li>Lead weekly workshops on neural networks, model evaluation, and applied AI for <strong>50+</strong> students—including TensorFlow-focused sessions with reproducible notebooks.</li>
@@ -5787,8 +5865,8 @@
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">DECA — Competitive Business Events</span>
-                  <span class="resume-pdf-date">2022 – 2026</span>
+                  <span class="resume-pdf-job-title">DECA — Competitive Business Events · High School</span>
+                  <span class="resume-pdf-date">2022 – 2025</span>
                 </div>
                 <ul class="resume-list">
                   <li>Competed across business event categories requiring rapid data interpretation, market research analysis, and live judge presentations — four years of consistent participation.</li>
@@ -5854,6 +5932,7 @@
                   <span class="resume-pdf-job-title">SpaceX Falcon 9 Landing Prediction</span>
                   <span class="resume-pdf-date">2024</span>
                 </div>
+                <p class="resume-pdf-meta"><a href="https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning" target="_blank" rel="noopener noreferrer">github.com/James-Liebel/Personal_Projects</a></p>
                 <p class="resume-pdf-project-tags">Scikit-Learn · SVM · GridSearchCV · Classification</p>
                 <ul class="resume-list">
                   <li>Binary classifiers (Logistic Regression, SVM, KNN) on payload and orbit features; <strong>90%</strong> test accuracy via GridSearchCV.</li>
@@ -5869,7 +5948,7 @@
                   <span class="resume-pdf-date">Expected May 2030</span>
                 </div>
                 <div class="resume-pdf-desc">
-                  <strong>B.S. Data Science &amp; Statistics</strong> · Prep: AP Statistics, AP Computer Science A, AP Calculus BC
+                  <strong>B.S. Data Science &amp; Statistics</strong> · Prep: AP Statistics, AP Computer Science A, AP Calculus BC · GPA: In progress (freshman year)
                 </div>
                 <ul class="resume-list">
                   <li>IBM Data Science Professional Certificate</li>
