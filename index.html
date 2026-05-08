@@ -4440,12 +4440,12 @@
       z-index: 0;
       pointer-events: none;
       overflow: hidden;
+      contain: layout style paint;
     }
     .viz-pl-1 {
       position: absolute;
       inset: -12%;
       background: radial-gradient(circle at 50% 42%, rgba(99, 102, 241, 0.08), rgba(0, 0, 0, 0) 58%);
-      will-change: transform;
     }
     .viz-pl-2 {
       position: absolute;
@@ -4453,12 +4453,10 @@
       background-image: radial-gradient(circle, rgba(99, 102, 241, 0.3) 1px, transparent 1px);
       background-size: 28px 28px;
       opacity: 0.55;
-      will-change: transform;
     }
     .viz-pl-3 {
       position: absolute;
       inset: 0;
-      will-change: transform;
     }
     .viz-orb {
       position: absolute;

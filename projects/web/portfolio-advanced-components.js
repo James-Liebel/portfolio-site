@@ -463,7 +463,12 @@
       var targetBlur = Math.min(vel * 0.28, maxB);
       if (vel <= 0.01) targetBlur = 0;
       blurState = lerp(blurState, targetBlur, 0.12);
-      el.style.filter = 'blur(' + blurState + 'px)';
+      if (blurState < 0.05) {
+        blurState = 0;
+        if (el.style.filter !== '') el.style.filter = '';
+      } else {
+        el.style.filter = 'blur(' + blurState + 'px)';
+      }
       return blurState;
     }
 
@@ -949,6 +954,18 @@
     var current = 0;
     var animating = false;
 
+    // Cached offsets — recomputed on resize, zero getBoundingClientRect calls during scroll
+    var sectionTops = [];
+    var sectionHeights = [];
+    function cacheOffsets() {
+      sectionTops = sections.map(function (s) {
+        return s.getBoundingClientRect().top + window.scrollY;
+      });
+      sectionHeights = sections.map(function (s) { return s.offsetHeight; });
+    }
+    cacheOffsets();
+    window.addEventListener('resize', cacheOffsets, { passive: true });
+
     function format(n) {
       var s = String(n + 1).padStart(2, '0');
       var t = String(total).padStart(2, '0');
@@ -957,11 +974,14 @@
 
     numEl.textContent = format(0);
 
+    var scrollTicking = false;
+    var latestScrollY = window.scrollY;
+
     function updateCounter() {
-      var y = window.scrollY + window.innerHeight * 0.42;
+      scrollTicking = false;
+      var y = latestScrollY + window.innerHeight * 0.42;
       var idx = 0;
-      sections.forEach(function (s, i) {
-        var top = s.getBoundingClientRect().top + window.scrollY;
+      sectionTops.forEach(function (top, i) {
         if (y >= top) idx = i;
       });
       if (idx !== current && !animating) {
@@ -999,17 +1019,21 @@
         current = idx;
       }
 
-      var sec = sections[current];
-      if (sec) {
-        var start = sec.getBoundingClientRect().top + window.scrollY;
-        var end = start + sec.offsetHeight;
-        var prog = (y - start) / Math.max(1, end - start);
-        prog = Math.max(0, Math.min(1, prog));
-        lineFill.style.height = prog * 100 + '%';
-      }
+      var start = sectionTops[current] || 0;
+      var end = start + (sectionHeights[current] || 1);
+      var prog = (y - start) / Math.max(1, end - start);
+      prog = Math.max(0, Math.min(1, prog));
+      lineFill.style.height = prog * 100 + '%';
     }
 
-    window.addEventListener('scroll', updateCounter, { passive: true });
+    window.addEventListener('scroll', function () {
+      latestScrollY = window.scrollY;
+      if (!scrollTicking) {
+        scrollTicking = true;
+        requestAnimationFrame(updateCounter);
+      }
+    }, { passive: true });
+
     window.addEventListener(
       'intro-complete',
       function () {
@@ -1018,7 +1042,7 @@
       },
       { once: true }
     );
-    updateCounter();
+    requestAnimationFrame(updateCounter);
   }
 
   // ─── 11. Simplex noise journey ────────────────────────────────────────────
