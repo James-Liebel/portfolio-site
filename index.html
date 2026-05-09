@@ -4553,10 +4553,11 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
       pointer-events: none;
+      will-change: opacity;
     }
     body,
     .hero-section,
@@ -6485,12 +6486,14 @@
 
   function resize() {
     dpr = Math.min(1.2, window.devicePixelRatio || 1);
-    cw = Math.floor(window.innerWidth * dpr);
-    ch = Math.floor(window.innerHeight * dpr);
+    var vw = document.documentElement.clientWidth || window.innerWidth;
+    var vh = document.documentElement.clientHeight || window.innerHeight;
+    cw = Math.ceil(vw * dpr);
+    ch = Math.ceil(vh * dpr);
     canvas.width = cw;
     canvas.height = ch;
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
+    canvas.style.width = vw + 'px';
+    canvas.style.height = vh + 'px';
     for (var bi = 0; bi < breathSpots.length; bi++) {
       if (breathSpots[bi]._restTimer) clearTimeout(breathSpots[bi]._restTimer);
     }

@@ -170,11 +170,19 @@
       { passive: true }
     );
 
+    var heroRafId = null;
     var io = new IntersectionObserver(
       function (ents) {
         ents.forEach(function (en) {
-          running = en.isIntersecting;
-          if (running) sizeDirty = true;
+          if (en.isIntersecting) {
+            if (!running) {
+              running = true;
+              sizeDirty = true;
+              heroRafId = requestAnimationFrame(tick);
+            }
+          } else {
+            running = false;
+          }
         });
       },
       { threshold: 0.01 }
@@ -190,10 +198,7 @@
     );
 
     function tick(now) {
-      if (!running) {
-        requestAnimationFrame(tick);
-        return;
-      }
+      if (!running) { heroRafId = null; return; }
       if (sizeDirty) {
         var rect0 = hero.getBoundingClientRect();
         var dpr0 = Math.min(window.devicePixelRatio || 1, 2);
@@ -250,10 +255,10 @@
       bindAttrib(bufOff, locOff, 2, 0, 0);
 
       gl.drawArrays(gl.POINTS, 0, N);
-      requestAnimationFrame(tick);
+      heroRafId = requestAnimationFrame(tick);
     }
 
-    requestAnimationFrame(tick);
+    heroRafId = requestAnimationFrame(tick);
   }
 
   // ─── 2. SVG path scroll dividers ───────────────────────────────────────────
@@ -451,9 +456,8 @@
       var dx = base + extra;
       var x = parseFloat(el.dataset.marqX || '0');
       x += direction * dx;
-      var half = el.scrollWidth / 2;
-      if (!el.dataset.marqHalf) el.dataset.marqHalf = String(half);
-      half = parseFloat(el.dataset.marqHalf) || half;
+      if (!el.dataset.marqHalf) el.dataset.marqHalf = String(el.scrollWidth / 2);
+      var half = parseFloat(el.dataset.marqHalf) || 1;
       if (direction < 0 && x < -half) x += half;
       if (direction > 0 && x > 0) x -= half;
       el.dataset.marqX = String(x);
@@ -525,15 +529,16 @@
     );
 
     document.addEventListener('visibilitychange', function () {
-      running = !document.hidden;
+      if (document.hidden) {
+        running = false;
+      } else {
+        running = true;
+        requestAnimationFrame(tick);
+      }
     });
 
     function tick() {
-      if (!running) {
-        requestAnimationFrame(tick);
-        return;
-      }
-      resize();
+      if (!running) return;
       pts[0].x = lerp(pts[0].x, mx, 0.28);
       pts[0].y = lerp(pts[0].y, my, 0.28);
       var i;
