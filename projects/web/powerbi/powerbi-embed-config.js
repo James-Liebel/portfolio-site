@@ -47,7 +47,10 @@ window.powerbiPublishedReportTitle = "Senior Project — Power BI dashboard";
 window.powerbiEmbedConfig = null;
 
 //
-// Optional: adds an "Open in Power BI" link on the dashboard card (viewers must be signed in and allowed on the report).
-window.powerbiOpenInServiceUrl =
-  "https://app.powerbi.com/groups/me/reports/35433675-f555-4339-9892-d95c5f3d26a1/b78d36498fbce51669bb?experience=power-bi";
+// Optional: adds an extra link on the dashboard card. MUST be a public URL — the
+// site is linked from LinkedIn, so visitors won't have a Microsoft account/permission
+// on the workspace report. Use the same Publish-to-web view URL as the embed (or
+// leave null to skip the extra link, since the static "Open full dashboard" link
+// in index.html already points to the public view).
+window.powerbiOpenInServiceUrl = null;
 
