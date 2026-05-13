@@ -4697,6 +4697,396 @@
       }
     }
   </style>
+  <style id="premium-polish-v2">
+    /* ───── Premium polish layer — additive only ───── */
+
+    /* Hero name: animated aurora gradient + soft halo */
+    .hero-name {
+      background: linear-gradient(
+        100deg,
+        #e2e8ff 0%,
+        #c7d2ff 18%,
+        #a5b4fc 34%,
+        #c084fc 52%,
+        #67e8f9 72%,
+        #5eead4 88%,
+        #e2e8ff 100%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: hero-name-aurora 14s ease-in-out infinite;
+      filter: drop-shadow(0 6px 28px rgba(99, 102, 241, 0.28))
+              drop-shadow(0 1px 0 rgba(255, 255, 255, 0.08));
+      font-weight: 800;
+      letter-spacing: -0.075em;
+    }
+    @keyframes hero-name-aurora {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    :root[data-theme="light"] .hero-name {
+      background: linear-gradient(
+        100deg,
+        #1e1b4b 0%,
+        #4338ca 22%,
+        #6d28d9 44%,
+        #0891b2 68%,
+        #0f766e 88%,
+        #1e1b4b 100%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 14px rgba(79, 70, 229, 0.18));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-name { animation: none; }
+    }
+
+    /* Promote ALL section-head h2 / resume-title with the same gradient treatment as skills */
+    .section-head h2:not(.skills-section-title),
+    .journey-head h2,
+    .resume-title {
+      background: linear-gradient(
+        102deg,
+        #cbd5ff 0%,
+        #a5b4fc 28%,
+        #c084fc 58%,
+        #67e8f9 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      position: relative;
+    }
+    .section-head h2:not(.skills-section-title)::after,
+    .journey-head h2::after,
+    .resume-title::after {
+      content: "";
+      display: block;
+      width: clamp(5rem, 12vw, 8rem);
+      height: 3px;
+      margin-top: 16px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3b82f6, #a855f7 50%, #22d3ee);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.55);
+    }
+    :root[data-theme="light"] .section-head h2:not(.skills-section-title),
+    :root[data-theme="light"] .journey-head h2,
+    :root[data-theme="light"] .resume-title {
+      background: linear-gradient(
+        102deg,
+        #1e1b4b 0%,
+        #4f46e5 35%,
+        #7c3aed 65%,
+        #0891b2 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Kickers / eyebrows — leading dot accent, keep block flow */
+    .eyebrow,
+    .section-kicker,
+    .resume-kicker,
+    .footer-kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #c7d2ff;
+    }
+    .eyebrow::before,
+    .section-kicker::before,
+    .resume-kicker::before,
+    .footer-kicker::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.85);
+      flex-shrink: 0;
+    }
+    :root[data-theme="light"] .eyebrow,
+    :root[data-theme="light"] .section-kicker,
+    :root[data-theme="light"] .resume-kicker,
+    :root[data-theme="light"] .footer-kicker {
+      color: #4338ca;
+    }
+
+    /* Hero tech pills — gradient ring on hover + soft inner highlight */
+    .hero-tech-pill {
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 2px 12px rgba(94, 234, 212, 0.08);
+    }
+    .hero-tech-pill:hover {
+      transform: translateY(-2px);
+      border-color: rgba(94, 234, 212, 0.7);
+      color: #a7f3d0;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 8px 26px rgba(94, 234, 212, 0.22),
+        0 0 0 1px rgba(94, 234, 212, 0.18);
+    }
+
+    /* Hero start-here — corner accent + animated left bar */
+    .hero-start-here {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-start-here::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--cyan), var(--accent), transparent);
+      filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.55));
+    }
+    .hero-start-here::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.18), transparent 65%);
+      pointer-events: none;
+    }
+    .hero-start-here-links a {
+      position: relative;
+      transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+    .hero-start-here-links a:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Hero metrics — gradient top stripe + corner brackets */
+    .hero-metric {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .hero-metric::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--accent) 30%,
+        var(--cyan) 70%,
+        transparent 100%);
+      opacity: 0.85;
+    }
+    .hero-metric::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 18px;
+      height: 18px;
+      border-top: 1.5px solid rgba(94, 234, 212, 0.5);
+      border-right: 1.5px solid rgba(94, 234, 212, 0.5);
+      border-top-right-radius: 6px;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .hero-metric:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99, 102, 241, 0.45);
+      box-shadow:
+        var(--shadow),
+        0 0 0 1px rgba(99, 102, 241, 0.22),
+        0 18px 50px rgba(99, 102, 241, 0.18);
+    }
+    .hero-metric:hover::after {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    .hero-metric strong {
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+      background: linear-gradient(120deg, #f5f7ff 0%, #c7d2ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    :root[data-theme="light"] .hero-metric strong {
+      background: linear-gradient(120deg, #0f172a 0%, #4338ca 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Nav — premium glow line under bar + brand badge shimmer */
+    .site-nav {
+      position: sticky;
+      box-shadow: 0 1px 0 rgba(99, 102, 241, 0.16),
+                  0 22px 50px -28px rgba(8, 12, 26, 0.85);
+    }
+    .site-nav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(99, 102, 241, 0.45) 30%,
+        rgba(34, 211, 238, 0.45) 70%,
+        transparent 100%);
+      pointer-events: none;
+    }
+    .brand-badge {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .brand-badge:hover {
+      transform: translateY(-1px);
+      border-color: rgba(99, 102, 241, 0.55);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 10px 32px rgba(99, 102, 241, 0.32);
+    }
+
+    /* Nav availability — pulsing dot */
+    .nav-availability-dot {
+      position: relative;
+    }
+    .nav-availability-dot::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(34, 211, 238, 0.55);
+      animation: avail-pulse 2.2s ease-out infinite;
+    }
+    @keyframes avail-pulse {
+      0%   { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-availability-dot::after { animation: none; opacity: 0; }
+    }
+
+    /* Generic glass card lift — applies on hover for the shared card family */
+    .hero-metric,
+    .bento-card,
+    .visual-card,
+    .skills-branch,
+    .project-section,
+    .journey-stop,
+    .resume-panel,
+    .experience-card {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.3s ease,
+                  box-shadow 0.35s ease;
+    }
+    .experience-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .experience-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(34, 211, 238, 0.65) 25%,
+        rgba(99, 102, 241, 0.65) 75%,
+        transparent 100%);
+      opacity: 0.9;
+    }
+    .experience-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow:
+        var(--shadow),
+        0 0 0 1px rgba(99, 102, 241, 0.18),
+        0 24px 60px rgba(99, 102, 241, 0.16);
+    }
+
+    /* Scroll progress — glow + height bump for visibility */
+    #scroll-progress {
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent) 0%, #a855f7 45%, var(--cyan) 100%);
+      box-shadow: 0 0 22px rgba(99, 102, 241, 0.75),
+                  0 0 6px rgba(34, 211, 238, 0.7);
+    }
+
+    /* Section rail — refined dots */
+    .scroll-section-rail .ss-dot {
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+    .scroll-section-rail .ss-dot:hover {
+      transform: scale(1.18);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+    }
+
+    /* Focus rings — accessible & on-brand */
+    a:focus-visible,
+    button:focus-visible,
+    .nav-link:focus-visible,
+    .hero-tech-pill:focus-visible,
+    .hero-start-here-links a:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    /* Selection */
+    ::selection {
+      background: rgba(99, 102, 241, 0.45);
+      color: #fff;
+    }
+    :root[data-theme="light"] ::selection {
+      background: rgba(79, 70, 229, 0.25);
+      color: #0f172a;
+    }
+
+    /* Print-safe: strip heavy effects */
+    @media print {
+      .hero-name,
+      .section-head h2,
+      .journey-head h2,
+      .resume-title,
+      .hero-metric strong {
+        background: none !important;
+        -webkit-text-fill-color: initial !important;
+        color: #0f172a !important;
+        filter: none !important;
+      }
+      .hero-metric::before,
+      .hero-metric::after,
+      .experience-card::before,
+      .site-nav::after,
+      .brand-badge::before {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body class="intro-running">
   <a class="skip-link" href="#main-content">Skip to main content</a>
