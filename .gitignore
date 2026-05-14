@@ -8,3 +8,8 @@ node_modules/
 Thumbs.db
 .vercel
 .claude/
+screenshots/
+scripts/mobile-shots.mjs
+CLAUDE.local.md
+CLAUDE.md
+CLAUDE.local.md.example

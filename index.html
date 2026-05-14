@@ -3,21 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="James Liebel — UChicago B.S. Data Science & Statistics (2030). Portfolio: notebook-backed ML, shipped web, BI/D3. Seeking Summer 2026 internships.">
+  <meta name="description" content="James Liebel — Data Science / ML intern candidate, Summer 2026. UChicago B.S. Data Science &amp; Statistics '30. Portfolio: XGBoost fraud detection (ROC-AUC 0.939), shipped client site (200+ users), local LLM workspace, Power BI, D3.">
+  <meta name="keywords" content="data science intern, machine learning intern, summer 2026 internship, data analyst intern, UChicago data science, Python, XGBoost, SQL, Power BI, James Liebel">
+  <meta name="author" content="James Liebel">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="James Liebel · UChicago Data Science &amp; Statistics">
-  <meta property="og:description" content="Portfolio: notebook-backed ML, shipped web, Power BI, D3. UChicago B.S. DS &amp; Stats (2030). Seeking Summer 2026 internships.">
+  <meta property="og:title" content="James Liebel · Data Science Intern Candidate · Summer 2026">
+  <meta property="og:description" content="UChicago B.S. Data Science &amp; Statistics '30. Shipped: XGBoost fraud detection (ROC-AUC 0.939), live client site (200+ users), local LLM workspace. Available May–Aug 2026.">
   <meta property="og:url" content="https://james-liebel.github.io/portfolio-site/">
   <meta property="og:image" content="https://james-liebel.github.io/portfolio-site/og-preview.jpg">
+  <meta property="og:image:alt" content="James Liebel — Data Science portfolio · UChicago '30 · Available Summer 2026">
+  <meta property="og:site_name" content="James Liebel · Portfolio">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="James Liebel · UChicago DS &amp; Stats">
-  <meta name="twitter:description" content="Portfolio: notebook-backed ML, shipped web, Power BI, D3. Seeking Summer 2026 internships.">
+  <meta name="twitter:title" content="James Liebel · Data Science Intern · Summer 2026">
+  <meta name="twitter:description" content="UChicago DS &amp; Stats '30. Notebook-backed ML, shipped web, Power BI, D3. Available May–Aug 2026.">
   <meta name="twitter:url" content="https://james-liebel.github.io/portfolio-site/">
   <meta name="twitter:image" content="https://james-liebel.github.io/portfolio-site/og-preview.jpg">
   <meta name="theme-color" content="#070a14">
   <link rel="canonical" href="https://james-liebel.github.io/portfolio-site/">
-  <title>James Liebel | UChicago DS &amp; Stats · Portfolio</title>
+  <title>James Liebel · Data Science Intern Candidate · UChicago '30 · Summer 2026</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "James Liebel",
+    "givenName": "James",
+    "familyName": "Liebel",
+    "jobTitle": "Data Science Intern Candidate",
+    "description": "First-year University of Chicago student studying Data Science & Statistics. Seeking Summer 2026 internships in data science, ML engineering, or analytics.",
+    "url": "https://james-liebel.github.io/portfolio-site/",
+    "image": "https://james-liebel.github.io/portfolio-site/og-preview.jpg",
+    "email": "mailto:Jamesliebel40@gmail.com",
+    "telephone": "+1-513-965-1578",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Cincinnati",
+      "addressRegion": "OH",
+      "addressCountry": "US"
+    },
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "The University of Chicago",
+      "sameAs": "https://www.uchicago.edu/"
+    },
+    "knowsAbout": [
+      "Machine Learning",
+      "Data Science",
+      "Python",
+      "SQL",
+      "XGBoost",
+      "Scikit-learn",
+      "Power BI",
+      "D3.js",
+      "FastAPI",
+      "Next.js",
+      "Statistical Analysis",
+      "Natural Language Processing"
+    ],
+    "sameAs": [
+      "https://github.com/James-Liebel",
+      "https://linkedin.com/in/james-liebel"
+    ],
+    "seeks": {
+      "@type": "JobPosting",
+      "title": "Summer 2026 Data Science / ML / Analytics Internship",
+      "employmentType": "INTERN",
+      "datePosted": "2026-01-01",
+      "validThrough": "2026-08-31"
+    }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -467,6 +523,65 @@
       color: var(--text);
       transform: translateY(-1px);
     }
+    .nav-resume-cta {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      color: #fff;
+      font: 600 12px/1 Inter, system-ui, sans-serif;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .nav-resume-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(99, 102, 241, 0.5);
+    }
+    .nav-resume-cta svg { flex-shrink: 0; }
+    @media (min-width: 760px) {
+      .nav-resume-cta { display: inline-flex; }
+    }
+
+    .mobile-contact-fab {
+      position: fixed;
+      left: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      z-index: 1300;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      color: #fff;
+      font: 600 13px/1 Inter, system-ui, sans-serif;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+      opacity: 0;
+      transform: translateY(16px) scale(0.95);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+    .mobile-contact-fab svg { flex-shrink: 0; }
+    body.show-mobile-fab .mobile-contact-fab {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    body.mobile-nav-open .mobile-contact-fab { opacity: 0; pointer-events: none; }
+    @media (max-width: 759px) {
+      .mobile-contact-fab { display: inline-flex; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-contact-fab { transition: opacity 0.15s linear; transform: none; }
+      body.show-mobile-fab .mobile-contact-fab { transform: none; }
+    }
     .nav-availability {
       display: none;
       align-items: center;
@@ -811,6 +926,56 @@
       background: rgba(13, 148, 136, 0.1);
       color: #0f766e;
     }
+    .hero-status-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 4px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(94, 234, 212, 0.32);
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.14), rgba(99, 102, 241, 0.08));
+      max-width: max-content;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      color: var(--text);
+      box-shadow: 0 6px 18px rgba(34, 211, 238, 0.08);
+    }
+    .hero-status-line strong {
+      color: #5eead4;
+      font-weight: 700;
+    }
+    :root[data-theme="light"] .hero-status-line {
+      border-color: rgba(13, 148, 136, 0.3);
+      background: linear-gradient(90deg, rgba(8, 145, 178, 0.1), rgba(79, 70, 229, 0.06));
+      color: #0f172a;
+    }
+    :root[data-theme="light"] .hero-status-line strong {
+      color: #0d9488;
+    }
+    .hero-status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18), 0 0 14px rgba(52, 211, 153, 0.55);
+      flex-shrink: 0;
+      animation: hero-status-pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes hero-status-pulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.18), 0 0 12px rgba(52, 211, 153, 0.45); }
+      50%      { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.08), 0 0 20px rgba(52, 211, 153, 0.7); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-status-dot { animation: none; }
+    }
+    @media (max-width: 600px) {
+      .hero-status-line {
+        max-width: 100%;
+        font-size: 0.86rem;
+        padding: 9px 12px;
+      }
+    }
     .hero-start-here {
       margin-top: 20px;
       padding: 14px 16px 14px 18px;
@@ -851,6 +1016,121 @@
     }
     :root[data-theme="light"] .hero-start-here-links a {
       color: #0e7490;
+    }
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(99, 102, 241, 0.38);
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      text-decoration: none;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+    .hero-cta svg { flex-shrink: 0; }
+    .hero-cta:hover {
+      transform: translateY(-1px);
+      background: rgba(99, 102, 241, 0.22);
+      border-color: rgba(99, 102, 241, 0.55);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+    }
+    .hero-cta:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+    .hero-cta--primary {
+      background: linear-gradient(135deg, var(--accent) 0%, #22d3ee 100%);
+      border-color: transparent;
+      color: #07101f;
+      box-shadow: 0 10px 28px rgba(99, 102, 241, 0.4);
+    }
+    .hero-cta--primary:hover {
+      background: linear-gradient(135deg, #7c83ff 0%, #38e1f3 100%);
+      border-color: transparent;
+      color: #07101f;
+      box-shadow: 0 14px 34px rgba(99, 102, 241, 0.55);
+    }
+    .hero-cta--ghost {
+      background: transparent;
+      border-color: rgba(245, 247, 255, 0.18);
+      color: var(--muted);
+    }
+    .hero-cta--ghost:hover {
+      background: rgba(245, 247, 255, 0.06);
+      border-color: rgba(245, 247, 255, 0.32);
+      color: var(--text);
+    }
+    :root[data-theme="light"] .hero-cta {
+      background: rgba(79, 70, 229, 0.08);
+      border-color: rgba(79, 70, 229, 0.28);
+      color: #0f172a;
+    }
+    :root[data-theme="light"] .hero-cta:hover {
+      background: rgba(79, 70, 229, 0.16);
+      border-color: rgba(79, 70, 229, 0.45);
+    }
+    :root[data-theme="light"] .hero-cta--primary {
+      color: #ffffff;
+      background: linear-gradient(135deg, #4f46e5 0%, #0891b2 100%);
+    }
+    :root[data-theme="light"] .hero-cta--primary:hover {
+      color: #ffffff;
+      background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+    }
+    :root[data-theme="light"] .hero-cta--ghost {
+      background: transparent;
+      border-color: rgba(15, 23, 42, 0.16);
+      color: rgba(15, 23, 42, 0.7);
+    }
+    :root[data-theme="light"] .hero-cta--ghost:hover {
+      background: rgba(15, 23, 42, 0.05);
+      border-color: rgba(15, 23, 42, 0.32);
+      color: #0f172a;
+    }
+    .hero-evidence-links {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 10px;
+      font-size: 0.86rem;
+      color: var(--muted-soft);
+    }
+    .hero-evidence-label {
+      font: 700 10px/1 "Space Mono", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-soft);
+    }
+    .hero-evidence-links a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px dotted color-mix(in srgb, var(--cyan) 45%, transparent);
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+    .hero-evidence-links a:hover {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+    :root[data-theme="light"] .hero-evidence-links a {
+      color: #0e7490;
+    }
+    .hero-evidence-sep { color: var(--muted-soft); }
+    @media (max-width: 600px) {
+      .hero-cta { padding: 9px 13px; font-size: 0.88rem; }
+      .hero-cta svg { width: 14px; height: 14px; }
     }
     .hero-title .hero-line:not(.hero-rotator) {
       margin-top: 0.12em;
@@ -949,9 +1229,15 @@
     }
     .hero-signal-band {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
       margin-top: 28px;
+    }
+    @media (max-width: 900px) {
+      .hero-signal-band { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .hero-signal-band { grid-template-columns: 1fr; }
     }
     .mini,
     .hero-metric,
@@ -4747,6 +5033,57 @@
     @media (prefers-reduced-motion: reduce) {
       .hero-name { animation: none; }
     }
+    /* SplitText replaces .hero-name's direct text with wrapper spans, which breaks
+       background-clip:text. When :has(.split-char) matches, retarget the gradient
+       onto the descendant spans so the aurora gradient keeps rendering. */
+    .hero-name:has(.split-char) {
+      background: none;
+      -webkit-text-fill-color: #f5f7ff;
+      color: #f5f7ff;
+      filter: drop-shadow(0 6px 28px rgba(99, 102, 241, 0.28));
+    }
+    .hero-name .split-char {
+      display: inline-block;
+      background: linear-gradient(
+        100deg,
+        #e2e8ff 0%,
+        #c7d2ff 18%,
+        #a5b4fc 34%,
+        #c084fc 52%,
+        #67e8f9 72%,
+        #5eead4 88%,
+        #e2e8ff 100%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: hero-name-aurora 14s ease-in-out infinite;
+    }
+    :root[data-theme="light"] .hero-name:has(.split-char) {
+      -webkit-text-fill-color: #1e1b4b;
+      color: #1e1b4b;
+    }
+    :root[data-theme="light"] .hero-name .split-char {
+      background: linear-gradient(
+        100deg,
+        #1e1b4b 0%,
+        #4338ca 22%,
+        #6d28d9 44%,
+        #0891b2 68%,
+        #0f766e 88%,
+        #1e1b4b 100%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-name .split-char { animation: none; }
+    }
 
     /* Promote ALL section-head h2 / resume-title with the same gradient treatment as skills */
     .section-head h2:not(.skills-section-title),
@@ -5087,6 +5424,567 @@
       }
     }
   </style>
+
+  <style id="mobile-polish">
+    /* ─── Mobile UX polish (touch targets, layout density, motion, perf) ─── */
+
+    /* 1) Hide custom cursor on touch / no-hover devices */
+    @media (pointer: coarse), (hover: none) {
+      #customCursor,
+      #customCursorDot { display: none !important; }
+    }
+
+    /* 2) Smarter font scaling so very narrow phones don't get cramped */
+    @media (max-width: 480px) {
+      html { -webkit-text-size-adjust: 100%; }
+      body { font-size: 15.5px; line-height: 1.55; }
+    }
+
+    /* 3) Tighter container padding on phones — the 100px section padding eats the screen */
+    @media (max-width: 768px) {
+      .section-shell {
+        padding: 56px 0;
+      }
+      :root {
+        --container: calc(100vw - 28px);
+        --section-scroll-margin: calc(var(--nav-bar-total) + 12px);
+      }
+    }
+    @media (max-width: 420px) {
+      .section-shell {
+        padding: 44px 0;
+      }
+      :root {
+        --container: calc(100vw - 22px);
+      }
+    }
+
+    /* 4) Hero — content density on mobile */
+    @media (max-width: 768px) {
+      .hero-section { padding-top: 4px; }
+      .hero-inner { padding: 14px 0 24px; }
+      .hero-title .hero-name { font-size: clamp(2.4rem, 11vw, 4rem); line-height: 1; }
+      .hero-title .hero-line:not(.hero-rotator) {
+        font-size: clamp(1.05rem, 4.4vw, 1.4rem);
+        line-height: 1.25;
+      }
+      .eyebrow { font-size: 10.5px; letter-spacing: 0.16em; }
+      .summary { font-size: 0.98rem; line-height: 1.55; margin-top: 18px; }
+      .hero-tech-stack { gap: 6px; margin-top: 18px; }
+      .hero-tech-pill { font-size: 11px; padding: 6px 10px; }
+      .hero-start-here {
+        margin-top: 18px;
+        padding: 12px 14px;
+        border-radius: 14px;
+      }
+      .hero-start-here-label {
+        font-size: 9.5px;
+        letter-spacing: 0.12em;
+      }
+      .hero-signal-band {
+        gap: 10px;
+        margin-top: 22px;
+      }
+      .hero-metric { padding: 12px 14px; }
+      .hero-metric strong { font-size: 0.96rem; line-height: 1.2; }
+      .hero-metric small { font-size: 9.5px; letter-spacing: 0.14em; }
+      .hero-metric span { font-size: 0.84rem; line-height: 1.4; }
+    }
+
+    /* 5) New hero status-line — must wrap and stay readable on small screens */
+    @media (max-width: 640px) {
+      .hero-status-line {
+        max-width: 100%;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: 0.86rem;
+        line-height: 1.42;
+        align-items: flex-start;
+      }
+      .hero-status-line .hero-status-dot { margin-top: 5px; }
+    }
+
+    /* 6) Hero CTA buttons — 44×44 minimum touch target, full-width stacking */
+    @media (max-width: 560px) {
+      .hero-cta-row { gap: 8px; }
+      .hero-cta {
+        min-height: 44px;
+        padding: 11px 14px;
+        font-size: 0.9rem;
+        flex: 1 1 calc(50% - 8px);
+        justify-content: center;
+      }
+      .hero-cta--primary { flex: 1 1 100%; }
+      .hero-cta--ghost { flex: 1 1 100%; }
+      .hero-evidence-links {
+        gap: 8px 12px;
+        margin-top: 14px;
+        font-size: 0.9rem;
+      }
+      .hero-evidence-links a {
+        display: inline-block;
+        padding: 4px 0;
+        min-height: 32px;
+      }
+      .hero-evidence-sep { display: none; }
+    }
+    @media (max-width: 380px) {
+      .hero-cta { flex: 1 1 100%; }
+    }
+
+    /* 7) GitHub heatmap — make sure it doesn't dominate on narrow phones */
+    @media (max-width: 560px) {
+      .hero-github-heatmap {
+        padding: 14px 14px 12px;
+        border-radius: 16px;
+      }
+      .hero-github-heatmap .gh-kicker {
+        margin-bottom: 8px;
+        font-size: 9.5px;
+      }
+      #github-heatmap canvas { max-height: 110px; }
+    }
+
+    /* 8) Hero carousel + marquee — animation hurts low-end phones; pause and shrink */
+    @media (max-width: 600px) {
+      .hero-carousel { margin-top: 18px; }
+      .hero-creation {
+        padding: 10px 14px !important;
+        font-size: 0.86rem !important;
+      }
+      .hero-creation strong { font-size: 0.94rem !important; }
+      .hero-creation span { font-size: 0.72rem !important; }
+      .hero-marquee { margin-top: 14px; }
+      .hero-pill-track { font-size: 12px; }
+      .hero-pill-track .pill { padding: 6px 12px; }
+    }
+    @media (max-width: 480px) {
+      .hero-carousel-bleed .hero-carousel-tracks {
+        animation: none !important;
+      }
+      .hero-creation-row { will-change: auto !important; }
+    }
+
+    /* 9) Hero terminal — Mode switch and snapshot cards need to be touch-friendly */
+    @media (max-width: 768px) {
+      .hero-terminal { margin-top: 22px; }
+      .hero-terminal .terminal-shell { border-radius: 18px; }
+      .hero-terminal .terminal-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .hero-terminal .switch {
+        width: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .hero-terminal .switch::-webkit-scrollbar { display: none; }
+      .hero-terminal .switch button {
+        min-height: 40px;
+        padding: 8px 14px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .hero-terminal .snapshot-box {
+        padding: 14px;
+      }
+    }
+
+    /* 10) Site nav — make the hamburger a true 44×44 tap target */
+    @media (max-width: 920px) {
+      .site-nav-inner {
+        gap: 12px;
+        padding: 4px 0;
+      }
+      .brand-badge {
+        min-width: 44px;
+        height: 44px;
+        font-size: 18px;
+        border-radius: 12px;
+      }
+      .nav-actions { gap: 8px; }
+      .nav-icon-link {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+      .nav-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 12px;
+      }
+      .nav-toggle:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 2px;
+      }
+    }
+    @media (max-width: 560px) {
+      .nav-icon-link {
+        padding: 6px 8px;
+        font-size: 0;
+      }
+      .nav-icon-link::before {
+        font-size: 13px;
+        font-family: "Space Mono", monospace;
+        letter-spacing: 0.04em;
+      }
+      .nav-icon-link[href*="github"]::before { content: "GH"; }
+      .nav-icon-link[href*="linkedin"]::before { content: "Li"; }
+      .nav-meta-link { display: none !important; }
+    }
+
+    /* 11) Mobile nav drawer — promote Email + Résumé to primary CTAs */
+    .mobile-nav-actions { flex-wrap: wrap; }
+    .mobile-nav-cta-stack {
+      display: grid;
+      gap: 10px;
+      margin: 4px 0 18px;
+    }
+    .mobile-nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      background: rgba(99, 102, 241, 0.14);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .mobile-nav-cta--primary {
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      color: #07101f;
+      border-color: transparent;
+    }
+    .mobile-nav-availability {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(94, 234, 212, 0.35);
+      background: rgba(34, 211, 238, 0.1);
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+    }
+    .mobile-nav-availability strong { color: #5eead4; font-weight: 700; }
+    .mobile-nav-availability-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.55);
+      flex-shrink: 0;
+    }
+    .mobile-nav-links a {
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 4px 6px;
+      border-radius: 10px;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .mobile-nav-links a:hover,
+    .mobile-nav-links a:active {
+      background: rgba(99, 102, 241, 0.14);
+    }
+    :root[data-theme="light"] .mobile-nav-cta {
+      background: rgba(79, 70, 229, 0.08);
+      color: #0f172a;
+      border-color: rgba(79, 70, 229, 0.32);
+    }
+    :root[data-theme="light"] .mobile-nav-cta--primary {
+      background: linear-gradient(135deg, #4f46e5, #0891b2);
+      color: #ffffff;
+    }
+    :root[data-theme="light"] .mobile-nav-availability {
+      background: rgba(13, 148, 136, 0.08);
+      border-color: rgba(13, 148, 136, 0.28);
+      color: #0f172a;
+    }
+    :root[data-theme="light"] .mobile-nav-availability strong { color: #0d9488; }
+
+    /* 12) Tap targets across nav links */
+    .nav-link {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* 13) Project disclosure summary on mobile — bigger, easier to tap */
+    @media (max-width: 768px) {
+      .project-summary {
+        padding: 16px 16px;
+      }
+      .project-summary-grid {
+        gap: 10px;
+      }
+      .project-summary-title {
+        font-size: clamp(1.3rem, 5.5vw, 1.7rem);
+        line-height: 1.18;
+      }
+      .project-summary-blurb { font-size: 0.94rem; line-height: 1.5; }
+      .project-summary-metrics { gap: 6px; }
+      .metric-pill {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+      .project-summary-expand {
+        align-self: flex-start;
+        min-height: 36px;
+      }
+      .project-inner {
+        gap: 16px;
+      }
+      .project-panel { padding: 14px 15px; }
+      .project-panel-title {
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+      }
+      .project-panel p,
+      .project-panel li {
+        font-size: 0.93rem;
+        line-height: 1.5;
+      }
+      .project-open {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 10px 18px;
+      }
+      .detail-tags .tag {
+        font-size: 10.5px;
+        padding: 4px 8px;
+      }
+    }
+
+    /* 14) Visualizations — make iframes scale + add clear "open full" prompt on phones */
+    @media (max-width: 640px) {
+      .viz-jump-nav { padding: 12px 14px; }
+      .viz-jump-nav-links { gap: 8px; }
+      .viz-jump-nav-links a {
+        padding: 8px 12px;
+        font-size: 13px;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .visual-grid.visual-collage { gap: 14px; }
+      .visual-card { border-radius: 18px; }
+      .visual-card-body { padding: 14px !important; }
+      .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane {
+        min-height: clamp(220px, 70vw, 360px) !important;
+      }
+      .visual-collage .visual-card:not(.visual-card--feature) .visual-frame.viz-pane[data-viz-zoom] {
+        min-height: clamp(240px, 78vw, 400px) !important;
+      }
+      .visual-card h3 {
+        font-size: 1.05rem !important;
+        min-height: 0 !important;
+        -webkit-line-clamp: unset !important;
+      }
+      .visual-collage .visual-card--feature .visual-frame.visual-frame--dashboard {
+        min-height: clamp(220px, 56vw, 360px);
+      }
+      .visual-actions {
+        gap: 10px;
+      }
+      .visual-actions .resume-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 40px;
+        padding: 8px 14px;
+        border-radius: 10px;
+        background: rgba(99, 102, 241, 0.16);
+        border: 1px solid rgba(99, 102, 241, 0.32);
+        font-weight: 600;
+        text-decoration: none;
+      }
+      :root[data-theme="light"] .visual-actions .resume-link {
+        background: rgba(79, 70, 229, 0.08);
+        border-color: rgba(79, 70, 229, 0.26);
+      }
+    }
+
+    /* 15) Power BI mock collapses to scrollable list on small screens */
+    @media (max-width: 768px) {
+      .pb-mock .pb-layout { flex-direction: column; }
+      .pb-mock .pb-nav,
+      .pb-mock .pb-filters { display: none; }
+      .pb-mock .pb-canvas { padding: 8px; }
+      .pb-mock .pb-grid { gap: 8px; }
+      .pb-mock .pb-tile h4 { font-size: 0.78rem; }
+      .pb-mock .pb-tile p { font-size: 0.78rem; line-height: 1.42; }
+      .pb-mock .pb-tile.kpi span { font-size: 1.2rem; }
+    }
+
+    /* 16) Skills section — kicker labels on mobile */
+    @media (max-width: 768px) {
+      .skills-compact-band {
+        padding: 16px;
+        border-radius: 16px;
+      }
+      .skills-compact-lede { font-size: 0.96rem; line-height: 1.5; }
+      .skills-compact-chips { gap: 6px; }
+      .skills-compact-chip { font-size: 11.5px; padding: 5px 10px; }
+      .skills-atlas-disclosure { border-radius: 16px; }
+      .skills-atlas-summary {
+        padding: 14px 16px;
+        min-height: 56px;
+      }
+      .skills-atlas-summary-label { font-size: 0.95rem; }
+      .skills-atlas-summary-hint { font-size: 11px; }
+    }
+
+    /* 17) Experience cards on mobile */
+    @media (max-width: 768px) {
+      .experience-card { padding: 18px 16px; }
+      .experience-card h3 { font-size: 1.1rem; }
+      .experience-card ul { font-size: 0.93rem; }
+      .experience-contact {
+        flex-direction: column;
+        gap: 6px;
+        align-items: stretch;
+        text-align: center;
+      }
+      .experience-contact a {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* 18) Resume embed — viewable but not fighting the viewport */
+    @media (max-width: 768px) {
+      .resume-panel { padding: 18px 14px !important; }
+      .resume-pdf-name { font-size: 1.6rem !important; }
+      .resume-pdf-tagline { font-size: 0.92rem; }
+      .resume-pdf-contact {
+        font-size: 0.84rem !important;
+        line-height: 1.6 !important;
+      }
+      .resume-pdf-section { margin-bottom: 16px; }
+      .resume-pdf-h2 { font-size: 0.9rem !important; }
+      .resume-pdf-skills-grid { grid-template-columns: 1fr; gap: 10px; }
+      .resume-pdf-entry-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .resume-pdf-job-title { font-size: 0.95rem; }
+      .resume-pdf-date { font-size: 0.78rem; }
+      .resume-list li { font-size: 0.88rem; line-height: 1.45; }
+      .resume-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .resume-actions .btn,
+      .resume-actions .btn-soft {
+        flex: 1 1 calc(50% - 4px);
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+
+    /* 19) Footer on mobile */
+    @media (max-width: 768px) {
+      .site-footer { padding: 44px 0 calc(20px + env(safe-area-inset-bottom, 0px)); }
+      .site-footer-inner { gap: 28px; text-align: left; }
+      .site-footer h2 { font-size: 2.4rem; }
+      .footer-nav,
+      .footer-links { gap: 12px; }
+      .footer-nav a,
+      .footer-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+      }
+      .footer-availability {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+        font-size: 13px;
+      }
+      .footer-bottom { font-size: 10px; padding: 0 14px; line-height: 1.5; }
+    }
+
+    /* 20) Section dividers smaller on mobile to avoid wasted vertical space */
+    @media (max-width: 768px) {
+      .portfolio-section-divider {
+        height: 44px !important;
+      }
+    }
+
+    /* 21) Disable heavy decorative animations on phones — they burn battery and CPU */
+    @media (max-width: 768px) {
+      .hero-ambient .orb { display: none; }
+      .hero-grain { opacity: 0.04 !important; }
+    }
+
+    /* 22) Touch action — prevent accidental double-tap zoom on actionable UI */
+    .hero-cta,
+    .mobile-nav-cta,
+    .nav-toggle,
+    .nav-link,
+    .nav-icon-link,
+    .nav-meta-link,
+    .brand-badge,
+    .project-summary,
+    .skills-atlas-summary,
+    .ss-dot,
+    .viz-jump-nav-links a,
+    .visual-actions .resume-link,
+    .resume-actions .btn {
+      touch-action: manipulation;
+    }
+
+    /* 23) Improve form-like elements / scroll behavior on iOS */
+    html { scroll-padding-top: var(--section-scroll-margin); }
+    body { -webkit-tap-highlight-color: transparent; }
+
+    /* 24) Smoother scrollbars in horizontal-scroll containers */
+    .hero-terminal .switch,
+    .viz-jump-nav-links {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* 25) Body breathing background — drop on phones (saves paint) */
+    @media (max-width: 600px) {
+      body::after { display: none !important; }
+    }
+
+    /* 26) Prevent horizontal scroll from any rogue element (body only, to preserve sticky nav) */
+    body { overflow-x: hidden; overflow-x: clip; max-width: 100vw; }
+
+    /* 27) Hint that the viz previews are interactive — emphasise the "Open" link on phones */
+    @media (max-width: 640px) {
+      .visual-actions::before {
+        content: "Tap “Open” for the full interactive chart →";
+        display: block;
+        width: 100%;
+        font: 700 10px/1.4 "Space Mono", monospace;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted-soft);
+        margin-bottom: 6px;
+      }
+      .visual-card--feature .visual-actions::before { display: none; }
+    }
+  </style>
 </head>
 <body class="intro-running">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -5133,7 +6031,11 @@
         <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" title="Toggle light and dark theme">
           <span class="theme-toggle-sr">Toggle color theme</span>
         </button>
-        <a class="nav-meta-link" href="mailto:Jamesliebel40@gmail.com">Email</a>
+        <a class="nav-resume-cta" href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer" aria-label="Open résumé in new tab">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Résumé</span>
+        </a>
+        <a class="nav-meta-link" href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D">Email</a>
         <a class="nav-icon-link" href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a class="nav-icon-link" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <div class="nav-availability" aria-label="Available for internships">
@@ -5162,8 +6064,12 @@
           <p class="eyebrow">B.S. Data Science &amp; Statistics · University of Chicago · Class of 2030</p>
           <h1 class="hero-title" id="heroTitle" data-headline>
             <span class="hero-name">James Liebel</span>
-            <span class="hero-line">Applied Data Scientist &amp; Developer</span>
+            <span class="hero-line">Applied Data Scientist · Summer 2026 internship candidate</span>
           </h1>
+          <p class="hero-status-line" aria-label="Availability">
+            <span class="hero-status-dot" aria-hidden="true"></span>
+            <span><strong>Available June&nbsp;–&nbsp;September 2026</strong> · Open to remote, hybrid, or relocation · Cincinnati, OH base · Chicago / NYC / SF / remote preferred</span>
+          </p>
           <div class="hero-github" id="heroGithub" aria-label="GitHub contribution activity">
             <div id="github-heatmap" class="hero-github-heatmap" hidden>
               <p class="gh-kicker">
@@ -5182,25 +6088,54 @@
             <span class="hero-tech-pill">Power BI</span>
             <span class="hero-tech-pill">FastAPI</span>
           </div>
-          <div class="hero-start-here" aria-label="Quick evidence links">
-            <span class="hero-start-here-label">Start here · Recruiter shortcut</span>
-            <div class="hero-start-here-links">
-              <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">Résumé PDF</a>
+          <div class="hero-start-here" aria-label="Recruiter quick links">
+            <span class="hero-start-here-label">Recruiter quick links · 30-second screen</span>
+            <div class="hero-cta-row">
+              <a class="hero-cta hero-cta--primary" href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D&amp;body=Hi%20James%2C%0A%0AI%27m%20a%20recruiter%20at%20%5BCompany%5D%20and%20came%20across%20your%20portfolio.%20I%27d%20like%20to%20talk%20about%20our%20Summer%202026%20%5Brole%5D%20internship.%0A%0A%E2%80%94%20%5BName%5D">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>Email me</span>
+              </a>
+              <a class="hero-cta" href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Résumé</span>
+              </a>
+              <a class="hero-cta" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.55v11.45z"/></svg>
+                <span>LinkedIn</span>
+              </a>
+              <a class="hero-cta" href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.02 1.75 2.69 1.24 3.34.95.1-.74.4-1.24.72-1.53-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.6.23 2.78.11 3.07.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.35.78 1.04.78 2.1v3.11c0 .3.21.66.8.55C20.21 21.38 23.5 17.07 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+                <span>GitHub</span>
+              </a>
+              <a class="hero-cta hero-cta--ghost" href="tel:+15139651578" aria-label="Call James Liebel at 513-965-1578">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>(513) 965-1578</span>
+              </a>
+            </div>
+            <div class="hero-evidence-links">
+              <span class="hero-evidence-label">Or jump to evidence:</span>
               <a href="#projects">ML projects &amp; metrics</a>
-              <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com (live)</a>
+              <span class="hero-evidence-sep" aria-hidden="true">·</span>
               <a href="#visualizations">Dashboards &amp; charts</a>
+              <span class="hero-evidence-sep" aria-hidden="true">·</span>
+              <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com (live client site)</a>
             </div>
           </div>
           <div class="hero-signal-band">
             <article class="hero-metric">
-              <small>Target</small>
-              <strong>Summer 2026</strong>
-              <span>Internships in data science, ML engineering, or analytics engineering.</span>
+              <small>Available</small>
+              <strong>Jun – Sep 2026</strong>
+              <span>Summer 2026 internships in data science, ML engineering, or analytics engineering. 10–14 weeks.</span>
+            </article>
+            <article class="hero-metric">
+              <small>Work style</small>
+              <strong>Remote · Hybrid · Relocate</strong>
+              <span>Cincinnati, OH base · open to relocating to Chicago, NYC, SF, Seattle, or remote. U.S. work-authorized, no sponsorship needed.</span>
             </article>
             <article class="hero-metric">
               <small>Credentials</small>
-              <strong>IBM · PL-300</strong>
-              <span>IBM Data Science Professional (Python, ML, SQL, visualization — 12-course sequence); Microsoft PL-300 — Power BI Data Analyst (Microsoft's BI &amp; dashboard certification); Google Cloud ML Engineer in progress.</span>
+              <strong>IBM · PL-300 · GCP*</strong>
+              <span>IBM Data Science Professional (12-course Python/ML/SQL/viz); Microsoft PL-300 Power BI Data Analyst; Google Cloud ML Engineer in progress.</span>
             </article>
           </div>
             </div>
@@ -5305,7 +6240,7 @@
               <span class="pill">FastAPI · React · Next.js · TypeScript</span>
               <span class="pill">Power BI · DAX · PL-300 · D3.js</span>
               <span class="pill">Prompting · Local AI · Automation</span>
-              <a class="pill" href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a>
+              <a class="pill" href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D">Jamesliebel40@gmail.com</a>
               <span class="pill">Python · Pandas · NumPy · SciPy</span>
               <span class="pill">SQL · ETL · Data Warehousing</span>
               <span class="pill">Scikit-learn · XGBoost · TensorFlow</span>
@@ -5532,7 +6467,7 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Machine Learning</p>
                   <h3 class="project-summary-title">Credit card fraud detection</h3>
-                  <p class="project-summary-blurb">Binary classifier on <strong>285k</strong> card transactions, tuned for <strong>fraud recall</strong> on a held-out set. Headline metrics match the executed notebook on GitHub.</p>
+                  <p class="project-summary-blurb">Caught <strong>80%</strong> of fraud at <strong>87%</strong> precision on <strong>285k</strong> card transactions (ROC-AUC <strong>0.939</strong>) — XGBoost + SMOTE on a 0.17% positive class. Numbers below tie directly to executed cells in the GitHub notebook.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
                   <span class="metric-pill">80% fraud recall</span>
@@ -5687,12 +6622,13 @@
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Client Delivery</p>
                   <h3 class="project-summary-title">CustomStrat</h3>
-                  <p class="project-summary-blurb">Live client site at <strong>customstrat.com</strong>: <strong>Next.js 14</strong>, static deploy to <strong>GitHub Pages</strong>, custom domain and HTTPS.</p>
+                  <p class="project-summary-blurb">Live advisory site shipped to <strong>200+ unique users</strong> in 14 days (73.9% new). <strong>Next.js 14</strong> + TypeScript, static deploy to <strong>GitHub Pages</strong>, custom domain &amp; HTTPS. Paired with an NLP-driven LinkedIn bot that lifted impressions <strong>+31%</strong> in 28 days.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">Live site</span>
+                  <span class="metric-pill">200+ users · 14 days</span>
+                  <span class="metric-pill">+31% LinkedIn impressions</span>
                   <span class="metric-pill">Next.js 14</span>
-                  <span class="metric-pill">GitHub Pages</span>
+                  <span class="metric-pill">Live site</span>
                 </div>
                 <span class="project-summary-expand">
                   <span class="project-summary-expand-label">Expand</span>
@@ -6131,13 +7067,15 @@
           </article>
         </div>
         <p class="experience-contact">
-          <a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a>
+          <a href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D">Jamesliebel40@gmail.com</a>
+          ·
+          <a href="tel:+15139651578">(513) 965-1578</a>
           ·
           <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a>
           ·
           <a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           ·
-          <a href="#resume">Résumé (PDF)</a>
+          <a href="#resume">Résumé</a>
         </p>
       </div>
     </section>
@@ -6164,7 +7102,7 @@
               <p class="resume-pdf-tagline">Data Science &amp; Statistics · University of Chicago &apos;30</p>
               <p class="resume-pdf-contact">
                 (513) 965-1578 |
-                <a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a> |
+                <a href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D">Jamesliebel40@gmail.com</a> |
                 <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">github.com/James-Liebel</a> |
                 <a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">linkedin.com/in/james-liebel</a> |
                 Cincinnati, OH
@@ -6340,9 +7278,9 @@
 
     <footer class="site-footer">
       <div class="site-footer-inner">
-        <div class="footer-column"><h2>JL</h2><p>James Liebel · University of Chicago · Class of 2030</p><a href="mailto:Jamesliebel40@gmail.com">Jamesliebel40@gmail.com</a></div>
+        <div class="footer-column"><h2>JL</h2><p>James Liebel · University of Chicago · Class of 2030</p><a href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D">Jamesliebel40@gmail.com</a><br><a href="tel:+15139651578">(513) 965-1578</a></div>
         <div class="footer-column"><p class="footer-kicker">Navigate</p><nav class="footer-nav" aria-label="Footer navigation"><a href="#hero">Home</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#visualizations">Visualizations</a><a href="#experience">Experience</a><a href="#resume">Resume</a></nav></div>
-        <div class="footer-column"><p class="footer-kicker">Elsewhere</p><div class="footer-links"><a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div class="footer-availability"><span class="footer-availability-dot" aria-hidden="true"></span><span>Seeking Summer 2026 internships</span></div></div>
+        <div class="footer-column"><p class="footer-kicker">Elsewhere</p><div class="footer-links"><a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a></div><div class="footer-availability"><span class="footer-availability-dot" aria-hidden="true"></span><span>Available Jun&nbsp;–&nbsp;Sep 2026 · DS / ML / Analytics internships</span></div></div>
       </div>
       <div class="footer-divider"></div>
       <div class="footer-bottom">Built by James Liebel with data in mind · 2026</div>
@@ -6358,6 +7296,25 @@
   </div>
   </div>
 
+  <a class="mobile-contact-fab" id="mobileContactFab" href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D" aria-label="Email James about Summer 2026 internship">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    <span>Email James</span>
+  </a>
+  <script>
+  (function () {
+    var hero = document.getElementById('hero');
+    if (!hero || !('IntersectionObserver' in window)) return;
+    var body = document.body;
+    var io = new IntersectionObserver(function (entries) {
+      var e = entries[0];
+      if (!e) return;
+      // Show FAB only after the hero has scrolled out of view.
+      body.classList.toggle('show-mobile-fab', e.intersectionRatio < 0.15);
+    }, { threshold: [0, 0.15, 0.5, 1] });
+    io.observe(hero);
+  })();
+  </script>
+
   <div class="mobile-nav" id="mobileNav" hidden>
     <div class="mobile-nav-inner">
       <div class="mobile-nav-top">
@@ -6365,6 +7322,15 @@
         <button class="nav-toggle" id="navClose" type="button" aria-label="Close navigation">
           <span></span><span></span><span></span>
         </button>
+      </div>
+      <div class="mobile-nav-availability" aria-label="Availability">
+        <span class="mobile-nav-availability-dot" aria-hidden="true"></span>
+        <span><strong>Available Jun – Sep 2026</strong> · DS / ML / Analytics intern</span>
+      </div>
+      <div class="mobile-nav-cta-stack">
+        <a class="mobile-nav-cta mobile-nav-cta--primary" href="mailto:Jamesliebel40@gmail.com?subject=Summer%202026%20Data%20Science%20Internship%20%E2%80%94%20%5BCompany%5D">Email me</a>
+        <a class="mobile-nav-cta" href="tel:+15139651578">Call (513) 965-1578</a>
+        <a class="mobile-nav-cta" href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">Open résumé</a>
       </div>
       <nav class="mobile-nav-links" aria-label="Mobile">
         <a href="#hero">Home</a>
@@ -6397,6 +7363,21 @@
     requestAnimationFrame(function () {
       if (window.portfolioForceScrollTop) window.portfolioForceScrollTop();
       if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      var qs = (window.location && window.location.search) || '';
+      var scrollMatch = qs.match(/[?&]scrollto=([^&]+)/);
+      if (scrollMatch) {
+        // Defer the scroll until after intro cleanup so we don't fight portfolioForceScrollTop.
+        setTimeout(function () {
+          try {
+            var target = document.getElementById(decodeURIComponent(scrollMatch[1]));
+            if (!target) return;
+            var rect = target.getBoundingClientRect();
+            var y = rect.top + (window.pageYOffset || window.scrollY || 0) - 4;
+            window.scrollTo(0, y);
+            if (window.ScrollTrigger) window.ScrollTrigger.refresh(true);
+          } catch (e) {}
+        }, 800);
+      }
     });
   }
 
@@ -6410,6 +7391,9 @@
   try {
     skipIntro = sessionStorage.getItem('portfolio-intro-seen') === '1';
   } catch (e) { /* ignore */ }
+  if (!skipIntro && typeof window !== 'undefined' && window.location && /[?&]nointro\b/.test(window.location.search)) {
+    skipIntro = true;
+  }
 
   if (skipIntro) {
     document.body.classList.remove('intro-running');
@@ -6612,7 +7596,11 @@
 (function () {
   var canvas = document.getElementById('dragon-bg');
   if (!canvas || !canvas.getContext) return;
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Force static rendering on phones — RAF animation is the main battery hit on mobile.
+  var isSmallViewport = window.matchMedia('(max-width: 768px)').matches;
+  var isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    || (isSmallViewport && isCoarsePointer);
   var ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
   var off = document.createElement('canvas');
   var octx = off.getContext('2d', { alpha: true });

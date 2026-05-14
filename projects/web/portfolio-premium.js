@@ -75,7 +75,10 @@
     if (document.getElementById("siteIntro")) {
       return;
     }
-    if (reduced) {
+    var noIntroFlag = typeof window !== 'undefined'
+      && window.location
+      && /[?&]nointro\b/.test(window.location.search);
+    if (reduced || noIntroFlag) {
       document.body.style.opacity = "1";
       document.body.style.transform = "none";
       finishIntro();

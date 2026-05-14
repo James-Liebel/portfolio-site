@@ -642,13 +642,22 @@
     });
 
     if (heroTitle && !heroTitle.closest('.journey-overlay-card')) {
-      var heroParts = heroTitle.querySelectorAll('.hero-name, .hero-line:not(.hero-rotator)');
+      // Only split .hero-name for character-level animation. Splitting .hero-line
+      // makes each character an inline-block, which lets the browser line-break
+      // mid-word — animate hero-line as a single block instead.
+      var heroNameEl = heroTitle.querySelector('.hero-name');
+      var heroLineEl = heroTitle.querySelector('.hero-line:not(.hero-rotator)');
       var allHeroChars = [];
-      heroParts.forEach(function (part) {
-        splitText(part).forEach(function (c) {
+      if (heroNameEl) {
+        splitText(heroNameEl).forEach(function (c) {
           allHeroChars.push(c);
         });
-      });
+      }
+      var heroLineForAnim = null;
+      if (heroLineEl) {
+        window.gsap.set(heroLineEl, { y: '14px', opacity: 0 });
+        heroLineForAnim = heroLineEl;
+      }
       var rotLine = heroTitle.querySelector('.hero-rotator');
       if (rotLine) {
         window.gsap.set(rotLine, { y: '110%', opacity: 0 });
@@ -656,30 +665,40 @@
       if (allHeroChars.length) {
         window.gsap.set(allHeroChars, { y: '110%', opacity: 0 });
       }
-      if (allHeroChars.length || rotLine) {
-        window.addEventListener(
-          'intro-complete',
-          function () {
-            if (allHeroChars.length) {
-              window.gsap.to(allHeroChars, {
-                y: '0%',
-                opacity: 1,
-                duration: 0.6,
-                ease: 'power3.out',
-                stagger: 0.018
-              });
-            }
-            if (rotLine) {
-              window.gsap.to(rotLine, {
-                y: '0%',
-                opacity: 1,
-                duration: 0.55,
-                ease: 'power3.out'
-              });
-            }
-          },
-          { once: true }
-        );
+      if (allHeroChars.length || rotLine || heroLineForAnim) {
+        var revealHero = function () {
+          if (allHeroChars.length) {
+            window.gsap.to(allHeroChars, {
+              y: '0%',
+              opacity: 1,
+              duration: 0.6,
+              ease: 'power3.out',
+              stagger: 0.018
+            });
+          }
+          if (heroLineForAnim) {
+            window.gsap.to(heroLineForAnim, {
+              y: '0px',
+              opacity: 1,
+              duration: 0.55,
+              ease: 'power3.out',
+              delay: 0.18
+            });
+          }
+          if (rotLine) {
+            window.gsap.to(rotLine, {
+              y: '0%',
+              opacity: 1,
+              duration: 0.55,
+              ease: 'power3.out'
+            });
+          }
+        };
+        if (window.__portfolioIntroExitHandled) {
+          revealHero();
+        } else {
+          window.addEventListener('intro-complete', revealHero, { once: true });
+        }
       }
     }
   }
