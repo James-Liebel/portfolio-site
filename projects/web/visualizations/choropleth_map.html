@@ -375,6 +375,11 @@
   </div>
 
   <script>
+    // Escape dataset-sourced strings before they reach d3's .html() (innerHTML) sink.
+    const esc = (value) => String(value).replace(/[&<>"']/g, (ch) => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]
+    ));
+
     if (window !== window.top) {
       document.getElementById('sidebar').style.display = 'none';
       document.body.style.display = 'block';
@@ -598,7 +603,7 @@
 
             tooltip.style("opacity", 1)
               .html(`
-                 <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 6px;">${name}</div>
+                 <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 6px;">${esc(name)}</div>
                  <div style="font-weight: 600; margin-bottom: 8px;">
                      ${statusHTML}
                  </div>
@@ -714,12 +719,12 @@
             d.Status.includes("Not In Compliance") ? "#ef4444" : "#f59e0b";
           tooltip.style("opacity", 1)
             .html(`
-              <div style="font-weight: 600; color: ${typeColors[d.Type]}; font-size: 1rem;">${d.Name}</div>
-              <div style="color: #cbd5e1; font-size: 0.85rem; margin: 4px 0;">${d.Address}</div>
+              <div style="font-weight: 600; color: ${typeColors[d.Type]}; font-size: 1rem;">${esc(d.Name)}</div>
+              <div style="color: #cbd5e1; font-size: 0.85rem; margin: 4px 0;">${esc(d.Address)}</div>
               <div style="font-size: 0.8rem; color: #94a3b8;">
-                Type: <span style="color: #fff;">${d.Type}</span><br>
-                Status: <span style="color: ${statusColor};">${d.Status}</span><br>
-                Neighborhood: <span style="color: #fff;">${d.Neighborhood || 'N/A'}</span>
+                Type: <span style="color: #fff;">${esc(d.Type)}</span><br>
+                Status: <span style="color: ${statusColor};">${esc(d.Status)}</span><br>
+                Neighborhood: <span style="color: #fff;">${esc(d.Neighborhood || 'N/A')}</span>
               </div>
             `);
         })

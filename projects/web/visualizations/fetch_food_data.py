@@ -3,7 +3,7 @@ import json
 
 # Fetch a large batch of records
 url = "https://data.cincinnati-oh.gov/resource/rg6p-b3h3.json?$limit=50000"
-response = requests.get(url)
+response = requests.get(url, timeout=30)
 data = response.json()
 
 print(f"Total records fetched: {len(data)}")

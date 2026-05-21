@@ -99,6 +99,11 @@
   </div>
 
   <script>
+    // Escape dataset-sourced strings before they reach d3's .html() (innerHTML) sink.
+    const esc = (value) => String(value).replace(/[&<>"']/g, (ch) => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]
+    ));
+
     const width = 850;
     const height = 550;
     const margin = { top: 20, right: 100, bottom: 60, left: 80 };
@@ -156,9 +161,9 @@
           .on("mouseover", (event, d) => {
             tooltip.transition().duration(200).style("opacity", 1);
             tooltip.html(`
-                            <strong>${d.Name}: ${d.Nationality}</strong><br/>
-                            Year: ${d.Year}, Time: ${d.Time}<br/>
-                            ${d.Doping ? '<br/>' + d.Doping : 'No doping allegations'}
+                            <strong>${esc(d.Name)}: ${esc(d.Nationality)}</strong><br/>
+                            Year: ${esc(d.Year)}, Time: ${esc(d.Time)}<br/>
+                            ${d.Doping ? '<br/>' + esc(d.Doping) : 'No doping allegations'}
                         `)
               .style("left", (event.pageX + 20) + "px")
               .style("top", (event.pageY - 40) + "px");

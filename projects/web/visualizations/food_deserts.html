@@ -270,6 +270,11 @@
         </div>
 
         <script>
+            // Escape dataset-sourced strings before they reach d3's .html() (innerHTML) sink.
+            const esc = (value) => String(value).replace(/[&<>"']/g, (ch) => (
+              { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]
+            ));
+
             if (window !== window.top) {
               document.getElementById('sidebar').style.display = 'none';
               document.body.style.display = 'block';
@@ -451,7 +456,7 @@
 
                 tooltip.style("opacity", 1)
                     .html(`
-             <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 4px;">${name}</div>
+             <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 4px;">${esc(name)}</div>
              <div style="font-weight: 600; color: ${statusColor}; margin-bottom: 8px; font-size: 0.8rem; letter-spacing: 0.05em; display: flex; align-items: center;">
                 ${statusTitle} ${swampBadge}
              </div>
