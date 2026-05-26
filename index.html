@@ -1271,112 +1271,6 @@
       color: var(--text);
       font-size: 1rem;
     }
-    .hero-carousel {
-      margin-top: 28px;
-      overflow: visible;
-    }
-    .hero-carousel-bleed {
-      position: relative;
-      left: 50%;
-      width: 100vw;
-      max-width: none;
-      margin-left: 0;
-      margin-right: 0;
-      /* True edge-to-edge from centered content; avoids column-width miscentering */
-      transform: translateX(-50%);
-      padding: 22px 0 24px;
-      overflow: hidden;
-      z-index: 0;
-    }
-    @supports (width: 100dvw) {
-      .hero-carousel-bleed {
-        width: 100dvw;
-        transform: translateX(-50%);
-      }
-    }
-    .hero-carousel-bleed .hero-carousel-tracks {
-      animation: hero-carousel-tracks-breathe 5.5s ease-in-out infinite;
-    }
-    @keyframes hero-carousel-tracks-breathe {
-      0%, 100% { opacity: 0.78; filter: brightness(0.94); }
-      50% { opacity: 1; filter: brightness(1.05); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-carousel-bleed .hero-carousel-tracks {
-        animation: none !important;
-        opacity: 1;
-        filter: none;
-      }
-    }
-    .hero-carousel-tracks {
-      display: grid;
-      gap: 14px;
-    }
-    .hero-creation-row {
-      overflow: hidden;
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      padding: 14px 0;
-      box-sizing: content-box;
-    }
-    @keyframes hero-creation-marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-33.3333333333%); }
-    }
-    .hero-creation-track {
-      display: flex;
-      gap: 12px;
-      width: max-content;
-      animation: hero-creation-marquee 50s linear infinite;
-      will-change: transform;
-    }
-    .hero-creation-row.reverse .hero-creation-track {
-      animation-duration: 58s;
-      animation-direction: reverse;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-creation-track {
-        animation-duration: 28s !important;
-      }
-      .hero-creation-row.reverse .hero-creation-track {
-        animation-direction: reverse !important;
-      }
-    }
-    .hero-creation-track .hero-creation {
-      animation: hero-creation-card-float 3.6s ease-in-out infinite;
-    }
-    .hero-creation-track .hero-creation:nth-child(6n+1) { animation-delay: 0s; }
-    .hero-creation-track .hero-creation:nth-child(6n+2) { animation-delay: 0.35s; }
-    .hero-creation-track .hero-creation:nth-child(6n+3) { animation-delay: 0.7s; }
-    .hero-creation-track .hero-creation:nth-child(6n+4) { animation-delay: 1.05s; }
-    .hero-creation-track .hero-creation:nth-child(6n+5) { animation-delay: 1.4s; }
-    .hero-creation-track .hero-creation:nth-child(6n) { animation-delay: 1.75s; }
-    @keyframes hero-creation-card-float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      40% { transform: translateY(-4px) rotate(0.35deg); }
-      70% { transform: translateY(3px) rotate(-0.3deg); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .hero-creation-track .hero-creation {
-        animation: none !important;
-      }
-    }
-    .hero-creation {
-      min-width: 180px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-    }
-    .hero-creation strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-    .hero-creation span {
-      color: var(--muted-soft);
-      font-size: 13px;
-    }
     .hero-marquee {
       position: relative;
       left: 50%;
@@ -3173,6 +3067,17 @@
       margin: 0;
       flex-shrink: 0;
       min-height: calc(1.22em * 2);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .visual-collage .visual-card:not(.visual-card--feature) .visual-note {
+      margin: 8px 0 0;
+      font-size: clamp(0.78rem, 1vw, 0.86rem);
+      line-height: 1.4;
+      color: var(--muted);
+      flex-shrink: 0;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -5543,24 +5448,11 @@
       #github-heatmap canvas { max-height: 110px; }
     }
 
-    /* 8) Hero carousel + marquee — animation hurts low-end phones; pause and shrink */
+    /* 8) Hero skills marquee — shrink on low-end phones */
     @media (max-width: 600px) {
-      .hero-carousel { margin-top: 18px; }
-      .hero-creation {
-        padding: 10px 14px !important;
-        font-size: 0.86rem !important;
-      }
-      .hero-creation strong { font-size: 0.94rem !important; }
-      .hero-creation span { font-size: 0.72rem !important; }
       .hero-marquee { margin-top: 14px; }
       .hero-pill-track { font-size: 12px; }
       .hero-pill-track .pill { padding: 6px 12px; }
-    }
-    @media (max-width: 480px) {
-      .hero-carousel-bleed .hero-carousel-tracks {
-        animation: none !important;
-      }
-      .hero-creation-row { will-change: auto !important; }
     }
 
     /* 9) Hero terminal — Mode switch and snapshot cards need to be touch-friendly */
@@ -6177,57 +6069,6 @@
           </div>
         </aside>
 
-          </div>
-
-          <div class="hero-carousel" aria-label="Work and tools carousel">
-            <div class="hero-carousel-bleed">
-              <div class="hero-carousel-tracks">
-                <div class="hero-creation-row">
-                  <div class="hero-creation-track">
-                    <article class="hero-creation"><strong>Credit Card Fraud Detection</strong><span>ML pipeline</span></article>
-                    <article class="hero-creation"><strong>JimAI</strong><span>Local AI workspace</span></article>
-                    <article class="hero-creation"><strong>CustomStrat</strong><span>Live client website</span></article>
-                    <article class="hero-creation"><strong>NLP notebooks</strong><span>VADER + TF-IDF</span></article>
-                    <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
-                    <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
-                    <article class="hero-creation"><strong>Credit Card Fraud Detection</strong><span>ML pipeline</span></article>
-                    <article class="hero-creation"><strong>JimAI</strong><span>Local AI workspace</span></article>
-                    <article class="hero-creation"><strong>CustomStrat</strong><span>Live client website</span></article>
-                    <article class="hero-creation"><strong>NLP notebooks</strong><span>VADER + TF-IDF</span></article>
-                    <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
-                    <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
-                    <article class="hero-creation"><strong>Credit Card Fraud Detection</strong><span>ML pipeline</span></article>
-                    <article class="hero-creation"><strong>JimAI</strong><span>Local AI workspace</span></article>
-                    <article class="hero-creation"><strong>CustomStrat</strong><span>Live client website</span></article>
-                    <article class="hero-creation"><strong>NLP notebooks</strong><span>VADER + TF-IDF</span></article>
-                    <article class="hero-creation"><strong>Power BI</strong><span>Dashboard delivery</span></article>
-                    <article class="hero-creation"><strong>D3 Maps</strong><span>Interactive visuals</span></article>
-                  </div>
-                </div>
-                <div class="hero-creation-row reverse">
-                  <div class="hero-creation-track">
-                    <article class="hero-creation"><strong>Python</strong><span>Core language</span></article>
-                    <article class="hero-creation"><strong>SQL</strong><span>Modeling + ETL</span></article>
-                    <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
-                    <article class="hero-creation"><strong>React</strong><span>Usable interfaces</span></article>
-                    <article class="hero-creation"><strong>XGBoost</strong><span>Tabular prediction</span></article>
-                    <article class="hero-creation"><strong>D3.js</strong><span>Interactive viz</span></article>
-                    <article class="hero-creation"><strong>Python</strong><span>Core language</span></article>
-                    <article class="hero-creation"><strong>SQL</strong><span>Modeling + ETL</span></article>
-                    <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
-                    <article class="hero-creation"><strong>React</strong><span>Usable interfaces</span></article>
-                    <article class="hero-creation"><strong>XGBoost</strong><span>Tabular prediction</span></article>
-                    <article class="hero-creation"><strong>D3.js</strong><span>Interactive viz</span></article>
-                    <article class="hero-creation"><strong>Python</strong><span>Core language</span></article>
-                    <article class="hero-creation"><strong>SQL</strong><span>Modeling + ETL</span></article>
-                    <article class="hero-creation"><strong>FastAPI</strong><span>Back-end delivery</span></article>
-                    <article class="hero-creation"><strong>React</strong><span>Usable interfaces</span></article>
-                    <article class="hero-creation"><strong>XGBoost</strong><span>Tabular prediction</span></article>
-                    <article class="hero-creation"><strong>D3.js</strong><span>Interactive viz</span></article>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div class="hero-marquee" aria-label="Skills">
@@ -6929,6 +6770,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>United States GDP Growth Dynamics</h3>
+              <p class="visual-note">U.S. GDP charted across decades as an interactive time series — hover any bar for its exact date and value.</p>
               <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
@@ -6945,6 +6787,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>Doping in Professional Cycling</h3>
+              <p class="visual-note">The 35 fastest ascents of Alpe d'Huez, plotted by year and time, with doping allegations flagged in color.</p>
               <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
@@ -6961,6 +6804,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>Global Temperature Heatmap</h3>
+              <p class="visual-note">Monthly global land-surface temperature from 1753–2015, color-coded against the 8.66 °C baseline.</p>
               <div class="visual-frame viz-pane" data-viz-base-w="1200" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
@@ -6977,6 +6821,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js</span>
               <h3>Cincinnati Food Access Map</h3>
+              <p class="visual-note">Neighborhood-level food access across Cincinnati, rendered as a GeoJSON choropleth.</p>
               <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
@@ -6993,6 +6838,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>Multi-Dataset Treemap Dashboard</h3>
+              <p class="visual-note">Switch between datasets to compare category sizes in one interactive treemap.</p>
               <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="800" data-viz-zoom="1.26">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
@@ -7009,6 +6855,7 @@
             <div class="visual-card-body">
               <span class="visual-label">D3.js</span>
               <h3>Cincinnati Food Deserts</h3>
+              <p class="visual-note">Where healthy food is hard to reach — Cincinnati's food deserts and swamps, mapped from local data.</p>
               <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
