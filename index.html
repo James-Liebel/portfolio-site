@@ -167,26 +167,25 @@
       animation: body-field-breathe 10.5s ease-in-out infinite;
       transform-origin: 50% 45%;
     }
+    /* Only opacity + transform animate here so this full-viewport layer stays
+       on the compositor and never triggers a per-frame repaint while scrolling.
+       (Animating `filter` previously repainted the whole background each frame.) */
     @keyframes body-field-breathe {
       0%, 100% {
         opacity: 0.72;
         transform: translate3d(0, 0, 0) scale(1.09);
-        filter: brightness(1) saturate(1);
       }
       28% {
         opacity: 0.95;
         transform: translate3d(0.35%, -0.45%, 0) scale(0.94);
-        filter: brightness(1.1) saturate(1.14);
       }
       55% {
         opacity: 0.82;
         transform: translate3d(-0.3%, 0.4%, 0) scale(1.04);
-        filter: brightness(1.04) saturate(1.06);
       }
       78% {
         opacity: 0.9;
         transform: translate3d(0.2%, 0.12%, 0) scale(0.97);
-        filter: brightness(1.07) saturate(1.1);
       }
     }
     :root[data-theme="light"] body::after {
@@ -200,17 +199,14 @@
       0%, 100% {
         opacity: 0.65;
         transform: translate3d(0, 0, 0) scale(1.06);
-        filter: brightness(1) saturate(1);
       }
       35% {
         opacity: 0.88;
         transform: translate3d(0.25%, -0.35%, 0) scale(0.95);
-        filter: brightness(1.04) saturate(1.08);
       }
       70% {
         opacity: 0.74;
         transform: translate3d(-0.2%, 0.25%, 0) scale(1.02);
-        filter: brightness(1.02) saturate(1.03);
       }
     }
     /* Connected honeycomb “scales” + depth breathing toward / away from viewer */
@@ -338,6 +334,34 @@
         opacity: 0.32;
       }
     }
+
+    /* Low-power devices (class set by JS): the smooth-scroll + scrubbed parallax
+       pipeline is already disabled for these in JS. Here we also strip the
+       always-on paint costs that make scrolling stutter — backdrop blur that
+       repaints every frame behind the sticky bar, the large blurred ambient
+       orbs, and the animated full-viewport background. */
+    html.perf-lite .site-nav {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: rgba(7, 10, 20, 0.96);
+    }
+    html.perf-lite[data-theme="light"] .site-nav {
+      background: rgba(255, 255, 255, 0.97);
+    }
+    html.perf-lite .hero-github-heatmap,
+    html.perf-lite .visual-card,
+    html.perf-lite .mobile-nav,
+    html.perf-lite .custom-cursor {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    html.perf-lite .orb { display: none; }
+    html.perf-lite body::before,
+    html.perf-lite body::after {
+      animation: none !important;
+      filter: none !important;
+      transform: none !important;
+    }
     body.menu-open { overflow: hidden; }
 
     a { color: inherit; text-decoration: none; }
@@ -436,8 +460,11 @@
       top: 0;
       z-index: 1300;
       padding-top: env(safe-area-inset-top, 0px);
-      backdrop-filter: blur(18px);
-      background: rgba(7, 10, 20, 0.72);
+      /* Sticky bar re-blurs every scroll frame; keep the radius modest so the
+         repaint stays cheap. */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(7, 10, 20, 0.78);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.45s ease, background 0.25s ease;
     }
@@ -474,7 +501,8 @@
     .nav-links {
       position: relative;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      flex-shrink: 0;
       gap: 6px;
       align-items: center;
       justify-content: center;
@@ -593,7 +621,7 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
-    @media (min-width: 980px) {
+    @media (min-width: 1280px) {
       .nav-availability { display: flex; }
     }
     .nav-availability-dot,
@@ -870,13 +898,36 @@
       border-color: rgba(15, 23, 42, 0.12);
       box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
     }
-    .hero-github-heatmap .gh-kicker {
+    .hero-github-heatmap .gh-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px 14px;
       margin-bottom: 14px;
+    }
+    .hero-github-heatmap .gh-kicker {
+      margin: 0;
       font: 700 10px/1.2 "Space Mono", monospace;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: #22d3ee;
       text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+    }
+    .hero-github-heatmap .gh-total {
+      font: 700 11px/1.2 "Space Mono", monospace;
+      letter-spacing: 0.04em;
+      color: #e2e8f0;
+    }
+    .hero-github-heatmap .gh-total strong {
+      color: #c084fc;
+      font-weight: 800;
+    }
+    :root[data-theme="light"] .hero-github-heatmap .gh-total {
+      color: #334155;
+    }
+    :root[data-theme="light"] .hero-github-heatmap .gh-total strong {
+      color: #7c3aed;
     }
     .hero-github-heatmap .gh-kicker a {
       color: inherit;
@@ -3898,36 +3949,16 @@
     }
 
     @media (min-width: 920px) {
-      .nav-availability { display: inline-flex; }
       .section-head-grid { grid-template-columns: 1.05fr 0.95fr; }
       .hero-top-row {
         display: grid;
         grid-template-columns: 1.05fr 0.95fr;
         gap: 32px;
-        align-items: stretch;
+        align-items: start;
       }
-      .hero-terminal {
-        height: 100%;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-      }
-      .hero-terminal .terminal-shell {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-      }
-      .hero-terminal .terminal-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-      }
-      .hero-terminal .snapshot-boxes {
-        flex: 1;
-        min-height: 0;
-      }
+      /* Size the panel to its own content instead of stretching it to match the
+         much taller hero copy column, which left a large empty gap under the
+         three snapshot boxes. align-items:start keeps it pinned to the top. */
     }
 
     @media (max-width: 1024px) {
@@ -3984,6 +4015,16 @@
       .resume-page {
         padding: 28px max(16px, env(safe-area-inset-left, 0px)) 28px max(16px, env(safe-area-inset-right, 0px));
       }
+    }
+
+    /* Between the mobile breakpoint and full-width desktop the nav links no
+       longer wrap, so drop the Email link and tighten the link spacing here to
+       keep the single action row from crowding (Email stays reachable via the
+       hero CTA and footer). */
+    @media (min-width: 921px) and (max-width: 1180px) {
+      .nav-meta-link { display: none; }
+      .nav-links { gap: 2px; }
+      .nav-link { padding: 10px 10px; }
     }
 
     @media print {
@@ -5962,10 +6003,13 @@
           </p>
           <div class="hero-github" id="heroGithub" aria-label="GitHub contribution activity">
             <div id="github-heatmap" class="hero-github-heatmap" hidden>
-              <p class="gh-kicker">
-                <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub activity · Last 12 months</a>
-              </p>
-              <canvas id="ghHeatmapCanvas" width="900" height="140" aria-label="GitHub contributions last twelve months"></canvas>
+              <div class="gh-head">
+                <p class="gh-kicker">
+                  <a href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub activity · Last 12 months</a>
+                </p>
+                <span class="gh-total" id="ghHeatmapTotal"></span>
+              </div>
+              <canvas id="ghHeatmapCanvas" width="900" height="180" aria-label="GitHub contributions in the last twelve months"></canvas>
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>

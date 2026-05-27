@@ -1,5 +1,15 @@
 (() => {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Weak hardware can't keep up with smooth-scroll + scrubbed parallax + canvas
+  // loops, so it stutters. Detect low-end devices and route them down the same
+  // lightweight path as reduced-motion: native scrolling (smooth on any
+  // machine) with the expensive pipeline switched off. `perf-lite` lets CSS
+  // drop blur and other costly effects for these devices too.
+  const lowPower =
+    (navigator.hardwareConcurrency || 8) <= 4 ||
+    (navigator.deviceMemory || 8) <= 4;
+  const lite = reduced || lowPower;
+  if (lowPower) document.documentElement.classList.add("perf-lite");
   if (reduced) {
     /* Legacy intro elements removed from HTML; keep as no-op for cached builds */
     document.getElementById("intro-canvas")?.remove();
@@ -409,7 +419,6 @@
       // Choose the most visible section so the nav indicator reliably follows
       // the user's scroll position (e.g. Home -> Skills).
       visible.sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0));
-      if (window.__projectExpanding) return;
       markActiveNav(visible[0].target.id);
     }, {
       rootMargin: "-20% 0px -65% 0px",
@@ -1314,13 +1323,15 @@
 
       det?.addEventListener("toggle", () => {
         if (!det.open) return;
-        window.__projectExpanding = true;
-        window.requestAnimationFrame(() => {
-          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-          revealProjectPanel(section);
-          // Release lock after animation/scroll settle
-          setTimeout(() => { window.__projectExpanding = false; }, 800);
-        });
+        // The panel expands in place via the CSS details-content height
+        // animation. Just guarantee its contents are visible in case the user
+        // opens it before the scroll-reveal animation has run; don't re-run the
+        // slide-in (it re-hides already-visible content) and don't refresh
+        // ScrollTrigger here — that caused the viewport to jump on open.
+        const copy = section.querySelector(".project-copy");
+        const visual = section.querySelector(".work-visual-card");
+        if (copy) gsap.set(copy, { opacity: 1, x: 0 });
+        if (visual) gsap.set(visual, { opacity: 1, x: 0 });
       });
 
     });
@@ -1328,19 +1339,6 @@
 
   function setupProjectDisclosures() {
     if (!projectSections.length) return;
-
-    projectSections.forEach(section => {
-      const det = section.querySelector(".project-disclosure");
-      if (!det) return;
-      det.addEventListener("toggle", () => {
-        if (!det.open) return;
-        projectSections.forEach(other => {
-          if (other === section) return;
-          const otherDet = other.querySelector(".project-disclosure");
-          if (otherDet) otherDet.open = false;
-        });
-      });
-    });
 
     function syncOpenProjectFromHash() {
       const hash = (location.hash || "").replace("#", "");
@@ -2581,7 +2579,7 @@
     }
   }, { passive: true });
 
-  if (!reduced) {
+  if (!lite) {
     setupPreloader();
     setupLenis();
     setupSkillsTransition();
@@ -2591,12 +2589,16 @@
     setupSkillsConnectors();
     setupProjectShowcase();
     setupVisualizationGallery();
-    setupLazyD3Iframes();
     setupJourneyMotion();
     setupCountUps();
     setupMicroInteractions();
     if (!window.__disableLegacyScrollReveals) setupScrollReveals();
   }
+
+  // Loads the visualization iframes (data-src -> src) on scroll. This is real
+  // content, not an effect, so it must run on low-power devices too; it already
+  // no-ops under reduced motion.
+  setupLazyD3Iframes();
 
   updateProgress();
   updateNavState();

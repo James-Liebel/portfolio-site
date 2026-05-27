@@ -4,6 +4,10 @@
 
   var MOBILE = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Low-end machines stutter on the per-pixel/WebGL canvas effects; skip them.
+  var lowPower =
+    (navigator.hardwareConcurrency || 8) <= 4 ||
+    (navigator.deviceMemory || 8) <= 4;
 
   function lerp(a, b, t) {
     return a + (b - a) * t;
@@ -304,7 +308,7 @@
 
   // ─── 3. Project card WebGL distortion ─────────────────────────────────────
   function initProjectDistortion() {
-    if (MOBILE || reduced) return;
+    if (MOBILE || reduced || lowPower) return;
     var sections = document.querySelectorAll('.project-section');
     if (!sections.length) return;
 
@@ -737,9 +741,13 @@
         var cell = 12;
         var gap = 3;
         var padX = 40;
-        var padY = 28;
+        var padY = 26;
+        var legendH = 30;
+        var gridH = rows * cell + (rows - 1) * gap;
         var cw = padX * 2 + cols * cell + (cols - 1) * gap;
-        var ch = padY * 2 + rows * cell + (rows - 1) * gap + 18;
+        var ch = padY + gridH + legendH;
+        var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        var labelColor = isLight ? 'rgba(51,65,85,0.75)' : 'rgba(245,247,255,0.55)';
 
         cvs.width = cw;
         cvs.height = ch;
@@ -783,15 +791,22 @@
 
         var grid = [];
         var colData = [];
+        var totalContrib = 0;
         var w, r, ds, cnt;
         for (w = 0; w < cols; w++) {
           colData[w] = [];
           for (r = 0; r < rows; r++) {
             ds = cur.getFullYear() + '-' + String(cur.getMonth() + 1).padStart(2, '0') + '-' + String(cur.getDate()).padStart(2, '0');
             cnt = dateMap[ds] != null ? dateMap[ds] : 0;
+            totalContrib += cnt;
             colData[w].push({ count: cnt, date: ds, x: padX + w * (cell + gap), y: padY + r * (cell + gap) });
             cur.setDate(cur.getDate() + 1);
           }
+        }
+
+        var totalEl = document.getElementById('ghHeatmapTotal');
+        if (totalEl) {
+          totalEl.innerHTML = '<strong>' + totalContrib.toLocaleString() + '</strong> contributions in the last year';
         }
 
         var animCol = 0;
@@ -823,12 +838,12 @@
         }
 
         ctx.clearRect(0, 0, cw, ch);
-        ctx.font = '700 10px "Space Mono", monospace';
-        ctx.fillStyle = 'rgba(245,247,255,0.55)';
-        ctx.textAlign = 'center';
+        ctx.font = '700 9px "Space Mono", monospace';
+        ctx.fillStyle = labelColor;
+        ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
 
-        var monthLetters = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+        var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var colOnFirstOfMonth = {};
         var colFirstWeekForMonth = {};
         var wc;
@@ -847,17 +862,70 @@
         }
 
         var monthKeys = Object.keys(colFirstWeekForMonth).sort();
+        var lastLabelX = -Infinity;
         for (var ki = 0; ki < monthKeys.length; ki++) {
           var key = monthKeys[ki];
           var wLabel = colOnFirstOfMonth[key] != null ? colOnFirstOfMonth[key] : colFirstWeekForMonth[key];
           var mNum = parseInt(key.split('-')[1], 10);
           if (mNum < 1 || mNum > 12) continue;
-          var letter = monthLetters[mNum - 1];
-          var xMid = padX + wLabel * (cell + gap) + cell * 0.5;
-          ctx.fillText(letter, xMid, 14);
+          var labelX = padX + wLabel * (cell + gap);
+          // Skip labels that would overlap the previous one (e.g. a sliver of a
+          // partial month at the very start of the grid).
+          if (labelX - lastLabelX < 28) continue;
+          if (labelX + 22 > cw - padX) continue;
+          ctx.fillText(monthNames[mNum - 1], labelX, padY - 10);
+          lastLabelX = labelX;
         }
 
+        // Weekday labels down the left gutter (Mon / Wed / Fri, like GitHub).
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        var dayLabels = { 1: 'Mon', 3: 'Wed', 5: 'Fri' };
+        Object.keys(dayLabels).forEach(function (rIdx) {
+          var ri = parseInt(rIdx, 10);
+          ctx.fillText(dayLabels[ri], padX - 8, padY + ri * (cell + gap) + cell / 2);
+        });
+
+        // Less → More legend along the bottom-right.
+        var legendColors = [
+          'rgba(99,102,241,0.10)',
+          'rgba(99,102,241,0.28)',
+          'rgba(129,140,248,0.55)',
+          'rgba(167,139,250,0.82)',
+          'rgba(192,132,252,1)'
+        ];
+        var sw = 11;
+        var sgap = 3;
+        var legendY = padY + gridH + 16;
+        var swatchesW = legendColors.length * sw + (legendColors.length - 1) * sgap;
+        var moreW = 30;
+        var lessW = 30;
+        var legendStartX = cw - padX - (lessW + swatchesW + moreW);
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = labelColor;
+        ctx.fillText('Less', legendStartX, legendY + sw / 2);
+        var legendSx = legendStartX + lessW;
+        for (var li = 0; li < legendColors.length; li++) {
+          ctx.fillStyle = legendColors[li];
+          ctx.fillRect(legendSx, legendY, sw, sw);
+          legendSx += sw + sgap;
+        }
+        ctx.fillStyle = labelColor;
+        ctx.fillText('More', legendSx + 4, legendY + sw / 2);
+
         requestAnimationFrame(frame);
+
+        function tipLabel(cellInfo) {
+          var n = cellInfo.count;
+          var count = n === 0 ? 'No contributions' : n + (n === 1 ? ' contribution' : ' contributions');
+          var when = cellInfo.date;
+          var d = new Date(cellInfo.date + 'T12:00:00');
+          if (!isNaN(d)) {
+            when = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          }
+          return count + ' on ' + when;
+        }
 
         var hover = null;
         cvs.addEventListener('mousemove', function (e) {
@@ -871,7 +939,7 @@
           if (found !== hover) {
             hover = found;
             if (found && tip) {
-              tip.textContent = (found.date || 'Day') + ': ' + found.count + ' commits';
+              tip.textContent = tipLabel(found);
               tip.style.left = e.clientX + 10 + 'px';
               tip.style.top = e.clientY + 10 + 'px';
               tip.classList.add('is-on');
@@ -1071,7 +1139,7 @@
 
   // ─── 11. Simplex noise journey ────────────────────────────────────────────
   function initJourneyNoise() {
-    if (MOBILE || reduced) return;
+    if (MOBILE || reduced || lowPower) return;
     var section = document.getElementById('journey');
     var canvas = document.getElementById('noise-canvas');
     if (!section || !canvas) return;
