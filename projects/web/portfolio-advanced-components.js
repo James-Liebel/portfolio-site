@@ -480,10 +480,28 @@
       return blurState;
     }
 
+    var visibleTracks = new Set();
+    function observeMarquee(el) {
+      if (!el || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (ents) {
+        ents.forEach(function (e) {
+          if (e.isIntersecting) visibleTracks.add(e.target);
+          else visibleTracks.delete(e.target);
+        });
+      }, { rootMargin: '160px 0px' }).observe(el);
+    }
+    observeMarquee(heroTrack);
+    observeMarquee(skillsTrack);
+
     function tick() {
-      measureVel();
-      blurHero = stepMarquee(heroTrack, -1, blurHero);
-      blurSkills = stepMarquee(skillsTrack, -1, blurSkills);
+      // Skip the per-frame scroll read + transform writes when both marquees are
+      // off-screen or the tab is hidden — avoids constant layout work during scroll.
+      var active = !('IntersectionObserver' in window) || visibleTracks.size > 0;
+      if (active && !document.hidden) {
+        measureVel();
+        blurHero = stepMarquee(heroTrack, -1, blurHero);
+        blurSkills = stepMarquee(skillsTrack, -1, blurSkills);
+      }
       requestAnimationFrame(tick);
     }
 

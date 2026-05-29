@@ -367,7 +367,7 @@
     a { color: inherit; text-decoration: none; }
     button { font: inherit; cursor: pointer; }
     img, iframe, canvas { display: block; max-width: 100%; border: 0; }
-    strong { font-weight: 700; }
+    strong { font-weight: 700; color: var(--text); }
 
     .eyebrow,
     .section-kicker,
@@ -1729,26 +1729,44 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      gap: 6px;
-      padding: 18px 24px;
+      gap: 16px;
+      padding: 15px 24px;
       margin: 12px auto 0;
-      border-radius: 18px;
-      border: 1px solid rgba(94, 234, 212, 0.45);
-      background: rgba(94, 234, 212, 0.08);
+      border-radius: 999px;
+      border: 1px solid rgba(94, 234, 212, 0.55);
+      background: linear-gradient(180deg, rgba(94, 234, 212, 0.16), rgba(94, 234, 212, 0.06));
+      box-shadow: 0 12px 34px -18px rgba(94, 234, 212, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       cursor: pointer;
       list-style: none;
-      transition: all 0.22s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: transform 0.22s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
       max-width: fit-content;
     }
     .skills-atlas-summary::-webkit-details-marker {
       display: none;
     }
+    .skills-atlas-summary-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .skills-atlas-summary-chevron {
+      flex: none;
+      color: #5eead4;
+      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .skills-atlas-disclosure[open] .skills-atlas-summary-chevron {
+      transform: rotate(180deg);
+    }
     .skills-atlas-summary:hover {
       border-color: var(--cyan);
-      background: rgba(94, 234, 212, 0.15);
+      background: linear-gradient(180deg, rgba(94, 234, 212, 0.24), rgba(94, 234, 212, 0.1));
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 16px 38px -16px rgba(94, 234, 212, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .skills-atlas-summary:active {
+      transform: translateY(0);
     }
     .skills-atlas-summary:focus {
       outline: none;
@@ -1777,7 +1795,26 @@
       padding-top: 4px;
     }
     :root[data-theme="light"] .skills-atlas-summary {
-      background: rgba(79, 70, 229, 0.08);
+      background: linear-gradient(180deg, rgba(79, 70, 229, 0.12), rgba(79, 70, 229, 0.05));
+    }
+    /* Smooth expand/collapse for the skills map (same technique as project cards). */
+    @supports (interpolate-size: allow-keywords) {
+      .skills-atlas-disclosure::details-content {
+        transition: block-size 0.5s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.4s ease;
+        overflow: clip;
+        opacity: 1;
+      }
+      .skills-atlas-disclosure:not([open])::details-content {
+        block-size: 0;
+        opacity: 0;
+      }
+      .skills-atlas-disclosure[open]::details-content {
+        block-size: auto;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skills-atlas-disclosure::details-content { transition: none !important; }
+      .skills-atlas-summary-chevron { transition: none !important; }
     }
 
     .skills-atlas {
@@ -4977,16 +5014,19 @@
     @media (prefers-reduced-motion: reduce) {
       .hero-name { animation: none; }
     }
-    /* SplitText replaces .hero-name's direct text with wrapper spans, which breaks
-       background-clip:text. When :has(.split-char) matches, retarget the gradient
-       onto the descendant spans so the aurora gradient keeps rendering. */
-    .hero-name:has(.split-char) {
+    /* Split animations replace .hero-name's direct text with wrapper spans, which
+       breaks background-clip:text. Two systems split it: .split-char (per character)
+       and .hw (per word). For either, retarget the gradient onto the descendant
+       spans so the aurora gradient keeps rendering instead of going transparent. */
+    .hero-name:has(.split-char),
+    .hero-name:has(.hw) {
       background: none;
       -webkit-text-fill-color: #f5f7ff;
       color: #f5f7ff;
       filter: drop-shadow(0 6px 28px rgba(99, 102, 241, 0.28));
     }
-    .hero-name .split-char {
+    .hero-name .split-char,
+    .hero-name .hw {
       display: inline-block;
       background: linear-gradient(
         100deg,
@@ -5005,11 +5045,13 @@
       -webkit-text-fill-color: transparent;
       animation: hero-name-aurora 14s ease-in-out infinite;
     }
-    :root[data-theme="light"] .hero-name:has(.split-char) {
+    :root[data-theme="light"] .hero-name:has(.split-char),
+    :root[data-theme="light"] .hero-name:has(.hw) {
       -webkit-text-fill-color: #1e1b4b;
       color: #1e1b4b;
     }
-    :root[data-theme="light"] .hero-name .split-char {
+    :root[data-theme="light"] .hero-name .split-char,
+    :root[data-theme="light"] .hero-name .hw {
       background: linear-gradient(
         100deg,
         #1e1b4b 0%,
@@ -5026,7 +5068,8 @@
       -webkit-text-fill-color: transparent;
     }
     @media (prefers-reduced-motion: reduce) {
-      .hero-name .split-char { animation: none; }
+      .hero-name .split-char,
+      .hero-name .hw { animation: none; }
     }
 
     /* Promote ALL section-head h2 / resume-title with the same gradient treatment as skills */
@@ -5962,10 +6005,6 @@
         <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" title="Toggle light and dark theme">
           <span class="theme-toggle-sr">Toggle color theme</span>
         </button>
-        <a class="nav-resume-cta" href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer" aria-label="Open résumé in new tab">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span>Résumé</span>
-        </a>
         <a class="nav-meta-link" href="mailto:Jamesliebel40@gmail.com?subject=Reaching%20out%20via%20your%20portfolio">Email</a>
         <a class="nav-icon-link" href="https://github.com/James-Liebel" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a class="nav-icon-link" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -6013,7 +6052,7 @@
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
-          <p class="summary">I build data tools with verifiable results: an XGBoost fraud model at ROC-AUC 0.939, a live client site with 200+ users, and a local LLM workspace. Before UChicago I was already shipping — a paid ML contract and weekly workshops for 50+ students — and I work end to end, from model training to deployed code to dashboards any audience can read.</p>
+          <p class="summary">I build data tools with verifiable results: an XGBoost fraud model at <strong>ROC-AUC 0.939</strong>, a live client site with <strong>200+ users</strong>, and a local LLM workspace. Before UChicago I was already shipping — a paid ML contract and weekly workshops for <strong>50+ students</strong> — and I work end to end, from model training to deployed code to dashboards any audience can read.</p>
           <div class="hero-tech-stack" aria-label="Stack backed by this portfolio">
             <span class="hero-tech-pill">Python</span>
             <span class="hero-tech-pill">XGBoost</span>
@@ -6054,23 +6093,6 @@
               <span class="hero-evidence-sep" aria-hidden="true">·</span>
               <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com (live client site)</a>
             </div>
-          </div>
-          <div class="hero-signal-band">
-            <article class="hero-metric">
-              <small>Flagship ML</small>
-              <strong>ROC-AUC 0.939</strong>
-              <span>XGBoost credit-card fraud detection on 284,807 transactions — 80% fraud recall, evaluated with PR/ROC curves.</span>
-            </article>
-            <article class="hero-metric">
-              <small>Based in</small>
-              <strong>Cincinnati · Chicago</strong>
-              <span>Cincinnati, OH home base; University of Chicago during the academic year. U.S. work-authorized, no sponsorship required.</span>
-            </article>
-            <article class="hero-metric">
-              <small>Credentials</small>
-              <strong>IBM · PL-300 · GCP*</strong>
-              <span>IBM Data Science Professional (12-course Python/ML/SQL/viz); Microsoft PL-300 Power BI Data Analyst; Google Cloud ML Engineer in progress.</span>
-            </article>
           </div>
             </div>
 
@@ -6113,6 +6135,24 @@
           </div>
         </aside>
 
+          </div>
+
+          <div class="hero-signal-band">
+            <article class="hero-metric">
+              <small>Flagship ML</small>
+              <strong>ROC-AUC 0.939</strong>
+              <span>XGBoost credit-card fraud detection on 284,807 transactions — 80% fraud recall, evaluated with PR/ROC curves.</span>
+            </article>
+            <article class="hero-metric">
+              <small>Based in</small>
+              <strong>Cincinnati · Chicago</strong>
+              <span>Cincinnati, OH home base; University of Chicago during the academic year. U.S. work-authorized, no sponsorship required.</span>
+            </article>
+            <article class="hero-metric">
+              <small>Credentials</small>
+              <strong>IBM · PL-300 · GCP*</strong>
+              <span>IBM Data Science Professional (12-course Python/ML/SQL/viz); Microsoft PL-300 Power BI Data Analyst; Google Cloud ML Engineer in progress.</span>
+            </article>
           </div>
 
           <div class="hero-marquee" aria-label="Skills">
@@ -6161,8 +6201,11 @@
 
       <details class="skills-atlas-disclosure" id="skillsAtlasDetails">
         <summary class="skills-atlas-summary">
-          <span class="skills-atlas-summary-label">Full skills map</span>
-          <span class="skills-atlas-summary-hint">Three columns + process timeline · click to expand</span>
+          <span class="skills-atlas-summary-text">
+            <span class="skills-atlas-summary-label">Full skills map</span>
+            <span class="skills-atlas-summary-hint">Three columns + process timeline · click to expand</span>
+          </span>
+          <svg class="skills-atlas-summary-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </summary>
         <div class="skills-atlas-disclosure-inner">
       <div class="skills-atlas">
@@ -6866,7 +6909,7 @@
               <span class="visual-label">D3.js</span>
               <h3>Cincinnati Food Access Map</h3>
               <p class="visual-note">Neighborhood-level food access across Cincinnati, rendered as a GeoJSON choropleth.</p>
-              <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720">
+              <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720" data-viz-zoom="1.2">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
                     <iframe data-src="projects/web/visualizations/choropleth_map.html" title="Cincinnati Food Access Map" loading="lazy" width="1440" height="720"></iframe>
@@ -6900,7 +6943,7 @@
               <span class="visual-label">D3.js</span>
               <h3>Cincinnati Food Deserts</h3>
               <p class="visual-note">Where healthy food is hard to reach — Cincinnati's food deserts and swamps, mapped from local data.</p>
-              <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720">
+              <div class="visual-frame viz-pane" data-viz-base-w="1440" data-viz-base-h="720" data-viz-zoom="1.2">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
                     <iframe data-src="projects/web/visualizations/food_deserts.html" title="Cincinnati Food Deserts" loading="lazy" width="1440" height="720"></iframe>

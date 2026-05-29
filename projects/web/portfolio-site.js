@@ -1193,7 +1193,19 @@
       };
 
       flashFraudCells();
-      window.setInterval(flashFraudCells, 200);
+      // Keep the timer ticking but skip the DOM writes when the section is
+      // off-screen (or the tab is hidden), so it doesn't tax scrolling elsewhere.
+      let fraudVisible = true;
+      if ("IntersectionObserver" in window) {
+        const fraudSection = fraudGrid.closest(".project-section") || fraudGrid;
+        fraudVisible = false;
+        new IntersectionObserver(entries => {
+          fraudVisible = entries.some(entry => entry.isIntersecting);
+        }, { rootMargin: "120px 0px" }).observe(fraudSection);
+      }
+      window.setInterval(() => {
+        if (fraudVisible && !document.hidden) flashFraudCells();
+      }, 200);
     }
 
     const chatMessages = document.querySelector(".chat-messages");
