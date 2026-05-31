@@ -861,7 +861,7 @@
       color: var(--accent);
       line-height: 1.05;
       overflow: hidden;
-      min-height: 2.12em;
+      min-height: 2.5em;
     }
     .hero-word-stack {
       display: flex;
@@ -871,7 +871,7 @@
     }
     .hero-word-line {
       display: block;
-      line-height: 1.02;
+      line-height: 1.2;
     }
     .hero-github {
       margin-top: clamp(14px, 2.2vw, 22px);
@@ -4356,6 +4356,11 @@
       display: inline-block;
       overflow: hidden;
       vertical-align: top;
+      /* Tight heading line-heights make the clip box shorter than the glyph,
+         slicing descenders/ascenders. Pad the clip box and cancel with equal
+         negative margin so letters stay whole without shifting layout. */
+      padding: 0.2em 0;
+      margin: -0.2em 0;
     }
     .split-char {
       display: inline-block;
