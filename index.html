@@ -1729,20 +1729,24 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      padding: 15px 24px;
-      margin: 12px auto 0;
-      border-radius: 999px;
-      border: 1px solid rgba(94, 234, 212, 0.55);
-      background: linear-gradient(180deg, rgba(94, 234, 212, 0.16), rgba(94, 234, 212, 0.06));
-      box-shadow: 0 12px 34px -18px rgba(94, 234, 212, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      gap: 14px;
+      padding: 16px 26px;
+      margin: 14px auto 0;
+      border-radius: 16px;
+      border: 1px solid rgba(167, 139, 250, 0.6);
+      background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 48%, #0891b2 100%);
+      box-shadow: 0 16px 40px -16px rgba(79, 70, 229, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
       cursor: pointer;
       list-style: none;
-      transition: transform 0.22s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+      transition: transform 0.22s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.22s ease, border-color 0.22s ease, filter 0.22s ease;
       max-width: fit-content;
     }
     .skills-atlas-summary::-webkit-details-marker {
       display: none;
+    }
+    .skills-atlas-summary-icon {
+      flex: none;
+      color: #ffffff;
     }
     .skills-atlas-summary-text {
       display: flex;
@@ -1753,17 +1757,17 @@
     }
     .skills-atlas-summary-chevron {
       flex: none;
-      color: #5eead4;
+      color: #ffffff;
       transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .skills-atlas-disclosure[open] .skills-atlas-summary-chevron {
       transform: rotate(180deg);
     }
     .skills-atlas-summary:hover {
-      border-color: var(--cyan);
-      background: linear-gradient(180deg, rgba(94, 234, 212, 0.24), rgba(94, 234, 212, 0.1));
+      border-color: rgba(199, 210, 254, 0.9);
       transform: translateY(-2px);
-      box-shadow: 0 16px 38px -16px rgba(94, 234, 212, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      filter: brightness(1.08);
+      box-shadow: 0 22px 48px -16px rgba(79, 70, 229, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
     }
     .skills-atlas-summary:active {
       transform: translateY(0);
@@ -1776,26 +1780,20 @@
       outline-offset: 3px;
     }
     .skills-atlas-summary-label {
-      font: 700 11px/1 "Space Mono", monospace;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #5eead4;
+      font: 800 13px/1.1 Inter, system-ui, sans-serif;
+      letter-spacing: 0.01em;
+      color: #ffffff;
     }
     .skills-atlas-summary-hint {
       font-size: 11px;
-      color: var(--muted-soft);
-      opacity: 0.8;
+      color: rgba(237, 233, 254, 0.82);
     }
     .skills-atlas-disclosure[open] .skills-atlas-summary {
-      background: rgba(94, 234, 212, 0.12);
-      border-color: var(--cyan);
+      filter: brightness(0.96);
       margin-bottom: 24px;
     }
     .skills-atlas-disclosure-inner {
       padding-top: 4px;
-    }
-    :root[data-theme="light"] .skills-atlas-summary {
-      background: linear-gradient(180deg, rgba(79, 70, 229, 0.12), rgba(79, 70, 229, 0.05));
     }
     /* Smooth expand/collapse for the skills map (same technique as project cards). */
     @supports (interpolate-size: allow-keywords) {
@@ -2221,18 +2219,18 @@
       padding: 26px;
       border-radius: 28px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-top: 2px solid color-mix(in srgb, var(--project-accent) 58%, transparent);
+      border: 1px solid color-mix(in srgb, var(--project-accent) 28%, rgba(255, 255, 255, 0.09));
+      border-top: 3px solid color-mix(in srgb, var(--project-accent) 92%, transparent);
       box-shadow:
         var(--shadow),
-        0 0 0 1px color-mix(in srgb, var(--project-accent) 8%, transparent) inset,
-        -18px 0 48px color-mix(in srgb, var(--project-accent) 6%, transparent);
+        0 0 0 1px color-mix(in srgb, var(--project-accent) 16%, transparent) inset,
+        -22px 0 60px color-mix(in srgb, var(--project-accent) 16%, transparent);
       background:
         linear-gradient(
           102deg,
-          color-mix(in srgb, var(--project-accent) 14%, rgba(22, 28, 52, 0.55)) 0%,
-          rgba(12, 16, 30, 0.2) 38%,
-          rgba(10, 13, 24, 0.92) 72%
+          color-mix(in srgb, var(--project-accent) 26%, rgba(22, 28, 52, 0.55)) 0%,
+          color-mix(in srgb, var(--project-accent) 8%, rgba(12, 16, 30, 0.2)) 40%,
+          rgba(10, 13, 24, 0.92) 74%
         ),
         linear-gradient(180deg, rgba(18, 22, 42, 0.96), rgba(10, 13, 24, 0.94));
     }
@@ -2270,6 +2268,11 @@
       --project-watermark: rgba(52, 211, 153, 0.08);
       --project-edge: rgba(52, 211, 153, 0.12);
     }
+    #projects .project-section--space {
+      --project-accent: #f59e0b;
+      --project-watermark: rgba(245, 158, 11, 0.085);
+      --project-edge: rgba(245, 158, 11, 0.14);
+    }
     :root[data-theme="light"] #projects .project-section--ml {
       --project-watermark: rgba(99, 102, 241, 0.11);
     }
@@ -2281,6 +2284,9 @@
     }
     :root[data-theme="light"] #projects .project-section--nlp {
       --project-watermark: rgba(5, 150, 105, 0.11);
+    }
+    :root[data-theme="light"] #projects .project-section--space {
+      --project-watermark: rgba(217, 119, 6, 0.12);
     }
     #projects .project-section::before {
       content: "";
@@ -2873,9 +2879,10 @@
         "viz-hero viz-hero viz-hero viz-hero viz-hero viz-hero"
         "viz-d3-1 viz-d3-1 viz-d3-2 viz-d3-2 viz-d3-3 viz-d3-3"
         "viz-d3-4 viz-d3-4 viz-d3-5 viz-d3-5 viz-d3-6 viz-d3-6";
+      grid-template-rows: auto 1fr 1fr;
       gap: clamp(16px, 2.2vw, 22px);
-      /* start: every tile’s top edge shares the same row baseline (stretch + flex was shifting some D3 cards). */
-      align-items: start;
+      /* stretch so every D3 tile in a row shares one height — equal-size boxes. */
+      align-items: stretch;
     }
     .visual-collage .viz-hero { grid-area: viz-hero; }
     .visual-collage .viz-d3-1 { grid-area: viz-d3-1; }
@@ -2918,20 +2925,26 @@
       transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s ease;
     }
     .visual-collage .visual-card {
+      --viz-accent: #6366f1;
       border-radius: 20px;
       min-height: 0;
       display: flex;
       flex-direction: column;
       height: 100%;
-      border-top: 2px solid rgba(99, 102, 241, 0.42);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      border-top: 3px solid var(--viz-accent);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28), -18px 0 44px -20px color-mix(in srgb, var(--viz-accent) 55%, transparent);
     }
+    .visual-collage .viz-d3-1 { --viz-accent: #6366f1; }
+    .visual-collage .viz-d3-2 { --viz-accent: #f59e0b; }
+    .visual-collage .viz-d3-3 { --viz-accent: #ef4444; }
+    .visual-collage .viz-d3-4 { --viz-accent: #22d3ee; }
+    .visual-collage .viz-d3-5 { --viz-accent: #a855f7; }
+    .visual-collage .viz-d3-6 { --viz-accent: #34d399; }
     .visual-collage .visual-card:not(.visual-card--feature) {
       height: auto;
     }
     :root[data-theme="light"] .visual-collage .visual-card {
-      border-top-color: rgba(79, 70, 229, 0.38);
-      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.1), -16px 0 40px -22px color-mix(in srgb, var(--viz-accent) 50%, transparent);
     }
     .visual-collage .visual-card--feature {
       border-top-color: rgba(99, 102, 241, 0.72);
@@ -5965,7 +5978,7 @@
     }
   </style>
 </head>
-<body class="intro-running">
+<body class="intro-done">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <noscript><style>
     .site-intro { display: none !important; }
@@ -6072,10 +6085,6 @@
               <a class="hero-cta hero-cta--primary" href="mailto:Jamesliebel40@gmail.com?subject=Reaching%20out%20via%20your%20portfolio&amp;body=Hi%20James%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20connect.%0A%0A%E2%80%94%20%5BName%5D">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 <span>Email me</span>
-              </a>
-              <a class="hero-cta" href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                <span>Résumé</span>
               </a>
               <a class="hero-cta" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.36 4.26 5.43v6.31zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.55v11.45z"/></svg>
@@ -6206,9 +6215,10 @@
 
       <details class="skills-atlas-disclosure" id="skillsAtlasDetails">
         <summary class="skills-atlas-summary">
+          <svg class="skills-atlas-summary-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
           <span class="skills-atlas-summary-text">
-            <span class="skills-atlas-summary-label">Full skills map</span>
-            <span class="skills-atlas-summary-hint">Three columns + process timeline · click to expand</span>
+            <span class="skills-atlas-summary-label">Open the full skills map</span>
+            <span class="skills-atlas-summary-hint">Three columns + end-to-end process timeline</span>
           </span>
           <svg class="skills-atlas-summary-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </summary>
@@ -6685,7 +6695,7 @@
           </details>
         </article>
 
-        <article class="project-section project-section--ml" id="project-spacex" data-project-section="spacex" data-project-num="05">
+        <article class="project-section project-section--space" id="project-spacex" data-project-section="spacex" data-project-num="05">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
           <details class="project-disclosure">
             <summary class="project-summary">
@@ -7276,7 +7286,6 @@
       <div class="mobile-nav-cta-stack">
         <a class="mobile-nav-cta mobile-nav-cta--primary" href="mailto:Jamesliebel40@gmail.com?subject=Reaching%20out%20via%20your%20portfolio">Email me</a>
         <a class="mobile-nav-cta" href="tel:+15139651578">Call (513) 965-1578</a>
-        <a class="mobile-nav-cta" href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">Open résumé</a>
       </div>
       <nav class="mobile-nav-links" aria-label="Mobile">
         <a href="#hero">Home</a>
@@ -7297,7 +7306,18 @@
 (function () {
   var intro = document.getElementById('siteIntro');
   var riser = document.getElementById('siteContentRiser');
-  if (!intro || !riser) return;
+  if (!riser) return;
+
+  // Intro removed: open the page already settled (no blue hold, dragon hatch, or
+  // riser slide). #siteIntro is left in the DOM but inert so the alternate
+  // cinematic intro in portfolio-premium.js stays suppressed.
+  document.body.classList.remove('intro-running', 'intro-dragon-hatch', 'intro-content-revealing');
+  document.body.classList.add('intro-done');
+  riser.removeAttribute('aria-hidden');
+  if (intro) {
+    intro.setAttribute('aria-hidden', 'true');
+    intro.classList.add('site-intro--done');
+  }
 
   var portfolioSynced = false;
   function syncPortfolioAfterIntro() {
@@ -7327,96 +7347,9 @@
     });
   }
 
-  function markIntroSeen() {
-    try {
-      sessionStorage.setItem('portfolio-intro-seen', '1');
-    } catch (e) { /* ignore */ }
-  }
-
-  var skipIntro = false;
-  try {
-    skipIntro = sessionStorage.getItem('portfolio-intro-seen') === '1';
-  } catch (e) { /* ignore */ }
-  if (!skipIntro && typeof window !== 'undefined' && window.location && /[?&]nointro\b/.test(window.location.search)) {
-    skipIntro = true;
-  }
-
-  if (skipIntro) {
-    document.body.classList.remove('intro-running');
-    document.body.classList.remove('intro-dragon-hatch');
-    document.body.classList.add('intro-done');
-    if (intro.parentNode) intro.parentNode.removeChild(intro);
-    riser.removeAttribute('aria-hidden');
-    setTimeout(syncPortfolioAfterIntro, 0);
-    return;
-  }
-
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.body.classList.remove('intro-running');
-    document.body.classList.remove('intro-dragon-hatch');
-    document.body.classList.add('intro-done');
-    intro.remove();
-    riser.removeAttribute('aria-hidden');
-    markIntroSeen();
-    setTimeout(syncPortfolioAfterIntro, 0);
-    return;
-  }
-  var introBlueHoldMs = 1050;
-  var introDragonBlendMs = 1050;
-  var scaleLiftMs = introBlueHoldMs + Math.round(introDragonBlendMs * 0.52);
-  var finished = false;
-  var revealTimer = 0;
-  var fallbackTimer = 0;
-  var dragonTimer = 0;
-  function finishIntro() {
-    if (finished) return;
-    finished = true;
-    clearTimeout(revealTimer);
-    clearTimeout(fallbackTimer);
-    clearTimeout(dragonTimer);
-    document.body.classList.add('intro-done');
-    document.body.classList.remove('intro-running');
-    document.body.classList.remove('intro-dragon-hatch');
-    document.body.classList.remove('intro-content-revealing');
-    riser.removeAttribute('aria-hidden');
-    intro.setAttribute('aria-hidden', 'true');
-    intro.classList.add('site-intro--done');
-    riser.removeEventListener('transitionend', onTransitionEnd);
-    requestAnimationFrame(function () {
-      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-    });
-    setTimeout(function () {
-      if (intro.parentNode) intro.parentNode.removeChild(intro);
-    }, 1320);
-    markIntroSeen();
-  }
-  function onTransitionEnd(ev) {
-    if (ev.target !== riser || ev.propertyName !== 'transform') return;
-    finishIntro();
-  }
-  riser.addEventListener('transitionend', onTransitionEnd);
-  dragonTimer = setTimeout(function () {
-    function hatch() {
-      document.body.classList.add('intro-dragon-hatch');
-    }
-    if (window.requestAnimationFrame) {
-      window.requestAnimationFrame(function () {
-        window.requestAnimationFrame(hatch);
-      });
-    } else {
-      hatch();
-    }
-  }, introBlueHoldMs);
-  revealTimer = setTimeout(function () {
-    document.body.classList.add('intro-content-revealing');
-    syncPortfolioAfterIntro();
-  }, scaleLiftMs);
-  fallbackTimer = setTimeout(function () {
-    if (finished) return;
-    document.body.classList.add('intro-content-revealing');
-    syncPortfolioAfterIntro();
-    finishIntro();
-  }, 12200);
+  // Defer one tick so the deferred bundle scripts have registered their
+  // 'intro-complete' listeners before we fire the handoff.
+  setTimeout(syncPortfolioAfterIntro, 0);
 })();
   </script>
   <script src="projects/web/portfolio-site.js" defer></script>
