@@ -531,6 +531,18 @@
     var mx = 0;
     var my = 0;
     var running = true;
+    var rafId = 0;
+    var lastMoveAt = 0;
+    function nowMs() {
+      return (window.performance && performance.now) ? performance.now() : Date.now();
+    }
+    // The trail follows the pointer; while the pointer is still (e.g. during
+    // scroll) there is nothing to animate, so park the loop instead of clearing
+    // and redrawing a full-viewport canvas every frame. A mousemove revives it.
+    function kickTrail() {
+      lastMoveAt = nowMs();
+      if (!rafId && running) rafId = requestAnimationFrame(tick);
+    }
 
     function resize() {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -546,6 +558,7 @@
       function (e) {
         mx = e.clientX;
         my = e.clientY;
+        kickTrail();
       },
       { passive: true }
     );
@@ -553,14 +566,15 @@
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) {
         running = false;
+        rafId = 0;
       } else {
         running = true;
-        requestAnimationFrame(tick);
+        kickTrail();
       }
     });
 
     function tick() {
-      if (!running) return;
+      if (!running) { rafId = 0; return; }
       pts[0].x = lerp(pts[0].x, mx, 0.28);
       pts[0].y = lerp(pts[0].y, my, 0.28);
       var i;
@@ -595,7 +609,16 @@
         ctx.stroke();
       }
 
-      requestAnimationFrame(tick);
+      // Park the loop once the trail has caught up to a stationary pointer.
+      var headDist = Math.abs(mx - pts[0].x) + Math.abs(my - pts[0].y);
+      var energy = 0;
+      for (i = 1; i < N; i++) energy += Math.abs(pts[i].vx) + Math.abs(pts[i].vy);
+      if (headDist < 0.5 && energy < 0.5 && (nowMs() - lastMoveAt) > 200) {
+        rafId = 0;
+        return;
+      }
+
+      rafId = requestAnimationFrame(tick);
     }
 
     resize();
@@ -603,7 +626,7 @@
     window.addEventListener('intro-complete', function () {
       canvas.style.zIndex = '9998';
     });
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
   }
 
   // ─── 7. Split text headings ────────────────────────────────────────────────

@@ -460,16 +460,14 @@
       top: 0;
       z-index: 1300;
       padding-top: env(safe-area-inset-top, 0px);
-      /* Sticky bar re-blurs every scroll frame; keep the radius modest so the
-         repaint stays cheap. */
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(7, 10, 20, 0.78);
+      /* No backdrop-filter: a sticky bar re-blurs every scroll frame. A nearly
+         opaque background gives the same look without the per-frame repaint. */
+      background: rgba(7, 10, 20, 0.92);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.45s ease, background 0.25s ease;
     }
     :root[data-theme="light"] .site-nav {
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.94);
       border-bottom-color: rgba(15, 23, 42, 0.08);
     }
     .home-shell { display: contents; }
@@ -883,10 +881,8 @@
       border-radius: 22px;
       border: 1px solid rgba(255, 255, 255, 0.12);
       background:
-        linear-gradient(155deg, rgba(99, 102, 241, 0.16), rgba(34, 211, 238, 0.06) 38%, transparent 52%),
-        rgba(6, 8, 18, 0.42);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+        linear-gradient(155deg, rgba(99, 102, 241, 0.18), rgba(34, 211, 238, 0.07) 38%, transparent 52%),
+        rgba(6, 8, 18, 0.86);
       box-shadow:
         0 8px 36px rgba(0, 0, 0, 0.35),
         inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -1212,24 +1208,48 @@
       }
     }
     .experience-card {
+      --exp-accent: #6366f1;
       padding: clamp(20px, 3vw, 28px);
       border-radius: 22px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      background: linear-gradient(180deg, rgba(16, 21, 39, 0.92), rgba(10, 13, 24, 0.94));
+      background:
+        radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--exp-accent) 14%, transparent), transparent 55%),
+        linear-gradient(180deg, rgba(16, 21, 39, 0.92), rgba(10, 13, 24, 0.94));
       box-shadow: var(--shadow);
     }
     :root[data-theme="light"] .experience-card {
       border-color: rgba(15, 23, 42, 0.1);
-      background: rgba(255, 255, 255, 0.68);
+      background:
+        radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--exp-accent) 12%, transparent), transparent 55%),
+        rgba(255, 255, 255, 0.78);
+    }
+    .experience-card--work { --exp-accent: #6366f1; }
+    .experience-card--edu  { --exp-accent: #22d3ee; }
+    .experience-card--lead { --exp-accent: #a855f7; }
+    .experience-card-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 12px;
+    }
+    .experience-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      flex: none;
+      border-radius: 12px;
+      color: var(--exp-accent);
+      background: color-mix(in srgb, var(--exp-accent) 16%, transparent);
+      border: 1px solid color-mix(in srgb, var(--exp-accent) 45%, transparent);
+      box-shadow: 0 0 22px -6px color-mix(in srgb, var(--exp-accent) 70%, transparent);
     }
     .experience-card h3 {
-      margin: 0 0 8px;
+      margin: 0;
       font-size: clamp(1.06rem, 2vw, 1.22rem);
       letter-spacing: -0.02em;
-      color: var(--cyan);
-    }
-    :root[data-theme="light"] .experience-card h3 {
-      color: #0e7490;
+      color: color-mix(in srgb, var(--exp-accent) 70%, var(--text));
     }
     .experience-meta {
       margin: 0 0 12px;
@@ -2615,6 +2635,14 @@
     .project-panel p + p {
       margin-top: 10px;
     }
+    /* Emphasized terms carry the card's accent so each description reads with
+       hierarchy and per-project identity instead of one flat block of text. */
+    .project-section .project-summary-blurb strong,
+    .project-section .project-panel p strong,
+    .project-section .project-panel li strong {
+      color: color-mix(in srgb, var(--project-accent) 58%, var(--text));
+      font-weight: 750;
+    }
     .project-panel ul {
       margin: 0;
       padding-left: 1.1em;
@@ -2919,9 +2947,10 @@
       position: relative;
       border-radius: 24px;
       overflow: hidden;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      background: rgba(12, 15, 26, 0.75);
+      /* No backdrop-filter: these cards sit on the opaque #07090f gallery
+         background, so the blur is invisible but forces a full re-rasterize
+         every scroll frame. Solid background keeps the look, drops the cost. */
+      background: rgb(14, 17, 28);
       transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s ease;
     }
     .visual-collage .visual-card {
@@ -5353,21 +5382,20 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 2px;
+      height: 3px;
       background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(34, 211, 238, 0.65) 25%,
-        rgba(99, 102, 241, 0.65) 75%,
+        var(--exp-accent) 0%,
+        color-mix(in srgb, var(--exp-accent) 40%, transparent) 60%,
         transparent 100%);
-      opacity: 0.9;
+      opacity: 0.95;
     }
     .experience-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(99, 102, 241, 0.4);
+      border-color: color-mix(in srgb, var(--exp-accent) 45%, transparent);
       box-shadow:
         var(--shadow),
-        0 0 0 1px rgba(99, 102, 241, 0.18),
-        0 24px 60px rgba(99, 102, 241, 0.16);
+        0 0 0 1px color-mix(in srgb, var(--exp-accent) 22%, transparent),
+        0 24px 60px color-mix(in srgb, var(--exp-accent) 20%, transparent);
     }
 
     /* Scroll progress — glow + height bump for visibility */
@@ -6941,7 +6969,7 @@
               <span class="visual-label">D3.js · freeCodeCamp Data Visualization</span>
               <h3>Multi-Dataset Treemap Dashboard</h3>
               <p class="visual-note">Switch between datasets to compare category sizes in one interactive treemap.</p>
-              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="800" data-viz-zoom="1.26">
+              <div class="visual-frame viz-pane" data-viz-base-w="1280" data-viz-base-h="720" data-viz-zoom="1.34">
                 <div class="viz-preview-chrome">
                   <div class="viz-pane-scale">
                     <iframe data-src="projects/web/visualizations/treemap.html" title="Multi-Dataset Treemap Dashboard" loading="lazy" width="1280" height="800"></iframe>
@@ -6984,8 +7012,11 @@
           <h2>Experience &amp; Education</h2>
         </div>
         <div class="experience-grid">
-          <article class="experience-card">
-            <h3>Work experience</h3>
+          <article class="experience-card experience-card--work">
+            <div class="experience-card-head">
+              <span class="experience-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
+              <h3>Work experience</h3>
+            </div>
             <p class="experience-meta">2025 – 2026 · Internship &amp; paid contract work</p>
             <ul>
               <li><strong>Siemens (Digital Industries):</strong> Incoming marketing intern, Summer 2026 (starts June).</li>
@@ -6993,8 +7024,11 @@
               <li><strong>CustomStrat:</strong> Live client site (<strong>customstrat.com</strong>, Next.js 14, GitHub Pages, custom domain). Metrics and build detail: <a href="#project-customstrat">Projects → CustomStrat</a>.</li>
             </ul>
           </article>
-          <article class="experience-card">
-            <h3>Education</h3>
+          <article class="experience-card experience-card--edu">
+            <div class="experience-card-head">
+              <span class="experience-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/></svg></span>
+              <h3>Education</h3>
+            </div>
             <p class="experience-meta">University of Chicago</p>
             <p class="experience-degree">B.S. Data Science &amp; Statistics — expected May 2030 · GPA: In progress (freshman year)</p>
             <ul>
@@ -7004,8 +7038,11 @@
               <li>Coursework in probability, linear algebra, algorithms, and statistical inference.</li>
             </ul>
           </article>
-          <article class="experience-card">
-            <h3>Leadership</h3>
+          <article class="experience-card experience-card--lead">
+            <div class="experience-card-head">
+              <span class="experience-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+              <h3>Leadership</h3>
+            </div>
             <p class="experience-meta">Co-President · Machine Learning Club · High School</p>
             <ul>
               <li>Designed and delivered TensorFlow-focused neural network workshops with reproducible notebooks for the club.</li>
