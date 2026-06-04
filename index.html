@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="James Liebel — applied data scientist: machine learning, analytics, and shipped products. UChicago B.S. Data Science &amp; Statistics '30. Portfolio: XGBoost fraud detection (ROC-AUC 0.939), shipped client site (200+ users), local LLM workspace, Power BI, D3. Incoming Summer 2026 intern at Siemens Digital Industries; seeking Summer 2027 DS/ML internships.">
+  <meta name="description" content="James Liebel — applied data scientist: machine learning, analytics, and shipped products. UChicago B.S. Data Science &amp; Statistics '30. Portfolio: XGBoost fraud detection (ROC-AUC 0.939), shipped client site (200+ users), NLP sentiment analysis, Power BI, D3. Incoming Summer 2026 intern at Siemens Digital Industries; seeking Summer 2027 DS/ML internships.">
   <meta name="keywords" content="data science, machine learning, Siemens intern, Siemens Digital Industries, UChicago data science, Python, XGBoost, SQL, Power BI, AI marketing, James Liebel">
   <meta name="author" content="James Liebel">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta property="og:type" content="website">
   <meta property="og:title" content="James Liebel · Applied Data Scientist · UChicago Data Science '30">
-  <meta property="og:description" content="UChicago B.S. Data Science &amp; Statistics '30. Shipped: XGBoost fraud detection (ROC-AUC 0.939), live client site (200+ users), local LLM workspace, Power BI, D3. Incoming Summer 2026 intern at Siemens; seeking Summer 2027 DS/ML internships.">
+  <meta property="og:description" content="UChicago B.S. Data Science &amp; Statistics '30. Shipped: XGBoost fraud detection (ROC-AUC 0.939), live client site (200+ users), NLP sentiment analysis, Power BI, D3. Incoming Summer 2026 intern at Siemens; seeking Summer 2027 DS/ML internships.">
   <meta property="og:url" content="https://james-liebel.github.io/portfolio-site/">
   <meta property="og:image" content="https://james-liebel.github.io/portfolio-site/og-preview.jpg">
   <meta property="og:image:alt" content="James Liebel — Data Science portfolio · UChicago '30">
@@ -2234,6 +2234,11 @@
       --project-accent-glow: rgba(99, 102, 241, 0.22);
       --project-watermark: rgba(99, 102, 241, 0.072);
       --project-edge: rgba(99, 102, 241, 0.11);
+      /* Skip painting/compositing each heavy card while it's offscreen — the
+         main scroll-perf win on this long section. Remembers real size after
+         first render so scroll position stays stable. */
+      content-visibility: auto;
+      contain-intrinsic-size: auto 640px;
       position: relative;
       isolation: isolate;
       padding: 26px;
@@ -2971,6 +2976,10 @@
     .visual-collage .viz-d3-6 { --viz-accent: #34d399; }
     .visual-collage .visual-card:not(.visual-card--feature) {
       height: auto;
+      /* Don't paint/composite the offscreen D3 iframes while scrolling past;
+         the iframe document stays alive (no reload), only its paint is skipped. */
+      content-visibility: auto;
+      contain-intrinsic-size: auto 540px;
     }
     :root[data-theme="light"] .visual-collage .visual-card {
       box-shadow: 0 14px 36px rgba(15, 23, 42, 0.1), -16px 0 40px -22px color-mix(in srgb, var(--viz-accent) 50%, transparent);
@@ -6098,7 +6107,7 @@
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
-          <p class="summary">I build data tools with verifiable results: an XGBoost fraud model at <strong>ROC-AUC 0.939</strong>, a live client site with <strong>200+ users</strong>, and a local LLM workspace. Before UChicago I was already shipping — a paid ML contract and weekly workshops for <strong>50+ students</strong> — and I work end to end, from model training to deployed code to dashboards any audience can read.</p>
+          <p class="summary">I build data tools with verifiable results: an XGBoost fraud model at <strong>ROC-AUC 0.939</strong> and a live client site with <strong>200+ users</strong>. Before UChicago I was already shipping — a paid ML contract and weekly workshops for <strong>50+ students</strong> — and I work end to end, from model training to deployed code to dashboards any audience can read.</p>
           <div class="hero-tech-stack" aria-label="Stack backed by this portfolio">
             <span class="hero-tech-pill">Python</span>
             <span class="hero-tech-pill">XGBoost</span>
@@ -6510,80 +6519,7 @@
           </details>
         </article>
 
-        <article class="project-section project-section--ai" id="project-jimai" data-project-section="jimai" data-project-num="02">
-          <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
-          <details class="project-disclosure">
-            <summary class="project-summary">
-              <div class="project-summary-grid">
-                <div class="project-summary-intro">
-                  <p class="section-kicker project-category-kicker">AI Product Prototype</p>
-                  <h3 class="project-summary-title">JimAI</h3>
-                  <p class="project-summary-blurb">Local AI workspace: <strong>FastAPI</strong> + <strong>React</strong> + <strong>Ollama</strong>. Run prompts and multi-step tasks locally—nothing leaves your machine unless you choose.</p>
-                </div>
-                <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">Local-first</span>
-                  <span class="metric-pill">76 Python modules</span>
-                  <span class="metric-pill">33 TSX files</span>
-                  <span class="metric-pill">SSE + health checks</span>
-                </div>
-                <span class="project-summary-expand">
-                  <span class="project-summary-expand-label">Expand</span>
-                  <svg class="project-summary-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-                </span>
-              </div>
-            </summary>
-            <div class="project-expanded">
-          <div class="project-inner reverse">
-            <div class="project-copy">
-              <div class="project-panels">
-                <div class="project-panel project-panel--wide">
-                  <h4 class="project-panel-title" id="project-jimai-glance">What it is</h4>
-                  <p>A browser-based workspace for research, code help, and agent-style flows. Backend talks to <strong>Ollama</strong> locally; the UI streams longer jobs over <strong>SSE</strong>. Full source: <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">JimAI on GitHub</a>.</p>
-                </div>
-                <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-jimai-backend">Backend</h4>
-                  <ul>
-                    <li><strong>10</strong> FastAPI routers (chat, agents, uploads, settings, …)</li>
-                    <li><strong>76</strong> Python modules under <code>backend/</code> (repo audit)</li>
-                  </ul>
-                </div>
-                <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-jimai-frontend">Frontend</h4>
-                  <ul>
-                    <li><strong>33</strong> TS/TSX files (~215 KB source)</li>
-                    <li><strong>90+</strong> HTTP calls with timeouts (30s default, 120s SSE)</li>
-                    <li>Error boundary + cancelable research streams</li>
-                  </ul>
-                </div>
-                <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-jimai-ops">Reliability</h4>
-                  <p><code>/health</code> probes Ollama, ChromaDB, and Qdrant (<strong>3s</strong> timeout each). Repo includes validation scripts and a recorded clean <code>npm run build</code>.</p>
-                </div>
-                <div class="project-panel project-panel--wide">
-                  <h4 class="project-panel-title" id="project-jimai-stack">Tech stack</h4>
-                  <div class="detail-tags">
-                    <span class="tag">FastAPI</span><span class="tag">React</span><span class="tag">Vite</span><span class="tag">TypeScript</span><span class="tag">Ollama</span><span class="tag">SSE</span><span class="tag">ChromaDB</span><span class="tag">Qdrant</span>
-                  </div>
-                </div>
-              </div>
-              <a class="project-open" href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">Open GitHub repo</a>
-            </div>
-            <div class="work-visual-card">
-              <div class="work-visual-shell chat-shell" aria-hidden="true">
-                <div class="chat-head"><span>workspace.log</span><span>local run</span></div>
-                <div class="chat-messages">
-                  <div class="chat-message">Draft a fraud-model evaluation summary for a recruiter.</div>
-                  <div class="chat-message alt">Summary generated. Recall emphasized. Visual output suggested.</div>
-                  <div class="chat-message">Queue next task: search, code, compare, package.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-            </div>
-          </details>
-        </article>
-
-        <article class="project-section project-section--client" id="project-customstrat" data-project-section="customstrat" data-project-num="03">
+        <article class="project-section project-section--client" id="project-customstrat" data-project-section="customstrat" data-project-num="02">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
           <details class="project-disclosure">
             <summary class="project-summary">
@@ -6606,7 +6542,7 @@
               </div>
             </summary>
             <div class="project-expanded">
-          <div class="project-inner">
+          <div class="project-inner reverse">
             <div class="project-copy">
               <div class="project-panels">
                 <div class="project-panel project-panel--wide">
@@ -6651,7 +6587,7 @@
           </details>
         </article>
 
-        <article class="project-section project-section--nlp" id="project-sentiment" data-project-section="sentiment" data-project-num="04">
+        <article class="project-section project-section--nlp" id="project-sentiment" data-project-section="sentiment" data-project-num="03">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
           <details class="project-disclosure">
             <summary class="project-summary">
@@ -6673,7 +6609,7 @@
               </div>
             </summary>
             <div class="project-expanded">
-          <div class="project-inner reverse">
+          <div class="project-inner">
             <div class="project-copy">
               <div class="project-panels">
                 <div class="project-panel project-panel--wide">
@@ -6723,7 +6659,7 @@
           </details>
         </article>
 
-        <article class="project-section project-section--space" id="project-spacex" data-project-section="spacex" data-project-num="05">
+        <article class="project-section project-section--space" id="project-spacex" data-project-section="spacex" data-project-num="04">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
           <details class="project-disclosure">
             <summary class="project-summary">
@@ -6745,7 +6681,7 @@
               </div>
             </summary>
             <div class="project-expanded">
-          <div class="project-inner">
+          <div class="project-inner reverse">
             <div class="project-copy">
               <div class="project-panels">
                 <div class="project-panel project-panel--wide">
@@ -7097,7 +7033,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Summary</h2>
               <p class="resume-pdf-summary">
-                First-year University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks, and designed a local LLM workspace from scratch. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
+                First-year University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, and deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
               </p>
             </section>
 
@@ -7184,19 +7120,6 @@
 
             <section class="resume-pdf-section" aria-labelledby="resume-projects-heading">
               <h2 class="resume-pdf-h2" id="resume-projects-heading">Projects</h2>
-
-              <div class="resume-pdf-entry">
-                <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">JimAI — Local LLM Workspace</span>
-                  <span class="resume-pdf-date">2025 – 2026</span>
-                </div>
-                <p class="resume-pdf-meta">FastAPI · React/Vite · Ollama · <a href="https://github.com/James-Liebel/JimAI" target="_blank" rel="noopener noreferrer">github.com/James-Liebel/JimAI</a></p>
-                <p class="resume-pdf-project-tags">FastAPI · React · Ollama · LLM · Workflow automation</p>
-                <ul class="resume-list">
-                  <li>Designed and built a full local AI workspace supporting research queries, code generation, and multi-step workflow automation—FastAPI backend, React/Vite frontend, Ollama for on-device LLM inference.</li>
-                  <li>Features include task queuing, context-aware prompt chaining, and a browser-based interface.</li>
-                </ul>
-              </div>
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">

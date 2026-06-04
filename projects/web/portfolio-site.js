@@ -88,8 +88,8 @@
         },
         {
           title: "APIs & apps",
-          text: "JimAI: FastAPI app with 10 mounted routers and 76 backend Python modules; React/Vite client with 33 TS/TSX files and 90+ fetch calls wrapped with 30s/120s SSE timeouts (repo completion report).",
-          skills: ["FastAPI", "React", "TypeScript"]
+          text: "CustomStrat LinkedIn automation: a Python + NLP (VADER sentiment, TF-IDF) content pipeline that lifted impressions +31% and reach +41% over 28 days.",
+          skills: ["Python", "NLP", "Automation"]
         },
         {
           title: "Sites & surfaces",
