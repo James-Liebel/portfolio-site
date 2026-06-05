@@ -788,7 +788,7 @@
         var cw = padX * 2 + cols * cell + (cols - 1) * gap;
         var ch = padY + gridH + legendH;
         var isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        var labelColor = isLight ? 'rgba(51,65,85,0.75)' : 'rgba(245,247,255,0.55)';
+        var labelColor = isLight ? 'rgba(51,65,85,0.92)' : 'rgba(245,247,255,0.85)';
 
         cvs.width = cw;
         cvs.height = ch;
@@ -944,6 +944,7 @@
         var legendStartX = cw - padX - (lessW + swatchesW + moreW);
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'left';
+        ctx.font = '700 11px "Space Mono", monospace';
         ctx.fillStyle = labelColor;
         ctx.fillText('Less', legendStartX, legendY + sw / 2);
         var legendSx = legendStartX + lessW;

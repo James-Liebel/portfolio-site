@@ -1473,16 +1473,22 @@
     const iframes = [...document.querySelectorAll("#visualizations .visual-frame iframe[data-src]")];
     if (!iframes.length) return;
 
+    // Virtualize the heavy D3 iframes: load each as it nears the viewport and
+    // unload it (back to about:blank) once it scrolls well clear, so the GPU is
+    // never compositing all six live documents at once. The wide margin keeps a
+    // panel loaded ~a screen before it's visible, so normal scrolling shows no reload.
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
         const iframe = entry.target;
         const src = iframe.getAttribute("data-src");
         if (!src) return;
-        iframe.setAttribute("src", src);
-        io.unobserve(iframe);
+        if (entry.isIntersecting) {
+          if (iframe.getAttribute("src") !== src) iframe.setAttribute("src", src);
+        } else if (iframe.getAttribute("src") && iframe.getAttribute("src") !== "about:blank") {
+          iframe.setAttribute("src", "about:blank");
+        }
       });
-    }, { rootMargin: "220px 0px", threshold: 0.01 });
+    }, { rootMargin: "900px 0px", threshold: 0.01 });
 
     iframes.forEach(iframe => io.observe(iframe));
   }
