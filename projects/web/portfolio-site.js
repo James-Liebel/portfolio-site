@@ -1475,8 +1475,10 @@
 
     // Virtualize the heavy D3 iframes: load each as it nears the viewport and
     // unload it (back to about:blank) once it scrolls well clear, so the GPU is
-    // never compositing all six live documents at once. The wide margin keeps a
-    // panel loaded ~a screen before it's visible, so normal scrolling shows no reload.
+    // never compositing all six live documents at once. The margin is wide enough
+    // (~1.3 screens) that panels load before you reach the section and stay loaded
+    // while you're anywhere near it, so there's no reload wait; they only unload
+    // once you're well into another section, which is where the GPU saving matters.
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         const iframe = entry.target;
@@ -1488,7 +1490,7 @@
           iframe.setAttribute("src", "about:blank");
         }
       });
-    }, { rootMargin: "900px 0px", threshold: 0.01 });
+    }, { rootMargin: "1400px 0px", threshold: 0.01 });
 
     iframes.forEach(iframe => io.observe(iframe));
   }

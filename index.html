@@ -74,6 +74,8 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://d3js.org">
+  <link rel="prefetch" href="https://d3js.org/d3.v7.min.js">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="projects/web/vendor/gsap.min.js" defer></script>
   <script src="projects/web/vendor/ScrollTrigger.min.js" defer></script>
@@ -1916,13 +1918,15 @@
       display: flex;
       flex-direction: column;
       gap: var(--skills-group-gap);
-      padding-left: var(--skills-spine-inset);
+      padding: 10px 0 16px var(--skills-spine-inset);
       border-left: 2px solid transparent;
       min-width: 0;
     }
-    .skills-atlas-column--eng { --column-accent: var(--root-eng); }
-    .skills-atlas-column--sci { --column-accent: var(--root-sci); }
-    .skills-atlas-column--ana { --column-accent: var(--root-ana); }
+    /* Accent spine + faint wash per track so each header visibly owns the cards
+       beneath it (the spine was previously transparent, leaving columns ungrouped). */
+    .skills-atlas-column--eng { --column-accent: var(--root-eng); border-left-color: rgba(59, 130, 246, 0.4); background: linear-gradient(90deg, rgba(59, 130, 246, 0.06), transparent 64%); }
+    .skills-atlas-column--sci { --column-accent: var(--root-sci); border-left-color: rgba(139, 92, 246, 0.4); background: linear-gradient(90deg, rgba(139, 92, 246, 0.06), transparent 64%); }
+    .skills-atlas-column--ana { --column-accent: var(--root-ana); border-left-color: rgba(34, 211, 238, 0.4); background: linear-gradient(90deg, rgba(34, 211, 238, 0.06), transparent 64%); }
     .skills-column-stack {
       display: flex;
       flex-direction: column;
@@ -6499,7 +6503,7 @@
       <div class="project-stack">
         <article class="project-section project-section--ml" id="project-fraud" data-project-section="fraud" data-project-num="01">
           <canvas class="project-distortion-canvas" aria-hidden="true"></canvas>
-          <details class="project-disclosure" open>
+          <details class="project-disclosure">
             <summary class="project-summary">
               <div class="project-summary-grid">
                 <div class="project-summary-intro">

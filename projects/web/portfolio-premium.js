@@ -560,16 +560,33 @@
       ".bento-card, .visual-card, .journey-stop, .work-visual-card, .skills-branch"
     );
     cards.forEach(function (card) {
+      // Ease the glow toward the cursor instead of snapping 1:1, so it feels
+      // smooth and soft. The rAF loop runs only while the glow is catching up,
+      // then stops, so an idle card costs nothing.
+      var curX = 50, curY = 50, tgtX = 50, tgtY = 50;
+      var raf = null;
+      function tick() {
+        curX += (tgtX - curX) * 0.12;
+        curY += (tgtY - curY) * 0.12;
+        card.style.setProperty("--mouse-x", curX.toFixed(2) + "%");
+        card.style.setProperty("--mouse-y", curY.toFixed(2) + "%");
+        if (Math.abs(tgtX - curX) > 0.1 || Math.abs(tgtY - curY) > 0.1) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          raf = null;
+        }
+      }
+      function kick() { if (raf === null) raf = requestAnimationFrame(tick); }
       card.addEventListener("mousemove", function (e) {
         var r = card.getBoundingClientRect();
-        var x = ((e.clientX - r.left) / r.width) * 100;
-        var y = ((e.clientY - r.top) / r.height) * 100;
-        card.style.setProperty("--mouse-x", x + "%");
-        card.style.setProperty("--mouse-y", y + "%");
+        tgtX = ((e.clientX - r.left) / r.width) * 100;
+        tgtY = ((e.clientY - r.top) / r.height) * 100;
+        kick();
       });
       card.addEventListener("mouseleave", function () {
-        card.style.setProperty("--mouse-x", "50%");
-        card.style.setProperty("--mouse-y", "50%");
+        tgtX = 50;
+        tgtY = 50;
+        kick();
       });
     });
   }
