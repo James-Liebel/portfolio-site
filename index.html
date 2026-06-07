@@ -3401,6 +3401,19 @@
     .viz-fallback:not([hidden]) {
       display: flex;
     }
+    @keyframes vizFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    /* One-shot reveal when a D3 chart finishes loading, so panels connect in instead
+       of snapping. If the load event never fires the iframe keeps its default
+       opacity:1, so this can never leave a chart hidden. */
+    .visual-frame iframe.viz-loaded {
+      animation: vizFadeIn 0.55s ease;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .visual-frame iframe.viz-loaded { animation: none; }
+    }
     .viz-hover-overlay {
       position: absolute;
       inset: 0;

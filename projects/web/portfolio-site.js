@@ -1473,22 +1473,17 @@
     const iframes = [...document.querySelectorAll("#visualizations .visual-frame iframe[data-src]")];
     if (!iframes.length) return;
 
-    // Virtualize the heavy D3 iframes: load each as it nears the viewport and
-    // unload it (back to about:blank) once it scrolls well clear, so the GPU is
-    // never compositing all six live documents at once. The margin is wide enough
-    // (~1.3 screens) that panels load before you reach the section and stay loaded
-    // while you're anywhere near it, so there's no reload wait; they only unload
-    // once you're well into another section, which is where the GPU saving matters.
+    // Load each heavy D3 iframe well before it scrolls into view, then leave it
+    // loaded so the gallery is ready when you arrive and never blanks out on the
+    // way back. content-visibility:auto on the offscreen cards already skips their
+    // paint, so idle panels stay cheap on the GPU without having to unload them.
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
         const iframe = entry.target;
         const src = iframe.getAttribute("data-src");
-        if (!src) return;
-        if (entry.isIntersecting) {
-          if (iframe.getAttribute("src") !== src) iframe.setAttribute("src", src);
-        } else if (iframe.getAttribute("src") && iframe.getAttribute("src") !== "about:blank") {
-          iframe.setAttribute("src", "about:blank");
-        }
+        if (src && iframe.getAttribute("src") !== src) iframe.setAttribute("src", src);
+        io.unobserve(iframe);
       });
     }, { rootMargin: "1400px 0px", threshold: 0.01 });
 
@@ -2326,6 +2321,7 @@
         settled = true;
         frame.hidden = false;
         fallback.hidden = true;
+        frame.classList.add("viz-loaded");
       };
 
       frame.addEventListener("load", pass, { once: true });
