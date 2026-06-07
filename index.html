@@ -4093,11 +4093,12 @@
         display: grid;
         grid-template-columns: 1.05fr 0.95fr;
         gap: 32px;
-        align-items: start;
+        align-items: center;
       }
-      /* Size the panel to its own content instead of stretching it to match the
-         much taller hero copy column, which left a large empty gap under the
-         three snapshot boxes. align-items:start keeps it pinned to the top. */
+      /* The terminal panel is shorter than the hero copy column. Center it so it sits
+         level with the text instead of floating at the top with empty space below.
+         It still sizes to its own content (not stretched), so there's no internal gap
+         under the three snapshot boxes. */
     }
 
     @media (max-width: 1024px) {
