@@ -1953,13 +1953,18 @@
       const footerColumns = [...footer.querySelectorAll(".footer-column")];
       const footerBottomGroup = [footer.querySelector(".footer-divider"), footer.querySelector(".footer-bottom")].filter(Boolean);
 
+      // Keep the footer readable even if its ScrollTrigger never fires (stale
+      // positions after lazy content grows the page). immediateRender:false leaves
+      // these visible until the trigger plays instead of pre-hiding them.
       if (footerColumns.length) {
+        gsap.set(footerColumns, { opacity: 1, y: 0 });
         gsap.from(footerColumns, {
           y: 28,
           opacity: 0,
           duration: 0.55,
           stagger: 0.08,
           ease: "power3.out",
+          immediateRender: false,
           scrollTrigger: {
             trigger: footer,
             start: "top 82%",
@@ -1969,12 +1974,14 @@
       }
 
       if (footerBottomGroup.length) {
+        gsap.set(footerBottomGroup, { opacity: 1, y: 0 });
         gsap.from(footerBottomGroup, {
           y: 24,
           opacity: 0,
           duration: 0.45,
           stagger: 0.08,
           ease: "power2.out",
+          immediateRender: false,
           scrollTrigger: {
             trigger: footer,
             start: "top 76%",
