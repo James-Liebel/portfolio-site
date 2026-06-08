@@ -1409,6 +1409,69 @@
     .hero-copy-primary {
       min-width: 0;
     }
+    .hero-terminal-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+    .hero-edu-card {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(180deg, rgba(16, 21, 39, 0.82), rgba(10, 13, 24, 0.86));
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+    .hero-edu-kicker {
+      margin: 0;
+      font: 700 11px/1 "Space Mono", monospace;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f0abfc;
+    }
+    .hero-edu-school {
+      margin: 0;
+      font-size: clamp(1.15rem, 2vw, 1.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .hero-edu-degree {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .hero-edu-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .hero-edu-tags span {
+      font: 700 10px/1.3 "Space Mono", monospace;
+      letter-spacing: 0.04em;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #c7d2fe;
+      background: rgba(99, 102, 241, 0.1);
+    }
+    :root[data-theme="light"] .hero-edu-card {
+      background: rgba(255, 255, 255, 0.72);
+      border-color: rgba(79, 70, 229, 0.18);
+    }
+    :root[data-theme="light"] .hero-edu-school { color: #0f172a; }
+    :root[data-theme="light"] .hero-edu-kicker { color: #7c3aed; }
+    :root[data-theme="light"] .hero-edu-tags span {
+      color: #4338ca;
+      border-color: rgba(79, 70, 229, 0.28);
+      background: rgba(79, 70, 229, 0.08);
+    }
     .hero-terminal {
       position: relative;
       min-width: 0;
@@ -1743,38 +1806,14 @@
       color: var(--text);
     }
     .skills-compact-group-sub {
-      margin: 0 0 12px;
+      margin: 0;
       font-size: 0.82rem;
       line-height: 1.45;
       color: var(--muted);
     }
-    .skills-compact-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .skills-compact-list li {
-      display: inline-flex;
-      align-items: center;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font: 700 10px/1.2 "Space Mono", monospace;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.04);
-    }
     :root[data-theme="light"] .skills-compact-group {
       border-color: rgba(15, 23, 42, 0.08);
       background: rgba(15, 23, 42, 0.02);
-    }
-    :root[data-theme="light"] .skills-compact-list li {
-      border-color: rgba(15, 23, 42, 0.1);
-      background: rgba(15, 23, 42, 0.04);
     }
 
     .skills-atlas-disclosure {
@@ -4093,12 +4132,12 @@
         display: grid;
         grid-template-columns: 1.05fr 0.95fr;
         gap: 32px;
-        align-items: center;
+        align-items: stretch;
       }
-      /* The terminal panel is shorter than the hero copy column. Center it so it sits
-         level with the text instead of floating at the top with empty space below.
-         It still sizes to its own content (not stretched), so there's no internal gap
-         under the three snapshot boxes. */
+      /* The terminal panel is shorter than the hero copy column. The Education card
+         below it grows to absorb the leftover height so the right column reads as one
+         filled block instead of a centered panel floating in empty space. */
+      .hero-terminal-col .hero-edu-card { flex: 1; }
     }
 
     @media (max-width: 1024px) {
@@ -5923,8 +5962,6 @@
         border-radius: 16px;
       }
       .skills-compact-lede { font-size: 0.96rem; line-height: 1.5; }
-      .skills-compact-list { gap: 6px; }
-      .skills-compact-list li { font-size: 11px; padding: 5px 10px; }
       .skills-atlas-disclosure { border-radius: 16px; }
       .skills-atlas-summary {
         padding: 14px 16px;
@@ -6201,6 +6238,7 @@
           </div>
             </div>
 
+        <div class="hero-terminal-col">
         <aside class="hero-terminal" id="heroTerminal">
           <div class="terminal-shell">
             <div class="terminal-chrome">
@@ -6239,6 +6277,19 @@
             </div>
           </div>
         </aside>
+
+        <article class="hero-edu-card" aria-label="Education">
+          <p class="hero-edu-kicker">Education</p>
+          <h3 class="hero-edu-school">University of Chicago</h3>
+          <p class="hero-edu-degree">B.S. in Data Science &amp; Statistics · Class of 2030</p>
+          <div class="hero-edu-tags" aria-label="Coursework">
+            <span>Calculus &amp; Linear Algebra</span>
+            <span>Statistics &amp; Probability</span>
+            <span>Computer Science</span>
+            <span>Machine Learning</span>
+          </div>
+        </article>
+        </div>
 
           </div>
 
@@ -6287,43 +6338,19 @@
       </div>
 
       <div class="skills-compact-band" id="skillsCompactBand">
-        <p class="skills-compact-lede">Most of what I do falls into three areas. Here is a quick list of each; open the full map below for the detailed breakdown and how they connect.</p>
+        <p class="skills-compact-lede">Most of what I do falls into three areas, and they run in that order: get the data right, build and test models on it, then turn the results into something people can read. Open the full map below for the stack in each and how they connect end to end.</p>
         <div class="skills-compact-grid">
           <div class="skills-compact-group skills-compact-group--eng">
             <h3 class="skills-compact-group-title">Data Engineering</h3>
             <p class="skills-compact-group-sub">Getting data in, cleaned, and structured.</p>
-            <ul class="skills-compact-list">
-              <li>SQL</li>
-              <li>ETL Pipelines</li>
-              <li>Data Warehousing</li>
-              <li>Schema Design</li>
-              <li>Power Query</li>
-              <li>FastAPI</li>
-            </ul>
           </div>
           <div class="skills-compact-group skills-compact-group--sci">
             <h3 class="skills-compact-group-title">Data Science</h3>
             <p class="skills-compact-group-sub">Building and testing models on it.</p>
-            <ul class="skills-compact-list">
-              <li>Scikit-learn</li>
-              <li>XGBoost</li>
-              <li>TensorFlow</li>
-              <li>NLP</li>
-              <li>Feature Engineering</li>
-              <li>Model Evaluation</li>
-            </ul>
           </div>
           <div class="skills-compact-group skills-compact-group--ana">
             <h3 class="skills-compact-group-title">Data Analysis</h3>
             <p class="skills-compact-group-sub">Turning the results into something people can read.</p>
-            <ul class="skills-compact-list">
-              <li>Power BI</li>
-              <li>DAX</li>
-              <li>PL-300</li>
-              <li>D3.js</li>
-              <li>GeoJSON</li>
-              <li>Matplotlib</li>
-            </ul>
           </div>
         </div>
       </div>

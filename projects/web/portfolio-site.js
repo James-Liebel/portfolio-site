@@ -325,6 +325,12 @@
 
   function scrollToTarget(target) {
     if (!target) return;
+    // Lazy D3 iframes and content-visibility grow the page after the reveal
+    // triggers are measured, leaving their start positions stale. Without this
+    // refresh a jump to #visualizations lands on cards still pinned at opacity 0
+    // until a manual scroll re-measures them. Refresh first so the reveal either
+    // fires in transit or completes on arrival.
+    if (window.ScrollTrigger) window.ScrollTrigger.refresh();
     if (lenis) {
       lenis.scrollTo(target, { offset: -86, duration: 1.2 });
     } else {
