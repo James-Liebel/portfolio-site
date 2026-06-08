@@ -74,6 +74,7 @@
         localStorage.setItem("portfolio-theme", "light");
         themeToggle.setAttribute("aria-pressed", "true");
       }
+      syncNavLinkStyles();
     });
   }
 
@@ -218,11 +219,15 @@
 
   function getNavLinkBaseColor(link) {
     if (!link) return "";
-    const scrolled = siteNav?.classList.contains("scrolled");
-    if (scrolled) {
-      return link.classList.contains("active") ? "var(--dark)" : "rgba(26, 30, 46, 0.64)";
+    // The nav background stays dark in dark mode (and light in light mode) the whole
+    // way down the page, so link color must follow the THEME, not the scroll position.
+    // Keying off "scrolled" forced dark text onto the dark scrolled bar, which read as
+    // near-invisible grey. Inactive links stay high-opacity so they never wash out.
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    if (isLight) {
+      return link.classList.contains("active") ? "var(--dark)" : "rgba(26, 30, 46, 0.78)";
     }
-    return link.classList.contains("active") ? "#e8e9f0" : "rgba(232, 233, 240, 0.92)";
+    return link.classList.contains("active") ? "#ffffff" : "rgba(232, 233, 240, 0.9)";
   }
 
   function applyNavLinkState(link) {
