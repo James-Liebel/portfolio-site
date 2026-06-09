@@ -659,10 +659,70 @@
     });
   }
 
+  function initCardTilt() {
+    // Pointer tilt: the hovered edge rises toward the viewer and the cursor
+    // glow doubles as the moving glare. The shared card-lift rule transitions
+    // transform, which would ease every per-frame write, so the inline
+    // transition is suspended while tilting and restored once the card has
+    // sprung flat and its inline transform is cleared.
+    if (MOBILE || reduced) return;
+    if (document.documentElement.classList.contains("perf-lite")) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    var MAX_DEG = 6;
+    var sel = ".hero-edu-card, .hero-metric, .visual-card, .work-visual-card, .skills-branch, .bento-card";
+    document.querySelectorAll(sel).forEach(function (card) {
+      var raf = null;
+      var tRX = 0, tRY = 0, tZ = 0;
+      var rx = 0, ry = 0, z = 0;
+      function frame() {
+        rx = lerp(rx, tRX, 0.16);
+        ry = lerp(ry, tRY, 0.16);
+        z = lerp(z, tZ, 0.16);
+        var resting = tRX === 0 && tRY === 0 && tZ === 0;
+        var settled =
+          Math.abs(tRX - rx) < 0.02 && Math.abs(tRY - ry) < 0.02 && Math.abs(tZ - z) < 0.1;
+        if (resting && settled) {
+          card.style.transform = "";
+          card.style.transition = "";
+          raf = null;
+          return;
+        }
+        card.style.transform =
+          "perspective(900px) rotateX(" + rx.toFixed(3) + "deg) rotateY(" + ry.toFixed(3) +
+          "deg) translateZ(" + z.toFixed(2) + "px)";
+        if (settled) {
+          raf = null;
+          return;
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      function kick() {
+        if (raf === null) raf = requestAnimationFrame(frame);
+      }
+      card.addEventListener("pointermove", function (e) {
+        var r = card.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        var nx = (e.clientX - r.left) / r.width - 0.5;
+        var ny = (e.clientY - r.top) / r.height - 0.5;
+        tRX = ny * MAX_DEG;
+        tRY = -nx * MAX_DEG;
+        tZ = 7;
+        card.style.transition = "none";
+        kick();
+      });
+      card.addEventListener("pointerleave", function () {
+        tRX = 0;
+        tRY = 0;
+        tZ = 0;
+        kick();
+      });
+    });
+  }
+
   function initCardGlow() {
     if (MOBILE) return;
     var cards = document.querySelectorAll(
-      ".bento-card, .visual-card, .journey-stop, .work-visual-card, .skills-branch"
+      ".bento-card, .visual-card, .journey-stop, .work-visual-card, .skills-branch, .hero-edu-card, .hero-metric"
     );
     cards.forEach(function (card) {
       // Ease the glow toward the cursor instead of snapping 1:1, so it feels
@@ -709,6 +769,7 @@
       });
       initCountUp();
       initCardGlow();
+      initCardTilt();
     });
   }
 

@@ -4959,7 +4959,10 @@
     .visual-card,
     .journey-stop,
     .work-visual-card,
-    .skills-branch {
+    .skills-branch,
+    .hero-edu-card,
+    .hero-metric {
+      position: relative;
       --mouse-x: 50%;
       --mouse-y: 50%;
     }
@@ -4967,7 +4970,9 @@
     .visual-card::after,
     .journey-stop::after,
     .work-visual-card::after,
-    .skills-branch::after {
+    .skills-branch::after,
+    .hero-edu-card::after,
+    .hero-metric::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -4986,7 +4991,9 @@
     .visual-card:hover::after,
     .journey-stop:hover::after,
     .work-visual-card:hover::after,
-    .skills-branch:hover::after {
+    .skills-branch:hover::after,
+    .hero-edu-card:hover::after,
+    .hero-metric:hover::after {
       opacity: 1;
     }
     .visual-card::after {
@@ -5180,6 +5187,9 @@
       position: sticky;
       top: calc(var(--nav-bar-total) + 18px);
       transform-origin: center top;
+      /* the shared card-lift rule transitions transform, which would ease
+         and smear every per-frame recede write while scrolling */
+      transition: border-color 0.3s ease, box-shadow 0.35s ease;
     }
     html.project-stack-live #projects .project-section.is-open {
       position: static;
