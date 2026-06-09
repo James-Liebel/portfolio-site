@@ -5166,6 +5166,25 @@
   <style id="premium-polish-v2">
     /* ───── Premium polish layer — additive only ───── */
 
+    /* Sticky-stacked project cards; html class set by portfolio-premium.js so
+       sticky never applies without the recede scrub that pairs with it */
+    html.project-stack-live #projects .project-stack {
+      /* sticky grid items are contained by their own grid area, which leaves
+         no room to stick; block flow lets cards hold until the stack ends */
+      display: block;
+    }
+    html.project-stack-live #projects .project-section + .project-section {
+      margin-top: 34px;
+    }
+    html.project-stack-live #projects .project-section {
+      position: sticky;
+      top: calc(var(--nav-bar-total) + 18px);
+      transform-origin: center top;
+    }
+    html.project-stack-live #projects .project-section.is-open {
+      position: static;
+    }
+
     /* Hero name: animated aurora gradient + soft halo */
     .hero-name {
       background: linear-gradient(

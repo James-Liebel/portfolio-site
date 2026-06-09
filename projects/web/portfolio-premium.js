@@ -504,6 +504,68 @@
     update();
   }
 
+  function initProjectStack() {
+    // Sticky-stacked project cards: while the next card scrolls in, the
+    // previous one holds below the nav and recedes (scale + dim only, so it
+    // stays on the compositor). Progress is recomputed from live geometry
+    // every frame instead of ScrollTrigger because <details> expansion changes
+    // card heights at any time, and portfolio-site.js documents that
+    // refreshing ScrollTrigger on toggle makes the viewport jump.
+    if (MOBILE || reduced) return;
+    if (document.documentElement.classList.contains("perf-lite")) return;
+    if (!window.matchMedia("(min-width: 1024px)").matches) return;
+    var sections = [].slice.call(document.querySelectorAll("#projects .project-section"));
+    if (sections.length < 2) return;
+
+    document.documentElement.classList.add("project-stack-live");
+
+    sections.forEach(function (section) {
+      var det = section.querySelector(".project-disclosure");
+      if (!det) return;
+      // an expanded card can be taller than the viewport, where sticky would
+      // trap its lower content off-screen; open cards flow normally instead
+      var sync = function () {
+        section.classList.toggle("is-open", det.open);
+      };
+      det.addEventListener("toggle", sync);
+      sync();
+    });
+
+    var pending = false;
+    function update() {
+      pending = false;
+      var vh = window.innerHeight || 1;
+      for (var i = 0; i < sections.length - 1; i++) {
+        var section = sections[i];
+        var nextTop = sections[i + 1].getBoundingClientRect().top;
+        // 0 while the next card is below the fold, 1 once its top passes 38%
+        // of the viewport, just before it covers the held card
+        var p = Math.max(0, Math.min(1, (vh - nextTop) / (vh * 0.62)));
+        if (p === 0) {
+          if (section.style.transform) {
+            section.style.transform = "";
+            section.style.opacity = "";
+          }
+          continue;
+        }
+        var e = p * p * (3 - 2 * p);
+        section.style.transform = "scale(" + (1 - 0.055 * e).toFixed(4) + ")";
+        section.style.opacity = (1 - 0.48 * e).toFixed(3);
+      }
+    }
+    function schedule() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(update);
+    }
+
+    var lenis = window.portfolioLenis;
+    if (lenis && lenis.on) lenis.on("scroll", schedule);
+    else window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    schedule();
+  }
+
   function initSectionReveals() {
     if (!window.gsap || !window.ScrollTrigger) return;
     var gsap = window.gsap;
@@ -598,6 +660,7 @@
       initVizParallax();
       initMagnetic();
       initScrollSidebar();
+      initProjectStack();
       waitGsap(function () {
         initSectionReveals();
       });
