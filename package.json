@@ -9,6 +9,7 @@
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
     "gsap": "^3.12.2",
-    "powerbi-client": "^2.22.0"
+    "powerbi-client": "^2.22.0",
+    "three": "^0.184.0"
   }
 }

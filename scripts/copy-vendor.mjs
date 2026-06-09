@@ -15,6 +15,9 @@ const copies = [
   ["node_modules/gsap/dist/ScrollTrigger.min.js", "ScrollTrigger.min.js"],
   ["node_modules/@studio-freight/lenis/dist/lenis.min.js", "lenis.min.js"],
   ["node_modules/powerbi-client/dist/powerbi.min.js", "powerbi.min.js"],
+  // three.module.min.js imports ./three.core.min.js, so both must ship together
+  ["node_modules/three/build/three.module.min.js", "three.module.min.js"],
+  ["node_modules/three/build/three.core.min.js", "three.core.min.js"],
 ];
 
 fs.mkdirSync(vendor, { recursive: true });

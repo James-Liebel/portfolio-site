@@ -8,6 +8,8 @@ These files are served **locally** so the portfolio works without CDN access:
 | `ScrollTrigger.min.js` | gsap@3.12.2 |
 | `lenis.min.js` | @studio-freight/lenis@1.0.42 |
 | `powerbi.min.js` | powerbi-client@2.22.0 |
+| `three.module.min.js` | three@0.184.0 |
+| `three.core.min.js` | three@0.184.0 (imported by `three.module.min.js`) |
 
 After changing versions in the root `package.json`, run from the repo root:
 
