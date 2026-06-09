@@ -5320,6 +5320,14 @@
       background: linear-gradient(90deg, #3b82f6, #a855f7 50%, #22d3ee);
       box-shadow: 0 0 20px rgba(99, 102, 241, 0.55);
     }
+    /* underline sweep driven by the scrubbed --head-line var from
+       portfolio-premium.js; defaults to fully drawn without JS */
+    .section-head h2::after,
+    .journey-head h2::after,
+    .resume-title::after {
+      transform: scaleX(var(--head-line, 1));
+      transform-origin: left center;
+    }
     :root[data-theme="light"] .section-head h2:not(.skills-section-title),
     :root[data-theme="light"] .journey-head h2,
     :root[data-theme="light"] .resume-title {

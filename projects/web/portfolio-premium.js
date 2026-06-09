@@ -567,25 +567,68 @@
   }
 
   function initSectionReveals() {
+    // Scrubbed head choreography: kicker, title, lede and the title underline
+    // track scroll through each section's entry window, so the reveal plays
+    // forward and backward with the reader instead of firing once.
+    // immediateRender:false keeps headings visible if ScrollTrigger never
+    // runs, the failure mode the footer reveal previously hit.
+    if (reduced) return;
+    if (document.documentElement.classList.contains("perf-lite")) return;
     if (!window.gsap || !window.ScrollTrigger) return;
     var gsap = window.gsap;
     gsap.registerPlugin(window.ScrollTrigger);
-    document.querySelectorAll("section[id]").forEach(function (sec) {
+
+    document.querySelectorAll("main section[id]").forEach(function (sec) {
       if (sec.id === "hero") return;
-      var targets = sec.querySelectorAll(".section-kicker, .section-head h2, .journey-head h2, .section-head > p, .journey-head > p");
-      if (!targets.length) return;
-      gsap.from(targets, {
-        y: 40,
-        opacity: 0,
-        duration: 0.65,
-        ease: "power2.out",
-        stagger: 0.08,
-        scrollTrigger: {
-          trigger: sec,
-          start: "top 85%",
-          once: true
-        }
+      var head = sec.querySelector(".section-head, .journey-head");
+      if (!head) return;
+      var title = head.querySelector("h2");
+      var kicker = head.querySelector(".section-kicker");
+      var ledes = [].slice.call(head.querySelectorAll("p")).filter(function (p) {
+        return p !== kicker;
       });
+
+      function scrubVars() {
+        return {
+          trigger: head,
+          start: "top 94%",
+          end: "top 58%",
+          scrub: 0.55
+        };
+      }
+
+      if (title) {
+        gsap.fromTo(
+          title,
+          { y: 48, opacity: 0 },
+          { y: 0, opacity: 1, ease: "none", immediateRender: false, scrollTrigger: scrubVars() }
+        );
+        // sweeps the existing gradient underline; the bar trails the title
+        gsap.fromTo(
+          title,
+          { "--head-line": 0 },
+          {
+            "--head-line": 1,
+            ease: "none",
+            immediateRender: false,
+            scrollTrigger: { trigger: head, start: "top 84%", end: "top 48%", scrub: 0.55 }
+          }
+        );
+      }
+      if (kicker) {
+        gsap.fromTo(
+          kicker,
+          { x: -30, opacity: 0 },
+          { x: 0, opacity: 1, ease: "none", immediateRender: false, scrollTrigger: scrubVars() }
+        );
+      }
+      if (ledes.length) {
+        gsap.fromTo(
+          ledes,
+          { y: 26, opacity: 0 },
+          { y: 0, opacity: 1, ease: "none", immediateRender: false, scrollTrigger: scrubVars() }
+        );
+      }
     });
   }
 
