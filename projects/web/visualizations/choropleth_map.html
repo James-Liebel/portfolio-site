@@ -7,11 +7,12 @@
   <title>Cincinnati Food Access | Choropleth Map</title>
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
   <meta name="description" content="Visualizing food access and deserts in Cincinnati neighborhoods using D3.js.">
+  <script src="viz-shell.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #0c0e14;
+      --bg-color: #070a14;
       --panel-bg: rgba(255, 255, 255, 0.03);
       --accent-color: #f59e0b;
       --text-primary: #f8fafc;
@@ -26,7 +27,7 @@
       padding: 0;
       background-color: var(--bg-color);
       color: var(--text-primary);
-      font-family: 'Outfit', sans-serif;
+      font-family: Inter, system-ui, sans-serif;
       overflow: hidden;
       display: flex;
     }
@@ -622,6 +623,24 @@
 
         // Initial Map Render
         updateMap(allMarkers);
+
+        // Hold the map until the pane is on screen, then fade the layers in
+        // and pop the markers with a capped stagger.
+        g.attr("opacity", 0);
+        window.vizShell.whenVisible(container, skip => {
+          if (skip) {
+            g.attr("opacity", 1);
+            return;
+          }
+          g.transition().duration(700).attr("opacity", 1);
+          g.selectAll(".store-marker")
+            .attr("r", 0)
+            .transition()
+            .duration(450)
+            .ease(d3.easeBackOut.overshoot(1.8))
+            .delay((d, i) => 150 + Math.min(i * 1.1, 850))
+            .attr("r", 5);
+        });
 
         // Setup Filters
         document.querySelectorAll('.filter-btn').forEach(btn => {

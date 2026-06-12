@@ -6,129 +6,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Treemap Visualization Dashboard</title>
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+  <script src="viz-shell.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="viz-shell.css">
   <style>
-    :root {
-      --primary: #2c3e50;
-      --secondary: #34495e;
-      --bg: #f8fafc;
-    }
-
-    body {
-      font-family: 'Outfit', sans-serif;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      background: var(--bg);
-      padding: 18px 20px;
+    body.viz-page {
+      justify-content: flex-start;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 30px;
-    }
-
-    #title {
-      font-size: 32px;
-      font-weight: 600;
-      color: var(--primary);
-      margin: 0;
-    }
-
-    #description {
-      font-size: 16px;
-      color: #64748b;
-      margin: 10px 0 20px 0;
+      margin-bottom: 18px;
     }
 
     .controls {
       display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
+      gap: 10px;
+      margin-bottom: 18px;
+      justify-content: center;
     }
 
     .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 12px;
-      background: white;
-      color: var(--secondary);
-      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--accent-soft);
+      color: var(--text);
+      font: 700 11px/1 "Space Mono", monospace;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      transition: all 0.2s;
-      border: 2px solid transparent;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
     }
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-color: var(--cyan);
     }
 
     .btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
     }
 
     .chart-container {
-      background: white;
-      padding: 24px;
-      border-radius: 24px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      position: relative;
       width: 100%;
       max-width: 1100px;
       box-sizing: border-box;
+      padding: 20px;
+      border-radius: 20px;
+      background: var(--panel);
+      border: 1px solid var(--border-soft);
+    }
+
+    :root[data-embed="true"] .chart-container {
+      padding: 8px 0 0;
+      border: 0;
+      background: transparent;
     }
 
     .tile {
-      stroke: white;
+      stroke: var(--bg);
       stroke-width: 1px;
       transition: opacity 0.2s;
       cursor: pointer;
     }
 
     .tile:hover {
-      opacity: 0.8;
+      opacity: 0.82;
     }
 
     .tile-text {
       font-size: 10px;
-      fill: white;
+      fill: #fff;
       pointer-events: none;
-      font-weight: 400;
-    }
-
-    #tooltip {
-      position: absolute;
-      padding: 12px 16px;
-      background: rgba(15, 23, 42, 0.95);
-      color: white;
-      border-radius: 12px;
-      pointer-events: none;
-      opacity: 0;
-      font-size: 13px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      line-height: 1.5;
+      font-weight: 500;
+      paint-order: stroke;
+      stroke: rgba(0, 0, 0, 0.45);
+      stroke-width: 1.6px;
     }
 
     #legend {
-      margin-top: 30px;
+      margin-top: 20px;
+    }
+
+    #legend text {
       font-size: 11px;
-      color: #475569;
+      fill: var(--muted);
     }
   </style>
 </head>
 
-<body>
+<body class="viz-page">
   <div class="header">
-    <h1 id="title">Hierarchical Data Explorer</h1>
-    <p id="description">Explore different datasets using interactive treemap layouts</p>
+    <p class="viz-kicker">D3.js · Hierarchical Data</p>
+    <h1 id="title" class="viz-title">Hierarchical Data Explorer</h1>
+    <p id="description" class="viz-sub">Explore different datasets using interactive treemap layouts</p>
   </div>
 
   <div class="controls">
@@ -138,7 +114,7 @@
   </div>
 
   <div class="chart-container">
-    <div id="tooltip"></div>
+    <div id="tooltip" class="viz-tooltip"></div>
     <div id="chart"></div>
     <div id="legend"></div>
   </div>
@@ -153,23 +129,39 @@
       videogames: {
         title: "Video Game Sales",
         description: "Top 100 Most Sold Video Games Grouped by Platform",
-        url: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json"
+        url: "data/video-game-sales.json",
+        fallback: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json"
       },
       movies: {
         title: "Movie Sales",
         description: "Top 95 Highest Grossing Movies Grouped by Genre",
-        url: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json"
+        url: "data/movies.json",
+        fallback: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json"
       },
       kickstarter: {
         title: "Kickstarter Pledges",
         description: "Top 100 Most Pledged Kickstarter Campaigns Grouped by Category",
-        url: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/kickstarter-funding-data.json"
+        url: "data/kickstarter.json",
+        fallback: "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/kickstarter-funding-data.json"
       }
     };
 
     const width = 1000;
     const height = 650;
     const color = d3.scaleOrdinal(d3.schemeTableau10);
+
+    // First render holds the tile cascade until the pane is on screen; dataset
+    // switches afterwards replay it immediately.
+    let revealed = false;
+    let pendingReveal = null;
+    window.vizShell.whenVisible(document.querySelector(".chart-container"), skip => {
+      revealed = true;
+      if (pendingReveal) {
+        const run = pendingReveal;
+        pendingReveal = null;
+        run(skip);
+      }
+    });
 
     function loadData(id) {
       d3.select("#chart").html("");
@@ -183,7 +175,7 @@
       d3.select("#title").text(config.title);
       d3.select("#description").text(config.description);
 
-      d3.json(config.url).then(data => {
+      d3.json(config.url).catch(() => d3.json(config.fallback)).then(data => {
         const svg = d3.select("#chart")
           .append("svg")
           .attr("width", "100%")
@@ -206,13 +198,13 @@
         const cell = svg.selectAll("g")
           .data(root.leaves())
           .enter().append("g")
-          .attr("transform", d => `translate(${d.x0},${d.y1})`); // Note: y1 is modified for entry animation
+          .attr("transform", d => `translate(${d.x0},${d.y0})`);
 
-        cell.append("rect")
+        const tiles = cell.append("rect")
           .attr("id", d => d.data.id)
           .attr("class", "tile")
           .attr("width", d => d.x1 - d.x0)
-          .attr("height", 0) // Start at 0 for animation
+          .attr("height", 0)
           .attr("fill", d => color(d.data.category))
           .attr("data-name", d => d.data.name)
           .attr("data-category", d => d.data.category)
@@ -229,26 +221,38 @@
           })
           .on("mouseout", () => {
             tooltip.transition().duration(300).style("opacity", 0);
-          })
-          .transition()
-          .duration(800)
-          .delay((d, i) => i * 1)
-          .attr("transform", d => `translate(0, ${d.y0 - d.y1})`) // Move it back to correct y0
-          .attr("height", d => d.y1 - d.y0);
+          });
 
-        cell.append("text")
+        const labels = cell.append("text")
           .attr("class", "tile-text")
-          .attr("transform", d => `translate(0, ${d.y0 - d.y1})`) // Adjust text as well
-          .selectAll("tspan")
+          .attr("opacity", 0);
+
+        labels.selectAll("tspan")
           .data(d => d.data.name.split(/(?=[A-Z][^A-Z])/g))
           .enter().append("tspan")
           .attr("x", 4)
           .attr("y", (d, i) => 13 + i * 10)
-          .text(d => d)
-          .attr("opacity", 0)
-          .transition()
-          .duration(1000)
-          .attr("opacity", 1);
+          .text(d => d);
+
+        const reveal = skip => {
+          if (skip) {
+            tiles.attr("height", d => d.y1 - d.y0);
+            labels.attr("opacity", 1);
+            return;
+          }
+          tiles.transition()
+            .duration(750)
+            .ease(d3.easeCubicOut)
+            .delay((d, i) => i * 4)
+            .attr("height", d => d.y1 - d.y0);
+          labels.transition()
+            .duration(600)
+            .delay(450)
+            .attr("opacity", 1);
+        };
+
+        if (revealed) reveal(window.vizShell.reducedMotion);
+        else pendingReveal = reveal;
 
         // Legend
         const categories = root.leaves().map(nodes => nodes.data.category);

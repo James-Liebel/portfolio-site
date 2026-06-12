@@ -6,95 +6,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Global Temperature Heatmap</title>
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+  <script src="viz-shell.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="viz-shell.css">
   <style>
-    :root {
-      --primary: #2c3e50;
-      --text: #34495e;
-      --cold: #4575b4;
-      --mid: #ffffbf;
-      --hot: #d73027;
-    }
-
-    body {
-      font-family: 'Outfit', sans-serif;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #f0f2f5;
-    }
-
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 1200px;
-      box-sizing: border-box;
-    }
-
-    #title {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--primary);
-      text-align: center;
-      margin: 0;
-    }
-
-    #description {
-      font-size: 16px;
-      color: #7f8c8d;
-      text-align: center;
-      margin: 10px 0 30px 0;
-    }
-
     .cell {
       transition: stroke 0.2s, stroke-width 0.2s;
       cursor: pointer;
     }
 
     .cell:hover {
-      stroke: #000;
+      stroke: var(--text);
       stroke-width: 1px;
-    }
-
-    #tooltip {
-      position: absolute;
-      padding: 12px 18px;
-      background: rgba(255, 255, 255, 0.95);
-      color: #333;
-      border-radius: 12px;
-      pointer-events: none;
-      opacity: 0;
-      font-size: 13px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      z-index: 100;
-      line-height: 1.4;
     }
 
     .tick text {
       font-size: 11px;
-      fill: #7f8c8d;
     }
 
     #legend text {
       font-size: 10px;
-      fill: #95a5a6;
     }
   </style>
 </head>
 
-<body>
-  <div class="container">
-    <h1 id="title">Monthly Global Land-Surface Temperature</h1>
-    <p id="description">1753 - 2015: Base Temperature 8.66℃</p>
-    <div id="tooltip"></div>
+<body class="viz-page">
+  <div class="viz-panel">
+    <p class="viz-kicker">D3.js · Heatmap</p>
+    <h1 id="title" class="viz-title">Monthly Global Land-Surface Temperature</h1>
+    <p id="description" class="viz-sub">1753 - 2015: Base Temperature 8.66℃</p>
+    <div id="tooltip" class="viz-tooltip"></div>
     <div id="chart"></div>
   </div>
 
@@ -102,17 +44,31 @@
     const width = 1100;
     const height = 500;
     const margin = { top: 20, right: 30, bottom: 100, left: 100 };
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
 
-    const svg = d3.select("#chart")
+    const svgRoot = d3.select("#chart")
       .append("svg")
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("viewBox", `0 0 ${width} ${height}`)
-      .attr("preserveAspectRatio", "xMidYMid meet")
-      .append("g")
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    // One animated clip rect sweeps 3,000+ cells in without per-cell transitions.
+    const revealRect = svgRoot.append("defs")
+      .append("clipPath")
+      .attr("id", "cellReveal")
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 0)
+      .attr("height", innerH);
+
+    const svg = svgRoot.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json")
+    d3.json("data/global-temperature.json")
+      .catch(() => d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json"))
       .then(data => {
         const baseTemp = data.baseTemperature;
         const dataset = data.monthlyVariance;
@@ -123,32 +79,25 @@
 
         const xScale = d3.scaleBand()
           .domain(years)
-          .range([0, width - margin.left - margin.right]);
+          .range([0, innerW]);
 
         const yScale = d3.scaleBand()
           .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-          .range([0, height - margin.top - margin.bottom]);
+          .range([0, innerH]);
 
-        const colorScale = d3.scaleSequential()
-          .domain(d3.extent(dataset, d => baseTemp + d.variance))
-          .interpolator(d3.interpolateRdYlBu); // We'll reverse this logic for heat
-
-        // Correcting the reversed color logic of RdYlBu (it's hot to cold by default)
         const temperatureExtent = d3.extent(dataset, d => baseTemp + d.variance);
         const colorMap = d3.scaleLinear()
           .domain([temperatureExtent[0], (temperatureExtent[0] + temperatureExtent[1]) / 2, temperatureExtent[1]])
           .range(["#4575b4", "#ffffbf", "#d73027"]);
 
-        // X Axis
         const xAxis = d3.axisBottom(xScale)
           .tickValues(xScale.domain().filter(year => year % 10 === 0));
 
         svg.append("g")
           .attr("id", "x-axis")
-          .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
+          .attr("transform", `translate(0, ${innerH})`)
           .call(xAxis);
 
-        // Y Axis
         const yAxis = d3.axisLeft(yScale)
           .tickFormat(month => months[month]);
 
@@ -156,11 +105,12 @@
           .attr("id", "y-axis")
           .call(yAxis);
 
-        // Tooltip
         const tooltip = d3.select("#tooltip");
 
-        // Cells
-        svg.selectAll(".cell")
+        const cellLayer = svg.append("g")
+          .attr("clip-path", "url(#cellReveal)");
+
+        cellLayer.selectAll(".cell")
           .data(dataset)
           .enter()
           .append("rect")
@@ -187,8 +137,8 @@
         // Legend
         const legendWidth = 400;
         const legendHeight = 20;
-        const legendX = (width - margin.left - margin.right - legendWidth) / 2;
-        const legendY = height - margin.top - margin.bottom + 60;
+        const legendX = (innerW - legendWidth) / 2;
+        const legendY = innerH + 60;
 
         const legend = svg.append("g")
           .attr("id", "legend")
@@ -215,6 +165,18 @@
         legend.append("g")
           .attr("transform", `translate(0, ${legendHeight})`)
           .call(legendAxis);
+
+        // Sweep the cells in left to right (1753 toward 2015) when visible.
+        window.vizShell.whenVisible(document.getElementById("chart"), skip => {
+          if (skip) {
+            revealRect.attr("width", innerW);
+            return;
+          }
+          revealRect.transition()
+            .duration(1500)
+            .ease(d3.easeCubicInOut)
+            .attr("width", innerW);
+        });
       });
   </script>
 </body>

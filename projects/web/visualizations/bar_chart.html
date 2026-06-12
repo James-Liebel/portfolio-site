@@ -6,100 +6,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>United States GDP Visualization</title>
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+  <script src="viz-shell.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="viz-shell.css">
   <style>
-    :root {
-      --primary: #3498db;
-      --secondary: #2c3e50;
-      --accent: #e74c3c;
-      --bg: #ffffff;
-      --text: #333;
-    }
-
-    body {
-      font-family: 'Outfit', sans-serif;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #f8f9fa;
-    }
-
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      position: relative;
-      width: 100%;
-      max-width: 1100px;
-      box-sizing: border-box;
-    }
-
-    #title {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--secondary);
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
     .bar {
-      fill: #3498db;
-      transition: fill 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      fill: url(#barGradient);
     }
 
     .bar:hover {
-      fill: #2980b9;
+      filter: brightness(1.45) saturate(1.15);
     }
 
-    #tooltip {
-      position: absolute;
-      padding: 12px;
-      background: rgba(44, 62, 80, 0.95);
-      color: white;
-      border-radius: 8px;
-      pointer-events: none;
-      opacity: 0;
-      font-size: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(4px);
-      transition: opacity 0.2s;
-      z-index: 10;
+    .bar-gradient-top {
+      stop-color: var(--cyan);
     }
 
-    .tick text {
-      font-size: 12px;
-      color: #666;
-    }
-
-    .axis-label {
-      font-size: 14px;
-      fill: #95a5a6;
-    }
-
-    svg {
-      border-radius: 10px;
+    .bar-gradient-bottom {
+      stop-color: var(--accent);
     }
 
     .grid line {
-      stroke: #eee;
-      stroke-opacity: 0.7;
+      stroke: var(--grid);
       shape-rendering: crispEdges;
     }
 
     .grid path {
       stroke-width: 0;
     }
+
+    .tick text {
+      font-size: 12px;
+    }
+
+    .axis-label {
+      font-size: 13px;
+      fill: var(--muted-soft);
+    }
+
+    .baseline {
+      stroke: var(--axis);
+      stroke-width: 1.5;
+    }
   </style>
 </head>
 
-<body>
-  <div class="container">
-    <h1 id="title">United States GDP Growth</h1>
-    <div id="tooltip" data-date=""></div>
+<body class="viz-page">
+  <div class="viz-panel">
+    <p class="viz-kicker">D3.js · Time Series</p>
+    <h1 id="title" class="viz-title">United States GDP Growth</h1>
+    <p class="viz-sub">Quarterly gross domestic product, 1947 to 2015. Hover any bar for its exact quarter and value.</p>
+    <div id="tooltip" class="viz-tooltip" data-date=""></div>
     <div id="chart-area"></div>
   </div>
 
@@ -107,59 +65,71 @@
     const width = 800;
     const height = 500;
     const margin = { top: 40, right: 40, bottom: 60, left: 80 };
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
 
-    const svg = d3.select("#chart-area")
+    const svgRoot = d3.select("#chart-area")
       .append("svg")
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("viewBox", `0 0 ${width} ${height}`)
-      .attr("preserveAspectRatio", "xMidYMid meet")
-      .append("g")
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const gradient = svgRoot.append("defs")
+      .append("linearGradient")
+      .attr("id", "barGradient")
+      .attr("x1", "0").attr("y1", "0")
+      .attr("x2", "0").attr("y2", "1");
+    gradient.append("stop").attr("class", "bar-gradient-top").attr("offset", "0%");
+    gradient.append("stop").attr("class", "bar-gradient-bottom").attr("offset", "100%");
+
+    const svg = svgRoot.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json")
+    // Local copy first; the original source stays as a fallback so the chart
+    // still works if the file is ever missing.
+    d3.json("data/gdp.json")
+      .catch(() => d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json"))
       .then(data => {
         const dataset = data.data;
 
         const xExtent = d3.extent(dataset, d => new Date(d[0]));
         const xScale = d3.scaleTime()
           .domain(xExtent)
-          .range([0, width - margin.left - margin.right]);
+          .range([0, innerW]);
 
         const yScale = d3.scaleLinear()
           .domain([0, d3.max(dataset, d => d[1])])
-          .range([height - margin.top - margin.bottom, 0]);
+          .range([innerH, 0]);
 
-        // X Axis
+        svg.append("g")
+          .attr("class", "grid")
+          .call(d3.axisLeft(yScale).ticks(6).tickSize(-innerW).tickFormat(""));
+
         const xAxis = d3.axisBottom(xScale).ticks(10);
         svg.append("g")
           .attr("id", "x-axis")
-          .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
-          .call(xAxis)
-          .attr("color", "#7f8c8d");
+          .attr("transform", `translate(0, ${innerH})`)
+          .call(xAxis);
 
-        // Y Axis
         const yAxis = d3.axisLeft(yScale);
         svg.append("g")
           .attr("id", "y-axis")
-          .call(yAxis)
-          .attr("color", "#7f8c8d");
+          .call(yAxis);
 
-        // Y Axis Label
         svg.append("text")
           .attr("transform", "rotate(-90)")
           .attr("y", -60)
-          .attr("x", -(height - margin.top - margin.bottom) / 2)
+          .attr("x", -innerH / 2)
           .attr("class", "axis-label")
           .style("text-anchor", "middle")
           .text("Gross Domestic Product (Billions)");
 
-        // Bars
-        const barWidth = (width - margin.left - margin.right) / dataset.length;
+        const barWidth = innerW / dataset.length;
 
         const tooltip = d3.select("#tooltip");
 
-        svg.selectAll(".bar")
+        const bars = svg.selectAll(".bar")
           .data(dataset)
           .enter()
           .append("rect")
@@ -167,9 +137,9 @@
           .attr("data-date", d => d[0])
           .attr("data-gdp", d => d[1])
           .attr("x", (d, i) => i * barWidth)
-          .attr("y", height - margin.top - margin.bottom) // Start from bottom for animation
+          .attr("y", innerH)
           .attr("width", barWidth)
-          .attr("height", 0) // Start with 0 height
+          .attr("height", 0)
           .on("mouseover", (event, d) => {
             const date = new Date(d[0]);
             const year = date.getFullYear();
@@ -183,13 +153,34 @@
           })
           .on("mouseout", () => {
             tooltip.transition().duration(400).style("opacity", 0);
-          })
-          .transition() // Entrance animation
-          .duration(1000)
-          .delay((d, i) => i * 2)
-          .attr("y", d => yScale(d[1]))
-          .attr("height", d => (height - margin.top - margin.bottom) - yScale(d[1]));
+          });
 
+        const baseline = svg.append("line")
+          .attr("class", "baseline")
+          .attr("y1", innerH)
+          .attr("y2", innerH)
+          .attr("x1", 0)
+          .attr("x2", 0);
+
+        // Entrance waits until the pane is actually on screen (frames preload
+        // far ahead of the viewport), then bars rise left to right.
+        window.vizShell.whenVisible(document.getElementById("chart-area"), skip => {
+          if (skip) {
+            bars.attr("y", d => yScale(d[1])).attr("height", d => innerH - yScale(d[1]));
+            baseline.attr("x2", innerW);
+            return;
+          }
+          baseline.transition()
+            .duration(700)
+            .ease(d3.easeCubicOut)
+            .attr("x2", innerW);
+          bars.transition()
+            .duration(900)
+            .ease(d3.easeCubicOut)
+            .delay((d, i) => i * 3)
+            .attr("y", d => yScale(d[1]))
+            .attr("height", d => innerH - yScale(d[1]));
+        });
       })
       .catch(error => console.error("Error loading the data: ", error));
   </script>

@@ -6,54 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cycling Doping Analysis</title>
   <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+  <script src="viz-shell.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="viz-shell.css">
   <style>
-    :root {
-      --primary: #34495e;
-      --accent-doping: #e74c3c;
-      --accent-clean: #2ecc71;
-      --secondary: #95a5a6;
-    }
-
-    body {
-      font-family: 'Outfit', sans-serif;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #fdfdfd;
-    }
-
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
-      position: relative;
-      width: 100%;
-      max-width: 1100px;
-      box-sizing: border-box;
-    }
-
-    #title {
-      font-size: 26px;
-      font-weight: 600;
-      color: var(--primary);
-      margin: 0 0 10px 0;
-      text-align: center;
-    }
-
-    #subtitle {
-      font-size: 16px;
-      color: var(--secondary);
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
     .dot {
-      stroke: #fff;
+      stroke: var(--bg);
       stroke-width: 1.5;
       transition: r 0.3s, fill 0.3s;
       cursor: pointer;
@@ -63,42 +22,40 @@
       r: 10 !important;
     }
 
-    #tooltip {
-      position: absolute;
-      padding: 15px;
-      background: rgba(44, 62, 80, 0.98);
-      color: white;
-      border-radius: 12px;
-      pointer-events: none;
-      opacity: 0;
-      font-size: 13px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(8px);
-      z-index: 100;
-      line-height: 1.5;
+    .dot--clean {
+      fill: rgba(52, 211, 153, 0.85);
+    }
+
+    .dot--doping {
+      fill: rgba(248, 113, 113, 0.85);
+    }
+
+    .grid line {
+      stroke: var(--grid);
+      shape-rendering: crispEdges;
+    }
+
+    .grid path {
+      stroke-width: 0;
     }
 
     .legend-item {
       font-size: 12px;
-      color: var(--primary);
+      fill: var(--muted);
     }
 
     .tick text {
       font-size: 11px;
-      fill: #7f8c8d;
-    }
-
-    .axis-path {
-      stroke: #ecf0f1;
     }
   </style>
 </head>
 
-<body>
-  <div class="container">
-    <h1 id="title">Doping in Professional Cycling</h1>
-    <p id="subtitle">35 Fastest times up Alpe d'Huez</p>
-    <div id="tooltip"></div>
+<body class="viz-page">
+  <div class="viz-panel">
+    <p class="viz-kicker">D3.js · Scatter Plot</p>
+    <h1 id="title" class="viz-title">Doping in Professional Cycling</h1>
+    <p id="subtitle" class="viz-sub">35 fastest times up Alpe d'Huez, with doping allegations flagged in red.</p>
+    <div id="tooltip" class="viz-tooltip"></div>
     <div id="chart"></div>
   </div>
 
@@ -111,6 +68,8 @@
     const width = 850;
     const height = 550;
     const margin = { top: 20, right: 100, bottom: 60, left: 80 };
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
 
     const svg = d3.select("#chart")
       .append("svg")
@@ -121,7 +80,8 @@
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json")
+    d3.json("data/cyclist.json")
+      .catch(() => d3.json("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json"))
       .then(data => {
         const parseTime = d3.timeParse("%M:%S");
         data.forEach(d => {
@@ -130,38 +90,37 @@
 
         const xScale = d3.scaleLinear()
           .domain([d3.min(data, d => d.Year - 1), d3.max(data, d => d.Year + 1)])
-          .range([0, width - margin.left - margin.right]);
+          .range([0, innerW]);
 
         const yScale = d3.scaleTime()
           .domain(d3.extent(data, d => d.TimeDate))
-          .range([0, height - margin.top - margin.bottom]);
+          .range([0, innerH]);
 
-        // X Axis
+        svg.append("g")
+          .attr("class", "grid")
+          .call(d3.axisLeft(yScale).ticks(8).tickSize(-innerW).tickFormat(""));
+
         const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
         svg.append("g")
           .attr("id", "x-axis")
-          .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
+          .attr("transform", `translate(0, ${innerH})`)
           .call(xAxis);
 
-        // Y Axis
         const yAxis = d3.axisLeft(yScale).tickFormat(d3.timeFormat("%M:%S"));
         svg.append("g")
           .attr("id", "y-axis")
           .call(yAxis);
 
-        // Tooltip
         const tooltip = d3.select("#tooltip");
 
-        // Dots
-        svg.selectAll(".dot")
+        const dots = svg.selectAll(".dot")
           .data(data)
           .enter()
           .append("circle")
-          .attr("class", "dot")
+          .attr("class", d => "dot " + (d.Doping ? "dot--doping" : "dot--clean"))
           .attr("cx", d => xScale(d.Year))
           .attr("cy", d => yScale(d.TimeDate))
-          .attr("r", 0) // Start for animation
-          .attr("fill", d => d.Doping ? "rgba(231, 76, 60, 0.8)" : "rgba(46, 204, 113, 0.8)")
+          .attr("r", 0)
           .on("mouseover", (event, d) => {
             tooltip.transition().duration(200).style("opacity", 1);
             tooltip.html(`
@@ -174,20 +133,17 @@
           })
           .on("mouseout", () => {
             tooltip.transition().duration(500).style("opacity", 0);
-          })
-          .transition()
-          .duration(800)
-          .delay((d, i) => i * 30)
-          .attr("r", 7);
+          });
 
-        // Legend
+        // Legend sits inside the plot's empty top-right corner so labels never
+        // clip against the viewBox edge.
         const legend = svg.append("g")
           .attr("id", "legend")
-          .attr("transform", `translate(${width - margin.left - margin.right + 20}, ${height / 2})`);
+          .attr("transform", `translate(${innerW - 165}, 14)`);
 
         const categories = [
-          { label: "No allegations", color: "#2ecc71" },
-          { label: "Doping allegations", color: "#e74c3c" }
+          { label: "No allegations", color: "rgba(52, 211, 153, 0.85)" },
+          { label: "Doping allegations", color: "rgba(248, 113, 113, 0.85)" }
         ];
 
         categories.forEach((cat, i) => {
@@ -202,6 +158,20 @@
             .attr("y", 12)
             .attr("class", "legend-item")
             .text(cat.label);
+        });
+
+        // Dots pop in chronologically once the pane is actually on screen.
+        window.vizShell.whenVisible(document.getElementById("chart"), skip => {
+          if (skip) {
+            dots.attr("r", 7);
+            return;
+          }
+          dots.sort((a, b) => a.Year - b.Year)
+            .transition()
+            .duration(600)
+            .ease(d3.easeBackOut.overshoot(2.2))
+            .delay((d, i) => i * 28)
+            .attr("r", 7);
         });
       });
   </script>
