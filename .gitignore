@@ -10,6 +10,7 @@ Thumbs.db
 .claude/
 screenshots/
 scripts/mobile-shots.mjs
+scripts/verify-*.mjs
 CLAUDE.local.md
 CLAUDE.md
 CLAUDE.local.md.example

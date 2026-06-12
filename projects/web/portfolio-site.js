@@ -75,6 +75,7 @@
         themeToggle.setAttribute("aria-pressed", "true");
       }
       syncNavLinkStyles();
+      broadcastVizTheme();
     });
   }
 
@@ -1478,6 +1479,24 @@
     }
   }
 
+  // The embedded D3 pages theme themselves from this query param before first
+  // paint; live toggles are pushed to loaded frames via broadcastVizTheme().
+  function withVizTheme(src) {
+    const theme = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+    return src + (src.includes("?") ? "&" : "?") + "theme=" + theme;
+  }
+
+  function broadcastVizTheme() {
+    const theme = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+    document.querySelectorAll("#visualizations .viz-pane-scale iframe[src]").forEach(frame => {
+      try {
+        frame.contentWindow?.postMessage({ type: "portfolio-theme", theme }, window.location.origin);
+      } catch {
+        /* frame not ready yet; it reads the query param on load instead */
+      }
+    });
+  }
+
   function setupLazyD3Iframes() {
     if (reduced) return;
     if (!("IntersectionObserver" in window)) return;
@@ -1497,7 +1516,7 @@
       if (loading || !queue.length) return;
       const iframe = queue.shift();
       const src = iframe.getAttribute("data-src");
-      if (!src || iframe.getAttribute("src") === src) {
+      if (!src || iframe.hasAttribute("src")) {
         pump();
         return;
       }
@@ -1512,7 +1531,7 @@
       iframe.addEventListener("load", next, { once: true });
       // A slow or failed frame must not stall the rest of the queue forever.
       setTimeout(next, 2500);
-      iframe.setAttribute("src", src);
+      iframe.setAttribute("src", withVizTheme(src));
     }
 
     const io = new IntersectionObserver(entries => {
@@ -2373,7 +2392,7 @@
 
       const dataSrc = frame.getAttribute("data-src");
       if (dataSrc && !frame.getAttribute("src")) {
-        frame.setAttribute("src", dataSrc);
+        frame.setAttribute("src", withVizTheme(dataSrc));
       }
 
       const tryPassIfAlreadyLoaded = () => {
@@ -2571,8 +2590,38 @@
   setupObservers();
   setupProjectDisclosures();
 
+  function setupVizJumpNavSpy() {
+    const nav = document.querySelector(".viz-jump-nav");
+    if (!nav || !("IntersectionObserver" in window)) return;
+    const links = [...nav.querySelectorAll("a[href^='#']")];
+    const targets = links
+      .map(link => document.getElementById(link.getAttribute("href").slice(1)))
+      .filter(Boolean);
+    if (!targets.length) return;
+
+    const ratios = new Map();
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        ratios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+      });
+      let bestId = null;
+      let best = 0;
+      ratios.forEach((ratio, id) => {
+        if (ratio > best) {
+          best = ratio;
+          bestId = id;
+        }
+      });
+      links.forEach(link => {
+        link.classList.toggle("is-active", link.getAttribute("href") === "#" + bestId);
+      });
+    }, { rootMargin: "-15% 0px -35% 0px", threshold: [0.05, 0.25, 0.5] });
+    targets.forEach(target => io.observe(target));
+  }
+
   setupVizFallbacks();
   setupVizPaneScales();
+  setupVizJumpNavSpy();
 
   modeButtons.forEach(button => {
     button.addEventListener("click", () => {
