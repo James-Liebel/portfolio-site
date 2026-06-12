@@ -1484,18 +1484,44 @@
     const iframes = [...document.querySelectorAll("#visualizations .visual-frame iframe[data-src]")];
     if (!iframes.length) return;
 
-    // Load each heavy D3 iframe well before it scrolls into view, then leave it
-    // loaded so the gallery is ready when you arrive and never blanks out on the
-    // way back. content-visibility:auto on the offscreen cards already skips their
-    // paint, so idle panels stay cheap on the GPU without having to unload them.
+    // Each of the six D3 panes pulls in its own copy of D3 plus a data file, so
+    // starting them all at once saturates the network and main thread and the whole
+    // gallery appears to hang. Queue panes as they near the viewport but load one at
+    // a time — wait for each frame's load before starting the next — so the first
+    // chart you reach paints fast and the rest stream in behind it. Frames stay
+    // loaded once started, so scrolling back never blanks them out.
+    const queue = [];
+    let loading = false;
+
+    function pump() {
+      if (loading || !queue.length) return;
+      const iframe = queue.shift();
+      const src = iframe.getAttribute("data-src");
+      if (!src || iframe.getAttribute("src") === src) {
+        pump();
+        return;
+      }
+      loading = true;
+      let advanced = false;
+      const next = () => {
+        if (advanced) return;
+        advanced = true;
+        loading = false;
+        pump();
+      };
+      iframe.addEventListener("load", next, { once: true });
+      // A slow or failed frame must not stall the rest of the queue forever.
+      setTimeout(next, 2500);
+      iframe.setAttribute("src", src);
+    }
+
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        const iframe = entry.target;
-        const src = iframe.getAttribute("data-src");
-        if (src && iframe.getAttribute("src") !== src) iframe.setAttribute("src", src);
-        io.unobserve(iframe);
+        io.unobserve(entry.target);
+        queue.push(entry.target);
       });
+      pump();
     }, { rootMargin: "1400px 0px", threshold: 0.01 });
 
     iframes.forEach(iframe => io.observe(iframe));

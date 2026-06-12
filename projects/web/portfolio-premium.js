@@ -588,11 +588,14 @@
         return p !== kicker;
       });
 
+      // Experience & Education's head leads in a touch earlier than the rest.
+      var early = sec.id === "experience" ? 4 : 0;
+
       function scrubVars() {
         return {
           trigger: head,
-          start: "top 94%",
-          end: "top 58%",
+          start: "top " + (94 + early) + "%",
+          end: "top " + (58 + early) + "%",
           scrub: 0.55
         };
       }
@@ -611,7 +614,7 @@
             "--head-line": 1,
             ease: "none",
             immediateRender: false,
-            scrollTrigger: { trigger: head, start: "top 84%", end: "top 48%", scrub: 0.55 }
+            scrollTrigger: { trigger: head, start: "top " + (84 + early) + "%", end: "top " + (48 + early) + "%", scrub: 0.55 }
           }
         );
       }

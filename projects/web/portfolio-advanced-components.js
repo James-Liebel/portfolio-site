@@ -50,7 +50,7 @@
     setup('sectionDividerHeroSkills', 'pathHeroSkills', 'dotHeroSkills');
     setup('sectionDividerCapProj', 'pathCapProj', 'dotCapProj');
     setup('sectionDividerProjViz', 'pathProjViz', 'dotProjViz');
-    setup('sectionDividerVizExperience', 'pathVizExperience', 'dotVizExperience');
+    // Viz→Experience divider stays a static line (no scroll-draw, no traveling dot).
     setup('sectionDividerExperienceResume', 'pathExperienceResume', 'dotExperienceResume');
   }
 
