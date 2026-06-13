@@ -412,8 +412,17 @@
         if (!flat.length) throw new Error();
         wrap.removeAttribute('hidden');
         // Revealing the heatmap adds height mid-page; re-measure scroll
-        // triggers so section reveals below stay aligned.
-        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+        // triggers so section reveals below stay aligned. While the intro has
+        // the body height-locked, defer to its completion.
+        if (window.ScrollTrigger) {
+          if (document.body.classList.contains('intro-running')) {
+            window.addEventListener('intro-complete', function () {
+              window.ScrollTrigger.refresh();
+            }, { once: true });
+          } else {
+            window.ScrollTrigger.refresh();
+          }
+        }
 
         var cols = 53;
         var rows = 7;

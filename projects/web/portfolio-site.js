@@ -1381,13 +1381,21 @@
   }
 
   function setupVisualizationGallery() {
-    if (reduced || !window.gsap || !window.ScrollTrigger) return;
+    if (reduced || !window.gsap) return;
     const { gsap } = window;
     const section = document.getElementById("visualizations");
     const heading = section?.querySelector(".section-head h2") ?? null;
     const grid = section?.querySelector(".visual-grid") ?? null;
     const cards = grid ? [...grid.querySelectorAll(".visual-card")] : [];
     if (!section || !heading || !grid || !cards.length) return;
+
+    // Reveals here are IntersectionObserver-driven, not ScrollTrigger: the page
+    // changes height long after init (intro height-lock, content-visibility
+    // placeholders), and a trigger measured against stale offsets once left
+    // this whole section invisible. The observer fires on real visibility no
+    // matter what the geometry did. Nothing is hidden unless the observer
+    // exists to unhide it.
+    if (!("IntersectionObserver" in window)) return;
 
     if (heading.dataset.split !== "true") {
       const chars = [...(heading.textContent || "")];
@@ -1402,81 +1410,57 @@
     }
 
     const headingChars = [...heading.querySelectorAll(".visual-heading-char")];
-    gsap.from(headingChars, {
-      y: 30,
-      opacity: 0,
-      stagger: 0.025,
-      duration: 0.45,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "top 74%",
-        once: true
-      }
-    });
+    const lines = cards.map(card => card.querySelector(".visual-line")).filter(Boolean);
 
-    gsap.from(cards, {
-      y: 55,
-      opacity: 0,
-      stagger: 0.09,
-      duration: 0.65,
-      ease: "power3.out",
-      clearProps: "transform",
-      scrollTrigger: {
-        trigger: grid,
-        start: "top 82%",
-        once: true
-      }
-    });
+    gsap.set(headingChars, { y: 30, opacity: 0 });
+    gsap.set(cards, { y: 55, opacity: 0 });
+    gsap.set(lines, { scaleX: 0, transformOrigin: "left center" });
 
-    cards.forEach(card => {
-      const line = card.querySelector(".visual-line");
-      if (!line) return;
-      gsap.set(line, { scaleX: 0 });
-      gsap.to(line, {
-        scaleX: 1,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 85%",
-          once: true
-        }
+    let headPlayed = false;
+    let gridPlayed = false;
+    const playHead = () => {
+      if (headPlayed) return;
+      headPlayed = true;
+      gsap.to(headingChars, {
+        y: 0,
+        opacity: 1,
+        stagger: 0.025,
+        duration: 0.45,
+        ease: "power3.out",
+        clearProps: "transform"
       });
-    });
-
-    // D3 gallery cards extra motion
-    const d3Cards = grid ? [...grid.querySelectorAll(".d3-card")] : [];
-    if (d3Cards.length) {
-      gsap.from(d3Cards, {
-        opacity: 0,
-        y: 55,
+    };
+    const playGrid = () => {
+      if (gridPlayed) return;
+      gridPlayed = true;
+      gsap.to(cards, {
+        y: 0,
+        opacity: 1,
         stagger: 0.09,
         duration: 0.65,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: d3Cards[0],
-          start: "top 82%",
-          once: true
-        }
+        clearProps: "transform"
       });
+      gsap.to(lines, {
+        scaleX: 1,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.09,
+        delay: 0.15
+      });
+    };
 
-      d3Cards.forEach(card => {
-        const line = card.querySelector(".visual-line");
-        if (!line) return;
-        gsap.from(line, {
-          scaleX: 0,
-          transformOrigin: "left",
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: line,
-            start: "top 86%",
-            once: true
-          }
-        });
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        playHead();
+        if (entry.target === grid) playGrid();
+        io.unobserve(entry.target);
       });
-    }
+      if (headPlayed && gridPlayed) io.disconnect();
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.02 });
+    io.observe(heading);
+    io.observe(grid);
   }
 
   // The embedded D3 pages theme themselves from this query param before first
@@ -2719,13 +2703,21 @@
     const refresh = () => {
       window.clearTimeout(pending);
       pending = window.setTimeout(() => {
-        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+        if (!window.ScrollTrigger) return;
+        // The intro locks body height to 100vh, so any measurement taken
+        // while it runs is garbage; hold the refresh until it finishes.
+        if (document.body.classList.contains("intro-running")) {
+          window.addEventListener("intro-complete", () => refresh(), { once: true });
+          return;
+        }
+        window.ScrollTrigger.refresh();
       }, 220);
     };
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(refresh);
     }
     window.addEventListener("load", () => window.setTimeout(refresh, 1200), { once: true });
+    window.addEventListener("intro-complete", refresh, { once: true });
     document.querySelectorAll("#projects .project-section").forEach(section => {
       section.addEventListener("contentvisibilityautostatechange", refresh, { once: true });
     });
