@@ -5028,18 +5028,15 @@
     .work-visual-card,
     .skills-branch,
     .hero-edu-card,
-    .hero-metric {
-      position: relative;
-      --mouse-x: 50%;
-      --mouse-y: 50%;
-    }
+    /* NOTE: .hero-metric is deliberately absent here — its ::after is the
+       top-right corner accent. Adding it to this glow rule merges the two
+       declarations and strands an 18px glow chip at the card's top-left. */
     .bento-card::after,
     .visual-card::after,
     .journey-stop::after,
     .work-visual-card::after,
     .skills-branch::after,
-    .hero-edu-card::after,
-    .hero-metric::after {
+    .hero-edu-card::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -5059,8 +5056,7 @@
     .journey-stop:hover::after,
     .work-visual-card:hover::after,
     .skills-branch:hover::after,
-    .hero-edu-card:hover::after,
-    .hero-metric:hover::after {
+    .hero-edu-card:hover::after {
       opacity: 1;
     }
     .visual-card::after {
@@ -7186,6 +7182,7 @@
 
     <svg class="portfolio-section-divider" id="sectionDividerVizExperience" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
       <path id="pathVizExperience" d="M0,38 C250,12 500,62 750,40 S1100,18 1200,42"></path>
+      <circle class="divider-dot" id="dotVizExperience" r="5" cx="0" cy="38"></circle>
     </svg>
 
     <section id="experience" class="experience-section">

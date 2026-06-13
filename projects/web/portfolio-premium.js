@@ -544,13 +544,15 @@
         if (p === 0) {
           if (section.style.transform) {
             section.style.transform = "";
-            section.style.opacity = "";
+            section.style.filter = "";
           }
           continue;
         }
         var e = p * p * (3 - 2 * p);
         section.style.transform = "scale(" + (1 - 0.055 * e).toFixed(4) + ")";
-        section.style.opacity = (1 - 0.48 * e).toFixed(3);
+        // Dim with brightness, not opacity: the held card must stay opaque so
+        // the incoming card and page background never bleed through the stack.
+        section.style.filter = "brightness(" + (1 - 0.34 * e).toFixed(3) + ")";
       }
     }
     function schedule() {
