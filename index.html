@@ -2298,9 +2298,12 @@
       --project-edge: rgba(99, 102, 241, 0.11);
       /* Skip painting/compositing each heavy card while it's offscreen — the
          main scroll-perf win on this long section. Remembers real size after
-         first render so scroll position stays stable. */
+         first render so scroll position stays stable. The estimate must stay
+         close to the real collapsed card height (~224px): at 640px the page
+         collapsed ~1,700px on first scroll-through and dragged every scroll
+         reveal below out of alignment. */
       content-visibility: auto;
-      contain-intrinsic-size: auto 640px;
+      contain-intrinsic-size: auto 230px;
       position: relative;
       isolation: isolate;
       padding: 26px;
