@@ -50,7 +50,7 @@
     setup('sectionDividerHeroSkills', 'pathHeroSkills', 'dotHeroSkills');
     setup('sectionDividerCapProj', 'pathCapProj', 'dotCapProj');
     setup('sectionDividerProjViz', 'pathProjViz', 'dotProjViz');
-    // Viz→Experience divider stays a static line (no scroll-draw, no traveling dot).
+    setup('sectionDividerVizExperience', 'pathVizExperience', 'dotVizExperience');
     setup('sectionDividerExperienceResume', 'pathExperienceResume', 'dotExperienceResume');
   }
 
@@ -411,6 +411,9 @@
         }
         if (!flat.length) throw new Error();
         wrap.removeAttribute('hidden');
+        // Revealing the heatmap adds height mid-page; re-measure scroll
+        // triggers so section reveals below stay aligned.
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
 
         var cols = 53;
         var rows = 7;

@@ -2709,6 +2709,28 @@
   // no-ops under reduced motion.
   setupLazyD3Iframes();
 
+  // ScrollTrigger measures section offsets once, but the page keeps changing
+  // size after load: web fonts swap in, and the project cards use
+  // content-visibility with a 640px placeholder that snaps to the real height
+  // on first render. Without re-measuring, every reveal below the projects
+  // drifts by hundreds of pixels and headings fade in far too late.
+  (function setupScrollTriggerRefresh() {
+    let pending = 0;
+    const refresh = () => {
+      window.clearTimeout(pending);
+      pending = window.setTimeout(() => {
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      }, 220);
+    };
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(refresh);
+    }
+    window.addEventListener("load", () => window.setTimeout(refresh, 1200), { once: true });
+    document.querySelectorAll("#projects .project-section").forEach(section => {
+      section.addEventListener("contentvisibilityautostatechange", refresh, { once: true });
+    });
+  })();
+
   updateProgress();
   updateNavState();
   markActiveNav("hero");
