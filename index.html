@@ -5031,9 +5031,14 @@
     .work-visual-card,
     .skills-branch,
     .hero-edu-card,
-    /* NOTE: .hero-metric is deliberately absent here — its ::after is the
-       top-right corner accent. Adding it to this glow rule merges the two
-       declarations and strands an 18px glow chip at the card's top-left. */
+    .hero-metric {
+      position: relative;
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+    }
+    /* NOTE: .hero-metric is deliberately absent from the glow rule below — its
+       ::after is the top-right corner accent, so adding it here would merge the
+       two declarations and strand an 18px glow chip at the card's top-left. */
     .bento-card::after,
     .visual-card::after,
     .journey-stop::after,
