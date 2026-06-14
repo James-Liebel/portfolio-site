@@ -5424,6 +5424,38 @@
       color: transparent;
       -webkit-text-fill-color: transparent;
     }
+    /* initSplitHeadings wraps each letter of a kicker-led heading (e.g. Projects)
+       in a .split-char span. The span inherits color:transparent but not the
+       gradient background, so the letters render invisible. Re-target the gradient
+       onto the spans — the same fix .hero-name already uses for its split text. */
+    .section-head h2:not(.skills-section-title) .split-char,
+    .journey-head h2 .split-char,
+    .resume-title .split-char {
+      background: linear-gradient(
+        102deg,
+        #cbd5ff 0%,
+        #a5b4fc 28%,
+        #c084fc 58%,
+        #67e8f9 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    :root[data-theme="light"] .section-head h2:not(.skills-section-title) .split-char,
+    :root[data-theme="light"] .journey-head h2 .split-char,
+    :root[data-theme="light"] .resume-title .split-char {
+      background: linear-gradient(
+        102deg,
+        #1e1b4b 0%,
+        #4f46e5 35%,
+        #7c3aed 65%,
+        #0891b2 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
 
     /* Kickers / eyebrows — leading dot accent, keep block flow */
     .eyebrow,
