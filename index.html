@@ -955,30 +955,6 @@
       max-width: 58ch;
       font-size: 1.05rem;
     }
-    .hero-tech-stack {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 10px;
-      margin-top: 18px;
-      max-width: min(100%, 52rem);
-    }
-    .hero-tech-pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(94, 234, 212, 0.38);
-      background: rgba(94, 234, 212, 0.09);
-      color: #5eead4;
-      font: 700 11px/1 "Space Mono", monospace;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-    :root[data-theme="light"] .hero-tech-pill {
-      border-color: rgba(13, 148, 136, 0.45);
-      background: rgba(13, 148, 136, 0.1);
-      color: #0f766e;
-    }
     .hero-status-line {
       display: flex;
       align-items: center;
@@ -5486,24 +5462,6 @@
       color: #4338ca;
     }
 
-    /* Hero tech pills — gradient ring on hover + soft inner highlight */
-    .hero-tech-pill {
-      position: relative;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, color 0.2s ease;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 2px 12px rgba(94, 234, 212, 0.08);
-    }
-    .hero-tech-pill:hover {
-      transform: translateY(-2px);
-      border-color: rgba(94, 234, 212, 0.7);
-      color: #a7f3d0;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        0 8px 26px rgba(94, 234, 212, 0.22),
-        0 0 0 1px rgba(94, 234, 212, 0.18);
-    }
-
     /* Hero start-here — corner accent + animated left bar */
     .hero-start-here {
       position: relative;
@@ -5711,7 +5669,6 @@
     a:focus-visible,
     button:focus-visible,
     .nav-link:focus-visible,
-    .hero-tech-pill:focus-visible,
     .hero-start-here-links a:focus-visible {
       outline: 2px solid var(--cyan);
       outline-offset: 3px;
@@ -5795,8 +5752,6 @@
       }
       .eyebrow { font-size: 10.5px; letter-spacing: 0.16em; }
       .summary { font-size: 0.98rem; line-height: 1.55; margin-top: 18px; }
-      .hero-tech-stack { gap: 6px; margin-top: 18px; }
-      .hero-tech-pill { font-size: 11px; padding: 6px 10px; }
       .hero-start-here {
         margin-top: 18px;
         padding: 12px 14px;
@@ -6355,14 +6310,13 @@
         <div class="hero-copy">
           <div class="hero-top-row">
             <div class="hero-copy-primary">
-          <p class="eyebrow">B.S. Data Science &amp; Statistics · University of Chicago · Class of 2030</p>
           <h1 class="hero-title" id="heroTitle" data-headline>
             <span class="hero-name">James Liebel</span>
             <span class="hero-line">Applied Data Scientist · ML, analytics &amp; shipped products</span>
           </h1>
           <p class="hero-status-line" aria-label="Status">
             <span class="hero-status-dot" aria-hidden="true"></span>
-            <span><strong>UChicago Data Science '30</strong> · Cincinnati, OH · Incoming Siemens intern (Summer 2026) · <strong>Seeking Summer 2027 DS/ML internships</strong></span>
+            <span><strong>UChicago Data Science '30</strong> · Incoming Siemens intern (Summer 2026) · <strong>Seeking Summer 2027 DS/ML internships</strong></span>
           </p>
           <div class="hero-github" id="heroGithub" aria-label="GitHub contribution activity">
             <div id="github-heatmap" class="hero-github-heatmap" hidden>
@@ -6377,14 +6331,6 @@
             </div>
           </div>
           <p class="summary">I build data tools and ship them. My XGBoost fraud model hits <strong>ROC-AUC 0.939</strong>, and a client site I built is live with <strong>200+ users</strong>. Before UChicago I had already taken a paid ML contract and run weekly workshops for <strong>50+ students</strong>. I work the whole way through: training the model, deploying the code, and building dashboards people can actually read.</p>
-          <div class="hero-tech-stack" aria-label="Stack backed by this portfolio">
-            <span class="hero-tech-pill">Python</span>
-            <span class="hero-tech-pill">XGBoost</span>
-            <span class="hero-tech-pill">SQL</span>
-            <span class="hero-tech-pill">React</span>
-            <span class="hero-tech-pill">Power BI</span>
-            <span class="hero-tech-pill">FastAPI</span>
-          </div>
           <div class="hero-start-here" aria-label="Quick links">
             <span class="hero-start-here-label">Quick links · 30-second look</span>
             <div class="hero-cta-row">

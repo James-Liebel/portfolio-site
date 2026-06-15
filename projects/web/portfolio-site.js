@@ -2259,12 +2259,10 @@
 
     const tl = window.gsap.timeline({ defaults: { ease: "power3.out" } });
     const pillItems = heroPills ? heroPills.querySelectorAll(".pill") : [];
-    const heroTechPills = document.querySelectorAll(".hero-tech-pill");
 
-    tl.from(".eyebrow", { opacity: 0, y: 20, duration: 0.6 })
-      .from(".hw", { y: "110%", opacity: 0, duration: 0.72, stagger: 0.055 }, "-=0.25")
+    tl.from(".hw", { y: "110%", opacity: 0, duration: 0.72, stagger: 0.055 })
       .from(".summary", { opacity: 0, y: 24, duration: 0.6 }, "-=0.3")
-      .from(heroTechPills, { opacity: 0, y: 10, stagger: 0.045, duration: 0.32 }, "-=0.35")
+      .from(".hero-status-line", { opacity: 0, y: 16, duration: 0.5 }, "-=0.3")
       .from(pillItems, { opacity: 0, y: 14, stagger: 0.07, duration: 0.38 }, "-=0.2")
       .from(
         "#heroTerminal",
@@ -2306,15 +2304,13 @@
 
     const { gsap } = window;
     const pillItems = heroPills ? heroPills.querySelectorAll(".pill") : [];
-    const heroTechPills = document.querySelectorAll(".hero-tech-pill");
     const activeMode =
       modeButtons.find(button => button.classList.contains("active"))?.dataset.mode || "builder";
     renderMode(activeMode);
 
-    gsap.set(".eyebrow", { opacity: 1, y: 0 });
     gsap.set(".hw", { y: "0%", opacity: 1 });
     gsap.set(".summary", { opacity: 1, y: 0 });
-    gsap.set(heroTechPills, { opacity: 1, y: 0 });
+    gsap.set(".hero-status-line", { opacity: 1, y: 0 });
     gsap.set(pillItems, { opacity: 1, y: 0 });
     gsap.set("#heroTerminal", { opacity: 1, x: 0, scale: 1 });
     movePillIndicator(modeIndicator, document.querySelector(".switch button.active"), false);

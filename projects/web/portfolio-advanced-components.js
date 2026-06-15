@@ -469,8 +469,17 @@
           if (t <= 0.74) return { c: 'rgba(167,139,250,0.82)', g: '0 0 7px rgba(139,92,246,0.45)' };
           return { c: 'rgba(192,132,252,1)', g: '0 0 10px rgba(99,102,241,0.75)' };
         }
+        // Anchor on the current week so the rightmost column is always today's
+        // week, the way GitHub renders it. Advancing endD to this week's Saturday
+        // keeps that column full; today and any future days sit in it as empty
+        // cells. Without this the grid ends on the *previous* Saturday and drops
+        // the current partial week on every day except Saturday.
         var lastEntry = flat[flat.length - 1];
-        var endD = lastEntry && lastEntry.date ? new Date(lastEntry.date + 'T12:00:00') : new Date();
+        var today = new Date();
+        today.setHours(12, 0, 0, 0);
+        var lastDataD = lastEntry && lastEntry.date ? new Date(lastEntry.date + 'T12:00:00') : today;
+        var endD = today.getTime() >= lastDataD.getTime() ? today : lastDataD;
+        endD.setDate(endD.getDate() + (6 - endD.getDay()));
         var cur = new Date(endD);
         cur.setDate(cur.getDate() - (cols * rows - 1));
         while (cur.getDay() !== 0) {
