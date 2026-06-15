@@ -6,7 +6,6 @@ Standalone site repo extracted from the larger `Personal_Projects` workspace.
 
 - `index.html`: main portfolio page
 - `projects/web/`: site scripts, vendored browser libraries, Power BI config, and visualization pages
-- `intro/`, `globe/`, `rockets/`, `servers/`: poster and sequence image assets used by the homepage
 - `server.js`: simple local static server
 
 ## Local Run

@@ -10,8 +10,6 @@
 !package.json
 !package-lock.json
 !server.js
-!start_site.cmd
-!start_site.ps1
 !scripts/
 !scripts/**
 !projects/
