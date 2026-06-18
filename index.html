@@ -854,10 +854,16 @@
     }
     .hero-title {
       margin: 0;
-      font-size: clamp(3rem, 8vw, 6.6rem);
+      /* Capped a touch below the column width: the name is set tight (negative
+         tracking) and split per character, so at the old 6.6rem its first/last
+         glyphs filled the column edge-to-edge and the final glyph's side-bearing
+         overhung it. The small inline padding keeps name + tagline aligned with
+         each other while giving both ends room. */
+      font-size: clamp(2.9rem, 7.2vw, 6rem);
       line-height: 0.95;
       letter-spacing: -0.07em;
       max-width: min(22ch, 100%);
+      padding-inline: 0.32rem;
       overflow-wrap: anywhere;
       word-break: normal;
     }
@@ -1844,9 +1850,35 @@
       font-size: 11px;
       color: rgba(237, 233, 254, 0.82);
     }
+    /* Open: the full "Open the full skills map" bar collapses to a compact
+       centered "Close" pill — the map itself is the affordance now, this just
+       lets people put it away. */
+    .skills-atlas-summary-close {
+      display: none;
+      font: 800 12px/1.1 Inter, system-ui, sans-serif;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+    }
     .skills-atlas-disclosure[open] .skills-atlas-summary {
-      filter: brightness(0.96);
-      margin-bottom: 24px;
+      width: max-content;
+      max-width: 100%;
+      margin: 12px auto 26px;
+      padding: 9px 18px;
+      gap: 9px;
+      border-radius: 999px;
+      filter: none;
+    }
+    .skills-atlas-disclosure[open] .skills-atlas-summary-icon,
+    .skills-atlas-disclosure[open] .skills-atlas-summary-text {
+      display: none;
+    }
+    .skills-atlas-disclosure[open] .skills-atlas-summary-close {
+      display: inline-flex;
+      align-items: center;
+    }
+    .skills-atlas-disclosure[open] .skills-atlas-summary-chevron {
+      width: 16px;
+      height: 16px;
     }
     .skills-atlas-disclosure-inner {
       padding-top: 4px;
@@ -1892,6 +1924,9 @@
       display: flex;
       flex-direction: column;
       gap: var(--skills-pipeline-merge-gap);
+      /* Top band the source trunk drops through before fanning out to the
+         columns — see initSkillsPipeline() in portfolio-advanced-components.js. */
+      padding-top: clamp(54px, 7vw, 92px);
     }
     .skills-pipeline-svg {
       position: absolute;
@@ -6330,7 +6365,7 @@
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
-          <p class="summary">I build data tools and ship them. My XGBoost fraud model hits <strong>ROC-AUC 0.939</strong>, and a client site I built is live with <strong>200+ users</strong>. Before UChicago I had already taken a paid ML contract and run weekly workshops for <strong>50+ students</strong>. I work the whole way through: training the model, deploying the code, and building dashboards people can actually read.</p>
+          <p class="summary">I build data tools and ship them. A client site I built is live with <strong>200+ users</strong>, and I write production RLHF annotations for AI training pipelines after clearing a <strong>3% acceptance</strong> vetting process. I work the whole way through: cleaning the data, training and evaluating models, deploying the code, and building dashboards people can actually read.</p>
           <div class="hero-start-here" aria-label="Quick links">
             <span class="hero-start-here-label">Quick links · 30-second look</span>
             <div class="hero-cta-row">
@@ -6486,6 +6521,7 @@
             <span class="skills-atlas-summary-label">Open the full skills map</span>
             <span class="skills-atlas-summary-hint">Three columns + end-to-end process timeline</span>
           </span>
+          <span class="skills-atlas-summary-close">Close skills map</span>
           <svg class="skills-atlas-summary-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </summary>
         <div class="skills-atlas-disclosure-inner">
@@ -7203,18 +7239,6 @@
               <li>Coursework in probability, linear algebra, algorithms, and statistical inference.</li>
             </ul>
           </article>
-          <article class="experience-card experience-card--lead">
-            <div class="experience-card-head">
-              <span class="experience-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-              <h3>Leadership</h3>
-            </div>
-            <p class="experience-meta">Co-President · Machine Learning Club · High School</p>
-            <ul>
-              <li>Designed and delivered TensorFlow-focused neural network workshops with reproducible notebooks for the club.</li>
-              <li>Co-led programming and session planning (topics, hands-on formats, onboarding for new members).</li>
-              <li>Weekly hands-on sessions for <strong>50+</strong> students covering evaluation metrics, pipeline structure, and how to frame projects for presentation.</li>
-            </ul>
-          </article>
         </div>
       </div>
     </section>
@@ -7229,7 +7253,7 @@
         <div class="resume-panel">
           <p class="resume-kicker noprint">Résumé</p>
           <h2 class="resume-title noprint">Print-ready résumé</h2>
-          <p class="resume-intro noprint">Same text as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a>. Print or save PDF; site chrome is hidden.</p>
+          <p class="resume-intro noprint">Same text as <a href="projects/web/data_science_resume.html" target="_blank" rel="noopener noreferrer">data_science_resume.html</a>. Print or save as PDF.</p>
           <div class="resume-actions noprint">
             <button class="btn noprint" id="pdfBtn" type="button">Save PDF</button>
             <a class="btn-soft noprint" href="https://linkedin.com/in/james-liebel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -7313,27 +7337,6 @@
                 </ul>
               </div>
 
-              <div class="resume-pdf-entry">
-                <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">Co-President, Machine Learning Club · High School</span>
-                  <span class="resume-pdf-date">2023 – 2025</span>
-                </div>
-                <ul class="resume-list">
-                  <li>Lead weekly workshops on neural networks, model evaluation, and applied AI for <strong>50+</strong> students, including TensorFlow-focused sessions with reproducible notebooks.</li>
-                  <li>Mentored members through project framing, implementation, and public-facing presentations.</li>
-                </ul>
-              </div>
-
-              <div class="resume-pdf-entry">
-                <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">DECA · Competitive Business Events · High School</span>
-                  <span class="resume-pdf-date">2022 – 2025</span>
-                </div>
-                <ul class="resume-list">
-                  <li>Competed across business event categories requiring rapid data interpretation, market research analysis, and live judge presentations; four years of consistent participation.</li>
-                  <li>Developed stakeholder communication skills directly applicable to data roles: translating quantitative findings into clear, decision-ready recommendations under time pressure.</li>
-                </ul>
-              </div>
             </section>
 
             <section class="resume-pdf-section" aria-labelledby="resume-projects-heading">

@@ -85,7 +85,7 @@
       boxes: [
         {
           title: "Pipelines & data",
-          text: "Engineered fraud-detection ETL on 284,807 ULB-style rows: RobustScaler, stratified holdout 56,962 rows, PR/ROC evaluation aligned to the executed GitHub notebook.",
+          text: "Reproducible ETL and feature prep in Python and SQL: RobustScaler, stratified train/test splits, and clean data handoffs documented in runnable notebooks.",
           skills: ["SQL", "Python", "ETL"]
         },
         {
@@ -105,12 +105,12 @@
       boxes: [
         {
           title: "Models",
-          text: "Fraud: XGBoost fraud-class recall 80%, precision 87%, ROC-AUC 0.939 on 56,962-row holdout; Random Forest fraud recall 64%, ROC-AUC 0.958. NLP: VADER on 15 simulated headlines; TF-IDF + PassiveAggressive scaffold for Colab CSV uploads.",
-          skills: ["Scikit-learn", "XGBoost", "NLP"]
+          text: "NLP sentiment with VADER on simulated headlines, plus a TF-IDF + PassiveAggressive classifier scaffold for Colab CSV uploads. Models built and compared with scikit-learn pipelines on held-out data.",
+          skills: ["Scikit-learn", "NLP", "TF-IDF"]
         },
         {
           title: "Evaluation",
-          text: "Notebook outputs include confusion matrices, sklearn classification_report, ROC-AUC, and PR framing for imbalance. Macro-averaged recall hit 90% for XGBoost—distinct from fraud-class recall (80%).",
+          text: "Notebook outputs include confusion matrices, sklearn classification_report, ROC-AUC, and precision-recall framing for imbalanced data.",
           skills: ["pandas", "Metrics", "EDA"]
         },
         {
@@ -2617,6 +2617,30 @@
     });
   });
   renderMode("builder");
+
+  // Switching disciplines swaps snapshot copy of differing lengths, which would
+  // resize the terminal and reflow the hero — visibly nudging the 3D backdrop.
+  // Reserve the tallest mode's height up front so a click changes only the text.
+  const snapshotBoxesEl = document.getElementById("snapshotBoxes");
+  function lockSnapshotHeight() {
+    if (!snapshotBoxesEl || !modeButtons.length) return;
+    const active = modeButtons.find(button => button.classList.contains("active"))?.dataset.mode || "builder";
+    snapshotBoxesEl.style.minHeight = "0px";
+    let tallest = 0;
+    Object.keys(modeData).forEach(key => {
+      renderMode(key);
+      tallest = Math.max(tallest, snapshotBoxesEl.offsetHeight);
+    });
+    renderMode(active);
+    snapshotBoxesEl.style.minHeight = tallest + "px";
+  }
+  lockSnapshotHeight();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockSnapshotHeight);
+  let snapshotResizeTimer = null;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(snapshotResizeTimer);
+    snapshotResizeTimer = window.setTimeout(lockSnapshotHeight, 200);
+  });
 
   if (navToggle) navToggle.addEventListener("click", openMobileNav);
   if (navClose) navClose.addEventListener("click", closeMobileNav);

@@ -496,7 +496,7 @@
             ds = cur.getFullYear() + '-' + String(cur.getMonth() + 1).padStart(2, '0') + '-' + String(cur.getDate()).padStart(2, '0');
             cnt = dateMap[ds] != null ? dateMap[ds] : 0;
             totalContrib += cnt;
-            colData[w].push({ count: cnt, date: ds, x: padX + w * (cell + gap), y: padY + r * (cell + gap) });
+            colData[w].push({ count: cnt, date: ds, future: cur.getTime() > today.getTime(), x: padX + w * (cell + gap), y: padY + r * (cell + gap) });
             cur.setDate(cur.getDate() + 1);
           }
         }
@@ -511,6 +511,9 @@
 
         function drawCol(cc) {
           colData[cc].forEach(function (cellInfo) {
+            // Days after today haven't happened yet — leave them blank so the
+            // current week reads as a true partial week instead of a padded column.
+            if (cellInfo.future) return;
             var L = level(cellInfo.count);
             ctx.fillStyle = L.c;
             ctx.shadowColor = 'transparent';
@@ -1103,6 +1106,90 @@
         columnFlowPaths.push(flow);
       }
 
+      // Source rooted at the very top of the opened map (just under the close
+      // control): a short trunk drops in, then fans out to each column so the
+      // pipeline reads top-down — open, flow into the three disciplines, then
+      // converge into the process card. Built into the column path arrays so the
+      // existing reveal + flow-loop handling animates it downward on open.
+      var bandTop = Math.min(colMeta[0].topY, colMeta[1].topY, colMeta[2].topY);
+      var srcX = mx;
+      var srcY = Math.max(4, Math.round(bandTop * 0.16));
+      var branchY = Math.min(bandTop - 6, Math.max(srcY + 12, Math.round(bandTop * 0.62)));
+
+      var topTrunkD = 'M ' + srcX + ' ' + srcY + ' L ' + srcX + ' ' + branchY;
+      var topTrunkBase = ns('path', { class: 'skills-pipe-column-base', fill: 'none' }, svg);
+      topTrunkBase.setAttribute('d', topTrunkD);
+      topTrunkBase.setAttribute('stroke', '#1e3a8a');
+      topTrunkBase.setAttribute('stroke-width', '3.5');
+      topTrunkBase.setAttribute('stroke-linecap', 'round');
+      topTrunkBase.setAttribute('opacity', '0.92');
+      columnBasePaths.push(topTrunkBase);
+
+      var topTrunkGrad = ns('path', { class: 'skills-pipe-column-grad', fill: 'none' }, svg);
+      topTrunkGrad.setAttribute('d', topTrunkD);
+      topTrunkGrad.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
+      topTrunkGrad.setAttribute('stroke-width', '2.5');
+      topTrunkGrad.setAttribute('stroke-linecap', 'round');
+      columnGradPaths.push(topTrunkGrad);
+
+      var topTrunkFlow = ns('path', { class: 'skills-pipe-column-flow', fill: 'none' }, svg);
+      topTrunkFlow.setAttribute('d', topTrunkD);
+      topTrunkFlow.setAttribute('stroke', '#f0f9ff');
+      topTrunkFlow.setAttribute('stroke-width', '1.5');
+      topTrunkFlow.setAttribute('stroke-linecap', 'round');
+      topTrunkFlow.setAttribute('stroke-dasharray', '8 18');
+      topTrunkFlow.setAttribute('opacity', '0');
+      columnFlowPaths.push(topTrunkFlow);
+
+      var fi;
+      for (fi = 0; fi < 3; fi++) {
+        // Stacked (mobile) columns sit far down the page, so fanning to each one
+        // would drag long lines across the content. Drop the source into the top
+        // column only; the per-column spines still carry flow down to the merge.
+        if (stackCols && fi > 0) continue;
+        var fMeta = colMeta[fi];
+        var fSpineX = fMeta.spineX;
+        var fTopY = fMeta.topY;
+        var fd =
+          'M ' + srcX + ' ' + branchY +
+          ' C ' + srcX + ' ' + (branchY + (fTopY - branchY) * 0.5) +
+          ', ' + fSpineX + ' ' + (fTopY - (fTopY - branchY) * 0.28) +
+          ', ' + fSpineX + ' ' + fTopY;
+
+        var feedBase = ns('path', { class: 'skills-pipe-column-base', fill: 'none' }, svg);
+        feedBase.setAttribute('d', fd);
+        feedBase.setAttribute('stroke', COL[fMeta.key].base);
+        feedBase.setAttribute('stroke-width', '3');
+        feedBase.setAttribute('stroke-linecap', 'round');
+        feedBase.setAttribute('stroke-linejoin', 'round');
+        feedBase.setAttribute('opacity', '0.9');
+        columnBasePaths.push(feedBase);
+
+        var feedGrad = ns('path', { class: 'skills-pipe-column-grad', fill: 'none' }, svg);
+        feedGrad.setAttribute('d', fd);
+        feedGrad.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
+        feedGrad.setAttribute('stroke-width', '2');
+        feedGrad.setAttribute('stroke-linecap', 'round');
+        feedGrad.setAttribute('stroke-linejoin', 'round');
+        columnGradPaths.push(feedGrad);
+
+        var feedFlow = ns('path', { class: 'skills-pipe-column-flow', fill: 'none' }, svg);
+        feedFlow.setAttribute('d', fd);
+        feedFlow.setAttribute('stroke', COL[fMeta.key].glow);
+        feedFlow.setAttribute('stroke-width', '2');
+        feedFlow.setAttribute('stroke-linecap', 'round');
+        feedFlow.setAttribute('stroke-dasharray', '10 22');
+        feedFlow.setAttribute('opacity', '0');
+        columnFlowPaths.push(feedFlow);
+      }
+
+      var sourceNode = ns('circle', { class: 'skills-pipe-merge-node', cx: String(srcX), cy: String(srcY), r: '5.5' }, svg);
+      sourceNode.setAttribute('fill', '#22d3ee');
+      sourceNode.setAttribute('filter', 'url(#skillsMergeGlow)');
+      sourceNode.setAttribute('opacity', fullReveal || reduced ? '0.95' : '0');
+      sourceNode.setAttribute('stroke', '#f0f9ff');
+      sourceNode.setAttribute('stroke-width', '1.5');
+
       var trunkD = 'M ' + mx + ' ' + my + ' L ' + bx + ' ' + by;
       var trunkBase = ns('path', { class: 'skills-pipe-trunk-base', fill: 'none' }, svg);
       trunkBase.setAttribute('d', trunkD);
@@ -1155,7 +1242,8 @@
         trunk: trunk,
         trunkBase: trunkBase,
         trunkFlow: trunkFlow,
-        mergeNode: mergeNode
+        mergeNode: mergeNode,
+        sourceNode: sourceNode
       };
     }
 
@@ -1193,11 +1281,13 @@
 
       var tl = gsap.timeline();
 
+      tl.to(o.sourceNode, { opacity: 0.95, duration: 0.3, ease: 'power2.out' }, 0);
+
       tl.to(o.columnBasePaths.concat(o.columnGradPaths), {
         strokeDashoffset: 0,
         duration: 1.35,
         ease: 'power2.inOut'
-      });
+      }, 0);
 
       tl.to(o.mergeNode, { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.32');
 
