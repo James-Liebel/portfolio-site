@@ -1106,90 +1106,6 @@
         columnFlowPaths.push(flow);
       }
 
-      // Source rooted at the very top of the opened map (just under the close
-      // control): a short trunk drops in, then fans out to each column so the
-      // pipeline reads top-down — open, flow into the three disciplines, then
-      // converge into the process card. Built into the column path arrays so the
-      // existing reveal + flow-loop handling animates it downward on open.
-      var bandTop = Math.min(colMeta[0].topY, colMeta[1].topY, colMeta[2].topY);
-      var srcX = mx;
-      var srcY = Math.max(4, Math.round(bandTop * 0.16));
-      var branchY = Math.min(bandTop - 6, Math.max(srcY + 12, Math.round(bandTop * 0.62)));
-
-      var topTrunkD = 'M ' + srcX + ' ' + srcY + ' L ' + srcX + ' ' + branchY;
-      var topTrunkBase = ns('path', { class: 'skills-pipe-column-base', fill: 'none' }, svg);
-      topTrunkBase.setAttribute('d', topTrunkD);
-      topTrunkBase.setAttribute('stroke', '#1e3a8a');
-      topTrunkBase.setAttribute('stroke-width', '3.5');
-      topTrunkBase.setAttribute('stroke-linecap', 'round');
-      topTrunkBase.setAttribute('opacity', '0.92');
-      columnBasePaths.push(topTrunkBase);
-
-      var topTrunkGrad = ns('path', { class: 'skills-pipe-column-grad', fill: 'none' }, svg);
-      topTrunkGrad.setAttribute('d', topTrunkD);
-      topTrunkGrad.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
-      topTrunkGrad.setAttribute('stroke-width', '2.5');
-      topTrunkGrad.setAttribute('stroke-linecap', 'round');
-      columnGradPaths.push(topTrunkGrad);
-
-      var topTrunkFlow = ns('path', { class: 'skills-pipe-column-flow', fill: 'none' }, svg);
-      topTrunkFlow.setAttribute('d', topTrunkD);
-      topTrunkFlow.setAttribute('stroke', '#f0f9ff');
-      topTrunkFlow.setAttribute('stroke-width', '1.5');
-      topTrunkFlow.setAttribute('stroke-linecap', 'round');
-      topTrunkFlow.setAttribute('stroke-dasharray', '8 18');
-      topTrunkFlow.setAttribute('opacity', '0');
-      columnFlowPaths.push(topTrunkFlow);
-
-      var fi;
-      for (fi = 0; fi < 3; fi++) {
-        // Stacked (mobile) columns sit far down the page, so fanning to each one
-        // would drag long lines across the content. Drop the source into the top
-        // column only; the per-column spines still carry flow down to the merge.
-        if (stackCols && fi > 0) continue;
-        var fMeta = colMeta[fi];
-        var fSpineX = fMeta.spineX;
-        var fTopY = fMeta.topY;
-        var fd =
-          'M ' + srcX + ' ' + branchY +
-          ' C ' + srcX + ' ' + (branchY + (fTopY - branchY) * 0.5) +
-          ', ' + fSpineX + ' ' + (fTopY - (fTopY - branchY) * 0.28) +
-          ', ' + fSpineX + ' ' + fTopY;
-
-        var feedBase = ns('path', { class: 'skills-pipe-column-base', fill: 'none' }, svg);
-        feedBase.setAttribute('d', fd);
-        feedBase.setAttribute('stroke', COL[fMeta.key].base);
-        feedBase.setAttribute('stroke-width', '3');
-        feedBase.setAttribute('stroke-linecap', 'round');
-        feedBase.setAttribute('stroke-linejoin', 'round');
-        feedBase.setAttribute('opacity', '0.9');
-        columnBasePaths.push(feedBase);
-
-        var feedGrad = ns('path', { class: 'skills-pipe-column-grad', fill: 'none' }, svg);
-        feedGrad.setAttribute('d', fd);
-        feedGrad.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
-        feedGrad.setAttribute('stroke-width', '2');
-        feedGrad.setAttribute('stroke-linecap', 'round');
-        feedGrad.setAttribute('stroke-linejoin', 'round');
-        columnGradPaths.push(feedGrad);
-
-        var feedFlow = ns('path', { class: 'skills-pipe-column-flow', fill: 'none' }, svg);
-        feedFlow.setAttribute('d', fd);
-        feedFlow.setAttribute('stroke', COL[fMeta.key].glow);
-        feedFlow.setAttribute('stroke-width', '2');
-        feedFlow.setAttribute('stroke-linecap', 'round');
-        feedFlow.setAttribute('stroke-dasharray', '10 22');
-        feedFlow.setAttribute('opacity', '0');
-        columnFlowPaths.push(feedFlow);
-      }
-
-      var sourceNode = ns('circle', { class: 'skills-pipe-merge-node', cx: String(srcX), cy: String(srcY), r: '5.5' }, svg);
-      sourceNode.setAttribute('fill', '#22d3ee');
-      sourceNode.setAttribute('filter', 'url(#skillsMergeGlow)');
-      sourceNode.setAttribute('opacity', fullReveal || reduced ? '0.95' : '0');
-      sourceNode.setAttribute('stroke', '#f0f9ff');
-      sourceNode.setAttribute('stroke-width', '1.5');
-
       var trunkD = 'M ' + mx + ' ' + my + ' L ' + bx + ' ' + by;
       var trunkBase = ns('path', { class: 'skills-pipe-trunk-base', fill: 'none' }, svg);
       trunkBase.setAttribute('d', trunkD);
@@ -1242,8 +1158,7 @@
         trunk: trunk,
         trunkBase: trunkBase,
         trunkFlow: trunkFlow,
-        mergeNode: mergeNode,
-        sourceNode: sourceNode
+        mergeNode: mergeNode
       };
     }
 
@@ -1281,13 +1196,11 @@
 
       var tl = gsap.timeline();
 
-      tl.to(o.sourceNode, { opacity: 0.95, duration: 0.3, ease: 'power2.out' }, 0);
-
       tl.to(o.columnBasePaths.concat(o.columnGradPaths), {
         strokeDashoffset: 0,
         duration: 1.35,
         ease: 'power2.inOut'
-      }, 0);
+      });
 
       tl.to(o.mergeNode, { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.32');
 
@@ -1361,6 +1274,102 @@
     });
   }
 
+  // ─── Skills tether: wires drop from the compact band's three path titles
+  //     into the opened map's columns. Empty (hidden) until the map opens. ─────
+  function initSkillsTether() {
+    var section = document.getElementById('skills');
+    var details = document.getElementById('skillsAtlasDetails');
+    var band = document.getElementById('skillsCompactBand');
+    var svg = document.getElementById('skillsTetherSvg');
+    if (!section || !details || !band || !svg) return;
+
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var KEYS = ['eng', 'sci', 'ana'];
+    var COLORS = { eng: '#60a5fa', sci: '#a78bfa', ana: '#22d3ee' };
+    var openTimer = null;
+    var resizeTimer = null;
+
+    function svgEl(tag, attrs) {
+      var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+      return el;
+    }
+
+    function clear() {
+      svg.innerHTML = '';
+    }
+
+    function build(animate) {
+      if (!details.open) { clear(); return; }
+      // Below the columns' breakpoint they stack vertically, so title→column
+      // wires would become long diagonal tangles. Skip the tether there.
+      if (window.matchMedia && window.matchMedia('(max-width: 1024px)').matches) { clear(); return; }
+      var sr = svg.getBoundingClientRect();
+      var W = Math.max(1, Math.round(sr.width));
+      var H = Math.max(1, Math.round(sr.height));
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+      svg.innerHTML = '';
+
+      var wires = [];
+      KEYS.forEach(function (key) {
+        var title = band.querySelector('.skills-compact-group--' + key + ' .skills-compact-group-title');
+        var col = section.querySelector('.skills-atlas-column--' + key);
+        if (!title || !col) return;
+        var tr = title.getBoundingClientRect();
+        var cr = col.getBoundingClientRect();
+        var x1 = Math.round(tr.left - sr.left + tr.width / 2);
+        var y1 = Math.round(tr.bottom - sr.top + 6);
+        var x2 = Math.round(cr.left - sr.left + Math.min(cr.width / 2, 46));
+        var y2 = Math.round(cr.top - sr.top);
+        if (y2 - y1 < 24) return; // map still collapsed/animating — nothing to draw yet
+        var midY = y1 + (y2 - y1) * 0.5;
+        var d = 'M ' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + midY + ', ' + x2 + ' ' + midY + ', ' + x2 + ' ' + y2;
+
+        var base = svgEl('path', {
+          d: d, fill: 'none', stroke: COLORS[key],
+          'stroke-width': '2.5', 'stroke-linecap': 'round', opacity: '0.9'
+        });
+        svg.appendChild(base);
+        svg.appendChild(svgEl('circle', { cx: x1, cy: y1, r: '4', fill: COLORS[key] }));
+        svg.appendChild(svgEl('circle', { cx: x2, cy: y2, r: '3.5', fill: COLORS[key], opacity: '0.85' }));
+        wires.push(base);
+      });
+
+      if (!wires.length) { clear(); return; }
+
+      if (reduced || !animate || !window.gsap) {
+        wires.forEach(function (p) { p.style.strokeDasharray = 'none'; p.style.strokeDashoffset = '0'; });
+        return;
+      }
+      wires.forEach(function (p, i) {
+        var len = p.getTotalLength() || 1;
+        p.style.strokeDasharray = String(len);
+        p.style.strokeDashoffset = String(len);
+        window.gsap.to(p, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out', delay: 0.09 * i });
+      });
+    }
+
+    function scheduleDraw() {
+      if (openTimer) clearTimeout(openTimer);
+      clear();
+      // Let the disclosure finish its height transition before measuring columns.
+      openTimer = setTimeout(function () { build(true); }, reduced ? 60 : 560);
+    }
+
+    details.addEventListener('toggle', function () {
+      if (details.open) scheduleDraw();
+      else { if (openTimer) clearTimeout(openTimer); clear(); }
+    });
+
+    if (details.open) scheduleDraw();
+
+    window.addEventListener('resize', function () {
+      if (!details.open) return;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { build(false); }, 160);
+    }, { passive: true });
+  }
+
   // ─── Boot ─────────────────────────────────────────────────────────────────
   function waitForGsap(cb) {
     if (window.gsap) {
@@ -1384,6 +1393,7 @@
        Magnetic buttons + scroll effects: portfolio-premium.js */
     initPathDividers();
     initSkillsPipeline();
+    initSkillsTether();
     initProjectDistortion();
     waitForGsap(function () {
       initSplitHeadings();

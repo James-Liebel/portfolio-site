@@ -1918,9 +1918,6 @@
       display: flex;
       flex-direction: column;
       gap: var(--skills-pipeline-merge-gap);
-      /* Top band the source trunk drops through before fanning out to the
-         columns — see initSkillsPipeline() in portfolio-advanced-components.js. */
-      padding-top: clamp(54px, 7vw, 92px);
     }
     .skills-pipeline-svg {
       position: absolute;
@@ -1931,6 +1928,19 @@
       overflow: visible;
       pointer-events: none;
       z-index: 2;
+    }
+    /* Section-spanning overlay for the tether wires that drop from the compact
+       band's three path titles into the opened map. Drawn by initSkillsTether();
+       empty (invisible) until the map is opened. */
+    #skills { position: relative; }
+    .skills-tether-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 4;
     }
     .skills-atlas-columns {
       position: relative;
@@ -6482,6 +6492,7 @@
     </svg>
 
     <section id="skills" class="section-shell">
+      <svg id="skillsTetherSvg" class="skills-tether-svg" aria-hidden="true" focusable="false"></svg>
       <div class="section-head">
         <div>
           <h2 class="skills-section-title">Skills</h2>
