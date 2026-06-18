@@ -110,7 +110,7 @@
         },
         {
           title: "Evaluation",
-          text: "Notebook outputs include confusion matrices, sklearn classification_report, ROC-AUC, and precision-recall framing for imbalanced data.",
+          text: "Notebook outputs include confusion matrices, sklearn classification_report, and per-class precision and recall on imbalanced data.",
           skills: ["pandas", "Metrics", "EDA"]
         },
         {
