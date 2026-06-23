@@ -1125,7 +1125,7 @@
       trunkFlow.setAttribute('stroke', '#f0f9ff');
       trunkFlow.setAttribute('stroke-width', '1.5');
       trunkFlow.setAttribute('stroke-linecap', 'round');
-      trunkFlow.setAttribute('stroke-dasharray', '8 18');
+      trunkFlow.setAttribute('stroke-dasharray', '10 22');
       trunkFlow.setAttribute('opacity', '0');
 
       var mergeNode = ns('circle', { class: 'skills-pipe-merge-node', cx: String(mx), cy: String(my), r: '6' }, svg);
@@ -1162,18 +1162,10 @@
       };
     }
 
-    function startFlowLoops(gsap) {
-      if (!gsap || reduced) return;
-      svg.querySelectorAll('.skills-pipe-column-flow, .skills-pipe-trunk-flow').forEach(function (p) {
-        gsap.killTweensOf(p);
-        gsap.set(p, { strokeDashoffset: 0 });
-        gsap.to(p, {
-          strokeDashoffset: -48,
-          duration: 2.4,
-          ease: 'none',
-          repeat: -1
-        });
-      });
+    function startFlowLoops() {
+      // Delegates to the shared coordinator so the pipeline + tether wires run
+      // off one tween and pulse in unison.
+      syncSkillsFlow();
     }
 
     function startMergePulse(gsap, node) {
@@ -1274,6 +1266,34 @@
     });
   }
 
+  // ─── Shared flow coordinator: drives every skills wire (tether cords +
+  //     pipeline spines/trunk) from ONE tween so they pulse together, and
+  //     restarts all gradient flashes in phase. Called whenever either system
+  //     (re)draws — the latest call re-syncs both. ───────────────────────────
+  function syncSkillsFlow() {
+    if (!window.gsap) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var tetherSvg = document.getElementById('skillsTetherSvg');
+    var pipeSvg = document.getElementById('skillsPipelineSvg');
+    var flows = [];
+    if (tetherSvg) tetherSvg.querySelectorAll('.skills-tether-flow').forEach(function (p) { flows.push(p); });
+    if (pipeSvg) pipeSvg.querySelectorAll('.skills-pipe-column-flow, .skills-pipe-trunk-flow').forEach(function (p) { flows.push(p); });
+    if (flows.length) {
+      window.gsap.killTweensOf(flows);
+      window.gsap.set(flows, { strokeDashoffset: 0 });
+      // -32 = one dash period (10 + 22), so the loop is seamless for every wire.
+      window.gsap.to(flows, { strokeDashoffset: -32, duration: 1.6, ease: 'none', repeat: -1 });
+    }
+    // Restart both SVGs' gradient flashes together (separate inline-SVG SMIL
+    // timelines otherwise drift apart).
+    try {
+      [tetherSvg, pipeSvg].forEach(function (root) {
+        if (!root) return;
+        root.querySelectorAll('linearGradient animate').forEach(function (a) { if (a.beginElement) a.beginElement(); });
+      });
+    } catch (e) { /* SMIL control unsupported */ }
+  }
+
   // ─── Skills tether: wires drop from the compact band's three path titles
   //     into the opened map's columns. Empty (hidden) until the map opens. ─────
   function initSkillsTether() {
@@ -1285,7 +1305,13 @@
 
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var KEYS = ['eng', 'sci', 'ana'];
-    var COLORS = { eng: '#60a5fa', sci: '#a78bfa', ana: '#22d3ee' };
+    // Same base/glow as the in-map pipeline so the tether reads as that same
+    // pulsing wire continuing up to the title (see COL in initSkillsPipeline).
+    var COL = {
+      eng: { base: '#1d4ed8', glow: '#60a5fa' },
+      sci: { base: '#5b21b6', glow: '#a78bfa' },
+      ana: { base: '#0e7490', glow: '#22d3ee' }
+    };
     var openTimer = null;
     var resizeTimer = null;
 
@@ -1310,43 +1336,83 @@
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
       svg.innerHTML = '';
 
-      var wires = [];
+      // Measure each wire first: start at the title's top-left, end exactly where
+      // the pipeline spine begins (column left + 3) so the two read as one wire.
+      var specs = [];
       KEYS.forEach(function (key) {
         var title = band.querySelector('.skills-compact-group--' + key + ' .skills-compact-group-title');
         var col = section.querySelector('.skills-atlas-column--' + key);
         if (!title || !col) return;
         var tr = title.getBoundingClientRect();
         var cr = col.getBoundingClientRect();
-        var x1 = Math.round(tr.left - sr.left + tr.width / 2);
-        var y1 = Math.round(tr.bottom - sr.top + 6);
-        var x2 = Math.round(cr.left - sr.left + Math.min(cr.width / 2, 46));
+        var x1 = Math.round(tr.left - sr.left - 24); // start in the margin left of the title words
+        var y1 = Math.round(tr.top - sr.top);
+        var x2 = Math.round(cr.left - sr.left + 3);
         var y2 = Math.round(cr.top - sr.top);
         if (y2 - y1 < 24) return; // map still collapsed/animating — nothing to draw yet
-        var midY = y1 + (y2 - y1) * 0.5;
-        var d = 'M ' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + midY + ', ' + x2 + ' ' + midY + ', ' + x2 + ' ' + y2;
+        specs.push({ key: key, x1: x1, y1: y1, x2: x2, y2: y2 });
+      });
+      if (!specs.length) { clear(); return; }
 
-        var base = svgEl('path', {
-          d: d, fill: 'none', stroke: COLORS[key],
-          'stroke-width': '2.5', 'stroke-linecap': 'round', opacity: '0.9'
-        });
+      // Match the pipeline gradient's exact coordinate mapping and motion so the
+      // cords flash in lockstep with their spines (same position, speed, phase) —
+      // not just the same colors. The pipeline maps y 0..H over the region with
+      // H = bridge.top - region.top; we shift that into this section-level SVG by
+      // the region's offset so a given page row gets the same gradient color.
+      var pipeRegion = document.getElementById('skillsPipelineRegion');
+      var pipeBridge = document.getElementById('skillsPipelineSummary');
+      var offset = 0;
+      var hPipe = Math.max(1, Math.max.apply(null, specs.map(function (s) { return s.y2; })) - Math.min.apply(null, specs.map(function (s) { return s.y1; })));
+      if (pipeRegion && pipeBridge) {
+        var rr = pipeRegion.getBoundingClientRect();
+        var bb = pipeBridge.getBoundingClientRect();
+        offset = Math.round(rr.top - sr.top);
+        hPipe = Math.max(1, Math.round(bb.top - rr.top));
+      }
+      var defs = svgEl('defs', {});
+      var grad = svgEl('linearGradient', { id: 'skillsTetherGrad', x1: '0', y1: String(offset), x2: '0', y2: String(offset + hPipe), gradientUnits: 'userSpaceOnUse' });
+      grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#0c4a6e' }));
+      grad.appendChild(svgEl('stop', { offset: '40%', 'stop-color': '#2563eb' }));
+      grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#22d3ee' }));
+      if (!reduced) {
+        grad.appendChild(svgEl('animate', { attributeName: 'y1', values: (offset - hPipe) + ';' + (offset + hPipe) + ';' + (offset - hPipe), dur: '2.8s', repeatCount: 'indefinite' }));
+        grad.appendChild(svgEl('animate', { attributeName: 'y2', values: offset + ';' + (offset + 2 * hPipe) + ';' + offset, dur: '2.8s', repeatCount: 'indefinite' }));
+      }
+      defs.appendChild(grad);
+      svg.appendChild(defs);
+
+      var reveal = [];
+      specs.forEach(function (s) {
+        var c1y = s.y1 + (s.y2 - s.y1) * 0.42;
+        var c2y = s.y2 - (s.y2 - s.y1) * 0.30;
+        var d = 'M ' + s.x1 + ' ' + s.y1 + ' C ' + s.x1 + ' ' + c1y + ', ' + s.x2 + ' ' + c2y + ', ' + s.x2 + ' ' + s.y2;
+        var base = svgEl('path', { class: 'skills-tether-base', d: d, fill: 'none', stroke: COL[s.key].base, 'stroke-width': '3', 'stroke-linecap': 'round', opacity: '0.92' });
+        var gline = svgEl('path', { class: 'skills-tether-grad', d: d, fill: 'none', stroke: 'url(#skillsTetherGrad)', 'stroke-width': '2', 'stroke-linecap': 'round' });
+        var flow = svgEl('path', { class: 'skills-tether-flow', d: d, fill: 'none', stroke: COL[s.key].glow, 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-dasharray': '10 22', opacity: '0' });
         svg.appendChild(base);
-        svg.appendChild(svgEl('circle', { cx: x1, cy: y1, r: '4', fill: COLORS[key] }));
-        svg.appendChild(svgEl('circle', { cx: x2, cy: y2, r: '3.5', fill: COLORS[key], opacity: '0.85' }));
-        wires.push(base);
+        svg.appendChild(gline);
+        svg.appendChild(flow);
+        svg.appendChild(svgEl('circle', { cx: s.x1, cy: s.y1, r: '3.5', fill: COL[s.key].glow })); // tap at the title
+        reveal.push(base, gline);
       });
 
-      if (!wires.length) { clear(); return; }
-
+      var flows = svg.querySelectorAll('.skills-tether-flow');
       if (reduced || !animate || !window.gsap) {
-        wires.forEach(function (p) { p.style.strokeDasharray = 'none'; p.style.strokeDashoffset = '0'; });
+        reveal.forEach(function (p) { p.style.strokeDasharray = 'none'; p.style.strokeDashoffset = '0'; });
+        flows.forEach(function (p) { p.setAttribute('opacity', '0.9'); });
+        syncSkillsFlow();
         return;
       }
-      wires.forEach(function (p, i) {
+      // All cords fold down together (no stagger), then the glow dashes fade in
+      // and start pulsing in unison.
+      reveal.forEach(function (p) {
         var len = p.getTotalLength() || 1;
         p.style.strokeDasharray = String(len);
         p.style.strokeDashoffset = String(len);
-        window.gsap.to(p, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out', delay: 0.09 * i });
+        window.gsap.to(p, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out' });
       });
+      window.gsap.to(flows, { opacity: 0.9, duration: 0.3, delay: 0.5 });
+      window.gsap.delayedCall(0.55, syncSkillsFlow);
     }
 
     function scheduleDraw() {

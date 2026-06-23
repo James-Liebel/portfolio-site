@@ -2751,23 +2751,8 @@
 
   const skillsAtlasDetails = document.getElementById("skillsAtlasDetails");
   if (skillsAtlasDetails) {
-    try {
-      if (sessionStorage.getItem("portfolio-skills-map") === "1") {
-        skillsAtlasDetails.open = true;
-      }
-    } catch {
-      /* ignore */
-    }
+    // Always start closed; opening it mid-page changes height, so re-measure.
     skillsAtlasDetails.addEventListener("toggle", () => {
-      try {
-        if (skillsAtlasDetails.open) {
-          sessionStorage.setItem("portfolio-skills-map", "1");
-        } else {
-          sessionStorage.removeItem("portfolio-skills-map");
-        }
-      } catch {
-        /* ignore */
-      }
       requestAnimationFrame(() => {
         if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       });

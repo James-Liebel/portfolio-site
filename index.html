@@ -1739,12 +1739,6 @@
       background: var(--panel);
       box-shadow: var(--shadow);
     }
-    .skills-compact-lede {
-      margin: 0 0 14px;
-      font-size: clamp(0.95rem, 1.25vw, 1.02rem);
-      line-height: 1.58;
-      color: var(--muted);
-    }
     .skills-compact-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -1973,51 +1967,6 @@
       margin-left: var(--skills-child-indent);
       min-width: 0;
     }
-    .skills-nexus-rail {
-      --rail-accent: var(--column-accent);
-      margin: 0;
-      padding: 0 0 2px;
-      border-radius: 0;
-      background: transparent;
-      border: 0;
-      border-top: 0;
-      box-shadow: none;
-    }
-    .skills-nexus-rail-label {
-      display: block;
-      margin: 0 0 10px;
-      font: 700 10px/1.2 "Space Mono", monospace;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--rail-accent);
-    }
-    .skills-root-chapter-title {
-      margin: 0 0 10px;
-      font: 800 clamp(0.95rem, 1.35vw, 1.08rem)/1.2 Inter, system-ui, sans-serif;
-      letter-spacing: 0.06em;
-      text-transform: none;
-      color: var(--column-accent);
-    }
-    .skills-atlas-column--eng .skills-root-chapter-title {
-      text-shadow: 0 0 22px rgba(59, 130, 246, 0.28);
-    }
-    .skills-atlas-column--sci .skills-root-chapter-title {
-      text-shadow: 0 0 22px rgba(139, 92, 246, 0.28);
-    }
-    .skills-atlas-column--ana .skills-root-chapter-title {
-      text-shadow: 0 0 22px rgba(34, 211, 238, 0.28);
-    }
-    :root[data-theme="light"] .skills-atlas-column .skills-root-chapter-title {
-      text-shadow: none;
-    }
-    .skills-root-lede {
-      margin: 0;
-      margin-left: var(--skills-child-indent);
-      padding-left: 0;
-      font-size: 0.94rem;
-      line-height: 1.58;
-      color: var(--muted);
-    }
     .skills-root-index {
       margin-bottom: 6px;
       opacity: 0.55;
@@ -2060,14 +2009,6 @@
     .skills-root-card--ana { --card-accent: var(--root-ana); }
     .skills-atlas-column .skills-column-stack .skills-root-card {
       border-left: 0;
-    }
-    :root[data-theme="light"] .skills-atlas-column .skills-nexus-rail {
-      background: transparent;
-      border: 0;
-      box-shadow: none;
-    }
-    :root[data-theme="light"] .skills-root-lede {
-      color: var(--muted);
     }
     .skills-atlas h3,
     .bento-card h3,
@@ -6144,7 +6085,6 @@
         padding: 16px;
         border-radius: 16px;
       }
-      .skills-compact-lede { font-size: 0.96rem; line-height: 1.5; }
       .skills-atlas-disclosure { border-radius: 16px; }
       .skills-atlas-summary {
         padding: 14px 16px;
@@ -6368,6 +6308,17 @@
               <div class="gh-tooltip" id="ghHeatmapTooltip" role="tooltip"></div>
             </div>
           </div>
+          <article class="hero-edu-card" aria-label="Education">
+            <p class="hero-edu-kicker">Education</p>
+            <h3 class="hero-edu-school">University of Chicago</h3>
+            <p class="hero-edu-degree">B.S. in Data Science &amp; Statistics · Class of 2030</p>
+            <div class="hero-edu-tags" aria-label="Coursework">
+              <span>Calculus &amp; Linear Algebra</span>
+              <span>Statistics &amp; Probability</span>
+              <span>Computer Science</span>
+              <span>Machine Learning</span>
+            </div>
+          </article>
           <div class="hero-start-here" aria-label="Quick links">
             <span class="hero-start-here-label">Quick links · 30-second look</span>
             <div class="hero-cta-row">
@@ -6438,18 +6389,6 @@
             </div>
           </div>
         </aside>
-
-        <article class="hero-edu-card" aria-label="Education">
-          <p class="hero-edu-kicker">Education</p>
-          <h3 class="hero-edu-school">University of Chicago</h3>
-          <p class="hero-edu-degree">B.S. in Data Science &amp; Statistics · Class of 2030</p>
-          <div class="hero-edu-tags" aria-label="Coursework">
-            <span>Calculus &amp; Linear Algebra</span>
-            <span>Statistics &amp; Probability</span>
-            <span>Computer Science</span>
-            <span>Machine Learning</span>
-          </div>
-        </article>
         </div>
 
           </div>
@@ -6500,7 +6439,6 @@
       </div>
 
       <div class="skills-compact-band" id="skillsCompactBand">
-        <p class="skills-compact-lede">Most of what I do falls into three areas, and they run in that order: get the data right, build and test models on it, then turn the results into something people can read. Open the full map below for the stack in each and how they connect end to end.</p>
         <div class="skills-compact-grid">
           <div class="skills-compact-group skills-compact-group--eng">
             <h3 class="skills-compact-group-title">Data Engineering</h3>
@@ -6533,10 +6471,6 @@
         <div class="skills-pipeline-region" id="skillsPipelineRegion">
         <div class="skills-atlas-columns">
           <div class="skills-atlas-column skills-atlas-column--eng">
-            <div class="skills-nexus-rail skills-nexus-rail--eng">
-              <span class="skills-nexus-rail-label skills-root-chapter-title">Data engineering</span>
-              <p class="skills-root-lede">Getting data in, cleaning it, and giving it structure so the rest of the work starts from solid inputs.</p>
-            </div>
             <article class="skills-branch skills-branch--eng">
               <p class="section-kicker skills-root-index">Root 01</p>
               <h3 class="skills-branch-subtitle">Data Engineering</h3>
@@ -6570,10 +6504,6 @@
           </div>
 
           <div class="skills-atlas-column skills-atlas-column--sci">
-            <div class="skills-nexus-rail skills-nexus-rail--sci">
-              <span class="skills-nexus-rail-label skills-root-chapter-title">Data science</span>
-              <p class="skills-root-lede">Models, features, testing, and metrics that turn structured data into predictions you can evaluate.</p>
-            </div>
             <article class="skills-branch skills-branch--sci">
               <p class="section-kicker skills-root-index">Root 02</p>
               <h3 class="skills-branch-subtitle">Data Science</h3>
@@ -6607,10 +6537,6 @@
           </div>
 
           <div class="skills-atlas-column skills-atlas-column--ana">
-            <div class="skills-nexus-rail skills-nexus-rail--ana">
-              <span class="skills-nexus-rail-label skills-root-chapter-title">Data analysis</span>
-              <p class="skills-root-lede">Exploration, dashboards, and clear visuals so the results are quick to read.</p>
-            </div>
             <article class="skills-branch skills-branch--ana">
               <p class="section-kicker skills-root-index">Root 03</p>
               <h3 class="skills-branch-subtitle">Data Analysis</h3>
