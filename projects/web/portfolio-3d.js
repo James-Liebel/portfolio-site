@@ -30,7 +30,7 @@ import * as THREE from './vendor/three.module.min.js';
       surfaceLow: [0.31, 0.33, 0.78],
       surfaceHigh: [0.494, 1.0, 0.831],
       layers: [[0.506, 0.549, 0.972], [0.133, 0.827, 0.933], [0.494, 1.0, 0.831]],
-      grid: 0x6366f1,
+      grid: 0x5b82c9,
       gridOpacity: 0.07,
       alpha: 1,
       additive: true
@@ -41,7 +41,7 @@ import * as THREE from './vendor/three.module.min.js';
       surfaceLow: [0.26, 0.23, 0.75],
       surfaceHigh: [0.022, 0.588, 0.412],
       layers: [[0.31, 0.275, 0.898], [0.035, 0.569, 0.698], [0.022, 0.588, 0.412]],
-      grid: 0x4f46e5,
+      grid: 0x3f5fa8,
       gridOpacity: 0.12,
       alpha: 0.85,
       additive: false

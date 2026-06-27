@@ -457,17 +457,17 @@
         if (maxCount < 1) maxCount = 1;
 
         function level(n) {
-          if (!n) return { c: 'rgba(99,102,241,0.07)', g: null };
+          if (!n) return { c: 'rgba(91,130,201,0.07)', g: null };
           var t = Math.min(1, Math.sqrt(n / maxCount));
           var knee = 0.58;
           var tailCompress = 0.52;
           if (t > knee) {
             t = knee + (t - knee) * tailCompress;
           }
-          if (t <= 0.28) return { c: 'rgba(99,102,241,0.28)', g: null };
-          if (t <= 0.52) return { c: 'rgba(129,140,248,0.55)', g: null };
-          if (t <= 0.74) return { c: 'rgba(167,139,250,0.82)', g: '0 0 7px rgba(139,92,246,0.45)' };
-          return { c: 'rgba(192,132,252,1)', g: '0 0 10px rgba(99,102,241,0.75)' };
+          if (t <= 0.28) return { c: 'rgba(91,130,201,0.28)', g: null };
+          if (t <= 0.52) return { c: 'rgba(126,147,196,0.55)', g: null };
+          if (t <= 0.74) return { c: 'rgba(120,140,198,0.82)', g: '0 0 7px rgba(120,140,198,0.45)' };
+          return { c: 'rgba(108,148,205,1)', g: '0 0 10px rgba(91,130,201,0.75)' };
         }
         // Anchor on the current week so the rightmost column is always today's
         // week, the way GitHub renders it. Advancing endD to this week's Saturday
@@ -519,7 +519,7 @@
             ctx.shadowColor = 'transparent';
             if (L.g) {
               ctx.shadowBlur = 10;
-              ctx.shadowColor = 'rgba(99,102,241,0.65)';
+              ctx.shadowColor = 'rgba(91,130,201,0.65)';
             }
             ctx.fillRect(cellInfo.x, cellInfo.y, cell, cell);
             ctx.shadowBlur = 0;
@@ -588,11 +588,11 @@
 
         // Less → More legend along the bottom-right.
         var legendColors = [
-          'rgba(99,102,241,0.10)',
-          'rgba(99,102,241,0.28)',
-          'rgba(129,140,248,0.55)',
-          'rgba(167,139,250,0.82)',
-          'rgba(192,132,252,1)'
+          'rgba(91,130,201,0.10)',
+          'rgba(91,130,201,0.28)',
+          'rgba(126,147,196,0.55)',
+          'rgba(120,140,198,0.82)',
+          'rgba(108,148,205,1)'
         ];
         var sw = 11;
         var sgap = 3;
@@ -915,9 +915,9 @@
     var mergePulseTween = null;
 
     var COL = {
-      eng: { base: '#1d4ed8', mid: '#3b82f6', glow: '#60a5fa' },
-      sci: { base: '#5b21b6', mid: '#7c3aed', glow: '#a78bfa' },
-      ana: { base: '#0e7490', mid: '#0891b2', glow: '#22d3ee' }
+      eng: { base: '#3a5a96', mid: '#5b82c9', glow: '#7ea0d0' },
+      sci: { base: '#4f3d82', mid: '#6a5da6', glow: '#9b8fcf' },
+      ana: { base: '#356b73', mid: '#3a8a93', glow: '#5fa8b3' }
     };
 
     function ns(tag, attrs, parent) {
@@ -986,9 +986,9 @@
         { id: 'skillsPipeFlowGrad', x1: '0', y1: '0', x2: '0', y2: String(H), gradientUnits: 'userSpaceOnUse' },
         defs
       );
-      ns('stop', { offset: '0%', 'stop-color': '#0c4a6e', 'stop-opacity': '1' }, gradFlow);
-      ns('stop', { offset: '40%', 'stop-color': '#2563eb', 'stop-opacity': '1' }, gradFlow);
-      ns('stop', { offset: '100%', 'stop-color': '#22d3ee', 'stop-opacity': '1' }, gradFlow);
+      ns('stop', { offset: '0%', 'stop-color': '#2a4757', 'stop-opacity': '1' }, gradFlow);
+      ns('stop', { offset: '40%', 'stop-color': '#4f6fae', 'stop-opacity': '1' }, gradFlow);
+      ns('stop', { offset: '100%', 'stop-color': '#5fa8b3', 'stop-opacity': '1' }, gradFlow);
       if (!reduced) {
         var animY1 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
         animY1.setAttribute('attributeName', 'y1');
@@ -1109,7 +1109,7 @@
       var trunkD = 'M ' + mx + ' ' + my + ' L ' + bx + ' ' + by;
       var trunkBase = ns('path', { class: 'skills-pipe-trunk-base', fill: 'none' }, svg);
       trunkBase.setAttribute('d', trunkD);
-      trunkBase.setAttribute('stroke', '#1e3a8a');
+      trunkBase.setAttribute('stroke', '#2f4a78');
       trunkBase.setAttribute('stroke-width', '3.5');
       trunkBase.setAttribute('stroke-linecap', 'round');
       trunkBase.setAttribute('opacity', '0.92');
@@ -1129,7 +1129,7 @@
       trunkFlow.setAttribute('opacity', '0');
 
       var mergeNode = ns('circle', { class: 'skills-pipe-merge-node', cx: String(mx), cy: String(my), r: '6' }, svg);
-      mergeNode.setAttribute('fill', '#22d3ee');
+      mergeNode.setAttribute('fill', '#5fa8b3');
       mergeNode.setAttribute('filter', 'url(#skillsMergeGlow)');
       mergeNode.setAttribute('opacity', fullReveal || reduced ? '0.95' : '0');
       mergeNode.setAttribute('stroke', '#f0f9ff');
@@ -1308,9 +1308,9 @@
     // Same base/glow as the in-map pipeline so the tether reads as that same
     // pulsing wire continuing up to the title (see COL in initSkillsPipeline).
     var COL = {
-      eng: { base: '#1d4ed8', glow: '#60a5fa' },
-      sci: { base: '#5b21b6', glow: '#a78bfa' },
-      ana: { base: '#0e7490', glow: '#22d3ee' }
+      eng: { base: '#3a5a96', glow: '#7ea0d0' },
+      sci: { base: '#4f3d82', glow: '#9b8fcf' },
+      ana: { base: '#356b73', glow: '#5fa8b3' }
     };
     var openTimer = null;
     var resizeTimer = null;
@@ -1371,9 +1371,9 @@
       }
       var defs = svgEl('defs', {});
       var grad = svgEl('linearGradient', { id: 'skillsTetherGrad', x1: '0', y1: String(offset), x2: '0', y2: String(offset + hPipe), gradientUnits: 'userSpaceOnUse' });
-      grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#0c4a6e' }));
-      grad.appendChild(svgEl('stop', { offset: '40%', 'stop-color': '#2563eb' }));
-      grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#22d3ee' }));
+      grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#2a4757' }));
+      grad.appendChild(svgEl('stop', { offset: '40%', 'stop-color': '#4f6fae' }));
+      grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#5fa8b3' }));
       if (!reduced) {
         grad.appendChild(svgEl('animate', { attributeName: 'y1', values: (offset - hPipe) + ';' + (offset + hPipe) + ';' + (offset - hPipe), dur: '2.8s', repeatCount: 'indefinite' }));
         grad.appendChild(svgEl('animate', { attributeName: 'y2', values: offset + ';' + (offset + 2 * hPipe) + ';' + offset, dur: '2.8s', repeatCount: 'indefinite' }));
