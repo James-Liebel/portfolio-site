@@ -23,35 +23,36 @@ import * as THREE from './vendor/three.module.min.js';
   const INTRO_MS = 3200;
   const EDGE_SEGMENTS = 8;
 
+  /* Steel-blue / slate / teal family — matches the site's single-accent palette */
   const PALETTES = {
     dark: {
-      cluster: [[0.506, 0.549, 0.972], [0.133, 0.827, 0.933], [0.494, 1.0, 0.831]],
-      outlier: [0.42, 0.46, 0.62],
-      surfaceLow: [0.31, 0.33, 0.78],
-      surfaceHigh: [0.494, 1.0, 0.831],
-      layers: [[0.506, 0.549, 0.972], [0.133, 0.827, 0.933], [0.494, 1.0, 0.831]],
+      cluster: [[0.357, 0.51, 0.788], [0.576, 0.69, 0.878], [0.427, 0.604, 0.639]],
+      outlier: [0.45, 0.49, 0.58],
+      surfaceLow: [0.24, 0.33, 0.55],
+      surfaceHigh: [0.62, 0.73, 0.89],
+      layers: [[0.357, 0.51, 0.788], [0.576, 0.69, 0.878], [0.427, 0.604, 0.639]],
       grid: 0x5b82c9,
-      gridOpacity: 0.07,
+      gridOpacity: 0.06,
       alpha: 1,
       additive: true
     },
     light: {
-      cluster: [[0.31, 0.275, 0.898], [0.035, 0.569, 0.698], [0.022, 0.588, 0.412]],
-      outlier: [0.55, 0.6, 0.7],
-      surfaceLow: [0.26, 0.23, 0.75],
-      surfaceHigh: [0.022, 0.588, 0.412],
-      layers: [[0.31, 0.275, 0.898], [0.035, 0.569, 0.698], [0.022, 0.588, 0.412]],
+      cluster: [[0.247, 0.373, 0.659], [0.392, 0.455, 0.545], [0.184, 0.463, 0.502]],
+      outlier: [0.55, 0.58, 0.63],
+      surfaceLow: [0.2, 0.3, 0.52],
+      surfaceHigh: [0.184, 0.463, 0.502],
+      layers: [[0.247, 0.373, 0.659], [0.392, 0.455, 0.545], [0.184, 0.463, 0.502]],
       grid: 0x3f5fa8,
-      gridOpacity: 0.12,
-      alpha: 0.85,
+      gridOpacity: 0.1,
+      alpha: 0.9,
       additive: false
     }
   };
 
   const HUD_LABELS = [
-    '01 · k-means scatter · k=3',
-    '02 · loss surface · gradient descent',
-    '03 · dense network · 4 layers'
+    'Fig. 01 · k-means clustering',
+    'Fig. 02 · gradient descent',
+    'Fig. 03 · neural network · 4 layers'
   ];
 
   // ─── Formation generators (positions cached, colors theme-dependent) ──────
@@ -385,23 +386,14 @@ import * as THREE from './vendor/three.module.min.js';
     return segs;
   }
 
-  function buildHud(host) {
-    const hud = document.createElement('div');
-    hud.className = 'hero-3d-hud';
-    hud.setAttribute('aria-hidden', 'true');
-    hud.innerHTML =
-      '<i class="hud-c hud-c--tl"></i><i class="hud-c hud-c--tr"></i>' +
-      '<i class="hud-c hud-c--bl"></i><i class="hud-c hud-c--br"></i>' +
-      '<div class="hud-readout">' +
-      '<span class="hud-line hud-line--formation"></span>' +
-      '<span class="hud-line hud-line--meta"></span>' +
-      '</div>';
-    host.appendChild(hud);
-    return {
-      root: hud,
-      formation: hud.querySelector('.hud-line--formation'),
-      meta: hud.querySelector('.hud-line--meta')
-    };
+  function buildHud() {
+    // The figure caption is static markup in index.html; the scene only swaps
+    // its text as formations morph.
+    const root = document.getElementById('heroFigure');
+    const formation = document.getElementById('heroFigureLabel');
+    const meta = document.getElementById('heroFigureMeta');
+    if (!root || !formation || !meta) return null;
+    return { root, formation, meta };
   }
 
   function init() {
@@ -415,8 +407,8 @@ import * as THREE from './vendor/three.module.min.js';
     }
     const hero = document.getElementById('hero');
     const canvas = document.getElementById('hero-webgl');
-    const ambient = hero ? hero.querySelector('.hero-ambient') : null;
-    if (!hero || !canvas || !ambient) return;
+    const stage = document.getElementById('heroFigureStage');
+    if (!hero || !canvas || !stage) return;
 
     let renderer;
     try {
@@ -517,9 +509,10 @@ import * as THREE from './vendor/three.module.min.js';
       return g;
     }
 
-    const hud = buildHud(ambient);
+    const hud = buildHud();
+    if (!hud) return;
     hud.formation.textContent = HUD_LABELS[0];
-    hud.meta.textContent = 'n=2,400 · webgl2';
+    hud.meta.textContent = 'n = 2,400';
 
     // ─── State ───────────────────────────────────────────────────────────────
     let fromIdx = 0;
@@ -538,8 +531,6 @@ import * as THREE from './vendor/three.module.min.js';
     let running = false;
     let raf = 0;
     let lastT = 0;
-    let frames = 0;
-    let fpsWindowStart = 0;
     let live = false;
 
     function applyTheme() {
@@ -563,19 +554,18 @@ import * as THREE from './vendor/three.module.min.js';
     new MutationObserver(applyTheme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
     function setSize() {
-      const w = hero.clientWidth;
-      const h = hero.clientHeight;
+      const w = stage.clientWidth;
+      const h = stage.clientHeight;
       if (!w || !h) return;
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       pointsMat.uniforms.uPointScale.value =
         renderer.domElement.height / (2 * Math.tan(THREE.MathUtils.degToRad(FOV) / 2));
-      group.position.x = w >= 1180 ? 3.4 : 0;
     }
     setSize();
     if (window.ResizeObserver) {
-      new ResizeObserver(setSize).observe(hero);
+      new ResizeObserver(setSize).observe(stage);
     } else {
       window.addEventListener('resize', setSize, { passive: true });
     }
@@ -623,21 +613,11 @@ import * as THREE from './vendor/three.module.min.js';
       raf = requestAnimationFrame(tick);
       if (!lastT) {
         lastT = now;
-        fpsWindowStart = now;
         phaseStart = now;
       }
       const dt = Math.min((now - lastT) / 1000, 0.05);
       lastT = now;
       const time = now / 1000;
-
-      // fps readout: real measurement, refreshed once per second
-      frames++;
-      if (now - fpsWindowStart >= 1000) {
-        const fps = Math.round((frames * 1000) / (now - fpsWindowStart));
-        hud.meta.textContent = 'n=2,400 · ' + fps + ' fps · webgl2';
-        frames = 0;
-        fpsWindowStart = now;
-      }
 
       // formation scheduling
       if (phase === 'intro') {
@@ -676,7 +656,9 @@ import * as THREE from './vendor/three.module.min.js';
       yaw += dt * 0.05;
       yawOff += (pointerX * 0.3 - yawOff) * Math.min(dt * 2.2, 1);
       pitchOff += (pointerY * 0.14 - pitchOff) * Math.min(dt * 2.2, 1);
-      const r = 24 + (1 - scrollFade) * 9;
+      // The stage panel is much narrower than the old full-hero canvas, so the
+      // camera orbits a bit farther out to keep the whole cloud in frame.
+      const r = 30 + (1 - scrollFade) * 9;
       const cy = yaw + yawOff;
       camera.position.set(
         Math.sin(cy) * r,

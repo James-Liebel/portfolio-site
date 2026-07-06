@@ -25,16 +25,8 @@
   const navToggle = document.getElementById("navToggle");
   const navClose = document.getElementById("navClose");
   const mobileNav = document.getElementById("mobileNav");
-  const customCursor = document.getElementById("customCursor");
-  const customCursorDot = document.getElementById("customCursorDot");
   const hero = document.getElementById("hero");
   const heroTitle = document.getElementById("heroTitle");
-  const heroTerminal = document.getElementById("heroTerminal");
-  const heroPills = document.getElementById("heroPills");
-  const heroGrain = hero?.querySelector(".hero-grain") ?? null;
-  const heroWord = document.getElementById("heroWord");
-  const modeButtons = [...document.querySelectorAll(".switch button[data-mode]")];
-  const modeIndicator = document.getElementById("modeIndicator");
   const projectSections = [...document.querySelectorAll(".project-section[data-project-section]")];
   const journey = document.getElementById("journey");
   const journeyTrack = document.getElementById("journey-track");
@@ -79,81 +71,10 @@
     });
   }
 
-  const modeData = {
-    builder: {
-      angle: 300,
-      boxes: [
-        {
-          title: "Pipelines & data",
-          text: "Reproducible ETL and feature prep in Python and SQL: RobustScaler, stratified train/test splits, and clean data handoffs documented in runnable notebooks.",
-          skills: ["SQL", "Python", "ETL"]
-        },
-        {
-          title: "APIs & apps",
-          text: "CustomStrat LinkedIn automation: a Python + NLP (VADER sentiment, TF-IDF) content pipeline that lifted impressions +31% and reach +41% over 28 days.",
-          skills: ["Python", "NLP", "Automation"]
-        },
-        {
-          title: "Sites & surfaces",
-          text: "CustomStrat ships on customstrat.com (Next.js 14, GitHub Pages). This portfolio embeds 6 D3 gallery builds plus a Power BI–style report mock; Lighthouse/perf scores are not claimed without a saved CI or report artifact.",
-          skills: ["Next.js", "D3.js", "Power BI"]
-        }
-      ]
-    },
-    analyst: {
-      angle: 210,
-      boxes: [
-        {
-          title: "Models",
-          text: "NLP sentiment with VADER on simulated headlines, plus a TF-IDF + PassiveAggressive classifier scaffold for Colab CSV uploads. Models built and compared with scikit-learn pipelines on held-out data.",
-          skills: ["Scikit-learn", "NLP", "TF-IDF"]
-        },
-        {
-          title: "Evaluation",
-          text: "Notebook outputs include confusion matrices, sklearn classification_report, and per-class precision and recall on imbalanced data.",
-          skills: ["pandas", "Metrics", "EDA"]
-        },
-        {
-          title: "Delivery",
-          text: "Shipped Jupyter artifacts on GitHub plus this portfolio with six D3 iframes and static chart exports recruiters can open without a GPU.",
-          skills: ["Jupyter", "D3.js", "Visualization"]
-        }
-      ]
-    },
-    operator: {
-      angle: 120,
-      boxes: [
-        {
-          title: "BI & modeling",
-          text: "PL-300 credential plus Power BI report mock embedded in this portfolio: DAX-style KPI tiles, slicers, and multi-page narrative layout mirroring how managers consume analytics.",
-          skills: ["Power BI", "DAX", "SQL"]
-        },
-        {
-          title: "D3 applications",
-          text: "Six D3.js modules in the viz gallery (GDP bar, cycling scatter, heatmap, Cincinnati choropleth, treemap, desert comparison) plus a featured dashboard tile—each is a live iframe, not a PNG.",
-          skills: ["D3.js", "JavaScript", "GeoJSON"]
-        },
-        {
-          title: "Reporting",
-          text: "Dashboard copy emphasizes drillable comparisons and plain-language labels; time-to-answer impact is not measured in-repo.",
-          skills: ["Dashboards", "KPIs", "PL-300"]
-        }
-      ]
-    }
-  };
 
-  const heroWordPairs = [
-    ["data", "science"],
-    ["machine", "learning"],
-    ["MLOps", "pipelines"],
-    ["AI", "products"]
-  ];
-  let heroWordIndex = 0;
   let lenis = null;
   let gsapScrollProgress = false;
-  let heroWordTimer = null;
   let heroMotionStarted = false;
-  let heroWordCycleStarted = false;
   let journeyScrollTrigger = null;
 
   function animateCountUpItem(item, duration = 1.4) {
@@ -175,29 +96,6 @@
     });
   }
 
-  function movePillIndicator(indicator, target, animate = false) {
-    if (!indicator || !target || !target.parentElement) return;
-    const parentRect = target.parentElement.getBoundingClientRect();
-    const rect = target.getBoundingClientRect();
-    const x = rect.left - parentRect.left;
-    const width = rect.width;
-    if (animate && window.gsap) {
-      window.gsap.to(indicator, {
-        x: x,
-        width,
-        duration: 0.28,
-        ease: "power2.inOut",
-        overwrite: true
-      });
-    } else {
-      if (window.gsap) {
-        window.gsap.set(indicator, { x, width });
-      } else {
-        indicator.style.width = `${width}px`;
-        indicator.style.transform = `translate(${x}px, 0)`;
-      }
-    }
-  }
 
   function moveNavIndicator(activeLink) {
     if (!navIndicator || !activeLink || !activeLink.parentElement || window.innerWidth <= 920) return;
@@ -388,33 +286,6 @@
     return [...heroTitle.querySelectorAll(".hw")];
   }
 
-  function renderMode(key) {
-    const next = modeData[key];
-    if (!next) return;
-    const activeButton = modeButtons.find(button => button.dataset.mode === key);
-    modeButtons.forEach(button => button.classList.toggle("active", button === activeButton));
-    movePillIndicator(modeIndicator, activeButton, true);
-    const boxes = next.boxes || [];
-    for (let i = 0; i < 3; i++) {
-      const box = boxes[i];
-      const titleEl = document.getElementById(`snapshotBox${i}Title`);
-      const textEl = document.getElementById(`snapshotBox${i}Text`);
-      const skillsEl = document.getElementById(`snapshotBox${i}Skills`);
-      if (!box) {
-        if (titleEl) titleEl.textContent = "";
-        if (textEl) textEl.textContent = "";
-        if (skillsEl) skillsEl.innerHTML = "";
-        continue;
-      }
-      if (titleEl) titleEl.textContent = box.title;
-      if (textEl) textEl.textContent = box.text;
-      if (skillsEl) {
-        skillsEl.innerHTML = box.skills
-          .map(skill => `<span class="snapshot-skill">${skill}</span>`)
-          .join("");
-      }
-    }
-  }
 
   function updateJourneyRail(activePanel) {
     journeyLinks.forEach(link => {
@@ -2021,54 +1892,8 @@
     }
   }
 
-  function applyHeroWordPair(index) {
-    if (!heroWord) return;
-    const pair = heroWordPairs[index];
-    if (!pair) return;
-    const lines = heroWord.querySelectorAll(".hero-word-line");
-    if (lines[0]) lines[0].textContent = pair[0];
-    if (lines[1]) lines[1].textContent = pair[1];
-  }
 
-  function setupHeroWordCycle() {
-    if (!heroWord || !window.gsap || reduced) return;
-    const lines = heroWord.querySelectorAll(".hero-word-line");
-    if (lines.length < 2) return;
-    if (heroWordTimer) window.clearInterval(heroWordTimer);
-    heroWord.style.opacity = "1";
-    heroWord.style.transform = "translateY(0%)";
-    applyHeroWordPair(heroWordIndex);
-    heroWordTimer = window.setInterval(() => {
-      heroWordIndex = (heroWordIndex + 1) % heroWordPairs.length;
-      const tl = window.gsap.timeline();
-      tl.to(heroWord, {
-        yPercent: -100,
-        opacity: 0,
-        duration: 0.38,
-        ease: "power3.inOut"
-      })
-        .call(() => {
-          applyHeroWordPair(heroWordIndex);
-          window.gsap.set(heroWord, { yPercent: 100 });
-        })
-        .to(heroWord, {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.38,
-          ease: "power3.out"
-        }, "+=0.1");
-    }, 3000);
-  }
 
-  function setupHeroParallax() {
-    if (!heroTitle || !window.gsap) return;
-    if (!window.matchMedia("(hover: hover)").matches) return;
-    document.addEventListener("mousemove", event => {
-      const dx = (event.clientX / window.innerWidth - 0.5) * 14;
-      const dy = (event.clientY / window.innerHeight - 0.5) * 7;
-      window.gsap.to(heroTitle, { x: dx, y: dy, duration: 0.9, ease: "power2.out", overwrite: true });
-    }, { passive: true });
-  }
 
   function setupScrollReveals() {
     if (reduced || !window.gsap || !window.ScrollTrigger) return;
@@ -2221,99 +2046,33 @@
 
   }
 
-  function setupHeroGrain() {
-    if (!heroGrain) return;
-    const context = heroGrain.getContext("2d");
-    if (!context) return;
-
-    const resize = () => {
-      const rect = heroGrain.getBoundingClientRect();
-      heroGrain.width = Math.max(1, Math.floor(rect.width));
-      heroGrain.height = Math.max(1, Math.floor(rect.height));
-      render();
-    };
-
-    const render = () => {
-      const { width, height } = heroGrain;
-      context.clearRect(0, 0, width, height);
-      for (let i = 0; i < 2000; i += 1) {
-        const x = Math.random() * width;
-        const y = Math.random() * height;
-        const alpha = Math.random() * 0.12;
-        context.fillStyle = `rgba(255,255,255,${alpha})`;
-        context.fillRect(x, y, 1.5, 1.5);
-      }
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-  }
 
   function startHeroMotion() {
     if (heroMotionStarted || !window.gsap) return;
     heroMotionStarted = true;
-    setupHeroGrain();
-    setupHeroParallax();
 
     splitHeadlineWords();
 
     const tl = window.gsap.timeline({ defaults: { ease: "power3.out" } });
-    const pillItems = heroPills ? heroPills.querySelectorAll(".pill") : [];
 
     tl.from(".hw", { y: "110%", opacity: 0, duration: 0.72, stagger: 0.055 })
-      .from(".summary", { opacity: 0, y: 24, duration: 0.6 }, "-=0.3")
       .from(".hero-status-line", { opacity: 0, y: 16, duration: 0.5 }, "-=0.3")
-      .from(pillItems, { opacity: 0, y: 14, stagger: 0.07, duration: 0.38 }, "-=0.2")
-      .from(
-        "#heroTerminal",
-        {
-          opacity: 0,
-          x: 80,
-          scale: 0.96,
-          duration: 0.9,
-          ease: "power3.out",
-          onComplete: () => {
-            const cards = document.querySelectorAll("#snapshotBoxes .snapshot-box");
-            if (cards.length && window.gsap) {
-              window.gsap.from(cards, {
-                opacity: 0,
-                y: 10,
-                stagger: 0.08,
-                duration: 0.38,
-                ease: "power2.out"
-              });
-            }
-          }
-        },
-        0.35
-      );
-
-    if (!heroWordCycleStarted) {
-      heroWordCycleStarted = true;
-      setupHeroWordCycle();
-    }
+      .from(".hero-start-here", { opacity: 0, y: 16, duration: 0.5 }, "-=0.28")
+      .from(".hero-figure", { opacity: 0, y: 26, duration: 0.9, ease: "power3.out" }, 0.35);
   }
 
   /** Run full hero entrance in final state (for desktop intro: layout resolves under the canvas before crossfade). */
   function startHeroMotionInstantFinal() {
     if (!window.gsap || heroMotionStarted) return;
     heroMotionStarted = true;
-    setupHeroGrain();
-    setupHeroParallax();
     splitHeadlineWords();
 
     const { gsap } = window;
-    const pillItems = heroPills ? heroPills.querySelectorAll(".pill") : [];
-    const activeMode =
-      modeButtons.find(button => button.classList.contains("active"))?.dataset.mode || "builder";
-    renderMode(activeMode);
 
     gsap.set(".hw", { y: "0%", opacity: 1 });
-    gsap.set(".summary", { opacity: 1, y: 0 });
     gsap.set(".hero-status-line", { opacity: 1, y: 0 });
-    gsap.set(pillItems, { opacity: 1, y: 0 });
-    gsap.set("#heroTerminal", { opacity: 1, x: 0, scale: 1 });
-    movePillIndicator(modeIndicator, document.querySelector(".switch button.active"), false);
+    gsap.set(".hero-start-here", { opacity: 1, y: 0 });
+    gsap.set(".hero-figure", { opacity: 1, y: 0 });
     window.__heroIntroHandoff = true;
   }
 
@@ -2324,19 +2083,10 @@
       if (!heroMotionStarted) {
         startHeroMotionInstantFinal();
       }
-      if (!heroWordCycleStarted) {
-        heroWordCycleStarted = true;
-        setupHeroWordCycle();
-      }
       window.dispatchEvent(new Event("portfolio-hero-ready"));
       return;
     }
-    if (heroMotionStarted) {
-      if (!heroWordCycleStarted) {
-        heroWordCycleStarted = true;
-        setupHeroWordCycle();
-      }
-    } else {
+    if (!heroMotionStarted) {
       startHeroMotion();
     }
     window.dispatchEvent(new Event("portfolio-hero-ready"));
@@ -2496,76 +2246,6 @@
     }, 12000);
   }
 
-  function setupCustomCursor() {
-    if (!customCursor || !customCursorDot) return;
-    if (reduced) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches || window.innerWidth <= 920) return;
-    const { gsap } = window;
-    if (!gsap) return;
-
-    document.body.classList.add("cursor-enabled");
-
-    const state = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-      currentX: window.innerWidth / 2,
-      currentY: window.innerHeight / 2,
-      visible: false,
-      linkHover: false,
-      cardHover: false,
-      darkSection: false
-    };
-
-    const updateHoverState = target => {
-      state.linkHover = Boolean(target?.closest("a, button, [role='button']"));
-      state.cardHover = Boolean(target?.closest(".bento-card, .visual-card, .work-visual-card, .journey-stop, .experience-card, .jt-panel, .stack"));
-      state.darkSection = Boolean(target?.closest("#hero, #visualizations, #experience"));
-      customCursor.classList.toggle("is-hover-link", state.linkHover || state.cardHover);
-      customCursor.classList.toggle("is-dark", state.darkSection);
-    };
-
-    var cursorRaf = 0;
-    const tick = () => {
-      cursorRaf = 0;
-      if (!state.visible) return;
-      state.currentX += (state.x - state.currentX) * 0.12;
-      state.currentY += (state.y - state.currentY) * 0.12;
-      customCursor.style.transform = `translate3d(${state.currentX}px, ${state.currentY}px, 0) scale(${state.cardHover ? 3.5 : state.linkHover ? 2.5 : 1})`;
-      customCursorDot.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(1)`;
-      var dx = Math.abs(state.x - state.currentX);
-      var dy = Math.abs(state.y - state.currentY);
-      var moving = dx > 0.4 || dy > 0.4 || state.linkHover || state.cardHover;
-      if (moving) cursorRaf = requestAnimationFrame(tick);
-    };
-
-    document.addEventListener("pointermove", event => {
-      state.x = event.clientX;
-      state.y = event.clientY;
-      if (!state.visible) {
-        state.visible = true;
-        customCursor.classList.add("visible");
-        customCursorDot.classList.add("visible");
-      }
-      updateHoverState(event.target);
-      if (!cursorRaf) cursorRaf = requestAnimationFrame(tick);
-    }, { passive: true });
-
-    document.addEventListener("pointerleave", () => {
-      state.visible = false;
-      if (cursorRaf) cancelAnimationFrame(cursorRaf);
-      cursorRaf = 0;
-      customCursor.classList.remove("visible");
-      customCursorDot.classList.remove("visible");
-    });
-
-    window.addEventListener("blur", () => {
-      state.visible = false;
-      if (cursorRaf) cancelAnimationFrame(cursorRaf);
-      cursorRaf = 0;
-      customCursor.classList.remove("visible");
-      customCursorDot.classList.remove("visible");
-    });
-  }
 
   setupObservers();
   setupProjectDisclosures();
@@ -2603,44 +2283,6 @@
   setupVizPaneScales();
   setupVizJumpNavSpy();
 
-  modeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      renderMode(button.dataset.mode);
-      const cards = document.querySelectorAll("#snapshotBoxes .snapshot-box");
-      if (cards.length && window.gsap) {
-        window.gsap.fromTo(
-          cards,
-          { opacity: 0, y: 8 },
-          { opacity: 1, y: 0, stagger: 0.06, duration: 0.28, ease: "power2.out" }
-        );
-      }
-    });
-  });
-  renderMode("builder");
-
-  // Switching disciplines swaps snapshot copy of differing lengths, which would
-  // resize the terminal and reflow the hero — visibly nudging the 3D backdrop.
-  // Reserve the tallest mode's height up front so a click changes only the text.
-  const snapshotBoxesEl = document.getElementById("snapshotBoxes");
-  function lockSnapshotHeight() {
-    if (!snapshotBoxesEl || !modeButtons.length) return;
-    const active = modeButtons.find(button => button.classList.contains("active"))?.dataset.mode || "builder";
-    snapshotBoxesEl.style.minHeight = "0px";
-    let tallest = 0;
-    Object.keys(modeData).forEach(key => {
-      renderMode(key);
-      tallest = Math.max(tallest, snapshotBoxesEl.offsetHeight);
-    });
-    renderMode(active);
-    snapshotBoxesEl.style.minHeight = tallest + "px";
-  }
-  lockSnapshotHeight();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockSnapshotHeight);
-  let snapshotResizeTimer = null;
-  window.addEventListener("resize", () => {
-    window.clearTimeout(snapshotResizeTimer);
-    snapshotResizeTimer = window.setTimeout(lockSnapshotHeight, 200);
-  });
 
   if (navToggle) navToggle.addEventListener("click", openMobileNav);
   if (navClose) navClose.addEventListener("click", closeMobileNav);
@@ -2680,7 +2322,6 @@
   window.printResume = printResume;
 
   window.addEventListener("resize", () => {
-    movePillIndicator(modeIndicator, document.querySelector(".switch button.active"));
     moveNavIndicator(document.querySelector(".nav-link.active"));
     if (window.innerWidth > 920) closeMobileNav();
   });
@@ -2747,7 +2388,6 @@
   updateNavState();
   markActiveNav("hero");
   updateJourneyRail("overview");
-  movePillIndicator(modeIndicator, document.querySelector(".switch button.active"));
 
   const skillsAtlasDetails = document.getElementById("skillsAtlasDetails");
   if (skillsAtlasDetails) {
