@@ -21,7 +21,7 @@ import * as THREE from './vendor/three.module.min.js';
 
   const N = 2400;
   const FOV = 42;
-  const HOLD_MS = 6800;
+  const HOLD_MS = 5000;
   const MORPH_MS = 2600;
   const INTRO_MS = 3200;
   const EDGE_SEGMENTS = 8;
