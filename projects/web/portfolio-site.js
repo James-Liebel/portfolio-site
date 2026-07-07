@@ -2391,12 +2391,30 @@
 
   const skillsAtlasDetails = document.getElementById("skillsAtlasDetails");
   if (skillsAtlasDetails) {
-    // Always start closed; opening it mid-page changes height, so re-measure.
+    // Opening changes page height, so re-measure ScrollTrigger positions.
     skillsAtlasDetails.addEventListener("toggle", () => {
       requestAnimationFrame(() => {
         if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       });
     });
+
+    // Auto-open the map once the skills band scrolls into view. The expansion
+    // grows below the reader's position, so it never yanks the viewport; the
+    // summary then serves as the close button. A manual toggle before the
+    // observer fires wins over the auto-open.
+    const skillsBand = document.getElementById("skillsCompactBand");
+    const summary = skillsAtlasDetails.querySelector(".skills-atlas-summary");
+    if (skillsBand && summary && "IntersectionObserver" in window && !skillsAtlasDetails.open) {
+      const atlasObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          atlasObserver.disconnect();
+          if (!skillsAtlasDetails.open) skillsAtlasDetails.open = true;
+        });
+      }, { threshold: 0.5, rootMargin: "0px 0px -12% 0px" });
+      summary.addEventListener("click", () => atlasObserver.disconnect(), { once: true });
+      atlasObserver.observe(skillsBand);
+    }
   }
 
   window.__portfolioShellReady = true;

@@ -3,8 +3,9 @@
    and non-WebGL2 machines, which also skips the ~750KB Three.js download).
 
    One particle cloud (n=2400) morphs between three formations on a timed cycle:
-   k-means scatter, loss surface with a gradient-descent path, dense network with
-   signal pulses. The earlier hero field was removed for reading as cursor noise;
+   clustered scatter, loss surface with a gradient-descent path, dense network
+   with signal pulses. The scatter is generated blobs, not a fitted model, so
+   its caption stays purely visual — don't label it k-means. The earlier hero field was removed for reading as cursor noise;
    this scene avoids that failure mode on purpose: no per-frame jitter, no
    cursor-following, one slow rigid rotation with low-frequency breathing only. */
 
@@ -50,7 +51,7 @@ import * as THREE from './vendor/three.module.min.js';
   };
 
   const HUD_LABELS = [
-    'Fig. 01 · k-means clustering',
+    'Fig. 01 · clustered scatter',
     'Fig. 02 · gradient descent',
     'Fig. 03 · neural network · 4 layers'
   ];

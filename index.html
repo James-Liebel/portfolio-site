@@ -1111,16 +1111,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
-      padding: 16px 26px;
+      gap: 10px;
+      padding: 13px 24px;
       margin: 14px auto 0;
-      border-radius: 16px;
-      border: 1px solid rgba(117, 147, 201, 0.6);
-      background: linear-gradient(135deg, #3f5fa8 0%, #54719f 48%, #3a8a93 100%);
-      box-shadow: 0 16px 40px -16px rgba(63, 95, 168, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--accent);
+      background: var(--panel-solid);
+      color: var(--accent-ink);
+      box-shadow: none;
       cursor: pointer;
       list-style: none;
-      transition: transform 0.22s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.22s ease, border-color 0.22s ease, filter 0.22s ease;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
       max-width: fit-content;
     }
     .skills-atlas-summary::-webkit-details-marker {
@@ -1128,31 +1129,25 @@
     }
     .skills-atlas-summary-icon {
       flex: none;
-      color: #ffffff;
+      color: inherit;
     }
     .skills-atlas-summary-text {
       display: flex;
       flex-direction: column;
-      gap: 3px;
       align-items: flex-start;
       text-align: left;
     }
     .skills-atlas-summary-chevron {
       flex: none;
-      color: #ffffff;
+      color: inherit;
       transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .skills-atlas-disclosure[open] .skills-atlas-summary-chevron {
       transform: rotate(180deg);
     }
     .skills-atlas-summary:hover {
-      border-color: rgba(199, 210, 254, 0.9);
-      transform: translateY(-2px);
-      filter: brightness(1.08);
-      box-shadow: 0 22px 48px -16px rgba(63, 95, 168, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
-    }
-    .skills-atlas-summary:active {
-      transform: translateY(0);
+      background: var(--accent);
+      color: #fff;
     }
     .skills-atlas-summary:focus {
       outline: none;
@@ -1162,22 +1157,18 @@
       outline-offset: 3px;
     }
     .skills-atlas-summary-label {
-      font: 800 13px/1.1 var(--font-body);
+      font: 600 14px/1.2 var(--font-body);
       letter-spacing: 0.01em;
-      color: #ffffff;
-    }
-    .skills-atlas-summary-hint {
-      font-size: 11px;
-      color: rgba(237, 233, 254, 0.82);
+      color: inherit;
     }
     /* Open: the full "Open the full skills map" bar collapses to a compact
        centered "Close" pill — the map itself is the affordance now, this just
        lets people put it away. */
     .skills-atlas-summary-close {
       display: none;
-      font: 800 12px/1.1 var(--font-body);
-      letter-spacing: 0.02em;
-      color: #ffffff;
+      font: 600 13px/1.2 var(--font-body);
+      letter-spacing: 0.01em;
+      color: inherit;
     }
     .skills-atlas-disclosure[open] .skills-atlas-summary {
       width: max-content;
@@ -4194,7 +4185,6 @@
         min-height: 56px;
       }
       .skills-atlas-summary-label { font-size: 0.95rem; }
-      .skills-atlas-summary-hint { font-size: 11px; }
     }
 
     /* 17) Experience cards on mobile */
@@ -4765,32 +4755,6 @@
       color: var(--text);
     }
     .skills-compact-group-sub { color: var(--muted); }
-    .skills-atlas-summary {
-      background: var(--panel-solid);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      box-shadow: none;
-      padding: 14px 22px;
-    }
-    .skills-atlas-summary:hover {
-      border-color: var(--accent);
-      background: var(--panel-strong);
-      transform: none;
-      box-shadow: none;
-      filter: none;
-    }
-    .skills-atlas-summary-label {
-      font: 600 14.5px/1.3 var(--font-body);
-      color: var(--text);
-      text-shadow: none;
-    }
-    .skills-atlas-summary-hint {
-      font: 400 12px/1.4 var(--font-body);
-      color: var(--muted-soft);
-      text-shadow: none;
-    }
-    .skills-atlas-summary-icon,
-    .skills-atlas-summary-chevron { color: var(--muted); }
     .bento-card,
     .skills-branch,
     .skills-root-card {
@@ -5034,7 +4998,7 @@
             </div>
 
         <div class="hero-figure-col">
-          <figure class="hero-figure" id="heroFigure" aria-label="Animated figure: a particle field cycling through k-means clusters, a gradient descent path, and a neural network">
+          <figure class="hero-figure" id="heroFigure" aria-label="Animated figure: a particle field cycling through a clustered scatter, a gradient descent path, and a neural network">
             <div class="hero-figure-stage" id="heroFigureStage">
               <canvas id="hero-webgl" aria-hidden="true"></canvas>
               <svg class="hero-figure-fallback" viewBox="0 0 400 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
@@ -5068,7 +5032,7 @@
               </svg>
             </div>
             <figcaption class="hero-figure-caption">
-              <span class="hero-figure-caption-label" id="heroFigureLabel">Fig. 01 · k-means clustering</span>
+              <span class="hero-figure-caption-label" id="heroFigureLabel">Fig. 01 · clustered scatter</span>
               <span class="hero-figure-caption-meta" id="heroFigureMeta">n = 2,400</span>
             </figcaption>
           </figure>
@@ -5125,7 +5089,6 @@
           <svg class="skills-atlas-summary-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
           <span class="skills-atlas-summary-text">
             <span class="skills-atlas-summary-label">Open the full skills map</span>
-            <span class="skills-atlas-summary-hint">Three columns + end-to-end process timeline</span>
           </span>
           <span class="skills-atlas-summary-close">Close skills map</span>
           <svg class="skills-atlas-summary-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
