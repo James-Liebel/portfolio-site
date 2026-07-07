@@ -2,10 +2,12 @@
    inline bootstrap in index.html (skipped on mobile, reduced-motion, low-power,
    and non-WebGL2 machines, which also skips the ~750KB Three.js download).
 
-   One particle cloud (n=2400) morphs between three formations on a timed cycle:
+   One particle cloud (n=2400) morphs between six formations on a timed cycle:
    clustered scatter, loss surface with a gradient-descent path, dense network
-   with signal pulses. The scatter is generated blobs, not a fitted model, so
-   its caption stays purely visual — don't label it k-means. The earlier hero field was removed for reading as cursor noise;
+   with signal pulses, Lorenz attractor, golden-angle spiral, trefoil knot.
+   Captions must describe only what is literally drawn or computed — the
+   scatter is generated blobs, not a fitted model, so it is never labeled
+   k-means; the Lorenz attractor and knot ARE the real math objects. The earlier hero field was removed for reading as cursor noise;
    this scene avoids that failure mode on purpose: no per-frame jitter, no
    cursor-following, one slow rigid rotation with low-frequency breathing only. */
 
@@ -53,7 +55,10 @@ import * as THREE from './vendor/three.module.min.js';
   const HUD_LABELS = [
     'Fig. 01 · clustered scatter',
     'Fig. 02 · gradient descent',
-    'Fig. 03 · neural network · 4 layers'
+    'Fig. 03 · neural network · 4 layers',
+    'Fig. 04 · Lorenz attractor',
+    'Fig. 05 · golden-angle spiral',
+    'Fig. 06 · trefoil knot'
   ];
 
   // ─── Formation generators (positions cached, colors theme-dependent) ──────
@@ -204,6 +209,83 @@ import * as THREE from './vendor/three.module.min.js';
     return { pos, key, edges };
   }
 
+  function genLorenz() {
+    // Actual Lorenz system (sigma=10, rho=28, beta=8/3) integrated with RK-free
+    // Euler steps: burn in past the transient, then sample every few steps so
+    // the 2,400 points trace many loops of both wings.
+    const pos = new Float32Array(N * 3);
+    const key = new Float32Array(N); // trajectory progress 0..1
+    const SIGMA = 10;
+    const RHO = 28;
+    const BETA = 8 / 3;
+    const DT = 0.005;
+    const SKIP = 3;
+    let x = 0.1;
+    let y = 0;
+    let z = 25;
+    const step = () => {
+      const dx = SIGMA * (y - x);
+      const dy = x * (RHO - z) - y;
+      const dz = x * y - BETA * z;
+      x += dx * DT;
+      y += dy * DT;
+      z += dz * DT;
+    };
+    for (let i = 0; i < 600; i++) step();
+    for (let i = 0; i < N; i++) {
+      for (let s = 0; s < SKIP; s++) step();
+      // butterfly upright: lorenz x spreads the wings, z is height
+      pos[i * 3] = x * 0.42 + gauss() * 0.05;
+      pos[i * 3 + 1] = (z - 25.5) * 0.34 + gauss() * 0.05;
+      pos[i * 3 + 2] = y * 0.3 + gauss() * 0.05;
+      key[i] = i / (N - 1);
+    }
+    return { pos, key };
+  }
+
+  function genPhyllotaxis() {
+    // Golden-angle spiral (sunflower phyllotaxis) on a shallow dome, tilted
+    // toward the camera's low orbit so the spiral lattice reads face-on.
+    // No jitter: the pattern only reads when positions are exact.
+    const pos = new Float32Array(N * 3);
+    const key = new Float32Array(N); // 1 at the core, 0 at the rim
+    const GA = Math.PI * (3 - Math.sqrt(5));
+    const R = 9.6;
+    const TILT = 0.6;
+    const cosT = Math.cos(TILT);
+    const sinT = Math.sin(TILT);
+    for (let i = 0; i < N; i++) {
+      const f = i / (N - 1);
+      const r = R * Math.sqrt(f);
+      const theta = i * GA;
+      const x = r * Math.cos(theta);
+      const y = 2.2 * Math.cos(f * Math.PI * 0.5) - 0.8;
+      const z = r * Math.sin(theta);
+      pos[i * 3] = x;
+      pos[i * 3 + 1] = y * cosT - z * sinT;
+      pos[i * 3 + 2] = y * sinT + z * cosT;
+      key[i] = 1 - f;
+    }
+    return { pos, key };
+  }
+
+  function genTrefoil() {
+    // Trefoil knot — the (2,3) torus knot — drawn as a jittered tube of points.
+    const pos = new Float32Array(N * 3);
+    const key = new Float32Array(N); // seamless triangle wave along the curve
+    const S = 2.95;
+    for (let i = 0; i < N; i++) {
+      const f = i / N;
+      const t = f * Math.PI * 2;
+      const ring = 2 + Math.cos(3 * t);
+      pos[i * 3] = S * ring * Math.cos(2 * t) + gauss() * 0.2;
+      pos[i * 3 + 1] = S * 1.15 * Math.sin(3 * t) + gauss() * 0.2;
+      pos[i * 3 + 2] = S * ring * Math.sin(2 * t) + gauss() * 0.2;
+      key[i] = 1 - Math.abs(2 * f - 1);
+    }
+    return { pos, key };
+  }
+
   function genIntro() {
     // wide sphere shell the cloud collapses from on first reveal
     const pos = new Float32Array(N * 3);
@@ -218,16 +300,20 @@ import * as THREE from './vendor/three.module.min.js';
     return { pos, key: null };
   }
 
+  // Per-formation color mode: discrete cluster colors, a two-color height
+  // ramp, or a smooth sweep across the three layer colors.
+  const COLOR_MODES = ['cluster', 'ramp', 'sweep', 'sweep', 'ramp', 'sweep'];
+
   function colorize(formation, data, palette, out) {
     const mixc = (a, b, t, j) => a[j] + (b[j] - a[j]) * t;
+    const mode = COLOR_MODES[formation] || 'sweep';
     for (let i = 0; i < N; i++) {
-      let c;
-      if (formation === 0) {
-        c = data.key[i] === 3 ? palette.outlier : palette.cluster[data.key[i]];
+      if (mode === 'cluster') {
+        const c = data.key[i] === 3 ? palette.outlier : palette.cluster[data.key[i]];
         out[i * 3] = c[0];
         out[i * 3 + 1] = c[1];
         out[i * 3 + 2] = c[2];
-      } else if (formation === 1) {
+      } else if (mode === 'ramp') {
         const t = data.key[i];
         for (let j = 0; j < 3; j++) out[i * 3 + j] = mixc(palette.surfaceLow, palette.surfaceHigh, t, j);
       } else {
@@ -435,7 +521,7 @@ import * as THREE from './vendor/three.module.min.js';
     let palette = root.getAttribute('data-theme') === 'light' ? PALETTES.light : PALETTES.dark;
 
     // formation caches: positions are theme-independent, colors are not
-    const data = [genScatter(), genSurface(), genNetwork()];
+    const data = [genScatter(), genSurface(), genNetwork(), genLorenz(), genPhyllotaxis(), genTrefoil()];
     const intro = genIntro();
     const colorScratch = new Float32Array(N * 3);
 
@@ -595,7 +681,7 @@ import * as THREE from './vendor/three.module.min.js';
 
     function startMorph(now) {
       fromIdx = toIdx;
-      toIdx = (toIdx + 1) % 3;
+      toIdx = (toIdx + 1) % data.length;
       geo.attributes.position.array.set(data[fromIdx].pos);
       geo.attributes.position.needsUpdate = true;
       colorize(fromIdx, data[fromIdx], palette, colorScratch);
