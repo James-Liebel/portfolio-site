@@ -187,7 +187,6 @@
     .visual-label,
     .pb-brand,
     .pb-nav strong,
-    .pill,
     .tag {
       font-family: var(--font-mono);
     }
@@ -500,7 +499,6 @@
     .journey-head p,
     .resume-intro,
     .hero-lead,
-    .hero-note,
     .project-lede,
     .timeline p,
     .timeline li,
@@ -927,11 +925,9 @@
     }
     @supports (width: 100dvw) {
     }
-    .pill,
     .tag,
     .metric-pill,
-    .gallery-tag,
-    .quick-pill {
+    .gallery-tag {
       display: inline-flex;
       align-items: center;
       padding: 7px 12px;
@@ -947,8 +943,6 @@
     .tag-row,
     .pill-row,
     .detail-tags,
-    .skills-cluster,
-    .skills-inline-chips,
     .visual-actions,
     .project-metrics,
     .resume-actions,
@@ -1283,13 +1277,6 @@
     .skills-atlas-column--eng { --column-accent: var(--root-eng); border-left-color: rgba(91, 130, 201, 0.4); background: linear-gradient(90deg, rgba(91, 130, 201, 0.06), transparent 64%); }
     .skills-atlas-column--sci { --column-accent: var(--root-sci); border-left-color: rgba(117, 147, 201, 0.4); background: linear-gradient(90deg, rgba(117, 147, 201, 0.06), transparent 64%); }
     .skills-atlas-column--ana { --column-accent: var(--root-ana); border-left-color: rgba(95, 168, 179, 0.4); background: linear-gradient(90deg, rgba(95, 168, 179, 0.06), transparent 64%); }
-    .skills-column-stack {
-      display: flex;
-      flex-direction: column;
-      gap: var(--skills-group-gap);
-      margin-left: var(--skills-child-indent);
-      min-width: 0;
-    }
     .skills-root-index {
       margin-bottom: 6px;
       opacity: 0.55;
@@ -1301,9 +1288,6 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       color: var(--text);
-    }
-    .skills-atlas-column .skills-branch .hero-note {
-      margin-top: 0;
     }
     .skills-atlas-column .skills-branch-orbit {
       margin-top: 12px;
@@ -1322,17 +1306,6 @@
     :root[data-theme="light"] .skills-branch--eng { border-top-color: rgba(63, 95, 168, 0.5); }
     :root[data-theme="light"] .skills-branch--sci { border-top-color: rgba(84, 113, 159, 0.5); }
     :root[data-theme="light"] .skills-branch--ana { border-top-color: rgba(47, 118, 128, 0.55); }
-    .skills-root-card--eng,
-    .skills-root-card--sci,
-    .skills-root-card--ana {
-      border-left: 4px solid var(--card-accent, transparent);
-    }
-    .skills-root-card--eng { --card-accent: var(--root-eng); }
-    .skills-root-card--sci { --card-accent: var(--root-sci); }
-    .skills-root-card--ana { --card-accent: var(--root-ana); }
-    .skills-atlas-column .skills-column-stack .skills-root-card {
-      border-left: 0;
-    }
     .skills-atlas h3,
     .bento-card h3,
     .project-summary-title,
@@ -1359,21 +1332,13 @@
         radial-gradient(circle at top right, rgba(95, 168, 179, 0.08), transparent 30%);
       pointer-events: none;
     }
-    .skills-branch-orbit,
-    .skills-inline-chips,
-    .skills-cluster {
+    .skills-branch-orbit {
       margin-top: 14px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
-    .skills-atlas-column .skills-inline-chips,
-    .skills-atlas-column .skills-cluster {
-      margin-top: 12px;
-    }
-    .skills-branch-node,
-    .skills-inline-chips span,
-    .quick-pill {
+    .skills-branch-node {
       display: inline-flex;
       align-items: center;
       padding: 8px 12px;
@@ -1383,14 +1348,9 @@
       color: var(--muted);
       font-size: 12px;
     }
-    .skills-root-card { min-height: 0; }
     .skills-bridge-card { grid-column: 1 / -1; }
     #skillsPipelineSummary {
       transform-origin: 50% 50%;
-    }
-    .skills-process-lead {
-      margin-top: 10px;
-      max-width: 68ch;
     }
     .skills-process-timeline {
       list-style: none;
@@ -1477,10 +1437,6 @@
       letter-spacing: -0.03em;
       color: var(--text);
     }
-    .skills-process-step .hero-note {
-      margin: 0 0 12px;
-      font-size: 14px;
-    }
     .skills-process-chips {
       display: flex;
       flex-wrap: wrap;
@@ -1528,9 +1484,6 @@
         padding-bottom: 8px;
         -webkit-overflow-scrolling: touch;
         scrollbar-gutter: stable;
-      }
-      .skills-process-step .hero-note {
-        font-size: 13px;
       }
       .skills-process-phase {
         font-size: 15px;
@@ -4627,8 +4580,6 @@
     /* ── Unified quiet chips ── */
     .tag,
     .gallery-tag,
-    .quick-pill,
-    .skills-inline-chips span,
     .skills-branch-node,
     .skills-process-chips span {
       font: 500 12px/1.3 var(--font-body);
@@ -4756,8 +4707,7 @@
     }
     .skills-compact-group-sub { color: var(--muted); }
     .bento-card,
-    .skills-branch,
-    .skills-root-card {
+    .skills-branch {
       background: var(--panel-solid);
       border: 1px solid var(--border-soft);
       box-shadow: none;
@@ -5100,117 +5050,70 @@
         <div class="skills-atlas-columns">
           <div class="skills-atlas-column skills-atlas-column--eng">
             <article class="skills-branch skills-branch--eng">
-              <p class="section-kicker skills-root-index">Root 01</p>
+              <p class="section-kicker skills-root-index">01</p>
               <h3 class="skills-branch-subtitle">Data Engineering</h3>
-              <p class="hero-note">How I get data in, clean it, and structure it so the rest of the work has something reliable to build on.</p>
               <div class="skills-branch-orbit">
+                <span class="skills-branch-node">Python</span>
                 <span class="skills-branch-node">SQL</span>
-                <span class="skills-branch-node">ETL Pipelines</span>
-                <span class="skills-branch-node">Data Warehousing</span>
-                <span class="skills-branch-node">Schema Design</span>
-                <span class="skills-branch-node">Power Query</span>
-                <span class="skills-branch-node">FastAPI</span>
+                <span class="skills-branch-node">Pandas</span>
+                <span class="skills-branch-node">NumPy</span>
+                <span class="skills-branch-node">Data Cleaning</span>
+                <span class="skills-branch-node">Train/Test Splits</span>
+                <span class="skills-branch-node">Jupyter</span>
+                <span class="skills-branch-node">Git</span>
               </div>
             </article>
-            <div class="skills-column-stack">
-              <article class="bento-card skills-root-card skills-root-card--eng">
-                <p class="section-kicker">Data Engineering</p>
-                <h3>Getting the data ready to use.</h3>
-                <p class="hero-note">This is the part that turns messy sources into clean, structured data the rest of the project can build on.</p>
-                <div class="skills-inline-chips">
-                  <span>SQL</span><span>Power Query</span><span>ETL</span><span>Data Warehousing</span><span>Schema Design</span><span>FastAPI</span>
-                </div>
-              </article>
-              <article class="bento-card">
-                <p class="section-kicker">Languages + Core Stack</p>
-                <h3>Daily tools for analysis and product delivery.</h3>
-                <div class="skills-cluster">
-                  <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">SciPy</span><span class="tag">SQL</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Git</span><span class="tag">Jupyter</span>
-                </div>
-              </article>
-            </div>
           </div>
 
           <div class="skills-atlas-column skills-atlas-column--sci">
             <article class="skills-branch skills-branch--sci">
-              <p class="section-kicker skills-root-index">Root 02</p>
+              <p class="section-kicker skills-root-index">02</p>
               <h3 class="skills-branch-subtitle">Data Science</h3>
-              <p class="hero-note">Used to build models, engineer features, test assumptions, and measure whether predictions are actually working.</p>
               <div class="skills-branch-orbit">
                 <span class="skills-branch-node">Scikit-learn</span>
                 <span class="skills-branch-node">XGBoost</span>
-                <span class="skills-branch-node">TensorFlow</span>
-                <span class="skills-branch-node">NLP</span>
-                <span class="skills-branch-node">Feature Engineering</span>
-                <span class="skills-branch-node">Model Evaluation</span>
+                <span class="skills-branch-node">Random Forest</span>
+                <span class="skills-branch-node">Logistic Regression</span>
+                <span class="skills-branch-node">SVM</span>
+                <span class="skills-branch-node">KNN</span>
+                <span class="skills-branch-node">GridSearchCV</span>
+                <span class="skills-branch-node">SMOTE</span>
+                <span class="skills-branch-node">NLP · VADER · TF-IDF</span>
+                <span class="skills-branch-node">Model Evaluation · PR/ROC</span>
               </div>
             </article>
-            <div class="skills-column-stack">
-              <article class="bento-card skills-root-card skills-root-card--sci">
-                <p class="section-kicker">Data Science</p>
-                <h3>Building and testing models on the clean data.</h3>
-                <p class="hero-note">The best examples are my fraud detection model, sentiment analysis, model evaluation, and explaining the tradeoffs in plain language.</p>
-                <div class="skills-inline-chips">
-                  <span>Scikit-learn</span><span>XGBoost</span><span>TensorFlow</span><span>NLP</span><span>Evaluation</span><span>Feature Engineering</span>
-                </div>
-              </article>
-              <article class="bento-card">
-                <p class="section-kicker">AI Prototyping</p>
-                <h3>AI I have actually built with.</h3>
-                <div class="skills-cluster">
-                  <span class="quick-pill">Prompting</span><span class="quick-pill">Local AI</span><span class="quick-pill">Ollama</span><span class="quick-pill">Workflow Design</span><span class="quick-pill">Automation</span><span class="quick-pill">Fast Iteration</span>
-                </div>
-              </article>
-            </div>
           </div>
 
           <div class="skills-atlas-column skills-atlas-column--ana">
             <article class="skills-branch skills-branch--ana">
-              <p class="section-kicker skills-root-index">Root 03</p>
+              <p class="section-kicker skills-root-index">03</p>
               <h3 class="skills-branch-subtitle">Data Analysis</h3>
-              <p class="hero-note">Used to explore patterns, shape dashboards, and communicate results in forms a recruiter or teammate can read quickly.</p>
               <div class="skills-branch-orbit">
-                <span class="skills-branch-node">Power BI</span>
+                <span class="skills-branch-node">Power BI · PL-300</span>
                 <span class="skills-branch-node">DAX</span>
-                <span class="skills-branch-node">PL-300</span>
                 <span class="skills-branch-node">D3.js</span>
                 <span class="skills-branch-node">GeoJSON</span>
                 <span class="skills-branch-node">Matplotlib</span>
+                <span class="skills-branch-node">Seaborn</span>
+                <span class="skills-branch-node">Next.js</span>
+                <span class="skills-branch-node">TypeScript</span>
+                <span class="skills-branch-node">GitHub Pages</span>
               </div>
             </article>
-            <div class="skills-column-stack">
-              <article class="bento-card skills-root-card skills-root-card--ana">
-                <p class="section-kicker">Data Analysis</p>
-                <h3>Making the results easy to read.</h3>
-                <p class="hero-note">Dashboards, maps, charts, and front-end delivery keep the work from ending as a notebook nobody opens.</p>
-                <div class="skills-inline-chips">
-                  <span>Power BI</span><span>DAX</span><span>D3.js</span><span>GeoJSON</span><span>Seaborn</span><span>Responsive UI</span>
-                </div>
-              </article>
-              <article class="bento-card">
-                <p class="section-kicker">Supporting Languages</p>
-                <h3>Technical breadth around the main stack.</h3>
-                <div class="skills-cluster">
-                  <span class="tag">R</span><span class="tag">Java</span><span class="tag">Seaborn</span><span class="tag">Matplotlib</span><span class="tag">GitHub Pages</span>
-                </div>
-              </article>
-            </div>
           </div>
         </div>
         <svg class="skills-pipeline-svg" id="skillsPipelineSvg" aria-hidden="true" focusable="false"></svg>
           <article class="bento-card skills-bridge-card" id="skillsPipelineSummary">
             <p class="section-kicker">Process, in order</p>
             <h3>How the three fit together.</h3>
-            <p class="hero-note skills-process-lead">The three columns above are how I work from start to finish: get the data right first, build and test models on top of it, then turn the results into visuals and interfaces people actually use.</p>
             <ol class="skills-process-timeline" aria-label="Skills in process order">
               <li class="skills-process-step skills-process-step--eng">
                 <div class="skills-process-title-row">
                   <span class="skills-process-num">Step 1</span>
                   <p class="skills-process-phase">Data engineering</p>
                 </div>
-                <p class="hero-note">Get the data in, cleaned, and warehoused so the modeling step isn’t fighting messy sources. Good SQL, ETL, and schema choices are where useful features come from.</p>
                 <div class="skills-process-chips">
-                  <span>Python</span><span>SQL</span><span>FastAPI</span><span>ETL</span>
+                  <span>Python</span><span>SQL</span><span>Pandas</span><span>Data Cleaning</span>
                 </div>
               </li>
               <li class="skills-process-step skills-process-step--sci">
@@ -5218,9 +5121,8 @@
                   <span class="skills-process-num">Step 2</span>
                   <p class="skills-process-phase">Data science</p>
                 </div>
-                <p class="hero-note">Train, validate, and compare models on the clean data from step one. Benchmarks and tradeoffs only mean something when the data underneath is consistent.</p>
                 <div class="skills-process-chips">
-                  <span>Scikit-learn</span><span>TensorFlow</span><span>XGBoost</span><span>Validation</span>
+                  <span>Scikit-learn</span><span>XGBoost</span><span>GridSearchCV</span><span>Model Evaluation</span>
                 </div>
               </li>
               <li class="skills-process-step skills-process-step--ana">
@@ -5228,9 +5130,8 @@
                   <span class="skills-process-num">Step 3</span>
                   <p class="skills-process-phase">Analysis &amp; delivery</p>
                 </div>
-                <p class="hero-note">Charts, maps, dashboards, and sometimes a responsive UI make the work easy to read. Having to present it clearly usually improves everything upstream too.</p>
                 <div class="skills-process-chips">
-                  <span>Power BI</span><span>D3.js</span><span>GeoJSON</span><span>Responsive UI</span>
+                  <span>Power BI</span><span>D3.js</span><span>Next.js</span><span>GitHub Pages</span>
                 </div>
               </li>
             </ol>
