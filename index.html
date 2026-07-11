@@ -4720,6 +4720,48 @@
       color: var(--text);
     }
     .skills-bridge-card h3 { font: 600 1.3rem/1.3 var(--font-display); }
+    .skills-tabs-list {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border-soft);
+      margin-bottom: 22px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .skills-tabs-list::-webkit-scrollbar { display: none; }
+    .skills-tab {
+      appearance: none;
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      padding: 10px 14px;
+      font: 500 13.5px/1.2 var(--font-body);
+      letter-spacing: 0.01em;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .skills-tab:hover { color: var(--text); }
+    .skills-tab.is-active {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+    .skills-tab:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+      border-radius: 6px;
+    }
+    .skills-tab-panel > .section-kicker { margin-bottom: 8px; }
+    .skills-tab-panel > h3 { margin: 0; }
+    .skills-tab-panel > .skills-branch-orbit { margin-top: 18px; }
+    .skills-tab-note {
+      margin: 16px 0 0;
+      font: 400 0.9rem/1.6 var(--font-body);
+      color: var(--muted);
+      max-width: 64ch;
+    }
     .skills-process-num {
       font: 500 10.5px/1.4 var(--font-mono);
       letter-spacing: 0.12em;
@@ -5104,37 +5146,94 @@
         </div>
         <svg class="skills-pipeline-svg" id="skillsPipelineSvg" aria-hidden="true" focusable="false"></svg>
           <article class="bento-card skills-bridge-card" id="skillsPipelineSummary">
-            <p class="section-kicker">Process, in order</p>
-            <h3>How the three fit together.</h3>
-            <ol class="skills-process-timeline" aria-label="Skills in process order">
-              <li class="skills-process-step skills-process-step--eng">
-                <div class="skills-process-title-row">
-                  <span class="skills-process-num">Step 1</span>
-                  <p class="skills-process-phase">Data engineering</p>
+            <div class="skills-tabs" id="skillsTabs">
+              <div class="skills-tabs-list" role="tablist" aria-label="Skills detail">
+                <button class="skills-tab is-active" type="button" role="tab" id="skillsTabProcess" aria-controls="skillsPanelProcess" aria-selected="true">Process</button>
+                <button class="skills-tab" type="button" role="tab" id="skillsTabAi" aria-controls="skillsPanelAi" aria-selected="false" tabindex="-1">AI &amp; Agents</button>
+                <button class="skills-tab" type="button" role="tab" id="skillsTabTools" aria-controls="skillsPanelTools" aria-selected="false" tabindex="-1">Languages &amp; Tools</button>
+                <button class="skills-tab" type="button" role="tab" id="skillsTabCerts" aria-controls="skillsPanelCerts" aria-selected="false" tabindex="-1">Certifications</button>
+              </div>
+
+              <div class="skills-tab-panel" id="skillsPanelProcess" role="tabpanel" aria-labelledby="skillsTabProcess">
+                <p class="section-kicker">Process, in order</p>
+                <h3>How the three fit together.</h3>
+                <ol class="skills-process-timeline" aria-label="Skills in process order">
+                  <li class="skills-process-step skills-process-step--eng">
+                    <div class="skills-process-title-row">
+                      <span class="skills-process-num">Step 1</span>
+                      <p class="skills-process-phase">Data engineering</p>
+                    </div>
+                    <div class="skills-process-chips">
+                      <span>Python</span><span>SQL</span><span>Pandas</span><span>Data Cleaning</span>
+                    </div>
+                  </li>
+                  <li class="skills-process-step skills-process-step--sci">
+                    <div class="skills-process-title-row">
+                      <span class="skills-process-num">Step 2</span>
+                      <p class="skills-process-phase">Data science</p>
+                    </div>
+                    <div class="skills-process-chips">
+                      <span>Scikit-learn</span><span>XGBoost</span><span>GridSearchCV</span><span>Model Evaluation</span>
+                    </div>
+                  </li>
+                  <li class="skills-process-step skills-process-step--ana">
+                    <div class="skills-process-title-row">
+                      <span class="skills-process-num">Step 3</span>
+                      <p class="skills-process-phase">Analysis &amp; delivery</p>
+                    </div>
+                    <div class="skills-process-chips">
+                      <span>Power BI</span><span>D3.js</span><span>Next.js</span><span>GitHub Pages</span>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+
+              <div class="skills-tab-panel" id="skillsPanelAi" role="tabpanel" aria-labelledby="skillsTabAi" hidden>
+                <p class="section-kicker">Applied AI</p>
+                <h3>AI &amp; agent workflows.</h3>
+                <div class="skills-branch-orbit">
+                  <span class="skills-branch-node">Prompt Engineering</span>
+                  <span class="skills-branch-node">AI Agent Workflows</span>
+                  <span class="skills-branch-node">LLM Evaluation · RLHF</span>
+                  <span class="skills-branch-node">Local LLMs · Ollama</span>
+                  <span class="skills-branch-node">Workflow Automation</span>
+                  <span class="skills-branch-node">AI Content Pipelines</span>
                 </div>
-                <div class="skills-process-chips">
-                  <span>Python</span><span>SQL</span><span>Pandas</span><span>Data Cleaning</span>
+                <p class="skills-tab-note">In use professionally: paid AI/ML evaluator at Alignerr (3% acceptance rate) and the NLP-driven LinkedIn bot shipped for CustomStrat.</p>
+              </div>
+
+              <div class="skills-tab-panel" id="skillsPanelTools" role="tabpanel" aria-labelledby="skillsTabTools" hidden>
+                <p class="section-kicker">Everyday stack</p>
+                <h3>Languages &amp; tools.</h3>
+                <div class="skills-branch-orbit">
+                  <span class="skills-branch-node">Python</span>
+                  <span class="skills-branch-node">SQL</span>
+                  <span class="skills-branch-node">JavaScript</span>
+                  <span class="skills-branch-node">TypeScript</span>
+                  <span class="skills-branch-node">React</span>
+                  <span class="skills-branch-node">Next.js</span>
+                  <span class="skills-branch-node">Pandas</span>
+                  <span class="skills-branch-node">NumPy</span>
+                  <span class="skills-branch-node">Jupyter</span>
+                  <span class="skills-branch-node">Git</span>
+                  <span class="skills-branch-node">Power BI</span>
+                  <span class="skills-branch-node">D3.js</span>
+                  <span class="skills-branch-node">Matplotlib</span>
+                  <span class="skills-branch-node">Seaborn</span>
                 </div>
-              </li>
-              <li class="skills-process-step skills-process-step--sci">
-                <div class="skills-process-title-row">
-                  <span class="skills-process-num">Step 2</span>
-                  <p class="skills-process-phase">Data science</p>
+              </div>
+
+              <div class="skills-tab-panel" id="skillsPanelCerts" role="tabpanel" aria-labelledby="skillsTabCerts" hidden>
+                <p class="section-kicker">Credentials</p>
+                <h3>Certifications.</h3>
+                <div class="skills-branch-orbit">
+                  <span class="skills-branch-node">IBM Data Science Professional</span>
+                  <span class="skills-branch-node">Microsoft PL-300 · Power BI Data Analyst</span>
+                  <span class="skills-branch-node">Google Cloud ML Engineer · in progress</span>
+                  <span class="skills-branch-node">freeCodeCamp Data Visualization</span>
                 </div>
-                <div class="skills-process-chips">
-                  <span>Scikit-learn</span><span>XGBoost</span><span>GridSearchCV</span><span>Model Evaluation</span>
-                </div>
-              </li>
-              <li class="skills-process-step skills-process-step--ana">
-                <div class="skills-process-title-row">
-                  <span class="skills-process-num">Step 3</span>
-                  <p class="skills-process-phase">Analysis &amp; delivery</p>
-                </div>
-                <div class="skills-process-chips">
-                  <span>Power BI</span><span>D3.js</span><span>Next.js</span><span>GitHub Pages</span>
-                </div>
-              </li>
-            </ol>
+              </div>
+            </div>
           </article>
         </div>
         </div>

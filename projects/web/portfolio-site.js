@@ -2417,6 +2417,36 @@
     }
   }
 
+  const skillsTabs = document.getElementById("skillsTabs");
+  if (skillsTabs) {
+    const tabs = [...skillsTabs.querySelectorAll("[role='tab']")];
+    const selectTab = next => {
+      tabs.forEach(tab => {
+        const active = tab === next;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", active ? "true" : "false");
+        tab.tabIndex = active ? 0 : -1;
+        const panel = document.getElementById(tab.getAttribute("aria-controls"));
+        if (panel) panel.hidden = !active;
+      });
+      // Panel heights differ, so re-measure the scroll reveals below the map.
+      requestAnimationFrame(() => {
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+      });
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => selectTab(tab));
+      tab.addEventListener("keydown", event => {
+        const moves = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1 };
+        if (!(event.key in moves)) return;
+        event.preventDefault();
+        const next = tabs[(moves[event.key] + tabs.length) % tabs.length];
+        selectTab(next);
+        next.focus();
+      });
+    });
+  }
+
   window.__portfolioShellReady = true;
   window.dispatchEvent(new Event("portfolio-shell-ready"));
 })();
