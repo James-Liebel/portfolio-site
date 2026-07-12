@@ -300,560 +300,200 @@
 
 
 
-  // ─── Skills section: SVG pipeline (spines, converging feeders, trunk) ─────
-  function initSkillsPipeline() {
-    var region = document.getElementById('skillsPipelineRegion');
-    var svg = document.getElementById('skillsPipelineSvg');
-    var bridge = document.getElementById('skillsPipelineSummary');
-    if (!region || !svg || !bridge) return;
+  // ─── Skills map: an animated hub-and-spoke constellation of the four
+  // skill clusters. Same visual family as the hero figure: quiet pills,
+  // hairline edges, traveling pulses on the process flow, hover focus.
+  function initSkillsMap() {
+    var svg = document.getElementById('skillsMapSvg');
+    var details = document.getElementById('skillsAtlasDetails');
+    var caption = document.getElementById('skillsMapCaption');
+    if (!svg || !details) return;
 
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var played = false;
-    var resizeTimer = null;
-    var mergePulseTween = null;
+    var NS = 'http://www.w3.org/2000/svg';
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    var COL = {
-      eng: { base: '#3a5a96', mid: '#5b82c9', glow: '#7ea0d0' },
-      sci: { base: '#54719f', mid: '#7593c9', glow: '#93b0e0' },
-      ana: { base: '#356b73', mid: '#3a8a93', glow: '#5fa8b3' }
-    };
+    var CLUSTERS = [
+      { key: 'eng', name: 'Data Engineering', index: '01', hub: [230, 210], fan: [100, 260], radii: [106, 156, 206],
+        skills: ['Python', 'SQL', 'Pandas', 'NumPy', 'Data Cleaning', 'Train/Test Splits', 'Jupyter', 'Git'] },
+      { key: 'sci', name: 'Data Science', index: '02', hub: [600, 170], fan: [190, 350], radii: [98, 150, 202],
+        skills: ['Scikit-learn', 'XGBoost', 'Random Forest', 'Logistic Regression', 'SVM', 'GridSearchCV', 'KNN', 'SMOTE', 'VADER · TF-IDF', 'Model Evaluation'] },
+      { key: 'ana', name: 'Data Analysis', index: '03', hub: [970, 210], fan: [280, 440], radii: [106, 156, 206],
+        skills: ['Power BI · PL-300', 'DAX', 'D3.js', 'GeoJSON', 'Matplotlib', 'Seaborn', 'Next.js', 'TypeScript', 'React', 'GitHub Pages'] },
+      { key: 'ai', name: 'AI & Agents', index: 'AI', hub: [600, 520], fan: [28, 152], radii: [96, 146, 196],
+        skills: ['Prompt Engineering', 'Agent Workflows', 'LLM Evaluation · RLHF', 'Local LLMs', 'Workflow Automation', 'AI Content Pipelines'] }
+    ];
+    var FLOWS = [['eng', 'sci'], ['sci', 'ana']];
+    var SUPPORTS = [['ai', 'eng'], ['ai', 'sci'], ['ai', 'ana']];
 
-    function ns(tag, attrs, parent) {
-      var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-      if (attrs) {
-        Object.keys(attrs).forEach(function (k) {
-          el.setAttribute(k, attrs[k]);
-        });
-      }
-      if (parent) parent.appendChild(el);
-      return el;
-    }
-
-    function setDashReveal(path, hidden) {
-      try {
-        var len = path.getTotalLength();
-        if (!len || !isFinite(len)) len = 1;
-        path.style.strokeDasharray = String(len);
-        path.style.strokeDashoffset = hidden ? String(len) : '0';
-      } catch (e) {
-        path.style.strokeDasharray = 'none';
-        path.style.strokeDashoffset = '0';
-      }
-    }
-
-    function revealAll(paths) {
-      paths.forEach(function (p) {
-        setDashReveal(p, false);
-      });
-    }
-
-    /** @param {boolean} fullReveal after first play (resize) — skip dash hide */
-    function layoutAndPaint(fullReveal) {
-      var cols = region.querySelectorAll('.skills-atlas-column');
-      if (cols.length < 3) return null;
-
-      var r = region.getBoundingClientRect();
-      var br = bridge.getBoundingClientRect();
-      var H = Math.max(0, Math.round(br.top - r.top));
-      var W = Math.max(1, Math.round(r.width));
-      if (H < 48) {
-        svg.setAttribute('height', '0');
-        svg.style.height = '0';
-        return null;
-      }
-
-      svg.innerHTML = '';
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-      svg.setAttribute('width', String(W));
-      svg.setAttribute('height', String(H));
-      svg.style.height = H + 'px';
-
-      var defs = ns('defs', null, svg);
-      var filter = ns(
-        'filter',
-        { id: 'skillsMergeGlow', x: '-100%', y: '-100%', width: '300%', height: '300%' },
-        defs
-      );
-      ns('feGaussianBlur', { in: 'SourceGraphic', stdDeviation: '5', result: 'skillsBlur' }, filter);
-      var mergeEl = ns('feMerge', null, filter);
-      ns('feMergeNode', { in: 'skillsBlur' }, mergeEl);
-      ns('feMergeNode', { in: 'SourceGraphic' }, mergeEl);
-
-      var gradFlow = ns(
-        'linearGradient',
-        { id: 'skillsPipeFlowGrad', x1: '0', y1: '0', x2: '0', y2: String(H), gradientUnits: 'userSpaceOnUse' },
-        defs
-      );
-      ns('stop', { offset: '0%', 'stop-color': '#2a4757', 'stop-opacity': '1' }, gradFlow);
-      ns('stop', { offset: '40%', 'stop-color': '#4f6fae', 'stop-opacity': '1' }, gradFlow);
-      ns('stop', { offset: '100%', 'stop-color': '#5fa8b3', 'stop-opacity': '1' }, gradFlow);
-      if (!reduced) {
-        var animY1 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-        animY1.setAttribute('attributeName', 'y1');
-        animY1.setAttribute('values', '-' + H + ';' + H + ';-' + H);
-        animY1.setAttribute('dur', '2.8s');
-        animY1.setAttribute('repeatCount', 'indefinite');
-        gradFlow.appendChild(animY1);
-        var animY2 = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-        animY2.setAttribute('attributeName', 'y2');
-        animY2.setAttribute('values', '0;' + H * 2 + ';0');
-        animY2.setAttribute('dur', '2.8s');
-        animY2.setAttribute('repeatCount', 'indefinite');
-        gradFlow.appendChild(animY2);
-      }
-
-      var bx = br.left - r.left + br.width / 2;
-      var by = H;
-      var mx = W * 0.5;
-      var bend = W * 0.15;
-
-      var order = ['eng', 'sci', 'ana'];
-      var colMeta = [];
-      var maxSy = 0;
-      var i;
-      for (i = 0; i < 3; i++) {
-        var colEl = cols[i];
-        var cr = colEl.getBoundingClientRect();
-        var sy = Math.round(cr.bottom - r.top);
-        if (sy > maxSy) maxSy = sy;
-        colMeta.push({
-          col: colEl,
-          key: order[i],
-          topY: Math.max(0, Math.round(cr.top - r.top)),
-          sy: sy,
-          spineX: Math.round(cr.left - r.left + 3)
-        });
-      }
-
-      var gapBand = H - maxSy;
-      var my = maxSy + Math.max(40, gapBand * 0.5);
-      if (my > H - 32) my = H - 32;
-      if (my <= maxSy + 12) my = Math.min(H - 28, maxSy + Math.max(24, gapBand * 0.35));
-
-      var stackCols =
-        window.matchMedia && window.matchMedia('(max-width: 1024px)').matches;
-
-      var columnBasePaths = [];
-      var columnGradPaths = [];
-      var columnFlowPaths = [];
-
-      for (i = 0; i < 3; i++) {
-        var meta = colMeta[i];
-        var key = meta.key;
-        var spineX = meta.spineX;
-        var topY = meta.topY;
-        var sy = meta.sy;
-        var curveFromY = stackCols ? maxSy : sy;
-        if (curveFromY < sy) curveFromY = sy;
-
-        var cp1x = spineX;
-        var cp1y = curveFromY + (my - curveFromY) * 0.38;
-        var cp2x = i === 0 ? mx - bend : i === 2 ? mx + bend : spineX + (mx - spineX) * 0.55;
-        var cp2y = my - Math.max(20, (my - curveFromY) * 0.22);
-
-        var d =
-          'M ' +
-          spineX +
-          ' ' +
-          topY +
-          ' L ' +
-          spineX +
-          ' ' +
-          sy +
-          (curveFromY > sy + 1
-            ? ' L ' + spineX + ' ' + curveFromY
-            : '') +
-          ' C ' +
-          cp1x +
-          ' ' +
-          cp1y +
-          ', ' +
-          cp2x +
-          ' ' +
-          cp2y +
-          ', ' +
-          mx +
-          ' ' +
-          my;
-
-        var baseF = ns('path', { class: 'skills-pipe-column-base', fill: 'none' }, svg);
-        baseF.setAttribute('d', d);
-        baseF.setAttribute('stroke', COL[key].base);
-        baseF.setAttribute('stroke-width', '3');
-        baseF.setAttribute('stroke-linecap', 'round');
-        baseF.setAttribute('stroke-linejoin', 'round');
-        baseF.setAttribute('opacity', '0.9');
-        columnBasePaths.push(baseF);
-
-        var feed = ns('path', { class: 'skills-pipe-column-grad', fill: 'none' }, svg);
-        feed.setAttribute('d', d);
-        feed.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
-        feed.setAttribute('stroke-width', '2');
-        feed.setAttribute('stroke-linecap', 'round');
-        feed.setAttribute('stroke-linejoin', 'round');
-        columnGradPaths.push(feed);
-
-        var flow = ns('path', { class: 'skills-pipe-column-flow', fill: 'none' }, svg);
-        flow.setAttribute('d', d);
-        flow.setAttribute('stroke', COL[key].glow);
-        flow.setAttribute('stroke-width', '2');
-        flow.setAttribute('stroke-linecap', 'round');
-        flow.setAttribute('stroke-linejoin', 'round');
-        flow.setAttribute('stroke-dasharray', '10 22');
-        flow.setAttribute('opacity', '0');
-        columnFlowPaths.push(flow);
-      }
-
-      var trunkD = 'M ' + mx + ' ' + my + ' L ' + bx + ' ' + by;
-      var trunkBase = ns('path', { class: 'skills-pipe-trunk-base', fill: 'none' }, svg);
-      trunkBase.setAttribute('d', trunkD);
-      trunkBase.setAttribute('stroke', '#2f4a78');
-      trunkBase.setAttribute('stroke-width', '3.5');
-      trunkBase.setAttribute('stroke-linecap', 'round');
-      trunkBase.setAttribute('opacity', '0.92');
-
-      var trunk = ns('path', { class: 'skills-pipe-trunk', fill: 'none' }, svg);
-      trunk.setAttribute('d', trunkD);
-      trunk.setAttribute('stroke', 'url(#skillsPipeFlowGrad)');
-      trunk.setAttribute('stroke-width', '2.5');
-      trunk.setAttribute('stroke-linecap', 'round');
-
-      var trunkFlow = ns('path', { class: 'skills-pipe-trunk-flow', fill: 'none' }, svg);
-      trunkFlow.setAttribute('d', trunkD);
-      trunkFlow.setAttribute('stroke', '#f0f9ff');
-      trunkFlow.setAttribute('stroke-width', '1.5');
-      trunkFlow.setAttribute('stroke-linecap', 'round');
-      trunkFlow.setAttribute('stroke-dasharray', '10 22');
-      trunkFlow.setAttribute('opacity', '0');
-
-      var mergeNode = ns('circle', { class: 'skills-pipe-merge-node', cx: String(mx), cy: String(my), r: '6' }, svg);
-      mergeNode.setAttribute('fill', '#5fa8b3');
-      mergeNode.setAttribute('filter', 'url(#skillsMergeGlow)');
-      mergeNode.setAttribute('opacity', fullReveal || reduced ? '0.95' : '0');
-      mergeNode.setAttribute('stroke', '#f0f9ff');
-      mergeNode.setAttribute('stroke-width', '1.5');
-
-      var i2;
-      if (reduced || fullReveal) {
-        revealAll(columnBasePaths);
-        revealAll(columnGradPaths);
-        revealAll([trunkBase, trunk]);
-        columnFlowPaths.forEach(function (f) {
-          f.setAttribute('opacity', '0.85');
-        });
-        trunkFlow.setAttribute('opacity', '0.85');
-      } else {
-        for (i2 = 0; i2 < columnBasePaths.length; i2++) setDashReveal(columnBasePaths[i2], true);
-        for (i2 = 0; i2 < columnGradPaths.length; i2++) setDashReveal(columnGradPaths[i2], true);
-        setDashReveal(trunkBase, true);
-        setDashReveal(trunk, true);
-      }
-
-      return {
-        columnBasePaths: columnBasePaths,
-        columnGradPaths: columnGradPaths,
-        columnFlowPaths: columnFlowPaths,
-        trunk: trunk,
-        trunkBase: trunkBase,
-        trunkFlow: trunkFlow,
-        mergeNode: mergeNode
+    var measure = (function () {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      return function (text, font) {
+        ctx.font = font;
+        return ctx.measureText(text).width;
       };
+    })();
+
+    function el(tag, attrs, parent) {
+      var node = document.createElementNS(NS, tag);
+      for (var k in attrs) node.setAttribute(k, attrs[k]);
+      if (parent) parent.appendChild(node);
+      return node;
     }
 
-    function startFlowLoops() {
-      // Delegates to the shared coordinator so the pipeline + tether wires run
-      // off one tween and pulse in unison.
-      syncSkillsFlow();
+    var hubOf = {};
+    CLUSTERS.forEach(function (c) { hubOf[c.key] = c.hub; });
+
+    function edgePath(a, b, bow) {
+      var mx = (a[0] + b[0]) / 2;
+      var my = (a[1] + b[1]) / 2;
+      var dx = b[0] - a[0];
+      var dy = b[1] - a[1];
+      var len = Math.sqrt(dx * dx + dy * dy) || 1;
+      // perpendicular offset gives the edge a gentle bow
+      var nx = -dy / len;
+      var ny = dx / len;
+      return 'M' + a[0] + ',' + a[1] + ' Q' + (mx + nx * bow) + ',' + (my + ny * bow) + ' ' + b[0] + ',' + b[1];
     }
 
-    function startMergePulse(gsap, node) {
-      if (!gsap || reduced || !node) return;
-      if (mergePulseTween) mergePulseTween.kill();
-      mergePulseTween = gsap.to(node, {
-        attr: { r: 10 },
-        duration: 0.75,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1
+    var built = false;
+    function build() {
+      if (built) return;
+      built = true;
+
+      var edgesG = el('g', { 'class': 'sm-edges' }, svg);
+      var nodeIndex = 0;
+      var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      var extend = function (x0, y0, x1, y1) {
+        if (x0 < minX) minX = x0;
+        if (y0 < minY) minY = y0;
+        if (x1 > maxX) maxX = x1;
+        if (y1 > maxY) maxY = y1;
+      };
+
+      FLOWS.forEach(function (pair) {
+        var d = edgePath(hubOf[pair[0]], hubOf[pair[1]], 46);
+        el('path', { d: d, 'class': 'sm-edge sm-edge--flow' }, edgesG);
+        el('path', { d: d, 'class': 'sm-pulse' }, edgesG);
       });
-    }
-
-    function runDraw(gsap) {
-      if (played || reduced) return;
-      played = true;
-      var o = layoutAndPaint(false);
-      if (!o || !o.trunk) return;
-
-      var tl = gsap.timeline();
-
-      tl.to(o.columnBasePaths.concat(o.columnGradPaths), {
-        strokeDashoffset: 0,
-        duration: 1.35,
-        ease: 'power2.inOut'
+      SUPPORTS.forEach(function (pair) {
+        el('path', { d: edgePath(hubOf[pair[0]], hubOf[pair[1]], 26), 'class': 'sm-edge sm-edge--support' }, edgesG);
       });
 
-      tl.to(o.mergeNode, { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.32');
+      CLUSTERS.forEach(function (c) {
+        var clusterG = el('g', { 'class': 'sm-cluster sm-' + c.key }, svg);
+        var spokesG = el('g', { 'class': 'sm-spokes' }, clusterG);
+        var nodesG = el('g', { 'class': 'sm-nodes' }, clusterG);
+        var hub = c.hub;
+        var nodeRefs = [];
 
-      tl.to([o.trunkBase, o.trunk], { strokeDashoffset: 0, duration: 0.75, ease: 'power2.inOut' }, '+=0.08');
+        // hub marker + label
+        var hubG = el('g', { 'class': 'sm-hub' }, clusterG);
+        el('circle', { cx: hub[0], cy: hub[1], r: 12, 'class': 'sm-hub-ring' }, hubG);
+        el('circle', { cx: hub[0], cy: hub[1], r: 5.5, 'class': 'sm-hub-dot' }, hubG);
+        var hubFont = '600 13.5px Inter, system-ui, sans-serif';
+        var hw = Math.ceil(measure(c.name, hubFont)) + 34;
+        var below = c.key !== 'ai';
+        var hy = below ? hub[1] + 24 : hub[1] - 58;
+        el('rect', { x: hub[0] - hw / 2, y: hy, width: hw, height: 34, rx: 8, 'class': 'sm-hub-pill' }, hubG);
+        el('text', { x: hub[0], y: hy + 22, 'text-anchor': 'middle', 'class': 'sm-hub-name' }, hubG).textContent = c.name;
+        el('text', { x: hub[0], y: below ? hy + 48 : hy - 10, 'text-anchor': 'middle', 'class': 'sm-hub-index' }, hubG).textContent = c.index;
+        extend(hub[0] - hw / 2, Math.min(hy - 18, hub[1] - 14), hub[0] + hw / 2, Math.max(hy + 52, hub[1] + 14));
 
-      tl.to([o.trunkFlow].concat(o.columnFlowPaths), { opacity: 0.88, duration: 0.25, ease: 'power1.out' }, '-=0.35');
+        var n = c.skills.length;
+        var span = c.fan[1] - c.fan[0];
+        c.skills.forEach(function (label, i) {
+          var deg = n === 1 ? (c.fan[0] + span / 2) : c.fan[0] + (span * i) / (n - 1);
+          var rad = (deg * Math.PI) / 180;
+          var r = c.radii[i % c.radii.length];
+          var dirX = Math.cos(rad);
+          var dirY = Math.sin(rad);
+          var ax = hub[0] + dirX * r;
+          var ay = hub[1] + dirY * r;
 
-      tl.call(function () {
-        startMergePulse(gsap, o.mergeNode);
-        startFlowLoops(gsap);
-      });
+          var font = '500 12.5px Inter, system-ui, sans-serif';
+          var w = Math.ceil(measure(label, font)) + 26;
+          var h = 30;
+          // keep a constant gap between spoke tip and the pill's near edge
+          var push = (Math.abs(dirX) * w) / 2 + (Math.abs(dirY) * h) / 2 + 6;
+          var cx = ax + dirX * push;
+          var cy = ay + dirY * push;
 
-      tl.call(function () {
-        gsap.to(bridge, {
-          scale: 1.03,
-          duration: 0.34,
-          ease: 'power2.out',
-          yoyo: true,
-          repeat: 1,
-          transformOrigin: '50% 50%'
-        });
-      });
-    }
+          el('line', { x1: hub[0], y1: hub[1], x2: ax, y2: ay, 'class': 'sm-spoke' }, spokesG);
 
-    var io = new IntersectionObserver(
-      function (ents) {
-        ents.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          io.disconnect();
-          waitForGsap(function () {
-            if (reduced) {
-              layoutAndPaint(true);
-              return;
-            }
-            if (!window.gsap) {
-              layoutAndPaint(true);
-              return;
-            }
-            runDraw(window.gsap);
+          var g = el('g', { 'class': 'sm-node' }, nodesG);
+          g.style.setProperty('--smi', String(nodeIndex));
+          if (!reduced) {
+            var dur = (6.5 + Math.random() * 4.5).toFixed(2);
+            g.style.setProperty('--smx', ((Math.random() * 6 - 3)).toFixed(1) + 'px');
+            g.style.setProperty('--smy', ((Math.random() * 4 - 2)).toFixed(1) + 'px');
+            g.style.setProperty('--smd', dur + 's');
+            g.style.setProperty('--smo', (-Math.random() * dur).toFixed(2) + 's');
+          }
+          var inner = el('g', { 'class': 'sm-in' }, g);
+          el('rect', { x: cx - w / 2, y: cy - h / 2, width: w, height: h, rx: 7, 'class': 'sm-node-pill' }, inner);
+          el('text', { x: cx, y: cy + 4.5, 'text-anchor': 'middle', 'class': 'sm-node-label' }, inner).textContent = label;
+          extend(cx - w / 2 - 6, cy - h / 2 - 6, cx + w / 2 + 6, cy + h / 2 + 6);
+          nodeIndex++;
+
+          nodeRefs.push(g);
+          var spoke = spokesG.lastChild;
+          g.addEventListener('pointerenter', function () {
+            svg.classList.add('is-dim');
+            g.classList.add('is-hit');
+            spoke.classList.add('is-hit');
+            hubG.classList.add('is-hit');
+          });
+          g.addEventListener('pointerleave', function () {
+            svg.classList.remove('is-dim');
+            g.classList.remove('is-hit');
+            spoke.classList.remove('is-hit');
+            hubG.classList.remove('is-hit');
           });
         });
-      },
-      { threshold: 0.14, rootMargin: '0px 0px -6% 0px' }
-    );
-    io.observe(region);
 
-    window.addEventListener(
-      'resize',
-      function () {
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function () {
-          if (window.gsap) {
-            window.gsap.killTweensOf(bridge);
-            svg.querySelectorAll('.skills-pipe-column-flow, .skills-pipe-trunk-flow').forEach(function (p) {
-              window.gsap.killTweensOf(p);
-            });
-            if (mergePulseTween) mergePulseTween.kill();
-          }
-          var o = layoutAndPaint(played || reduced);
-          if (played && !reduced && window.gsap && o) {
-            startMergePulse(window.gsap, o.mergeNode);
-            startFlowLoops(window.gsap);
-          }
-        }, 140);
-      },
-      { passive: true }
-    );
-
-    requestAnimationFrame(function () {
-      if (!played) layoutAndPaint(false);
-    });
-  }
-
-  // ─── Shared flow coordinator: drives every skills wire (tether cords +
-  //     pipeline spines/trunk) from ONE tween so they pulse together, and
-  //     restarts all gradient flashes in phase. Called whenever either system
-  //     (re)draws — the latest call re-syncs both. ───────────────────────────
-  function syncSkillsFlow() {
-    if (!window.gsap) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var tetherSvg = document.getElementById('skillsTetherSvg');
-    var pipeSvg = document.getElementById('skillsPipelineSvg');
-    var flows = [];
-    if (tetherSvg) tetherSvg.querySelectorAll('.skills-tether-flow').forEach(function (p) { flows.push(p); });
-    if (pipeSvg) pipeSvg.querySelectorAll('.skills-pipe-column-flow, .skills-pipe-trunk-flow').forEach(function (p) { flows.push(p); });
-    if (flows.length) {
-      window.gsap.killTweensOf(flows);
-      window.gsap.set(flows, { strokeDashoffset: 0 });
-      // -32 = one dash period (10 + 22), so the loop is seamless for every wire.
-      window.gsap.to(flows, { strokeDashoffset: -32, duration: 1.6, ease: 'none', repeat: -1 });
-    }
-    // Restart both SVGs' gradient flashes together (separate inline-SVG SMIL
-    // timelines otherwise drift apart).
-    try {
-      [tetherSvg, pipeSvg].forEach(function (root) {
-        if (!root) return;
-        root.querySelectorAll('linearGradient animate').forEach(function (a) { if (a.beginElement) a.beginElement(); });
+        hubG.addEventListener('pointerenter', function () {
+          svg.classList.add('is-dim');
+          clusterG.classList.add('is-hit');
+        });
+        hubG.addEventListener('pointerleave', function () {
+          svg.classList.remove('is-dim');
+          clusterG.classList.remove('is-hit');
+        });
       });
-    } catch (e) { /* SMIL control unsupported */ }
-  }
 
-  // ─── Skills tether: wires drop from the compact band's three path titles
-  //     into the opened map's columns. Empty (hidden) until the map opens. ─────
-  function initSkillsTether() {
-    var section = document.getElementById('skills');
-    var details = document.getElementById('skillsAtlasDetails');
-    var band = document.getElementById('skillsCompactBand');
-    var svg = document.getElementById('skillsTetherSvg');
-    if (!section || !details || !band || !svg) return;
+      // fit the viewBox to whatever the labels actually needed
+      svg.setAttribute('viewBox', (minX - 12) + ' ' + (minY - 12) + ' ' + (maxX - minX + 24) + ' ' + (maxY - minY + 24));
 
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var KEYS = ['eng', 'sci', 'ana'];
-    // Same base/glow as the in-map pipeline so the tether reads as that same
-    // pulsing wire continuing up to the title (see COL in initSkillsPipeline).
-    var COL = {
-      eng: { base: '#3a5a96', glow: '#7ea0d0' },
-      sci: { base: '#4f3d82', glow: '#9b8fcf' },
-      ana: { base: '#356b73', glow: '#5fa8b3' }
-    };
-    var openTimer = null;
-    var resizeTimer = null;
-
-    function svgEl(tag, attrs) {
-      var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-      Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); });
-      return el;
-    }
-
-    function clear() {
-      svg.innerHTML = '';
-    }
-
-    function build(animate) {
-      if (!details.open) { clear(); return; }
-      // Below the columns' breakpoint they stack vertically, so title→column
-      // wires would become long diagonal tangles. Skip the tether there.
-      if (window.matchMedia && window.matchMedia('(max-width: 1024px)').matches) { clear(); return; }
-      var sr = svg.getBoundingClientRect();
-      var W = Math.max(1, Math.round(sr.width));
-      var H = Math.max(1, Math.round(sr.height));
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-      svg.innerHTML = '';
-
-      // Measure each wire first: start at the title's top-left, end exactly where
-      // the pipeline spine begins (column left + 3) so the two read as one wire.
-      var specs = [];
-      KEYS.forEach(function (key) {
-        var title = band.querySelector('.skills-compact-group--' + key + ' .skills-compact-group-title');
-        var col = section.querySelector('.skills-atlas-column--' + key);
-        if (!title || !col) return;
-        var tr = title.getBoundingClientRect();
-        var cr = col.getBoundingClientRect();
-        var x1 = Math.round(tr.left - sr.left - 24); // start in the margin left of the title words
-        var y1 = Math.round(tr.top - sr.top);
-        var x2 = Math.round(cr.left - sr.left + 3);
-        var y2 = Math.round(cr.top - sr.top);
-        if (y2 - y1 < 24) return; // map still collapsed/animating — nothing to draw yet
-        specs.push({ key: key, x1: x1, y1: y1, x2: x2, y2: y2 });
-      });
-      if (!specs.length) { clear(); return; }
-
-      // Match the pipeline gradient's exact coordinate mapping and motion so the
-      // cords flash in lockstep with their spines (same position, speed, phase) —
-      // not just the same colors. The pipeline maps y 0..H over the region with
-      // H = bridge.top - region.top; we shift that into this section-level SVG by
-      // the region's offset so a given page row gets the same gradient color.
-      var pipeRegion = document.getElementById('skillsPipelineRegion');
-      var pipeBridge = document.getElementById('skillsPipelineSummary');
-      var offset = 0;
-      var hPipe = Math.max(1, Math.max.apply(null, specs.map(function (s) { return s.y2; })) - Math.min.apply(null, specs.map(function (s) { return s.y1; })));
-      if (pipeRegion && pipeBridge) {
-        var rr = pipeRegion.getBoundingClientRect();
-        var bb = pipeBridge.getBoundingClientRect();
-        offset = Math.round(rr.top - sr.top);
-        hPipe = Math.max(1, Math.round(bb.top - rr.top));
+      if (caption) {
+        var total = CLUSTERS.reduce(function (sum, c) { return sum + c.skills.length; }, 0);
+        caption.textContent = 'Skills map · ' + CLUSTERS.length + ' clusters · ' + total + ' skills';
       }
-      var defs = svgEl('defs', {});
-      var grad = svgEl('linearGradient', { id: 'skillsTetherGrad', x1: '0', y1: String(offset), x2: '0', y2: String(offset + hPipe), gradientUnits: 'userSpaceOnUse' });
-      grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#2a4757' }));
-      grad.appendChild(svgEl('stop', { offset: '40%', 'stop-color': '#4f6fae' }));
-      grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#5fa8b3' }));
-      if (!reduced) {
-        grad.appendChild(svgEl('animate', { attributeName: 'y1', values: (offset - hPipe) + ';' + (offset + hPipe) + ';' + (offset - hPipe), dur: '2.8s', repeatCount: 'indefinite' }));
-        grad.appendChild(svgEl('animate', { attributeName: 'y2', values: offset + ';' + (offset + 2 * hPipe) + ';' + offset, dur: '2.8s', repeatCount: 'indefinite' }));
-      }
-      defs.appendChild(grad);
-      svg.appendChild(defs);
 
-      var reveal = [];
-      specs.forEach(function (s) {
-        var c1y = s.y1 + (s.y2 - s.y1) * 0.42;
-        var c2y = s.y2 - (s.y2 - s.y1) * 0.30;
-        var d = 'M ' + s.x1 + ' ' + s.y1 + ' C ' + s.x1 + ' ' + c1y + ', ' + s.x2 + ' ' + c2y + ', ' + s.x2 + ' ' + s.y2;
-        var base = svgEl('path', { class: 'skills-tether-base', d: d, fill: 'none', stroke: COL[s.key].base, 'stroke-width': '3', 'stroke-linecap': 'round', opacity: '0.92' });
-        var gline = svgEl('path', { class: 'skills-tether-grad', d: d, fill: 'none', stroke: 'url(#skillsTetherGrad)', 'stroke-width': '2', 'stroke-linecap': 'round' });
-        var flow = svgEl('path', { class: 'skills-tether-flow', d: d, fill: 'none', stroke: COL[s.key].glow, 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-dasharray': '10 22', opacity: '0' });
-        svg.appendChild(base);
-        svg.appendChild(gline);
-        svg.appendChild(flow);
-        svg.appendChild(svgEl('circle', { cx: s.x1, cy: s.y1, r: '3.5', fill: COL[s.key].glow })); // tap at the title
-        reveal.push(base, gline);
-      });
-
-      var flows = svg.querySelectorAll('.skills-tether-flow');
-      if (reduced || !animate || !window.gsap) {
-        reveal.forEach(function (p) { p.style.strokeDasharray = 'none'; p.style.strokeDashoffset = '0'; });
-        flows.forEach(function (p) { p.setAttribute('opacity', '0.9'); });
-        syncSkillsFlow();
+      if (reduced || !('IntersectionObserver' in window)) {
+        svg.classList.add('is-live');
         return;
       }
-      // All cords fold down together (no stagger), then the glow dashes fade in
-      // and start pulsing in unison.
-      reveal.forEach(function (p) {
-        var len = p.getTotalLength() || 1;
-        p.style.strokeDasharray = String(len);
-        p.style.strokeDashoffset = String(len);
-        window.gsap.to(p, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.out' });
-      });
-      window.gsap.to(flows, { opacity: 0.9, duration: 0.3, delay: 0.5 });
-      window.gsap.delayedCall(0.55, syncSkillsFlow);
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          io.disconnect();
+          svg.classList.add('is-live');
+        });
+      }, { threshold: 0.12 });
+      io.observe(svg);
     }
 
-    function scheduleDraw() {
-      if (openTimer) clearTimeout(openTimer);
-      clear();
-      // Let the disclosure finish its height transition before measuring columns.
-      openTimer = setTimeout(function () { build(true); }, reduced ? 60 : 560);
-    }
-
+    if (details.open) build();
     details.addEventListener('toggle', function () {
-      if (details.open) scheduleDraw();
-      else { if (openTimer) clearTimeout(openTimer); clear(); }
+      if (details.open) build();
     });
-
-    if (details.open) scheduleDraw();
-
-    window.addEventListener('resize', function () {
-      if (!details.open) return;
-      if (resizeTimer) clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () { build(false); }, 160);
-    }, { passive: true });
   }
 
-  // ─── Boot ─────────────────────────────────────────────────────────────────
-  function waitForGsap(cb) {
-    if (window.gsap) {
-      cb();
-      return;
-    }
-    var n = 0;
-    var t = setInterval(function () {
-      n++;
-      if (window.gsap) {
-        clearInterval(t);
-        cb();
-      } else if (n > 120) clearInterval(t);
-    }, 50);
-  }
 
   window.addEventListener('load', function () {
     /* Hero canvas (#hero-webgl) is owned by portfolio-3d.js, a self-booting ES module. */
-    initSkillsPipeline();
-    initSkillsTether();
+    initSkillsMap();
     initGithubHeatmap();
   });
 })();

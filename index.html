@@ -1208,75 +1208,12 @@
       .skills-atlas-summary-chevron { transition: none !important; }
     }
 
-    .skills-atlas {
-      --root-eng: #5b82c9;
-      --root-sci: #7593c9;
-      --root-ana: #5fa8b3;
-      --skills-group-gap: 12px;
-      --skills-between-groups: clamp(48px, 6vw, 64px);
-      --skills-spine-inset: 18px;
-      --skills-child-indent: 20px;
-    }
-    .skills-atlas > .skills-grid {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: clamp(40px, 5vw, 52px);
-    }
-    .skills-pipeline-region {
-      --skills-pipeline-merge-gap: clamp(88px, 14vw, 168px);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: var(--skills-pipeline-merge-gap);
-    }
-    .skills-pipeline-svg {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 0;
-      overflow: visible;
-      pointer-events: none;
-      z-index: 2;
-    }
     /* Section-spanning overlay for the tether wires that drop from the compact
        band's three path titles into the opened map. Drawn by initSkillsTether();
        empty (invisible) until the map is opened. */
     #skills { position: relative; }
-    .skills-tether-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-      pointer-events: none;
-      z-index: 4;
-    }
-    .skills-atlas-columns {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      column-gap: 22px;
-      row-gap: var(--skills-between-groups);
-      align-items: start;
-    }
-    .skills-atlas-column {
-      --column-accent: var(--accent);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: var(--skills-group-gap);
-      padding: 10px 0 16px var(--skills-spine-inset);
-      border-left: 2px solid transparent;
-      min-width: 0;
-    }
     /* Accent spine + faint wash per track so each header visibly owns the cards
        beneath it (the spine was previously transparent, leaving columns ungrouped). */
-    .skills-atlas-column--eng { --column-accent: var(--root-eng); border-left-color: rgba(91, 130, 201, 0.4); background: linear-gradient(90deg, rgba(91, 130, 201, 0.06), transparent 64%); }
-    .skills-atlas-column--sci { --column-accent: var(--root-sci); border-left-color: rgba(117, 147, 201, 0.4); background: linear-gradient(90deg, rgba(117, 147, 201, 0.06), transparent 64%); }
-    .skills-atlas-column--ana { --column-accent: var(--root-ana); border-left-color: rgba(95, 168, 179, 0.4); background: linear-gradient(90deg, rgba(95, 168, 179, 0.06), transparent 64%); }
     .skills-root-index {
       margin-bottom: 6px;
       opacity: 0.55;
@@ -1289,24 +1226,20 @@
       letter-spacing: -0.03em;
       color: var(--text);
     }
-    .skills-atlas-column .skills-branch-orbit {
-      margin-top: 12px;
-    }
-    .skills-atlas-column .skills-branch {
-      margin-left: var(--skills-child-indent);
-    }
     .skills-branch--eng,
     .skills-branch--sci,
-    .skills-branch--ana {
+    .skills-branch--ana,
+    .skills-branch--ai {
       border-top: 2px solid rgba(255, 255, 255, 0.08);
     }
-    .skills-branch--eng { --branch-accent: var(--root-eng); border-top-color: rgba(91, 130, 201, 0.48); }
-    .skills-branch--sci { --branch-accent: var(--root-sci); border-top-color: rgba(117, 147, 201, 0.48); }
-    .skills-branch--ana { --branch-accent: var(--root-ana); border-top-color: rgba(95, 168, 179, 0.48); }
+    .skills-branch--eng { border-top-color: rgba(91, 130, 201, 0.48); }
+    .skills-branch--sci { border-top-color: rgba(117, 147, 201, 0.48); }
+    .skills-branch--ana { border-top-color: rgba(95, 168, 179, 0.48); }
+    .skills-branch--ai  { border-top-color: rgba(139, 157, 196, 0.48); }
     :root[data-theme="light"] .skills-branch--eng { border-top-color: rgba(63, 95, 168, 0.5); }
     :root[data-theme="light"] .skills-branch--sci { border-top-color: rgba(84, 113, 159, 0.5); }
     :root[data-theme="light"] .skills-branch--ana { border-top-color: rgba(47, 118, 128, 0.55); }
-    .skills-atlas h3,
+    :root[data-theme="light"] .skills-branch--ai  { border-top-color: rgba(100, 116, 139, 0.55); }
     .bento-card h3,
     .project-summary-title,
     .visual-card h3,
@@ -1347,147 +1280,6 @@
       border: 1px solid rgba(255,255,255,0.08);
       color: var(--muted);
       font-size: 12px;
-    }
-    .skills-bridge-card { grid-column: 1 / -1; }
-    #skillsPipelineSummary {
-      transform-origin: 50% 50%;
-    }
-    .skills-process-timeline {
-      list-style: none;
-      margin: 26px 0 0;
-      padding: 28px 0 0;
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      column-gap: clamp(10px, 2.4vw, 28px);
-      align-items: start;
-    }
-    .skills-process-timeline::before {
-      content: "";
-      position: absolute;
-      left: calc(100% / 6);
-      width: calc(100% * 2 / 3);
-      top: 7px;
-      height: 2px;
-      border-radius: 1px;
-      background: linear-gradient(
-        90deg,
-        rgba(91, 130, 201, 0.55),
-        rgba(117, 147, 201, 0.55),
-        rgba(95, 168, 179, 0.55)
-      );
-    }
-    :root[data-theme="light"] .skills-process-timeline::before {
-      background: linear-gradient(
-        90deg,
-        rgba(91, 130, 201, 0.4),
-        rgba(117, 147, 201, 0.4),
-        rgba(8, 145, 178, 0.45)
-      );
-    }
-    .skills-process-step {
-      position: relative;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      min-width: 0;
-    }
-    .skills-process-step::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 1px;
-      width: 14px;
-      height: 14px;
-      margin-left: -7px;
-      border-radius: 50%;
-      background: var(--panel-solid);
-      border: 2px solid var(--step-accent, var(--accent));
-      box-shadow: 0 0 0 3px rgba(7, 10, 20, 0.55);
-      z-index: 1;
-    }
-    :root[data-theme="light"] .skills-process-step::before {
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.92);
-    }
-    .skills-process-step--eng { --step-accent: var(--root-eng); }
-    .skills-process-step--sci { --step-accent: var(--root-sci); }
-    .skills-process-step--ana { --step-accent: var(--root-ana); }
-    .skills-process-title-row {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      margin: 22px 0 6px;
-      width: 100%;
-    }
-    .skills-process-num {
-      font: 700 10px/1 var(--font-mono);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--step-accent);
-    }
-    .skills-process-phase {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 650;
-      letter-spacing: -0.03em;
-      color: var(--text);
-    }
-    .skills-process-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-    }
-    .skills-process-chips span {
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 11px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    :root[data-theme="light"] .skills-process-chips span {
-      background: rgba(15, 23, 42, 0.04);
-      border-color: rgba(15, 23, 42, 0.08);
-    }
-    .skills-process-step--eng .skills-process-chips span {
-      border-color: rgba(91, 130, 201, 0.32);
-    }
-    .skills-process-step--sci .skills-process-chips span {
-      border-color: rgba(117, 147, 201, 0.32);
-    }
-    .skills-process-step--ana .skills-process-chips span {
-      border-color: rgba(95, 168, 179, 0.32);
-    }
-    :root[data-theme="light"] .skills-process-step--eng .skills-process-chips span {
-      border-color: rgba(91, 130, 201, 0.28);
-    }
-    :root[data-theme="light"] .skills-process-step--sci .skills-process-chips span {
-      border-color: rgba(117, 147, 201, 0.28);
-    }
-    :root[data-theme="light"] .skills-process-step--ana .skills-process-chips span {
-      border-color: rgba(8, 145, 178, 0.3);
-    }
-    @media (max-width: 560px) {
-      .skills-process-timeline {
-        grid-template-columns: repeat(3, minmax(124px, 1fr));
-        overflow-x: auto;
-        overscroll-behavior-x: contain;
-        padding-bottom: 8px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-gutter: stable;
-      }
-      .skills-process-phase {
-        font-size: 15px;
-      }
     }
 
     .work-section {
@@ -3249,9 +3041,6 @@
     }
 
     @media (max-width: 1024px) {
-      .skills-atlas-columns {
-        grid-template-columns: 1fr;
-      }
       .visual-grid:not(.visual-collage),
       .timeline-grid,
       .timeline-stack,
@@ -4581,17 +4370,6 @@
     .tag,
     .gallery-tag,
     .skills-branch-node,
-    .skills-process-chips span {
-      font: 500 12px/1.3 var(--font-body);
-      letter-spacing: 0.01em;
-      text-transform: none;
-      padding: 5px 11px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      box-shadow: none;
-    }
     .metric-pill {
       font: 500 11.5px/1.4 var(--font-mono);
       letter-spacing: 0.02em;
@@ -4719,54 +4497,156 @@
       letter-spacing: 0;
       color: var(--text);
     }
-    .skills-bridge-card h3 { font: 600 1.3rem/1.3 var(--font-display); }
-    .skills-tabs-list {
+    /* ── Skills map (constellation) ── */
+    .skills-map-panel {
+      margin: 0;
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .skills-map-stage { padding: 10px 10px 0; }
+    .skills-map-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .skills-map-caption {
       display: flex;
-      gap: 4px;
-      border-bottom: 1px solid var(--border-soft);
-      margin-bottom: 22px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .skills-tabs-list::-webkit-scrollbar { display: none; }
-    .skills-tab {
-      appearance: none;
-      background: transparent;
-      border: 0;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      padding: 10px 14px;
-      font: 500 13.5px/1.2 var(--font-body);
-      letter-spacing: 0.01em;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      border-top: 1px solid var(--border-soft);
+      font: 500 11px/1.5 var(--font-mono);
+      letter-spacing: 0.04em;
       color: var(--muted);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: color 0.2s ease, border-color 0.2s ease;
     }
-    .skills-tab:hover { color: var(--text); }
-    .skills-tab.is-active {
-      color: var(--text);
-      border-bottom-color: var(--accent);
+    .skills-map-caption-meta { color: var(--muted-soft); }
+    .skills-map-svg .sm-eng { --sm-c: #5b82c9; }
+    .skills-map-svg .sm-sci { --sm-c: #93b0e0; }
+    .skills-map-svg .sm-ana { --sm-c: #5fa8b3; }
+    .skills-map-svg .sm-ai  { --sm-c: #8b9dc4; }
+    :root[data-theme="light"] .skills-map-svg .sm-eng { --sm-c: #3f5fa8; }
+    :root[data-theme="light"] .skills-map-svg .sm-sci { --sm-c: #54719f; }
+    :root[data-theme="light"] .skills-map-svg .sm-ana { --sm-c: #2f7680; }
+    :root[data-theme="light"] .skills-map-svg .sm-ai  { --sm-c: #64748b; }
+    .sm-edge {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      opacity: 0.34;
     }
-    .skills-tab:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: -2px;
-      border-radius: 6px;
+    .sm-edge--support {
+      stroke: var(--muted-soft);
+      stroke-width: 1;
+      stroke-dasharray: 3 7;
+      opacity: 0.5;
     }
-    .skills-tab-panel > .section-kicker { margin-bottom: 8px; }
-    .skills-tab-panel > h3 { margin: 0; }
-    .skills-tab-panel > .skills-branch-orbit { margin-top: 18px; }
-    .skills-tab-note {
-      margin: 16px 0 0;
-      font: 400 0.9rem/1.6 var(--font-body);
-      color: var(--muted);
-      max-width: 64ch;
+    .sm-pulse {
+      fill: none;
+      stroke: var(--accent-ink);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 12 148;
+      opacity: 0;
     }
-    .skills-process-num {
-      font: 500 10.5px/1.4 var(--font-mono);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted-soft);
+    .skills-map-svg.is-live .sm-pulse {
+      opacity: 0.9;
+      animation: sm-pulse-travel 3.2s linear infinite;
+    }
+    @keyframes sm-pulse-travel {
+      from { stroke-dashoffset: 160; }
+      to { stroke-dashoffset: -160; }
+    }
+    .sm-spoke {
+      stroke: var(--sm-c);
+      stroke-width: 1;
+      opacity: 0.3;
+      transition: opacity 0.25s ease;
+    }
+    .sm-hub-dot { fill: var(--sm-c); }
+    .sm-hub-ring {
+      fill: none;
+      stroke: var(--sm-c);
+      stroke-width: 1.25;
+      opacity: 0.4;
+    }
+    .sm-ai .sm-hub-ring { stroke-dasharray: 3 4; }
+    .sm-hub-pill {
+      fill: var(--panel-strong);
+      stroke: var(--sm-c);
+      stroke-width: 1.25;
+    }
+    .sm-hub-name {
+      font: 600 13.5px Inter, system-ui, sans-serif;
+      fill: var(--text);
+    }
+    .sm-hub-index {
+      font: 500 10px "IBM Plex Mono", monospace;
+      letter-spacing: 0.14em;
+      fill: var(--muted-soft);
+    }
+    .sm-node { cursor: default; }
+    .sm-node-pill {
+      fill: var(--panel-solid);
+      stroke: var(--border);
+      stroke-width: 1;
+      transition: stroke 0.2s ease;
+    }
+    .sm-node-label {
+      font: 500 12.5px Inter, system-ui, sans-serif;
+      fill: var(--muted);
+      transition: fill 0.2s ease;
+    }
+    .sm-node:hover .sm-node-pill { stroke: var(--sm-c); }
+    .sm-node:hover .sm-node-label { fill: var(--text); }
+    /* hover focus: everything not connected steps back */
+    .sm-node, .sm-spoke, .sm-hub, .sm-edge, .sm-pulse {
+      transition: opacity 0.25s ease;
+    }
+    .skills-map-svg.is-dim .sm-node:not(.is-hit) { opacity: 0.3; }
+    .skills-map-svg.is-dim .sm-spoke:not(.is-hit) { opacity: 0.1; }
+    .skills-map-svg.is-dim .sm-hub:not(.is-hit) { opacity: 0.45; }
+    .skills-map-svg.is-dim .sm-edge,
+    .skills-map-svg.is-dim .sm-pulse { opacity: 0.12; }
+    .skills-map-svg.is-dim .sm-cluster.is-hit .sm-node,
+    .skills-map-svg.is-dim .sm-cluster.is-hit .sm-spoke,
+    .skills-map-svg.is-dim .sm-cluster.is-hit .sm-hub { opacity: 1; }
+    .skills-map-svg.is-dim .sm-spoke.is-hit { opacity: 0.85; }
+    .skills-map-svg.is-dim .sm-hub.is-hit { opacity: 1; }
+    /* entrance: nodes rise in with a stagger once the map scrolls into view */
+    .sm-in {
+      transition: opacity 0.5s ease, transform 0.5s var(--ease-out);
+      transition-delay: calc(var(--smi, 0) * 26ms);
+      transform-box: fill-box;
+    }
+    .skills-map-svg:not(.is-live) .sm-in {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    /* ambient drift, per-node randomized via inline vars */
+    .skills-map-svg.is-live .sm-node {
+      animation: sm-drift var(--smd, 8s) ease-in-out var(--smo, 0s) infinite alternate;
+      transform-box: fill-box;
+    }
+    @keyframes sm-drift {
+      from { transform: translate(0, 0); }
+      to { transform: translate(var(--smx, 2px), var(--smy, 1.5px)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skills-map-svg.is-live .sm-node { animation: none; }
+      .skills-map-svg.is-live .sm-pulse { animation: none; opacity: 0.5; }
+      .sm-in { transition: none; }
+    }
+    .skills-map-fallback { display: none; }
+    @media (max-width: 919px) {
+      .skills-map-panel { display: none; }
+      .skills-map-fallback {
+        display: grid;
+        gap: 14px;
+      }
     }
 
     /* ── Visualizations ── */
@@ -5040,8 +4920,8 @@
             </article>
             <article class="hero-metric">
               <small>Credentials</small>
-              <strong>IBM · PL-300 · GCP*</strong>
-              <span>IBM Data Science Professional (12-course Python/ML/SQL/viz); Microsoft PL-300 Power BI Data Analyst; Google Cloud ML Engineer (*in progress).</span>
+              <strong>IBM · PL-300</strong>
+              <span>IBM Data Science Professional (12-course Python/ML/SQL/viz); Microsoft PL-300 Power BI Data Analyst.</span>
             </article>
           </div>
 
@@ -5051,7 +4931,6 @@
 
 
     <section id="skills" class="section-shell">
-      <svg id="skillsTetherSvg" class="skills-tether-svg" aria-hidden="true" focusable="false"></svg>
       <div class="section-head">
         <div>
           <p class="section-kicker">01 · Toolkit</p>
@@ -5086,158 +4965,75 @@
           <svg class="skills-atlas-summary-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </summary>
         <div class="skills-atlas-disclosure-inner">
-      <div class="skills-atlas">
-        <div class="skills-grid">
-        <div class="skills-pipeline-region" id="skillsPipelineRegion">
-        <div class="skills-atlas-columns">
-          <div class="skills-atlas-column skills-atlas-column--eng">
-            <article class="skills-branch skills-branch--eng">
-              <p class="section-kicker skills-root-index">01</p>
-              <h3 class="skills-branch-subtitle">Data Engineering</h3>
-              <div class="skills-branch-orbit">
-                <span class="skills-branch-node">Python</span>
-                <span class="skills-branch-node">SQL</span>
-                <span class="skills-branch-node">Pandas</span>
-                <span class="skills-branch-node">NumPy</span>
-                <span class="skills-branch-node">Data Cleaning</span>
-                <span class="skills-branch-node">Train/Test Splits</span>
-                <span class="skills-branch-node">Jupyter</span>
-                <span class="skills-branch-node">Git</span>
-              </div>
-            </article>
-          </div>
-
-          <div class="skills-atlas-column skills-atlas-column--sci">
-            <article class="skills-branch skills-branch--sci">
-              <p class="section-kicker skills-root-index">02</p>
-              <h3 class="skills-branch-subtitle">Data Science</h3>
-              <div class="skills-branch-orbit">
-                <span class="skills-branch-node">Scikit-learn</span>
-                <span class="skills-branch-node">XGBoost</span>
-                <span class="skills-branch-node">Random Forest</span>
-                <span class="skills-branch-node">Logistic Regression</span>
-                <span class="skills-branch-node">SVM</span>
-                <span class="skills-branch-node">KNN</span>
-                <span class="skills-branch-node">GridSearchCV</span>
-                <span class="skills-branch-node">SMOTE</span>
-                <span class="skills-branch-node">NLP · VADER · TF-IDF</span>
-                <span class="skills-branch-node">Model Evaluation · PR/ROC</span>
-              </div>
-            </article>
-          </div>
-
-          <div class="skills-atlas-column skills-atlas-column--ana">
-            <article class="skills-branch skills-branch--ana">
-              <p class="section-kicker skills-root-index">03</p>
-              <h3 class="skills-branch-subtitle">Data Analysis</h3>
-              <div class="skills-branch-orbit">
-                <span class="skills-branch-node">Power BI · PL-300</span>
-                <span class="skills-branch-node">DAX</span>
-                <span class="skills-branch-node">D3.js</span>
-                <span class="skills-branch-node">GeoJSON</span>
-                <span class="skills-branch-node">Matplotlib</span>
-                <span class="skills-branch-node">Seaborn</span>
-                <span class="skills-branch-node">Next.js</span>
-                <span class="skills-branch-node">TypeScript</span>
-                <span class="skills-branch-node">GitHub Pages</span>
-              </div>
-            </article>
-          </div>
-        </div>
-        <svg class="skills-pipeline-svg" id="skillsPipelineSvg" aria-hidden="true" focusable="false"></svg>
-          <article class="bento-card skills-bridge-card" id="skillsPipelineSummary">
-            <div class="skills-tabs" id="skillsTabs">
-              <div class="skills-tabs-list" role="tablist" aria-label="Skills detail">
-                <button class="skills-tab is-active" type="button" role="tab" id="skillsTabProcess" aria-controls="skillsPanelProcess" aria-selected="true">Process</button>
-                <button class="skills-tab" type="button" role="tab" id="skillsTabAi" aria-controls="skillsPanelAi" aria-selected="false" tabindex="-1">AI &amp; Agents</button>
-                <button class="skills-tab" type="button" role="tab" id="skillsTabTools" aria-controls="skillsPanelTools" aria-selected="false" tabindex="-1">Languages &amp; Tools</button>
-                <button class="skills-tab" type="button" role="tab" id="skillsTabCerts" aria-controls="skillsPanelCerts" aria-selected="false" tabindex="-1">Certifications</button>
-              </div>
-
-              <div class="skills-tab-panel" id="skillsPanelProcess" role="tabpanel" aria-labelledby="skillsTabProcess">
-                <p class="section-kicker">Process, in order</p>
-                <h3>How the three fit together.</h3>
-                <ol class="skills-process-timeline" aria-label="Skills in process order">
-                  <li class="skills-process-step skills-process-step--eng">
-                    <div class="skills-process-title-row">
-                      <span class="skills-process-num">Step 1</span>
-                      <p class="skills-process-phase">Data engineering</p>
-                    </div>
-                    <div class="skills-process-chips">
-                      <span>Python</span><span>SQL</span><span>Pandas</span><span>Data Cleaning</span>
-                    </div>
-                  </li>
-                  <li class="skills-process-step skills-process-step--sci">
-                    <div class="skills-process-title-row">
-                      <span class="skills-process-num">Step 2</span>
-                      <p class="skills-process-phase">Data science</p>
-                    </div>
-                    <div class="skills-process-chips">
-                      <span>Scikit-learn</span><span>XGBoost</span><span>GridSearchCV</span><span>Model Evaluation</span>
-                    </div>
-                  </li>
-                  <li class="skills-process-step skills-process-step--ana">
-                    <div class="skills-process-title-row">
-                      <span class="skills-process-num">Step 3</span>
-                      <p class="skills-process-phase">Analysis &amp; delivery</p>
-                    </div>
-                    <div class="skills-process-chips">
-                      <span>Power BI</span><span>D3.js</span><span>Next.js</span><span>GitHub Pages</span>
-                    </div>
-                  </li>
-                </ol>
-              </div>
-
-              <div class="skills-tab-panel" id="skillsPanelAi" role="tabpanel" aria-labelledby="skillsTabAi" hidden>
-                <p class="section-kicker">Applied AI</p>
-                <h3>AI &amp; agent workflows.</h3>
-                <div class="skills-branch-orbit">
-                  <span class="skills-branch-node">Prompt Engineering</span>
-                  <span class="skills-branch-node">AI Agent Workflows</span>
-                  <span class="skills-branch-node">LLM Evaluation · RLHF</span>
-                  <span class="skills-branch-node">Local LLMs · Ollama</span>
-                  <span class="skills-branch-node">Workflow Automation</span>
-                  <span class="skills-branch-node">AI Content Pipelines</span>
-                </div>
-                <p class="skills-tab-note">In use professionally: paid AI/ML evaluator at Alignerr (3% acceptance rate) and the NLP-driven LinkedIn bot shipped for CustomStrat.</p>
-              </div>
-
-              <div class="skills-tab-panel" id="skillsPanelTools" role="tabpanel" aria-labelledby="skillsTabTools" hidden>
-                <p class="section-kicker">Everyday stack</p>
-                <h3>Languages &amp; tools.</h3>
-                <div class="skills-branch-orbit">
-                  <span class="skills-branch-node">Python</span>
-                  <span class="skills-branch-node">SQL</span>
-                  <span class="skills-branch-node">JavaScript</span>
-                  <span class="skills-branch-node">TypeScript</span>
-                  <span class="skills-branch-node">React</span>
-                  <span class="skills-branch-node">Next.js</span>
-                  <span class="skills-branch-node">Pandas</span>
-                  <span class="skills-branch-node">NumPy</span>
-                  <span class="skills-branch-node">Jupyter</span>
-                  <span class="skills-branch-node">Git</span>
-                  <span class="skills-branch-node">Power BI</span>
-                  <span class="skills-branch-node">D3.js</span>
-                  <span class="skills-branch-node">Matplotlib</span>
-                  <span class="skills-branch-node">Seaborn</span>
-                </div>
-              </div>
-
-              <div class="skills-tab-panel" id="skillsPanelCerts" role="tabpanel" aria-labelledby="skillsTabCerts" hidden>
-                <p class="section-kicker">Credentials</p>
-                <h3>Certifications.</h3>
-                <div class="skills-branch-orbit">
-                  <span class="skills-branch-node">IBM Data Science Professional</span>
-                  <span class="skills-branch-node">Microsoft PL-300 · Power BI Data Analyst</span>
-                  <span class="skills-branch-node">Google Cloud ML Engineer · in progress</span>
-                  <span class="skills-branch-node">freeCodeCamp Data Visualization</span>
-                </div>
-              </div>
+          <figure class="skills-map-panel" id="skillsMapPanel" aria-label="Skill network map: data engineering feeds data science, which feeds analysis and delivery; AI and agent tooling supports every stage">
+            <div class="skills-map-stage">
+              <svg id="skillsMapSvg" class="skills-map-svg" viewBox="0 0 1200 660" aria-hidden="true" focusable="false"></svg>
+            </div>
+            <figcaption class="skills-map-caption">
+              <span class="skills-map-caption-label" id="skillsMapCaption">Skills map · 4 clusters</span>
+              <span class="skills-map-caption-meta">flow: engineering → science → analysis · AI supports each stage</span>
+            </figcaption>
+          </figure>
+          <div class="skills-map-fallback">
+          <article class="skills-branch skills-branch--eng">
+            <p class="section-kicker skills-root-index">01</p>
+            <h3 class="skills-branch-subtitle">Data Engineering</h3>
+            <div class="skills-branch-orbit">
+              <span class="skills-branch-node">Python</span>
+              <span class="skills-branch-node">SQL</span>
+              <span class="skills-branch-node">Pandas</span>
+              <span class="skills-branch-node">NumPy</span>
+              <span class="skills-branch-node">Data Cleaning</span>
+              <span class="skills-branch-node">Train/Test Splits</span>
+              <span class="skills-branch-node">Jupyter</span>
+              <span class="skills-branch-node">Git</span>
             </div>
           </article>
-        </div>
-        </div>
-      </div>
+          <article class="skills-branch skills-branch--sci">
+            <p class="section-kicker skills-root-index">02</p>
+            <h3 class="skills-branch-subtitle">Data Science</h3>
+            <div class="skills-branch-orbit">
+              <span class="skills-branch-node">Scikit-learn</span>
+              <span class="skills-branch-node">XGBoost</span>
+              <span class="skills-branch-node">Random Forest</span>
+              <span class="skills-branch-node">Logistic Regression</span>
+              <span class="skills-branch-node">SVM</span>
+              <span class="skills-branch-node">KNN</span>
+              <span class="skills-branch-node">GridSearchCV</span>
+              <span class="skills-branch-node">SMOTE</span>
+              <span class="skills-branch-node">VADER · TF-IDF</span>
+              <span class="skills-branch-node">Model Evaluation</span>
+            </div>
+          </article>
+          <article class="skills-branch skills-branch--ana">
+            <p class="section-kicker skills-root-index">03</p>
+            <h3 class="skills-branch-subtitle">Data Analysis</h3>
+            <div class="skills-branch-orbit">
+              <span class="skills-branch-node">Power BI · PL-300</span>
+              <span class="skills-branch-node">DAX</span>
+              <span class="skills-branch-node">D3.js</span>
+              <span class="skills-branch-node">GeoJSON</span>
+              <span class="skills-branch-node">Matplotlib</span>
+              <span class="skills-branch-node">Seaborn</span>
+              <span class="skills-branch-node">Next.js</span>
+              <span class="skills-branch-node">TypeScript</span>
+              <span class="skills-branch-node">React</span>
+              <span class="skills-branch-node">GitHub Pages</span>
+            </div>
+          </article>
+          <article class="skills-branch skills-branch--ai">
+            <p class="section-kicker skills-root-index">AI</p>
+            <h3 class="skills-branch-subtitle">AI &amp; Agents</h3>
+            <div class="skills-branch-orbit">
+              <span class="skills-branch-node">Prompt Engineering</span>
+              <span class="skills-branch-node">Agent Workflows</span>
+              <span class="skills-branch-node">LLM Evaluation · RLHF</span>
+              <span class="skills-branch-node">Local LLMs</span>
+              <span class="skills-branch-node">Workflow Automation</span>
+              <span class="skills-branch-node">AI Content Pipelines</span>
+            </div>
+          </article>
+          </div>
         </div>
       </details>
     </section>
@@ -5764,7 +5560,6 @@
             <ul>
               <li><strong>IBM Data Science Professional Certificate</strong>: 12-course industry sequence covering Python, ML pipelines, SQL, and data visualization.</li>
               <li><strong>Microsoft PL-300</strong>, Power BI Data Analyst, Microsoft's certification for business intelligence, DAX, and dashboard delivery.</li>
-              <li><strong>Google Cloud ML Engineer</strong> <em>(in progress)</em>: cloud infrastructure for ML training and deployment.</li>
               <li>Coursework in probability, linear algebra, algorithms, and statistical inference.</li>
             </ul>
           </article>
@@ -5817,7 +5612,7 @@
                 </div>
                 <div class="resume-pdf-skill-cat">
                   <strong>Analytics &amp; BI</strong>
-                  <div class="resume-pdf-skill-row">Power BI (PL-300), D3.js, Matplotlib, Plotly, A/B testing, GCP (BigQuery, Vertex AI)</div>
+                  <div class="resume-pdf-skill-row">Power BI (PL-300), D3.js, Matplotlib, Plotly, A/B testing</div>
                   <strong>AI / LLM</strong>
                   <div class="resume-pdf-skill-row">Ollama (local inference), prompt engineering, workflow automation, agentic systems</div>
                   <strong>Marketing &amp; SEO</strong>
@@ -5929,7 +5724,6 @@
                 <ul class="resume-list">
                   <li>IBM Data Science Professional Certificate</li>
                   <li>Microsoft PL-300 · Power BI Data Analyst</li>
-                  <li>Google Cloud ML Engineer <em>(In Progress)</em></li>
                 </ul>
               </div>
             </section>
