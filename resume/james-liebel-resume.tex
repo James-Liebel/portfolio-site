@@ -1,0 +1,190 @@
+%-------------------------
+% Resume in Latex
+% Based on Jake Gutierrez's "Jake's Resume" template (Overleaf),
+% which builds on Sourabh Bajaj's resume template. MIT licensed.
+% Compile with pdfLaTeX.
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generated pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape James Liebel} \\ \vspace{1pt}
+    \small (513) 965-1578 $|$ \href{mailto:Jamesliebel40@gmail.com}{\underline{Jamesliebel40@gmail.com}} $|$
+    \href{https://github.com/James-Liebel}{\underline{github.com/James-Liebel}} $|$
+    \href{https://linkedin.com/in/james-liebel}{\underline{linkedin.com/in/james-liebel}} $|$
+    Cincinnati, OH
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {The University of Chicago}{Chicago, IL}
+      {B.S. in Data Science \& Statistics}{Expected May 2030}
+      \resumeItemListStart
+        \resumeItem{Certifications: \textbf{IBM Data Science Professional Certificate} (12-course sequence: Python, ML pipelines, SQL, data visualization); \textbf{Microsoft PL-300} Power BI Data Analyst}
+        \resumeItem{Coursework in probability, linear algebra, algorithms, and statistical inference}
+        \resumeItem{Prep: AP Statistics, AP Computer Science A, AP Calculus BC}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Incoming Marketing Intern}{Summer 2026}
+      {Siemens, Digital Industries}{Cincinnati, OH}
+      \resumeItemListStart
+        \resumeItem{Accepted offer for a Summer 2026 marketing internship within Digital Industries (industrial automation \& software); starts June 2026}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {AI/ML Code Evaluator \& Contractor}{2025 -- Present}
+      {Alignerr (Powered by Labelbox)}{Remote}
+      \resumeItemListStart
+        \resumeItem{Cleared Alignerr's vetting process (human and AI interviews with a \textbf{3\%} acceptance rate), qualifying across \textbf{five} technical domains: Python/ML, Data Science, Math Foundations, NLP, and Software Engineering}
+        \resumeItem{Write structured expert annotations (prompts, worked solutions, correctness feedback) on AI-generated ML pipelines, NLP systems, and full-stack applications, used as production RLHF training data for Labelbox enterprise clients}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Contract Developer \& AI Marketing Specialist}{2025 -- Present}
+      {CustomStrat}{\href{https://customstrat.com}{\underline{customstrat.com}}}
+      \resumeItemListStart
+        \resumeItem{Built and deployed a full business advisory website and an AI-powered LinkedIn marketing bot, a complete client acquisition funnel from content generation to site traffic}
+        \resumeItem{LinkedIn bot generated \textbf{3,279} impressions (+31.4\%) and reached \textbf{2,189} members (+41.1\%) in 28 days using NLP sentiment analysis and TF-IDF for content optimization}
+        \resumeItem{Site grew to \textbf{200+} unique users in two weeks (73.9\% new user rate); configured custom domain and GitHub Pages CI/CD pipeline}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb}{\underline{Credit Card Fraud Detection}}} $|$ \emph{Python, XGBoost, SMOTE, Scikit-Learn}}{2024}
+          \resumeItemListStart
+            \resumeItem{ML pipeline on \textbf{284,807} transactions using XGBoost + SMOTE on a heavily imbalanced dataset (0.17\% positive rate); \textbf{80\%} fraud recall at \textbf{87\%} precision, ROC-AUC \textbf{0.939}, evaluated via precision-recall curves and F1-scores}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb}{\underline{News Sentiment Analysis Pipeline}}} $|$ \emph{Python, NLP, VADER, TF-IDF}}{2024}
+          \resumeItemListStart
+            \resumeItem{Python pipeline processing thousands of headlines with VADER and TF-IDF; visualizes sentiment trends over time, turning unstructured text into structured market intelligence}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/James-Liebel/portfolio-site}{\underline{Portfolio Dashboards \& D3 Analytics}}} $|$ \emph{Power BI, D3.js, DAX, GeoJSON}}{2025 -- 2026}
+          \resumeItemListStart
+            \resumeItem{Power BI revenue dashboard across regions, segments, and product categories (KPI tiles, trend lines, slicers), plus six D3.js charts and maps including a GeoJSON choropleth, heatmaps, and scatter plots}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/James-Liebel/Personal_Projects/tree/main/projects/machine_learning}{\underline{SpaceX Falcon 9 Landing Prediction}}} $|$ \emph{Scikit-Learn, SVM, KNN, Logistic Regression}}{2024}
+          \resumeItemListStart
+            \resumeItem{Binary classifiers (Logistic Regression, SVM, KNN) on payload and orbit features; \textbf{90\%} test accuracy via GridSearchCV on a multi-model comparison}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, JavaScript, TypeScript, SQL, R, Java, HTML} \\
+     \textbf{Data \& ML}{: Pandas, NumPy, Scikit-Learn, XGBoost, VADER, TF-IDF, GridSearchCV, SMOTE, Jupyter} \\
+     \textbf{Engineering}{: Next.js 14, React, Tailwind CSS, GitHub Pages, CI/CD, Git} \\
+     \textbf{Analytics \& BI}{: Power BI (PL-300), DAX, D3.js, GeoJSON, Matplotlib, Seaborn, A/B testing} \\
+     \textbf{AI / LLM}{: Prompt engineering, AI agent workflows, LLM evaluation (RLHF), local LLMs (Ollama), workflow automation} \\
+     \textbf{Marketing \& SEO}{: Content strategy, LinkedIn analytics, audience segmentation, semantic HTML, metadata optimization}
+    }}
+ \end{itemize}
+
+%-------------------------------------------
+\end{document}
