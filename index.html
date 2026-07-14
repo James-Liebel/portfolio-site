@@ -4497,6 +4497,20 @@
       letter-spacing: 0;
       color: var(--text);
     }
+    /* ── Ambient background: sparse drifting points behind the page ── */
+    #ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1.6s ease;
+    }
+    #ambient-bg.is-live { opacity: 1; }
+    @media print {
+      #ambient-bg { display: none !important; }
+    }
+
     /* ── Skills map (constellation) ── */
     .skills-map-panel {
       margin: 0;
@@ -4773,6 +4787,7 @@
 </head>
 <body class="intro-done">
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  <canvas id="ambient-bg" aria-hidden="true"></canvas>
   <noscript><style>
     .site-content-riser { transform: none !important; }
   </style></noscript>

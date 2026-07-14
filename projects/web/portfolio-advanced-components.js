@@ -490,9 +490,113 @@
     });
   }
 
+  // ─── Ambient background: sparse points drifting slowly behind the page.
+  // Deliberately faint — a few dozen dots in the site's blue family at 3–12%
+  // opacity, rising with a slight lateral wander. No connecting lines, no
+  // cursor tracking. Skipped on phones, low-power machines, and
+  // reduced-motion; paused while the tab is hidden.
+  function initAmbientBackground() {
+    var canvas = document.getElementById('ambient-bg');
+    if (!canvas || !canvas.getContext) return;
+    if (reduced || lowPower || MOBILE) return;
+
+    var ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    var DARK_COLORS = ['91, 130, 201', '147, 176, 224', '109, 154, 163'];
+    var LIGHT_COLORS = ['63, 95, 168', '84, 113, 159', '47, 118, 128'];
+    var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    new MutationObserver(function () {
+      isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    var dpr = 1;
+    var w = 0;
+    var h = 0;
+    var motes = [];
+    var rafId = 0;
+    var running = false;
+    var lastT = 0;
+    var resizeTimer = 0;
+
+    function spawn(anywhere) {
+      return {
+        x: Math.random() * w,
+        y: anywhere ? Math.random() * h : h + 10,
+        vy: 3 + Math.random() * 5,           // px/s upward
+        wander: 0.4 + Math.random() * 1.2,   // lateral sway amplitude, px/s
+        phase: Math.random() * Math.PI * 2,
+        freq: 0.1 + Math.random() * 0.25,    // sway cycles per second
+        r: 0.8 + Math.random() * 1.1,
+        alpha: 0.03 + Math.random() * 0.09,
+        twinklePhase: Math.random() * Math.PI * 2,
+        color: (Math.random() * 3) | 0
+      };
+    }
+
+    function resize() {
+      dpr = Math.min(1.5, window.devicePixelRatio || 1);
+      w = document.documentElement.clientWidth;
+      h = document.documentElement.clientHeight;
+      canvas.width = Math.ceil(w * dpr);
+      canvas.height = Math.ceil(h * dpr);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var target = Math.min(80, Math.round((w * h) / 26000));
+      motes.length = 0;
+      for (var i = 0; i < target; i++) motes.push(spawn(true));
+    }
+
+    function tick(now) {
+      if (!running) return;
+      var dt = Math.min((now - lastT) / 1000, 0.05);
+      lastT = now;
+      var t = now / 1000;
+      ctx.clearRect(0, 0, w, h);
+      var colors = isLight ? LIGHT_COLORS : DARK_COLORS;
+      for (var i = 0; i < motes.length; i++) {
+        var m = motes[i];
+        m.y -= m.vy * dt;
+        m.x += Math.sin(t * m.freq * Math.PI * 2 + m.phase) * m.wander * dt;
+        if (m.y < -10) motes[i] = m = spawn(false);
+        var a = m.alpha * (0.7 + 0.3 * Math.sin(t * 0.5 + m.twinklePhase));
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + colors[m.color] + ', ' + a.toFixed(3) + ')';
+        ctx.fill();
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      lastT = performance.now();
+      rafId = requestAnimationFrame(tick);
+    }
+    function stop() {
+      running = false;
+      cancelAnimationFrame(rafId);
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop();
+      else start();
+    });
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 180);
+    }, { passive: true });
+
+    resize();
+    start();
+    canvas.classList.add('is-live');
+  }
 
   window.addEventListener('load', function () {
     /* Hero canvas (#hero-webgl) is owned by portfolio-3d.js, a self-booting ES module. */
+    initAmbientBackground();
     initSkillsMap();
     initGithubHeatmap();
   });
