@@ -4421,11 +4421,6 @@
       text-transform: uppercase;
       vertical-align: 1px;
     }
-    .metric-pill--accent {
-      border-color: color-mix(in srgb, var(--accent) 48%, transparent);
-      background: var(--accent-soft);
-      color: var(--accent-ink);
-    }
     .metric-pill {
       font: 500 11.5px/1.4 var(--font-mono);
       letter-spacing: 0.02em;
@@ -4436,6 +4431,14 @@
       background: transparent;
       color: var(--muted);
       box-shadow: none;
+    }
+    /* Matches the specificity of #projects .project-summary-metrics .metric-pill,
+       which would otherwise win. */
+    .metric-pill--accent,
+    #projects .project-summary-metrics .metric-pill--accent {
+      border-color: color-mix(in srgb, var(--accent) 48%, transparent);
+      background: var(--accent-soft);
+      color: var(--accent-ink);
     }
 
     /* ── Buttons and text actions ── */
@@ -5299,6 +5302,7 @@
                   <span class="metric-pill">29 static pages</span>
                   <span class="metric-pill">4 prod deps · 873 KB JS</span>
                   <span class="metric-pill">86 commits · solo</span>
+                  <span class="metric-pill metric-pill--accent">224K LinkedIn impressions</span>
                   <span class="metric-pill">Live site</span>
                 </div>
                 <span class="project-summary-expand">
@@ -5337,7 +5341,8 @@
                 </div>
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="project-cs-distribution">How the audience arrives</h4>
-                  <p>Distribution for a B2B advisory firm runs through LinkedIn, not search. I built the NLP content engine behind it (sentiment analysis and TF-IDF for content optimization), which lifted the firm&apos;s impressions <strong>31.4%</strong> and reach <strong>41.1%</strong> over 28 days. Organic search is still a small channel and I am not going to dress those numbers up.</p>
+                  <p>Distribution for a B2B advisory firm runs through LinkedIn, not search, so I built the NLP content engine behind it, using sentiment analysis and TF-IDF to shape what gets posted. Over the last 12 months it has produced <strong>224,118</strong> impressions and reached <strong>123,329</strong> members, roughly <strong>23x</strong> the year before, with a top post at <strong>59K</strong> impressions.</p>
+                  <p><strong>96%</strong> of that reach came from outside the firm&apos;s existing network, which is the number I actually care about: it means the posts are being distributed on their merits rather than recycled through followers. The audience it lands on is the one the firm sells to, at <strong>32%</strong> financial services, <strong>28%</strong> senior-level, and <strong>39%</strong> at companies of 10,000 or more. Organic search is still a small channel and I am not going to dress those numbers up.</p>
                 </div>
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="project-cs-stack">Tech stack</h4>
@@ -5718,7 +5723,7 @@
             <ul>
               <li><strong>Siemens (Digital Industries):</strong> Software development intern, Summer 2026. Sole engineer on the ground-up rebuild of the Strategic Student Program platform, now live for <strong>217</strong> users across four regional programs and retiring a <strong>$10,000/year</strong> low-code license. Build detail: <a href="#project-ssp">Projects → Siemens SSP Portal</a>.</li>
               <li><strong>Alignerr (Labelbox):</strong> Cleared a <strong>3% acceptance rate</strong> vetting process to qualify across five domains: Python/ML, Data Science, Math Foundations, NLP, and Software Engineering. Writes RLHF annotations (prompts, worked solutions, correctness feedback) used in production AI training pipelines.</li>
-              <li><strong>CustomStrat:</strong> Data &amp; AI systems developer. Built and maintain <strong>customstrat.com</strong> (29 pages, Next.js 16, solo) plus a 2 GB consolidated financial database. Build detail: <a href="#project-customstrat">Projects → CustomStrat</a>.</li>
+              <li><strong>CustomStrat:</strong> Data &amp; AI systems developer. Built and maintain <strong>customstrat.com</strong> (29 pages, Next.js 16, solo), a 2 GB consolidated financial database, and the NLP content engine behind the firm&apos;s LinkedIn (<strong>224K</strong> impressions in 12 months). Build detail: <a href="#project-customstrat">Projects → CustomStrat</a>.</li>
             </ul>
           </article>
           <article class="experience-card experience-card--edu">
@@ -5820,7 +5825,7 @@
                 <ul class="resume-list">
                   <li>Designed and shipped a <strong>29-page</strong> statically exported Next.js 16 / React 19 / TypeScript site whose typed content layer derives <strong>13</strong> long-form articles, navigation, and related-article logic from a single source.</li>
                   <li>Owned technical SEO and delivery: programmatic sitemap and robots, canonical URLs, a strict meta-delivered CSP, and a custom Node build pipeline; recovered <strong>10</strong> legacy URLs left 404ing by a platform migration.</li>
-                  <li>Built a <strong>2 GB</strong> financial database joining FDIC bank data with other sources in SQL, plus an NLP content engine (sentiment, TF-IDF) that lifted the firm&apos;s LinkedIn impressions <strong>31.4%</strong> and reach <strong>41.1%</strong> in 28 days.</li>
+                  <li>Built a <strong>2 GB</strong> financial database joining FDIC bank data with other sources in SQL, plus an NLP content engine now driving the firm&apos;s LinkedIn: <strong>224,118</strong> impressions and <strong>123,329</strong> members reached in 12 months (<strong>23x</strong> the prior year), <strong>96%</strong> from outside its network.</li>
                 </ul>
               </div>
 
