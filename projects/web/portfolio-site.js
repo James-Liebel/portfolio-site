@@ -236,7 +236,24 @@
     // fires in transit or completes on arrival.
     if (window.ScrollTrigger) window.ScrollTrigger.refresh();
     if (lenis) {
-      lenis.scrollTo(target, { offset: -86, duration: 1.2 });
+      // Track the real nav height instead of a baked-in constant so the gap
+      // below the bar stays the same on phones, where the nav is shorter.
+      const navEl = document.querySelector(".site-nav");
+      const gap = (navEl ? navEl.getBoundingClientRect().height : 64) + 22;
+      // content-visibility on the project cards means every section below the
+      // fold reports contain-intrinsic-size rather than its real height, so the
+      // distance Lenis computes up front is wrong and the further down the page
+      // the target is, the worse it lands (#resume overshot by ~1,260px).
+      // Re-measure once the page has settled and close the remaining gap.
+      const settle = () => {
+        const delta = target.getBoundingClientRect().top - gap;
+        if (Math.abs(delta) > 4) lenis.scrollTo(window.scrollY + delta, { duration: 0.35 });
+      };
+      lenis.scrollTo(target, {
+        offset: -gap,
+        duration: 1.2,
+        onComplete: () => requestAnimationFrame(() => requestAnimationFrame(settle))
+      });
     } else {
       target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     }
