@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Liebel · Résumé · Data Science Intern Candidate · Summer 2027</title>
-    <meta name="description" content="Résumé: James Liebel, UChicago B.S. Data Science &amp; Statistics '30. Paid ML evaluator (3% acceptance); shipped client site (200+ users, +31% LinkedIn impressions); XGBoost fraud model (ROC-AUC 0.939). Seeking Summer 2027 Data Science / ML internships; open to term-time work now.">
+    <meta name="description" content="Résumé: James Liebel, UChicago B.S. Data Science &amp; Statistics '30. Sole engineer of a production internship-management platform for Siemens (200+ users); 29-page Next.js client site; XGBoost fraud model (ROC-AUC 0.939). Seeking Summer 2027 Data Science / ML internships; open to term-time work now.">
     <meta name="keywords" content="James Liebel resume, data science intern resume, UChicago data science, machine learning intern, Python, SQL, XGBoost, Power BI, summer 2027 internship">
     <meta name="author" content="James Liebel">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="profile">
     <meta property="og:title" content="James Liebel · Résumé · Data Science Intern Candidate">
-    <meta property="og:description" content="UChicago DS &amp; Stats '30. Paid ML evaluator. Shipped client site, XGBoost fraud model (ROC-AUC 0.939). Seeking Summer 2027 internships.">
+    <meta property="og:description" content="UChicago DS &amp; Stats '30. Built Siemens' SSP portal (live, 200+ users), a 29-page client site, and an XGBoost fraud model (ROC-AUC 0.939). Seeking Summer 2027 internships.">
     <meta property="og:url" content="https://james-liebel.github.io/portfolio-site/projects/web/data_science_resume.html">
     <meta property="og:image" content="https://james-liebel.github.io/portfolio-site/og-preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
@@ -421,7 +421,7 @@
     <div class="section">
         <h2>SUMMARY</h2>
         <p class="summary">
-            First-year University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks, and designed a local LLM workspace from scratch. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
+            First-year University of Chicago <strong>Data Science &amp; Statistics</strong> student who ships production systems. Sole engineer on the ground-up rebuild of Siemens' Strategic Student Program platform, now live for <strong>200+</strong> users across four regional programs and replacing a licensed low-code system that cost about <strong>$10,000 a year</strong>. Also builds and maintains a <strong>29-page</strong> production client site and a <strong>2 GB</strong> financial database, and works as a <strong>paid ML evaluator</strong> across five technical domains.
         </p>
     </div>
 
@@ -430,11 +430,13 @@
         <div class="skills-grid">
             <div class="skill-category">
                 <strong>Languages</strong>
-                <div class="skill-item-row">Python, JavaScript, TypeScript, SQL, R, Java, HTML</div>
-                <strong>Data &amp; ML</strong>
-                <div class="skill-item-row">Pandas, NumPy, Scikit-Learn, XGBoost, TensorFlow, VADER, TF-IDF, Jupyter</div>
+                <div class="skill-item-row">Python, SQL, TypeScript, JavaScript, R, Java, HTML</div>
+                <strong>Machine Learning &amp; AI</strong>
+                <div class="skill-item-row">Scikit-Learn, XGBoost, Pandas, NumPy, SMOTE, model evaluation (PR/ROC-AUC), NLP (VADER, TF-IDF), LLM evaluation (RLHF), Jupyter</div>
+                <strong>Data &amp; Backend</strong>
+                <div class="skill-item-row">PostgreSQL, schema design, Drizzle ORM, row-level security, FastAPI, REST, SSO/OIDC, role-based access control</div>
                 <strong>Engineering</strong>
-                <div class="skill-item-row">Next.js 14, FastAPI, React/Vite, Tailwind CSS, GitHub Pages, CI/CD, Git</div>
+                <div class="skill-item-row">Next.js, React, Tailwind CSS, Playwright, unit testing, CI/CD, Git</div>
             </div>
             <div class="skill-category">
                 <strong>Analytics &amp; BI</strong>
@@ -452,11 +454,32 @@
         <div class="entry">
             <div class="entry-header">
                 <div>
-                    <span class="job-title">Incoming Marketing Intern · Siemens, Digital Industries</span>
+                    <span class="job-title">Software Development Intern, Strategic Student Program · Siemens, Digital Industries</span>
                 </div>
                 <span class="date">Summer 2026</span>
             </div>
-            <p class="entry-meta">Starting June 2026 · industrial automation &amp; software</p>
+            <p class="entry-meta">Next.js, TypeScript, PostgreSQL · Cincinnati, OH</p>
+            <ul>
+                <li>Sole designer and engineer of a ground-up rebuild of the platform running Siemens' student internship program: registration, mentor-reviewed goal setting, midterm and final evaluations, e-signature sign-off, and learning-hours tracking.</li>
+                <li>Replaced a licensed low-code platform, cutting <strong>$10,000/year</strong> in recurring license cost and vendor lock-in while shipping more capability than the system it retired.</li>
+                <li>Live in production for <strong>200+</strong> students, mentors, managers, and admins across <strong>four</strong> regional programs, with role- and region-scoped authorization enforced server-side on every request.</li>
+                <li><strong>42-table</strong> PostgreSQL schema behind <strong>42,000</strong> lines across <strong>580</strong> TypeScript/React files; hardened for GDPR student data (SSO, row-level security, subject export and erasure) and gated by <strong>250+</strong> automated test files.</li>
+            </ul>
+        </div>
+
+        <div class="entry">
+            <div class="entry-header">
+                <div>
+                    <span class="job-title">Data &amp; AI Systems Developer · CustomStrat</span>
+                </div>
+                <span class="date">2025 – Present</span>
+            </div>
+            <p class="entry-meta">Next.js 16, TypeScript, SQL, NLP · <a href="https://customstrat.com">customstrat.com</a></p>
+            <ul>
+                <li>Designed and shipped a <strong>29-page</strong> statically exported Next.js 16 / React 19 / TypeScript site whose typed content layer derives <strong>13</strong> long-form articles, navigation, and related-article logic from a single source.</li>
+                <li>Owned technical SEO and delivery: programmatic sitemap and robots, canonical URLs, a strict meta-delivered CSP, and a custom Node build pipeline; recovered <strong>10</strong> legacy URLs left 404ing by a platform migration.</li>
+                <li>Built a <strong>2 GB</strong> financial database joining FDIC bank data with other sources in SQL, plus an NLP content engine (sentiment, TF-IDF) that lifted the firm's LinkedIn impressions <strong>31.4%</strong> and reach <strong>41.1%</strong> in 28 days.</li>
+            </ul>
         </div>
 
         <div class="entry">
@@ -468,23 +491,7 @@
             </div>
             <p class="entry-meta">Paid Contract · Remote · 3% acceptance rate</p>
             <ul>
-                <li>Cleared Alignerr's vetting process (human and AI interviews with a <strong>3% acceptance rate</strong>), qualifying across <strong>five</strong> technical domains: Python/ML, Data Science, Math Foundations, NLP, and Software Engineering.</li>
-                <li>Writes structured expert annotations (prompts, worked solutions, correctness feedback) on AI-generated ML pipelines, NLP systems, and full-stack applications, used as production RLHF training data for Labelbox enterprise clients.</li>
-            </ul>
-        </div>
-
-        <div class="entry">
-            <div class="entry-header">
-                <div>
-                    <span class="job-title">CustomStrat · Contract Developer &amp; AI Marketing Specialist</span>
-                </div>
-                <span class="date">2025 – Present</span>
-            </div>
-            <p class="entry-meta">Next.js 14, TypeScript, Python, NLP · <a href="https://customstrat.com">customstrat.com</a></p>
-            <ul>
-                <li>Built and deployed a full business advisory website + AI-powered LinkedIn marketing bot, a complete client acquisition funnel from content generation to site traffic.</li>
-                <li>LinkedIn bot generated <strong>3,279</strong> impressions (+31.4%) and reached <strong>2,189</strong> members (+41.1%) in 28 days using NLP sentiment analysis and TF-IDF for content optimization.</li>
-                <li>Site grew to <strong>200+</strong> unique users in two weeks (73.9% new user rate); configured custom domain and GitHub Pages CI/CD pipeline.</li>
+                <li>Writes expert annotations (prompts, worked solutions, correctness feedback) on AI-generated ML pipelines and full-stack code, used as production RLHF training data; cleared a <strong>3%</strong> acceptance-rate vetting across <strong>five</strong> technical domains.</li>
             </ul>
         </div>
 
@@ -496,21 +503,6 @@
         <div class="entry">
             <div class="entry-header">
                 <div>
-                    <span class="job-title">JimAI · Local LLM Workspace</span>
-                </div>
-                <span class="date">2025 – 2026</span>
-            </div>
-            <p class="entry-meta">FastAPI · React/Vite · Ollama · <a href="https://github.com/James-Liebel/JimAI">github.com/James-Liebel/JimAI</a></p>
-            <p class="project-tags">FastAPI · React · Ollama · LLM · Workflow automation</p>
-            <ul>
-                <li>Designed and built a full local AI workspace supporting research queries, code generation, and multi-step workflow automation, with a FastAPI backend, React/Vite frontend, and Ollama for on-device LLM inference.</li>
-                <li>Features include task queuing, context-aware prompt chaining, and a browser-based interface.</li>
-            </ul>
-        </div>
-
-        <div class="entry">
-            <div class="entry-header">
-                <div>
                     <span class="job-title">Credit Card Fraud Detection (XGBoost)</span>
                 </div>
                 <span class="date">2024</span>
@@ -518,21 +510,7 @@
             <p class="entry-meta"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/fraud_detection_setup.ipynb">Notebook</a></p>
             <p class="project-tags">XGBoost · SMOTE · Scikit-Learn · Imbalanced classification</p>
             <ul>
-                <li>ML pipeline on <strong>284,807</strong> transactions using XGBoost + SMOTE on a heavily imbalanced dataset; <strong>80%</strong> fraud recall, ROC-AUC <strong>0.939</strong>, evaluated via Precision-Recall curves and F1-scores.</li>
-            </ul>
-        </div>
-
-        <div class="entry">
-            <div class="entry-header">
-                <div>
-                    <span class="job-title">News Sentiment Analysis Pipeline</span>
-                </div>
-                <span class="date">2024</span>
-            </div>
-            <p class="entry-meta"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb">Notebook</a></p>
-            <p class="project-tags">NLP · VADER · TF-IDF · Python</p>
-            <ul>
-                <li>Python pipeline processing thousands of headlines with VADER and TF-IDF; visualizes sentiment trends over time, turning unstructured text into structured market intelligence.</li>
+                <li>XGBoost + SMOTE on <strong>284,807</strong> transactions at a <strong>0.17%</strong> positive rate; <strong>80%</strong> fraud recall at <strong>87%</strong> precision, ROC-AUC <strong>0.939</strong>, evaluated on precision-recall curves.</li>
             </ul>
         </div>
 

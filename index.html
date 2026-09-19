@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="James Liebel, applied data scientist: machine learning, analytics, and shipped products. UChicago B.S. Data Science &amp; Statistics '30. Portfolio: XGBoost fraud detection (ROC-AUC 0.939), shipped client site (200+ users), NLP sentiment analysis, Power BI, D3. Incoming Summer 2026 intern at Siemens Digital Industries; seeking Summer 2027 DS/ML internships.">
+  <meta name="description" content="James Liebel, applied data scientist: machine learning, analytics, and shipped products. UChicago B.S. Data Science &amp; Statistics '30. Portfolio: a production internship-management platform built solo for Siemens, XGBoost fraud detection (ROC-AUC 0.939), a 29-page client site, Power BI and D3. Seeking Summer 2027 DS/ML internships.">
   <meta name="keywords" content="data science, machine learning, Siemens intern, Siemens Digital Industries, UChicago data science, Python, XGBoost, SQL, Power BI, AI marketing, James Liebel">
   <meta name="author" content="James Liebel">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta property="og:type" content="website">
   <meta property="og:title" content="James Liebel · Applied Data Scientist · UChicago Data Science '30">
-  <meta property="og:description" content="UChicago B.S. Data Science &amp; Statistics '30. Shipped: XGBoost fraud detection (ROC-AUC 0.939), live client site (200+ users), NLP sentiment analysis, Power BI, D3. Incoming Summer 2026 intern at Siemens; seeking Summer 2027 DS/ML internships.">
+  <meta property="og:description" content="UChicago B.S. Data Science &amp; Statistics '30. Built Siemens' Strategic Student Program portal: live in production for 200+ users, replacing a $10K/yr low-code platform. Also XGBoost fraud detection (ROC-AUC 0.939), a live client site, Power BI and D3. Seeking Summer 2027 DS/ML internships.">
   <meta property="og:url" content="https://james-liebel.github.io/portfolio-site/">
   <meta property="og:image" content="https://james-liebel.github.io/portfolio-site/og-preview.jpg">
   <meta property="og:image:alt" content="James Liebel · Data Science portfolio · UChicago '30">
   <meta property="og:site_name" content="James Liebel · Portfolio">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="James Liebel · Applied Data Scientist · UChicago DS '30">
-  <meta name="twitter:description" content="UChicago DS &amp; Stats '30. Notebook-backed ML, shipped web, Power BI, D3. Incoming Summer 2026 intern at Siemens; seeking Summer 2027 internships.">
+  <meta name="twitter:description" content="UChicago DS &amp; Stats '30. Built Siemens' SSP portal (live, 200+ users). Notebook-backed ML, shipped web, Power BI, D3. Seeking Summer 2027 internships.">
   <meta name="twitter:url" content="https://james-liebel.github.io/portfolio-site/">
   <meta name="twitter:image" content="https://james-liebel.github.io/portfolio-site/og-preview.jpg">
   <meta name="theme-color" content="#070a14">
@@ -31,7 +31,7 @@
     "givenName": "James",
     "familyName": "Liebel",
     "jobTitle": "Applied Data Scientist",
-    "description": "First-year University of Chicago student studying Data Science & Statistics. Builds notebook-backed ML, shipped web apps, and Power BI/D3 analytics. Incoming Summer 2026 intern at Siemens Digital Industries.",
+    "description": "First-year University of Chicago student studying Data Science & Statistics. Sole engineer of Siemens' Strategic Student Program portal, live in production for 200+ users. Builds notebook-backed ML, shipped web apps, and Power BI/D3 analytics.",
     "url": "https://james-liebel.github.io/portfolio-site/",
     "image": "https://james-liebel.github.io/portfolio-site/og-preview.jpg",
     "email": "mailto:Jamesliebel40@gmail.com",
@@ -1488,7 +1488,7 @@
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
       gap: 24px;
-      align-items: center;
+      align-items: start;
     }
     .project-inner.reverse .project-copy {
       order: 2;
@@ -1693,6 +1693,41 @@
     .fraud-grid .is-hot {
       background: linear-gradient(135deg, #5b82c9, #5fa8b3);
       box-shadow: 0 0 24px rgba(91, 130, 201, 0.45);
+    }
+    .ssp-flow {
+      display: grid;
+      gap: 10px;
+      padding: 20px 22px 22px;
+      align-content: center;
+    }
+    .ssp-flow-step {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--panel);
+      border: 1px solid var(--border-soft);
+    }
+    .ssp-flow-step-num {
+      font: 500 10px/1 var(--font-mono);
+      letter-spacing: 0.1em;
+      color: var(--muted-soft);
+    }
+    .ssp-flow-step-name {
+      font: 500 13px/1.3 var(--font-body);
+      color: var(--text);
+    }
+    .ssp-flow-step-role {
+      font: 500 9px/1 var(--font-mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--accent-ink);
+      background: var(--accent-soft);
+      padding: 5px 8px;
+      border-radius: 999px;
     }
     .chat-shell,
     .browser-shell,
@@ -4370,6 +4405,27 @@
     .tag,
     .gallery-tag,
     .skills-branch-node,
+    .project-section--flagship .project-category-kicker {
+      color: var(--accent-ink);
+    }
+    .project-flagship-tag {
+      display: inline-block;
+      margin-left: 9px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      background: var(--accent-soft);
+      color: var(--accent-ink);
+      font: 500 9px/1 var(--font-mono);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      vertical-align: 1px;
+    }
+    .metric-pill--accent {
+      border-color: color-mix(in srgb, var(--accent) 48%, transparent);
+      background: var(--accent-soft);
+      color: var(--accent-ink);
+    }
     .metric-pill {
       font: 500 11.5px/1.4 var(--font-mono);
       letter-spacing: 0.02em;
@@ -4833,7 +4889,7 @@
           </h1>
           <p class="hero-status-line" aria-label="Status">
             <span class="hero-status-dot" aria-hidden="true"></span>
-            <span><strong>UChicago Data Science '30</strong> · Incoming Siemens intern (Summer 2026) · <strong>Seeking Summer 2027 DS/ML internships</strong></span>
+            <span><strong>UChicago Data Science '30</strong> · Built Siemens' SSP Portal (live, 200+ users) · <strong>Seeking Summer 2027 DS/ML internships</strong></span>
           </p>
           <div class="hero-start-here" aria-label="Contact">
             <div class="hero-cta-row">
@@ -4852,6 +4908,8 @@
             </div>
             <div class="hero-evidence-links">
               <span class="hero-evidence-label">See the work:</span>
+              <a href="#project-ssp">Siemens SSP Portal</a>
+              <span class="hero-evidence-sep" aria-hidden="true">·</span>
               <a href="#projects">ML projects</a>
               <span class="hero-evidence-sep" aria-hidden="true">·</span>
               <a href="#visualizations">Dashboards &amp; charts</a>
@@ -5061,7 +5119,93 @@
       </div>
 
       <div class="project-stack">
-        <article class="project-section project-section--ml" id="project-fraud" data-project-section="fraud" data-project-num="01">
+        <article class="project-section project-section--platform project-section--flagship" id="project-ssp" data-project-section="ssp" data-project-num="01">
+          <details class="project-disclosure">
+            <summary class="project-summary">
+              <div class="project-summary-grid">
+                <div class="project-summary-intro">
+                  <p class="section-kicker project-category-kicker">Production Software<span class="project-flagship-tag">Flagship</span></p>
+                  <h3 class="project-summary-title">Siemens SSP Portal</h3>
+                  <p class="project-summary-blurb">Sole engineer on a ground-up rebuild of the system that runs Siemens&apos; student internship program, retiring a licensed low-code platform and its <strong>$10,000/year</strong> fee. Live in production for <strong>200+</strong> students, mentors and managers across <strong>four</strong> regional programs.</p>
+                </div>
+                <div class="project-summary-metrics" aria-label="Key facts">
+                  <span class="metric-pill metric-pill--accent">$10K/yr license retired</span>
+                  <span class="metric-pill">200+ users live</span>
+                  <span class="metric-pill">42-table schema</span>
+                  <span class="metric-pill">250+ test files</span>
+                </div>
+                <span class="project-summary-expand">
+                  <span class="project-summary-expand-label">Expand</span>
+                  <svg class="project-summary-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </span>
+              </div>
+            </summary>
+            <div class="project-expanded">
+          <div class="project-inner">
+            <div class="project-copy">
+              <div class="project-panels">
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-ssp-glance">At a glance</h4>
+                  <p>Siemens runs its student internship program on a fixed cycle: interns register and get approved, set goals with a mentor and manager, complete midterm and final evaluations, log learning hours, and sign off. All of that ran on a proprietary low-code platform carrying a recurring license of roughly <strong>$10,000 a year</strong>. I rebuilt it end to end as the only engineer on the project, and the rebuild carries no platform license at all.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-ssp-workflow">What it does</h4>
+                  <ul>
+                    <li>Role-based dashboards for <strong>students, mentors, managers, admins,</strong> and developers</li>
+                    <li>Goal forms, mentor and manager ratings, midterm and final evaluations, e-signature sign-off</li>
+                    <li>Learning-hours tracking, feedback surveys, document management, and an audit log</li>
+                    <li>Admin tooling: bulk CSV import, roster and deadline management, Excel export, email and calendar notifications</li>
+                  </ul>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-ssp-scale">In production</h4>
+                  <ul>
+                    <li><strong>200+</strong> active users across four roles: student interns, mentors, managers, and program admins</li>
+                    <li><strong>Four</strong> regional programs, scoped so an administrator only ever sees their own remit</li>
+                    <li>Cohorts turn over every term, so each cycle brings a new intake through the same workflow</li>
+                  </ul>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-ssp-security">Security &amp; compliance</h4>
+                  <p>Corporate single sign-on only: no passwords, no public sign-up. Role- and region-scoped authorization is enforced server-side on every request, with row-level database security underneath it and GDPR data-subject export and erasure flows on top. The app was reviewed adversarially across its full attack surface before launch.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-ssp-engineering">Engineering</h4>
+                  <ul>
+                    <li><strong>42-table</strong> PostgreSQL schema covering users, roles, teams, terms, goals, evaluations, hours, surveys, and audit trails</li>
+                    <li><strong>42,000</strong> lines across <strong>580</strong> TypeScript and React files</li>
+                    <li><strong>250+</strong> Playwright and unit test files gating every change through branch, PR, auto-deploy</li>
+                  </ul>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-ssp-stack">Tech stack</h4>
+                  <div class="detail-tags">
+                    <span class="tag">Next.js 16</span><span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">Drizzle ORM</span><span class="tag">Row-Level Security</span><span class="tag">Enterprise SSO</span><span class="tag">Playwright</span><span class="tag">Tailwind CSS</span><span class="tag">Siemens iX</span>
+                  </div>
+                </div>
+                <div class="project-panel project-panel--wide">
+                  <h4 class="project-panel-title" id="project-ssp-access">A note on access</h4>
+                  <p>The app sits behind Siemens single sign-on, so the login screen is public but the application itself is not browsable without a corporate account, and it holds real student data I am not going to screenshot. I am happy to walk through the schema, the authorization model, or any other part of the build in an interview.</p>
+                </div>
+              </div>
+              <a class="project-open" href="https://www.strategicstudentprogram.com" target="_blank" rel="noopener noreferrer">Open live site (sign-in required)</a>
+            </div>
+            <div class="work-visual-card">
+              <p style="margin:0;padding:16px 22px 0;font:700 9px/1.4 var(--font-mono);letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-soft);" aria-hidden="true">one program cycle &middot; each stage gated by role &middot; scoped per region</p>
+              <div class="work-visual-shell ssp-flow" aria-hidden="true">
+                <div class="ssp-flow-step"><span class="ssp-flow-step-num">01</span><span class="ssp-flow-step-name">Register &amp; approve</span><span class="ssp-flow-step-role">Admin</span></div>
+                <div class="ssp-flow-step"><span class="ssp-flow-step-num">02</span><span class="ssp-flow-step-name">Set goals</span><span class="ssp-flow-step-role">Student</span></div>
+                <div class="ssp-flow-step"><span class="ssp-flow-step-num">03</span><span class="ssp-flow-step-name">Review &amp; rate</span><span class="ssp-flow-step-role">Mentor</span></div>
+                <div class="ssp-flow-step"><span class="ssp-flow-step-num">04</span><span class="ssp-flow-step-name">Midterm &amp; final evaluation</span><span class="ssp-flow-step-role">Manager</span></div>
+                <div class="ssp-flow-step"><span class="ssp-flow-step-num">05</span><span class="ssp-flow-step-name">E-signature sign-off</span><span class="ssp-flow-step-role">All roles</span></div>
+              </div>
+            </div>
+          </div>
+            </div>
+          </details>
+        </article>
+
+        <article class="project-section project-section--ml" id="project-fraud" data-project-section="fraud" data-project-num="02">
           <details class="project-disclosure">
             <summary class="project-summary">
               <div class="project-summary-grid">
@@ -5142,19 +5286,19 @@
           </details>
         </article>
 
-        <article class="project-section project-section--client" id="project-customstrat" data-project-section="customstrat" data-project-num="02">
+        <article class="project-section project-section--client" id="project-customstrat" data-project-section="customstrat" data-project-num="03">
           <details class="project-disclosure">
             <summary class="project-summary">
               <div class="project-summary-grid">
                 <div class="project-summary-intro">
                   <p class="section-kicker project-category-kicker">Client Delivery</p>
                   <h3 class="project-summary-title">CustomStrat</h3>
-                  <p class="project-summary-blurb">Live advisory site shipped to <strong>200+ unique users</strong> in 14 days (73.9% new). <strong>Next.js 14</strong> + TypeScript, static deploy to <strong>GitHub Pages</strong>, custom domain &amp; HTTPS. Paired with an NLP-driven LinkedIn bot that lifted impressions <strong>+31%</strong> in 28 days.</p>
+                  <p class="project-summary-blurb">Production marketing site for a financial-services advisory firm. <strong>29</strong> statically exported pages on <strong>Next.js 16</strong> / React 19 / TypeScript, with a typed content layer, a strict CSP, and a custom deploy pipeline. <strong>86 commits</strong> of solo work across seven months.</p>
                 </div>
                 <div class="project-summary-metrics" aria-label="Key facts">
-                  <span class="metric-pill">200+ users · 14 days</span>
-                  <span class="metric-pill">+31% LinkedIn impressions</span>
-                  <span class="metric-pill">Next.js 14</span>
+                  <span class="metric-pill">29 static pages</span>
+                  <span class="metric-pill">4 prod deps · 873 KB JS</span>
+                  <span class="metric-pill">86 commits · solo</span>
                   <span class="metric-pill">Live site</span>
                 </div>
                 <span class="project-summary-expand">
@@ -5169,24 +5313,36 @@
               <div class="project-panels">
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="project-cs-deliver">Deliverable</h4>
-                  <p>Public marketing site for an advisory client: responsive layout, multiple sections, <strong>HTTPS</strong> on a <strong>custom domain</strong>, deployed from this stack to <strong>GitHub Pages</strong>.</p>
+                  <p>The public marketing site for a financial-services advisory firm, designed and built solo from first commit to production on a custom domain. <strong>29</strong> statically exported pages, <strong>13</strong> long-form articles, <strong>12</strong> React components, roughly <strong>6,400</strong> lines of TypeScript and <strong>1,615</strong> of CSS over <strong>86</strong> commits between December 2025 and July 2026.</p>
                 </div>
                 <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-cs-maintain">Updates</h4>
-                  <p>Sections are <strong>componentized</strong> so day-to-day work is mostly <strong>copy and media</strong> swaps, not layout rewrites.</p>
+                  <h4 class="project-panel-title" id="project-cs-content">Content layer</h4>
+                  <p>A typed article registry and a single site-content module are the one source of truth: every article page, the navigation, and the related-article recommendations all derive from one typed definition, so publishing a piece is a data change rather than a layout change.</p>
                 </div>
                 <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-cs-hosting">Hosting</h4>
-                  <p><strong>DNS</strong> and <strong>TLS</strong> point at GitHub Pages; static files only, no separate app server for the marketing pages.</p>
+                  <h4 class="project-panel-title" id="project-cs-security">Security headers</h4>
+                  <p>GitHub Pages cannot set HTTP response headers, so the site ships a strict <strong>Content-Security-Policy</strong> through a <code>&lt;meta&gt;</code> tag instead. The residual risk that approach leaves, and the header-only mitigations that would close it, are written up in the repo&apos;s <code>SECURITY.md</code> rather than left implicit.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-cs-seo">Technical SEO</h4>
+                  <p>Programmatic <code>sitemap.ts</code> and <code>robots.ts</code>, canonical URLs, OpenGraph images, and Search Console verification. Diagnosed a site-wide indexing failure from Search Console data and recovered <strong>10</strong> legacy URLs left returning 404s by an earlier platform migration.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-cs-pipeline">Deploy pipeline</h4>
+                  <p>A custom Node pipeline runs build, analytics injection, then artifact copy. It preserves the App Router&apos;s RSC payloads (<code>index.txt</code>), without which every internal link silently degraded into a full page reload.</p>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-cs-perf">Weight &amp; access</h4>
+                  <p>Deliberately lean: <strong>4</strong> production dependencies and about <strong>873 KB</strong> of JavaScript chunks. Accessibility is built in rather than retrofitted, with skip-to-content, <code>prefers-reduced-motion</code> gating, and ARIA labelling.</p>
                 </div>
                 <div class="project-panel project-panel--wide">
-                  <h4 class="project-panel-title" id="project-cs-note">Performance note</h4>
-                  <p><strong>Lighthouse / Core Web Vitals</strong> are not run in this repo’s CI. Add a saved report in the repo before citing specific scores.</p>
+                  <h4 class="project-panel-title" id="project-cs-distribution">How the audience arrives</h4>
+                  <p>Distribution for a B2B advisory firm runs through LinkedIn, not search. I built the NLP content engine behind it (sentiment analysis and TF-IDF for content optimization), which lifted the firm&apos;s impressions <strong>31.4%</strong> and reach <strong>41.1%</strong> over 28 days. Organic search is still a small channel and I am not going to dress those numbers up.</p>
                 </div>
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="project-cs-stack">Tech stack</h4>
                   <div class="detail-tags">
-                    <span class="tag">Next.js 14</span><span class="tag">TypeScript</span><span class="tag">Tailwind CSS</span><span class="tag">GitHub Pages</span><span class="tag">Responsive UI</span>
+                    <span class="tag">Next.js 16</span><span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">Tailwind CSS</span><span class="tag">App Router</span><span class="tag">Static export</span><span class="tag">CSP</span><span class="tag">Microsoft Clarity</span>
                   </div>
                 </div>
               </div>
@@ -5209,7 +5365,7 @@
           </details>
         </article>
 
-        <article class="project-section project-section--nlp" id="project-sentiment" data-project-section="sentiment" data-project-num="03">
+        <article class="project-section project-section--nlp" id="project-sentiment" data-project-section="sentiment" data-project-num="04">
           <details class="project-disclosure">
             <summary class="project-summary">
               <div class="project-summary-grid">
@@ -5280,7 +5436,7 @@
           </details>
         </article>
 
-        <article class="project-section project-section--space" id="project-spacex" data-project-section="spacex" data-project-num="04">
+        <article class="project-section project-section--space" id="project-spacex" data-project-section="spacex" data-project-num="05">
           <details class="project-disclosure">
             <summary class="project-summary">
               <div class="project-summary-grid">
@@ -5560,9 +5716,9 @@
             </div>
             <p class="experience-meta">2025 – 2026 · Internship &amp; paid contract work</p>
             <ul>
-              <li><strong>Siemens (Digital Industries):</strong> Incoming marketing intern, Summer 2026 (starts June).</li>
+              <li><strong>Siemens (Digital Industries):</strong> Software development intern, Summer 2026. Sole engineer on the ground-up rebuild of the Strategic Student Program platform, now live for <strong>217</strong> users across four regional programs and retiring a <strong>$10,000/year</strong> low-code license. Build detail: <a href="#project-ssp">Projects → Siemens SSP Portal</a>.</li>
               <li><strong>Alignerr (Labelbox):</strong> Cleared a <strong>3% acceptance rate</strong> vetting process to qualify across five domains: Python/ML, Data Science, Math Foundations, NLP, and Software Engineering. Writes RLHF annotations (prompts, worked solutions, correctness feedback) used in production AI training pipelines.</li>
-              <li><strong>CustomStrat:</strong> Live client site (<strong>customstrat.com</strong>, Next.js 14, GitHub Pages, custom domain). Metrics and build detail: <a href="#project-customstrat">Projects → CustomStrat</a>.</li>
+              <li><strong>CustomStrat:</strong> Data &amp; AI systems developer. Built and maintain <strong>customstrat.com</strong> (29 pages, Next.js 16, solo) plus a 2 GB consolidated financial database. Build detail: <a href="#project-customstrat">Projects → CustomStrat</a>.</li>
             </ul>
           </article>
           <article class="experience-card experience-card--edu">
@@ -5610,7 +5766,7 @@
             <section class="resume-pdf-section" aria-labelledby="resume-summary-heading">
               <h2 class="resume-pdf-h2" id="resume-summary-heading">Summary</h2>
               <p class="resume-pdf-summary">
-                First-year University of Chicago <strong>Data Science &amp; Statistics</strong> student with hands-on experience shipping ML systems, full-stack applications, and data-driven marketing tools. Built an AI-powered LinkedIn bot generating <strong>3,279</strong> impressions (+31%) in 28 days, and deployed a live advisory website to <strong>200+</strong> unique visitors in two weeks. <strong>Paid ML evaluator.</strong> Comfortable moving from model training to production code to stakeholder reporting.
+                First-year University of Chicago <strong>Data Science &amp; Statistics</strong> student who ships production systems. Sole engineer on the ground-up rebuild of Siemens&apos; Strategic Student Program platform, now live for <strong>200+</strong> users across four regional programs and replacing a licensed low-code system that cost about <strong>$10,000 a year</strong>. Also builds and maintains a <strong>29-page</strong> production client site and a <strong>2 GB</strong> financial database, and works as a <strong>paid ML evaluator</strong> across five technical domains.
               </p>
             </section>
 
@@ -5619,11 +5775,13 @@
               <div class="resume-pdf-skills-grid">
                 <div class="resume-pdf-skill-cat">
                   <strong>Languages</strong>
-                  <div class="resume-pdf-skill-row">Python, JavaScript, TypeScript, SQL, R, Java, HTML</div>
+                  <div class="resume-pdf-skill-row">Python, SQL, TypeScript, JavaScript, R, Java, HTML</div>
                   <strong>Data &amp; ML</strong>
                   <div class="resume-pdf-skill-row">Pandas, NumPy, Scikit-Learn, XGBoost, TensorFlow, VADER, TF-IDF, Jupyter</div>
+                  <strong>Data &amp; Backend</strong>
+                  <div class="resume-pdf-skill-row">PostgreSQL, schema design, Drizzle ORM, row-level security, FastAPI, REST, SSO/OIDC, role-based access control</div>
                   <strong>Engineering</strong>
-                  <div class="resume-pdf-skill-row">Next.js 14, FastAPI, React/Vite, Tailwind CSS, GitHub Pages, CI/CD, Git</div>
+                  <div class="resume-pdf-skill-row">Next.js, React, Tailwind CSS, Playwright, unit testing, CI/CD, Git</div>
                 </div>
                 <div class="resume-pdf-skill-cat">
                   <strong>Analytics &amp; BI</strong>
@@ -5641,10 +5799,29 @@
 
               <div class="resume-pdf-entry">
                 <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">Incoming Marketing Intern · Siemens, Digital Industries</span>
+                  <span class="resume-pdf-job-title">Software Development Intern, Strategic Student Program · Siemens, Digital Industries</span>
                   <span class="resume-pdf-date">Summer 2026</span>
                 </div>
-                <p class="resume-pdf-meta">Starting June 2026 · industrial automation &amp; software</p>
+                <p class="resume-pdf-meta">Next.js, TypeScript, PostgreSQL · Cincinnati, OH</p>
+                <ul class="resume-list">
+                  <li>Sole designer and engineer of a ground-up rebuild of the platform running Siemens&apos; student internship program: registration, mentor-reviewed goal setting, midterm and final evaluations, e-signature sign-off, and learning-hours tracking.</li>
+                  <li>Replaced a licensed low-code platform, cutting <strong>$10,000/year</strong> in recurring license cost and vendor lock-in while shipping more capability than the system it retired.</li>
+                  <li>Live in production for <strong>200+</strong> students, mentors, managers, and admins across <strong>four</strong> regional programs, with role- and region-scoped authorization enforced server-side on every request.</li>
+                  <li><strong>42-table</strong> PostgreSQL schema behind <strong>42,000</strong> lines across <strong>580</strong> TypeScript/React files; hardened for GDPR student data (SSO, row-level security, subject export and erasure) and gated by <strong>250+</strong> automated test files.</li>
+                </ul>
+              </div>
+
+              <div class="resume-pdf-entry">
+                <div class="resume-pdf-entry-head">
+                  <span class="resume-pdf-job-title">Data &amp; AI Systems Developer · CustomStrat</span>
+                  <span class="resume-pdf-date">2025 – Present</span>
+                </div>
+                <p class="resume-pdf-meta">Next.js 16, TypeScript, SQL, NLP · <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com</a></p>
+                <ul class="resume-list">
+                  <li>Designed and shipped a <strong>29-page</strong> statically exported Next.js 16 / React 19 / TypeScript site whose typed content layer derives <strong>13</strong> long-form articles, navigation, and related-article logic from a single source.</li>
+                  <li>Owned technical SEO and delivery: programmatic sitemap and robots, canonical URLs, a strict meta-delivered CSP, and a custom Node build pipeline; recovered <strong>10</strong> legacy URLs left 404ing by a platform migration.</li>
+                  <li>Built a <strong>2 GB</strong> financial database joining FDIC bank data with other sources in SQL, plus an NLP content engine (sentiment, TF-IDF) that lifted the firm&apos;s LinkedIn impressions <strong>31.4%</strong> and reach <strong>41.1%</strong> in 28 days.</li>
+                </ul>
               </div>
 
               <div class="resume-pdf-entry">
@@ -5654,21 +5831,7 @@
                 </div>
                 <p class="resume-pdf-meta">Paid Contract · Remote · <strong>3% acceptance rate</strong></p>
                 <ul class="resume-list">
-                  <li>Cleared Alignerr's vetting process (human and AI interviews with a <strong>3% acceptance rate</strong>), qualifying across <strong>five</strong> technical domains: Python/ML, Data Science, Math Foundations, NLP, and Software Engineering.</li>
-                  <li>Writes structured expert annotations (prompts, worked solutions, correctness feedback) on AI-generated ML pipelines, NLP systems, and full-stack applications, used as production RLHF training data for Labelbox enterprise clients.</li>
-                </ul>
-              </div>
-
-              <div class="resume-pdf-entry">
-                <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">CustomStrat · Contract Developer &amp; AI Marketing Specialist</span>
-                  <span class="resume-pdf-date">2025 – Present</span>
-                </div>
-                <p class="resume-pdf-meta">Next.js 14, TypeScript, Python, NLP · <a href="https://customstrat.com" target="_blank" rel="noopener noreferrer">customstrat.com</a></p>
-                <ul class="resume-list">
-                  <li>Built and deployed a full business advisory website + AI-powered LinkedIn marketing bot, a complete client acquisition funnel from content generation to site traffic.</li>
-                  <li>LinkedIn bot generated <strong>3,279</strong> impressions (+31.4%) and reached <strong>2,189</strong> members (+41.1%) in 28 days using NLP sentiment analysis and TF-IDF for content optimization.</li>
-                  <li>Site grew to <strong>200+</strong> unique users in two weeks (73.9% new user rate); configured custom domain and GitHub Pages CI/CD pipeline.</li>
+                  <li>Writes expert annotations (prompts, worked solutions, correctness feedback) on AI-generated ML pipelines and full-stack code, used as production RLHF training data; cleared a <strong>3%</strong> acceptance-rate vetting across <strong>five</strong> technical domains.</li>
                 </ul>
               </div>
 
@@ -5686,18 +5849,6 @@
                 <p class="resume-pdf-project-tags">XGBoost · SMOTE · Scikit-Learn · Imbalanced classification</p>
                 <ul class="resume-list">
                   <li>ML pipeline on <strong>284,807</strong> transactions using XGBoost + SMOTE on a heavily imbalanced dataset; <strong>80%</strong> fraud recall, ROC-AUC <strong>0.939</strong>, evaluated via Precision-Recall curves and F1-scores.</li>
-                </ul>
-              </div>
-
-              <div class="resume-pdf-entry">
-                <div class="resume-pdf-entry-head">
-                  <span class="resume-pdf-job-title">News Sentiment Analysis Pipeline</span>
-                  <span class="resume-pdf-date">2024</span>
-                </div>
-                <p class="resume-pdf-meta"><a href="https://github.com/James-Liebel/Personal_Projects/blob/main/projects/machine_learning/news_sentiment_analysis.ipynb" target="_blank" rel="noopener noreferrer">Notebook</a></p>
-                <p class="resume-pdf-project-tags">NLP · VADER · TF-IDF · Python</p>
-                <ul class="resume-list">
-                  <li>Python pipeline processing thousands of headlines with VADER and TF-IDF; visualizes sentiment trends over time, turning unstructured text into structured market intelligence.</li>
                 </ul>
               </div>
 
