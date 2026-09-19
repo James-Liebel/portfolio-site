@@ -5148,36 +5148,41 @@
             <div class="project-copy">
               <div class="project-panels">
                 <div class="project-panel project-panel--wide">
-                  <h4 class="project-panel-title" id="project-ssp-glance">At a glance</h4>
-                  <p>Siemens runs its student internship program on a fixed cycle: interns register and get approved, set goals with a mentor and manager, complete midterm and final evaluations, log learning hours, and sign off. All of that ran on a proprietary low-code platform carrying a recurring license of roughly <strong>$10,000 a year</strong>. I rebuilt it end to end as the only engineer on the project, and the rebuild carries no platform license at all.</p>
-                </div>
-                <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-ssp-workflow">What it does</h4>
-                  <ul>
-                    <li>Role-based dashboards for <strong>students, mentors, managers, admins,</strong> and developers</li>
-                    <li>Goal forms, mentor and manager ratings, midterm and final evaluations, e-signature sign-off</li>
-                    <li>Learning-hours tracking, feedback surveys, document management, and an audit log</li>
-                    <li>Admin tooling: bulk CSV import, roster and deadline management, Excel export, email and calendar notifications</li>
-                  </ul>
+                  <h4 class="project-panel-title" id="project-ssp-built">What I built</h4>
+                  <p>A ground-up rebuild of the platform that runs Siemens&apos; student internship program: registration and approval, mentor-reviewed goal setting, midterm and final evaluations, e-signature sign-off, learning-hours tracking, feedback surveys, and an analytics dashboard. Sole engineer.</p>
                 </div>
                 <div class="project-panel">
                   <h4 class="project-panel-title" id="project-ssp-scale">In production</h4>
                   <ul>
-                    <li><strong>200+</strong> active users across four roles: student interns, mentors, managers, and program admins</li>
-                    <li><strong>Four</strong> regional programs, scoped so an administrator only ever sees their own remit</li>
-                    <li>Cohorts turn over every term, so each cycle brings a new intake through the same workflow</li>
+                    <li><strong>200+</strong> students, mentors, managers, and admins</li>
+                    <li><strong>Four</strong> regional programs, region-scoped access</li>
+                    <li>New intake every term</li>
                   </ul>
                 </div>
                 <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-ssp-security">Security &amp; compliance</h4>
-                  <p>Corporate single sign-on only: no passwords, no public sign-up. Role- and region-scoped authorization is enforced server-side on every request, with row-level database security underneath it and GDPR data-subject export and erasure flows on top. The app was reviewed adversarially across its full attack surface before launch.</p>
+                  <h4 class="project-panel-title" id="project-ssp-impact">Impact</h4>
+                  <ul>
+                    <li>Replaced a licensed low-code platform</li>
+                    <li><strong>$10,000/year</strong> in license cost removed</li>
+                    <li>No platform license on the rebuild</li>
+                  </ul>
                 </div>
                 <div class="project-panel">
-                  <h4 class="project-panel-title" id="project-ssp-engineering">Engineering</h4>
+                  <h4 class="project-panel-title" id="project-ssp-engineering">Build</h4>
                   <ul>
-                    <li><strong>42-table</strong> PostgreSQL schema covering users, roles, teams, terms, goals, evaluations, hours, surveys, and audit trails</li>
-                    <li><strong>42,000</strong> lines across <strong>580</strong> TypeScript and React files</li>
-                    <li><strong>250+</strong> Playwright and unit test files gating every change through branch, PR, auto-deploy</li>
+                    <li><strong>42-table</strong> PostgreSQL schema</li>
+                    <li><strong>42,000</strong> lines, <strong>580</strong> TypeScript/React files</li>
+                    <li><strong>250+</strong> Playwright and unit test files</li>
+                    <li>Branch, PR, auto-deploy</li>
+                  </ul>
+                </div>
+                <div class="project-panel">
+                  <h4 class="project-panel-title" id="project-ssp-security">Security</h4>
+                  <ul>
+                    <li>SSO-only access, no public sign-up</li>
+                    <li>Role- and region-scoped authorization, server-side</li>
+                    <li>Row-level database security</li>
+                    <li>GDPR export and erasure</li>
                   </ul>
                 </div>
                 <div class="project-panel project-panel--wide">
@@ -5187,8 +5192,8 @@
                   </div>
                 </div>
                 <div class="project-panel project-panel--wide">
-                  <h4 class="project-panel-title" id="project-ssp-access">A note on access</h4>
-                  <p>The app sits behind Siemens single sign-on, so the login screen is public but the application itself is not browsable without a corporate account, and it holds real student data I am not going to screenshot. I am happy to walk through the schema, the authorization model, or any other part of the build in an interview.</p>
+                  <h4 class="project-panel-title" id="project-ssp-access">Access</h4>
+                  <p>Behind Siemens single sign-on. The login screen is public; the app is not.</p>
                 </div>
               </div>
               <a class="project-open" href="https://www.strategicstudentprogram.com" target="_blank" rel="noopener noreferrer">Open live site (sign-in required)</a>
@@ -5341,8 +5346,7 @@
                 </div>
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="project-cs-distribution">How the audience arrives</h4>
-                  <p>Distribution for a B2B advisory firm runs through LinkedIn, not search, so I built the NLP content engine behind it, using sentiment analysis and TF-IDF to shape what gets posted. Over the last 12 months it has produced <strong>224,118</strong> impressions and reached <strong>123,329</strong> members, roughly <strong>23x</strong> the year before, with a top post at <strong>59K</strong> impressions.</p>
-                  <p><strong>96%</strong> of that reach came from outside the firm&apos;s existing network, which is the number I actually care about: it means the posts are being distributed on their merits rather than recycled through followers. The audience it lands on is the one the firm sells to, at <strong>32%</strong> financial services, <strong>28%</strong> senior-level, and <strong>39%</strong> at companies of 10,000 or more. Organic search is still a small channel and I am not going to dress those numbers up.</p>
+                  <p>I built the NLP content engine behind the firm&apos;s LinkedIn, using sentiment analysis and TF-IDF to shape what gets posted. Over 12 months: <strong>224,118</strong> impressions, <strong>123,329</strong> members reached, roughly <strong>23x</strong> the year before, top post at <strong>59K</strong>. <strong>96%</strong> of reach came from outside the firm&apos;s network. Audience: <strong>32%</strong> financial services, <strong>28%</strong> senior-level, <strong>39%</strong> at companies of 10,000 or more.</p>
                 </div>
                 <div class="project-panel project-panel--wide">
                   <h4 class="project-panel-title" id="project-cs-stack">Tech stack</h4>
