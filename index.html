@@ -1929,7 +1929,10 @@
       /* Don't paint/composite the offscreen D3 iframes while scrolling past;
          the iframe document stays alive (no reload), only its paint is skipped. */
       content-visibility: auto;
-      contain-intrinsic-size: auto 540px;
+      /* Measured from the rendered card. A wrong estimate makes the page change
+         height as cards collapse and expand, which is what threw in-page jump
+         targets off before they could be corrected. */
+      contain-intrinsic-size: auto 742px;
     }
     .visual-collage .visual-card--feature {
       min-height: 0;
@@ -3076,6 +3079,14 @@
     }
 
     @media (max-width: 1024px) {
+      /* Measured at phone width: the cards are shorter and the project cards
+         much taller than the desktop estimates. */
+      .visual-collage .visual-card:not(.visual-card--feature) {
+        contain-intrinsic-size: auto 507px;
+      }
+      .project-section {
+        contain-intrinsic-size: auto 330px;
+      }
       .visual-grid:not(.visual-collage),
       .timeline-grid,
       .timeline-stack,
