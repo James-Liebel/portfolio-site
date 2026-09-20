@@ -731,10 +731,8 @@
       const cw = entry ? entry.contentRect.width : pane.getBoundingClientRect().width;
       const ch = entry ? entry.contentRect.height : pane.getBoundingClientRect().height;
       if (!cw || !ch) return;
-      /* Contain-fit scale; optional data-viz-zoom multiplies (zoom in, may clip edges). */
-      const zm = parseFloat(pane.dataset.vizZoom);
-      const mult = Number.isFinite(zm) && zm > 0 ? zm : 1;
-      const scale = Math.min(cw / baseW, ch / baseH) * mult;
+      /* Contain-fit: the whole chart stays visible, including its axes. */
+      const scale = Math.min(cw / baseW, ch / baseH);
       pane.style.setProperty("--viz-scale", String(scale));
     };
 
