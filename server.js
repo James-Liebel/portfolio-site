@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname);
-const preferredPort = Number.parseInt(process.env.PORT || "3000", 10);
-let port = Number.isFinite(preferredPort) ? preferredPort : 3000;
+const preferredPort = Number.parseInt(process.env.PORT || "4817", 10);
+let port = Number.isFinite(preferredPort) ? preferredPort : 4817;
 const portCeiling = port + 20;
 
 const MIME = {
