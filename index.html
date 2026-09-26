@@ -101,6 +101,8 @@
       --border: rgba(255, 255, 255, 0.10);
       --border-soft: rgba(255, 255, 255, 0.06);
       --hairline: rgba(255, 255, 255, 0.12);
+      --band-bg: #0b0e12;
+      --band-edge: rgba(255, 255, 255, 0.09);
       --shadow: 0 14px 36px rgba(0, 0, 0, 0.30);
       --radius: 14px;
       --radius-sm: 10px;
@@ -110,6 +112,7 @@
       --nav-bar-content: calc(var(--nav-height) + var(--nav-inner-pad-y));
       --nav-bar-total: calc(env(safe-area-inset-top, 0px) + var(--nav-bar-content));
       --section-scroll-margin: calc(var(--nav-bar-total) + 22px);
+      --section-space: 96px;
       --switch-track: rgba(255, 255, 255, 0.06);
       --switch-border: rgba(255, 255, 255, 0.1);
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -135,6 +138,8 @@
       --border: rgba(28, 30, 36, 0.14);
       --border-soft: rgba(28, 30, 36, 0.08);
       --hairline: rgba(28, 30, 36, 0.16);
+      --band-bg: #eeede6;
+      --band-edge: rgba(28, 30, 36, 0.10);
       --shadow: 0 14px 36px rgba(28, 30, 36, 0.10);
       --switch-track: rgba(28, 30, 36, 0.05);
       --switch-border: rgba(28, 30, 36, 0.10);
@@ -463,9 +468,39 @@
     .section-shell {
       width: var(--container);
       margin: 0 auto;
-      padding: 100px 0;
+      padding: var(--section-space) 0;
       position: relative;
       z-index: 1;
+    }
+    /* Alternating full-bleed bands. With every section on the same background
+       the only cue that a new one had started was a gap, which read the same
+       as the gaps between cards inside a section. */
+    #skills,
+    #visualizations,
+    #resume {
+      position: relative;
+      isolation: isolate;
+    }
+    #skills::before,
+    #visualizations::before,
+    #resume::before {
+      content: "";
+      position: absolute;
+      inset-block: 0;
+      left: 50%;
+      width: 100vw;
+      transform: translateX(-50%);
+      background: var(--band-bg);
+      border-block: 1px solid var(--band-edge);
+      z-index: -1;
+      pointer-events: none;
+    }
+    @media print {
+      #skills::before,
+      #visualizations::before,
+      #resume::before {
+        display: none;
+      }
     }
     .section-head {
       margin-bottom: 36px;
@@ -1285,7 +1320,7 @@
     .work-section {
       width: var(--container);
       margin: 0 auto;
-      padding: 0 0 100px;
+      padding: var(--section-space) 0;
     }
     #projects > .section-head {
       margin-bottom: 28px;
@@ -1855,7 +1890,6 @@
       position: relative;
       overflow-x: clip;
       overflow-y: visible;
-      padding-bottom: clamp(48px, 8vw, 100px);
     }
     #visualizations .section-shell {
       position: relative;
@@ -2822,9 +2856,6 @@
     .resume-shell-section {
       background: transparent;
     }
-    .resume-shell-section .section-shell {
-      padding: 40px 0 96px;
-    }
     .resume-intro a {
       color: var(--accent);
       text-decoration: underline;
@@ -3647,19 +3678,15 @@
 
     /* 3) Tighter container padding on phones — the 100px section padding eats the screen */
     @media (max-width: 768px) {
-      .section-shell {
-        padding: 56px 0;
-      }
       :root {
+        --section-space: 56px;
         --container: calc(100vw - 28px);
         --section-scroll-margin: calc(var(--nav-bar-total) + 12px);
       }
     }
     @media (max-width: 420px) {
-      .section-shell {
-        padding: 44px 0;
-      }
       :root {
+        --section-space: 44px;
         --container: calc(100vw - 22px);
       }
     }

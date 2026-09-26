@@ -21,6 +21,7 @@
   const brandBadges = [...document.querySelectorAll(".brand-badge")];
   const navLinks = [...document.querySelectorAll('.nav-link[href^="#"]')];
   const sectionTargets = [...document.querySelectorAll("main section[id]")];
+  let activeSectionId = "";
   const navIndicator = document.getElementById("navIndicator");
   const navToggle = document.getElementById("navToggle");
   const navClose = document.getElementById("navClose");
@@ -271,6 +272,7 @@
     if (!siteNav || !hero) return;
     const heroBottom = hero.getBoundingClientRect().bottom;
     siteNav.classList.toggle("scrolled", heroBottom <= 140);
+    updateActiveSection();
     syncNavLinkStyles();
   }
 
@@ -311,22 +313,26 @@
     });
   }
 
-  function setupObservers() {
-    const navObserver = new IntersectionObserver(entries => {
-      const visible = entries.filter(entry => entry.isIntersecting);
-      if (!visible.length) return;
-
-      // Choose the most visible section so the nav indicator reliably follows
-      // the user's scroll position (e.g. Home -> Skills).
-      visible.sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0));
-      markActiveNav(visible[0].target.id);
-    }, {
-      rootMargin: "-20% 0px -65% 0px",
-      threshold: [0.01, 0.08, 0.15, 0.25, 0.4, 0.6, 0.8]
+  // Position-based rather than IntersectionObserver ratios: a ratio is relative
+  // to the section's own height, so tall Projects outscored Visualizations while
+  // Visualizations filled the screen, and the short Résumé never won at all.
+  function updateActiveSection() {
+    if (!sectionTargets.length) return;
+    const navHeight = siteNav ? siteNav.getBoundingClientRect().height : 64;
+    const line = navHeight + window.innerHeight * 0.3;
+    let id = sectionTargets[0].id;
+    sectionTargets.forEach(section => {
+      if (section.getBoundingClientRect().top <= line) id = section.id;
     });
+    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    if (atBottom) id = sectionTargets[sectionTargets.length - 1].id;
+    if (id !== activeSectionId) {
+      activeSectionId = id;
+      markActiveNav(id);
+    }
+  }
 
-    sectionTargets.forEach(section => navObserver.observe(section));
-
+  function setupObservers() {
     const journeyPanelObserver = new IntersectionObserver(
       entries => {
         const visible = entries.filter(e => e.isIntersecting && e.target.dataset.panel);
@@ -1695,7 +1701,6 @@
 
   updateProgress();
   updateNavState();
-  markActiveNav("hero");
   updateJourneyRail("overview");
 
   const skillsAtlasDetails = document.getElementById("skillsAtlasDetails");
